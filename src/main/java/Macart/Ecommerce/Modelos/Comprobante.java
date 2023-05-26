@@ -16,9 +16,7 @@ public class Comprobante {
     private String tipoDeEnvio;
     private LocalDateTime fechaDeComprobante;
     private double montoTotal;
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "clienteId")
-    private Cliente cliente;
+
     @OneToOne(mappedBy = "comprobante")
     private Pedido pedido;
 
@@ -66,14 +64,6 @@ public class Comprobante {
 
     public void setMontoTotal(double montoTotal) {
         this.montoTotal = montoTotal;
-    }
-
-    public Cliente getCliente() {
-        return cliente;
-    }
-
-    public void setCliente(Cliente cliente) {
-        this.cliente = cliente;
     }
 
     public Pedido getPedido() {

@@ -16,7 +16,7 @@ public class Pedido {
     private LocalDateTime fechaDePedido;
     private boolean pagado;
     private double montoTotal;
-    private PedidoMetodoDeEnvios metodoDeEnvios;
+    private String metodoDeEnvio;
     private PedidoMetodoDePago metodoDePago;
     @OneToMany(mappedBy="pedido", fetch= FetchType.EAGER)
     private Set<PedidoProducto> pedidoProductos = new HashSet<>();
@@ -24,7 +24,7 @@ public class Pedido {
     @JoinColumn(name = "clientId")
     private Cliente cliente;
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "comprobanteId", referencedColumnName = "id")
+    @JoinColumn(name = "comprobanteId")
     private Comprobante comprobante;
 
 
