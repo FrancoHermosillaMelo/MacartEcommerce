@@ -1,13 +1,6 @@
 package Macart.Ecommerce.DTO;
 
 import Macart.Ecommerce.Modelos.Cliente;
-import Macart.Ecommerce.Modelos.Comprobante;
-import Macart.Ecommerce.Modelos.Direccion;
-import Macart.Ecommerce.Modelos.Pedido;
-
-import javax.persistence.FetchType;
-import javax.persistence.OneToMany;
-import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -28,23 +21,14 @@ public class ClienteDTO {
         this.id = cliente.getId();
 
         this.primerNombre = cliente.getPrimerNombre();
-
         this.segundoNombre = cliente.getSegundoNombre();
-
         this.primerApellido = cliente.getPrimerApellido();
-
         this.segundoApellido = cliente.getSegundoApellido();
-
         this.correo = cliente.getCorreo();
-
         this.telefono = cliente.getTelefono();
-
         this.celular = cliente.getCelular();
-
         this.pedidos = cliente.getPedidos().stream().map(pedido -> new PedidoDTO(pedido)).collect(Collectors.toSet());
-
         this.comprobantes = cliente.getComprobantes().stream().map(comprobante -> new ComprobanteDTO(comprobante)).collect(Collectors.toSet());
-
         this.direcciones = cliente.getDirecciones().stream().map(direccion -> new DireccionDTO(direccion)).collect(Collectors.toSet());
     }
 

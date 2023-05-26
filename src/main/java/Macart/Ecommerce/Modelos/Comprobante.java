@@ -4,6 +4,7 @@ import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.Set;
 
 @Entity
 public class Comprobante {
@@ -82,4 +83,6 @@ public class Comprobante {
     public void setPedido(Pedido pedido) {
         this.pedido = pedido;
     }
+
+
 }

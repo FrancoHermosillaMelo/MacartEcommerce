@@ -12,8 +12,10 @@ public class Direccion {
     private long id;
     private String calle;
     private String numeroDomicilio;
+    private String barrio;
     private String ciudad;
     private String departamento;
+
     private String codigoPostal;
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "clientId")
@@ -22,9 +24,10 @@ public class Direccion {
     public Direccion() {
     }
 
-    public Direccion(String calle, String numeroDomicilio, String ciudad, String departamento, String codigoPostal) {
+    public Direccion(String calle, String numeroDomicilio, String barrio, String ciudad, String departamento, String codigoPostal) {
         this.calle = calle;
         this.numeroDomicilio = numeroDomicilio;
+        this.barrio = barrio;
         this.ciudad = ciudad;
         this.departamento = departamento;
         this.codigoPostal = codigoPostal;
@@ -82,4 +85,11 @@ public class Direccion {
         this.cliente = cliente;
     }
 
+    public String getBarrio() {
+        return barrio;
+    }
+
+    public void setBarrio(String barrio) {
+        this.barrio = barrio;
+    }
 }

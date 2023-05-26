@@ -23,7 +23,7 @@ public class ClienteControlador {
                 .stream().map(client ->
                         new ClienteDTO(client)).collect(toList());  }
    @GetMapping("/api/clientes/actual")
-    public ClienteDTO obtenerCliente(@RequestParam long id){
+    public  ClienteDTO obtenerCliente(@RequestParam long id){
        Cliente cliente = clienteRepositorio.findById(id);
        return new ClienteDTO(cliente);
    }
