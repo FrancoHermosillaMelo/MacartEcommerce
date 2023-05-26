@@ -16,18 +16,20 @@ public class Direccion {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "clientId")
     private Cliente cliente;
-
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "departamentoId")
-    private Departamento departamento;
+    private String departamento;
+    private String ciudad;
+    private String codigoPostal;
 
     public Direccion() {
     }
 
-    public Direccion(String calle, String numeroDomicilio, String barrio) {
+    public Direccion(String calle, String numeroDomicilio, String barrio, String departamento, String ciudad, String codigoPostal) {
         this.calle = calle;
         this.numeroDomicilio = numeroDomicilio;
         this.barrio = barrio;
+        this.departamento = departamento;
+        this.ciudad = ciudad;
+        this.codigoPostal = codigoPostal;
     }
 
     public long getId() {
@@ -64,5 +66,28 @@ public class Direccion {
 
     public void setBarrio(String barrio) {
         this.barrio = barrio;
+    }
+
+    public String getDepartamento() {
+        return departamento;
+    }
+    public void setDepartamento(String departamento) {
+        this.departamento = departamento;
+    }
+
+    public String getCiudad() {
+        return ciudad;
+    }
+
+    public void setCiudad(String ciudad) {
+        this.ciudad = ciudad;
+    }
+
+    public String getCodigoPostal() {
+        return codigoPostal;
+    }
+
+    public void setCodigoPostal(String codigoPostal) {
+        this.codigoPostal = codigoPostal;
     }
 }

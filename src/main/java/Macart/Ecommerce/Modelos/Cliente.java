@@ -2,6 +2,7 @@ package Macart.Ecommerce.Modelos;
 
 import org.hibernate.annotations.GenericGenerator;
 import javax.persistence.*;
+import java.awt.*;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -23,6 +24,8 @@ public class Cliente {
     private Set<Pedido> pedidos = new HashSet<>();
     @OneToMany(mappedBy="cliente", fetch= FetchType.EAGER)
     private Set<Direccion> direcciones = new HashSet<>();
+    @OneToMany(mappedBy = "cliente", fetch = FetchType.EAGER)
+    private Set<Comprobante> comprobantes = new HashSet<>();
 
     public Cliente() {
     }
@@ -128,5 +131,13 @@ public class Cliente {
 
     public void setDirecciones(Set<Direccion> direcciones) {
         this.direcciones = direcciones;
+    }
+
+    public Set<Comprobante> getComprobantes() {
+        return comprobantes;
+    }
+
+    public void setComprobantes(Set<Comprobante> comprobantes) {
+        this.comprobantes = comprobantes;
     }
 }
