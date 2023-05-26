@@ -16,13 +16,15 @@ public class Pedido {
     private LocalDateTime fechaDePedido;
     private boolean pagado;
     private double montoTotal;
+    private String metodoDeEnvio;
+    private PedidoMetodoDePago metodoDePago;
     @OneToMany(mappedBy="pedido", fetch= FetchType.EAGER)
-    private Set<PedidoProducto> pedido_productos = new HashSet<>();
+    private Set<PedidoProducto> pedidoProductos = new HashSet<>();
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "clientId")
     private Cliente cliente;
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "comprobanteId", referencedColumnName = "id")
+    @JoinColumn(name = "comprobanteId")
     private Comprobante comprobante;
 
 
@@ -34,9 +36,9 @@ public class Pedido {
         this.pagado = pagado;
         montoTotal = montoTotal;
     }
-    public void agregarPedido_Producto(PedidoProducto pedido_producto) {
-        pedido_producto.setPedido(this);
-        pedido_productos.add(pedido_producto);
+    public void agregarPedidoProducto(PedidoProducto pedidoproducto) {
+        pedidoproducto.setPedido(this);
+        pedidoProductos.add(pedidoproducto);
     }
 
     public long getId() {
@@ -83,12 +85,11 @@ public class Pedido {
         this.comprobante = comprobante;
     }
 
-    public Set<PedidoProducto> getPedido_productos() {
-        return pedido_productos;
+    public Set<PedidoProducto> getPedidoProductos() {
+        return pedidoProductos;
     }
 
-    public void setPedido_productos(Set<PedidoProducto> pedido_productos) {
-        this.pedido_productos = pedido_productos;
+    public void setPedidoProductos(Set<PedidoProducto> pedidoProductos) {
+        this.pedidoProductos = pedidoProductos;
     }
-
 }

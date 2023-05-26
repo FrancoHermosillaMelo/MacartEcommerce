@@ -22,8 +22,6 @@ public class Cliente {
     @OneToMany(mappedBy="cliente", fetch= FetchType.EAGER)
     private Set<Pedido> pedidos = new HashSet<>();
     @OneToMany(mappedBy="cliente", fetch= FetchType.EAGER)
-    private Set<Comprobante> comprobantes = new HashSet<>();
-    @OneToMany(mappedBy="cliente", fetch= FetchType.EAGER)
     private Set<Direccion> direcciones = new HashSet<>();
 
     public Cliente() {
@@ -43,10 +41,7 @@ public class Cliente {
         pedido.setCliente(this);
         pedidos.add(pedido);
     }
-    public void agregarComprobante(Comprobante comprobante) {
-        comprobante.setCliente(this);
-        comprobantes.add(comprobante);
-    }
+   
     public void agregarDirecciones(Direccion direccion) {
         direccion.setCliente(this);
         direcciones.add(direccion);
@@ -125,14 +120,6 @@ public class Cliente {
 
     public void setPedidos(Set<Pedido> pedidos) {
         this.pedidos = pedidos;
-    }
-
-    public Set<Comprobante> getComprobantes() {
-        return comprobantes;
-    }
-
-    public void setComprobantes(Set<Comprobante> comprobantes) {
-        this.comprobantes = comprobantes;
     }
 
     public Set<Direccion> getDirecciones() {
