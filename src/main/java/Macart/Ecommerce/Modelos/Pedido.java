@@ -27,11 +27,14 @@ public class Pedido {
     public Pedido() {
     }
 
-    public Pedido(LocalDateTime fechaDePedido, Boolean pagado, Double montoTotal) {
+    public Pedido(LocalDateTime fechaDePedido, boolean pagado, double montoTotal, String metodoDeEnvio, PedidoMetodoDePago metodoDePago) {
         this.fechaDePedido = fechaDePedido;
         this.pagado = pagado;
-        montoTotal = montoTotal;
+        this.montoTotal = montoTotal;
+        this.metodoDeEnvio = metodoDeEnvio;
+        this.metodoDePago = metodoDePago;
     }
+
     public void agregarPedidoProducto(PedidoProducto pedidoproducto) {
         pedidoproducto.setPedido(this);
         pedidoProductos.add(pedidoproducto);
@@ -79,5 +82,21 @@ public class Pedido {
 
     public void setPedidoProductos(Set<PedidoProducto> pedidoProductos) {
         this.pedidoProductos = pedidoProductos;
+    }
+
+    public String getMetodoDeEnvio() {
+        return metodoDeEnvio;
+    }
+
+    public void setMetodoDeEnvio(String metodoDeEnvio) {
+        this.metodoDeEnvio = metodoDeEnvio;
+    }
+
+    public PedidoMetodoDePago getMetodoDePago() {
+        return metodoDePago;
+    }
+
+    public void setMetodoDePago(PedidoMetodoDePago metodoDePago) {
+        this.metodoDePago = metodoDePago;
     }
 }
