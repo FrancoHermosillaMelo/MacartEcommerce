@@ -6,4 +6,6 @@ import java.util.Set;
 
 public class PedidoDTO {
 
+    public PedidoDTO(Pedido pedido) {
+    }
 }

@@ -6,4 +6,6 @@ import java.time.LocalDateTime;
 
 public class ComprobanteDTO {
 
+    public ComprobanteDTO(Comprobante comprobante) {
+    }
 }
