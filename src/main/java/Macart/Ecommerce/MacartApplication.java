@@ -26,7 +26,7 @@ public CommandLineRunner initData(ClienteRepositorio clienteRepositorio, Direcci
 		Cliente cliente1 = new Cliente("Carlos","Andrés","Ruiz","Hinestroza","carlosandresgoo@gmail.com","6033603","322-567-8909","123");
 		clienteRepositorio.save(cliente1);
 
-		Direccion direccion1 = new Direccion("Calle-47a","50-05","Barrio obrero","Copacabana","Antioquia","12345");
+		Direccion direccion1 = new Direccion("Calle-47a","50-05","Barrio obrero");
 		cliente1.agregarDirecciones(direccion1);
 		direccionRepositorio.save(direccion1);
 
@@ -34,7 +34,7 @@ public CommandLineRunner initData(ClienteRepositorio clienteRepositorio, Direcci
 		Cliente cliente2 =new Cliente("Ivan","Ezequiel","Miguel","Hernandez","Ivan@gmail.com","6543603","355-567-5555","321");
 		clienteRepositorio.save(cliente2);
 
-		Direccion direccion2 = new Direccion("Calle-100Z","100-05","mar de plata","Boca","buenos aires","54321");
+		Direccion direccion2 = new Direccion("Calle-100Z","100-05","mar de plata");
 		cliente2.agregarDirecciones(direccion2);
 		direccionRepositorio.save(direccion2);
 

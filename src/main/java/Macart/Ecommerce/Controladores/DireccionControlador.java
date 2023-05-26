@@ -42,7 +42,7 @@ public class DireccionControlador {
 
         Cliente cliente = clienteRepositorio.findById(clienteId).orElse(null);
 
-        Direccion nuevaDireccion = new Direccion(calle, numeroDomicilio, barrio, ciudad, departamento, codigoPostal);
+        Direccion nuevaDireccion = new Direccion(calle, numeroDomicilio, barrio);
         cliente.agregarDirecciones(nuevaDireccion);
         direccionRepositorio.save(nuevaDireccion);
 
@@ -55,10 +55,7 @@ public class DireccionControlador {
             @RequestParam Long id,
             @RequestParam String calle,
             @RequestParam String numeroDomicilio,
-            @RequestParam String barrio,
-            @RequestParam String ciudad,
-            @RequestParam String departamento,
-            @RequestParam String codigoPostal) {
+            @RequestParam String barrio) {
 
         Direccion direccion = direccionRepositorio.findById(id).orElse(null);
 
@@ -66,9 +63,6 @@ public class DireccionControlador {
             direccion.setCalle(calle);
             direccion.setNumeroDomicilio(numeroDomicilio);
             direccion.setBarrio(barrio);
-            direccion.setCiudad(ciudad);
-            direccion.setDepartamento(departamento);
-            direccion.setCodigoPostal(codigoPostal);
 
             direccionRepositorio.save(direccion);
 
