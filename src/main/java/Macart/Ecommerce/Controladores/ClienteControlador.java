@@ -42,12 +42,13 @@ public class ClienteControlador {
             @RequestParam String celular,
             @RequestParam String contraseña) {
 
-        if (clienteRepositorio.findByEmail(correo) !=  null) {
+        if (clienteRepositorio.findByCorreo(correo) !=  null) {
             return new ResponseEntity<>("El coreo electrónico ya está en uso", HttpStatus.FORBIDDEN);
         }
         Cliente nuevoClient = new Cliente(primerNombre, segundoNombre, primerApellido, segundoApellido,correo,telefono,celular,contraseña);
         clienteRepositorio.save(nuevoClient);
 
-        return ResponseEntity.status(HttpStatus.CREATED).body("Cuenta creada con exito");
+        return new ResponseEntity<>(HttpStatus.CREATED);
+
     }
 }
