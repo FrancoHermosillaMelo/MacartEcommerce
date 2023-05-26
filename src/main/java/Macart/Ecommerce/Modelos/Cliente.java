@@ -29,7 +29,7 @@ public class Cliente {
     public Cliente() {
     }
 
-    public Cliente(String primerNombre, String segundoNombre, String primerApellido, String segundoApellido, String direccionDomicilio, String correo, String telefono, String celular, String contraseña) {
+    public Cliente(String primerNombre, String segundoNombre, String primerApellido, String segundoApellido, String correo, String telefono, String celular, String contraseña) {
         this.primerNombre = primerNombre;
         this.segundoNombre = segundoNombre;
         this.primerApellido = primerApellido;
