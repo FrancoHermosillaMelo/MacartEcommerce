@@ -31,9 +31,15 @@ public class DireccionControlador {
 
 
     @PostMapping("/api/direcciones")
-    public ResponseEntity<Object> crearDirecciones(@RequestParam Long clienteId, @RequestParam String calle
-            , @RequestParam String numeroDomicilio, @RequestParam String barrio, @RequestParam String ciudad
-            , @RequestParam String departamento, @RequestParam String codigoPostal) {
+    public ResponseEntity<Object> crearDirecciones(
+            @RequestParam Long clienteId,
+            @RequestParam String calle,
+            @RequestParam String numeroDomicilio,
+            @RequestParam String barrio,
+            @RequestParam String ciudad,
+            @RequestParam String departamento,
+            @RequestParam String codigoPostal) {
+
         Cliente cliente = clienteRepositorio.findById(clienteId).orElse(null);
 
         Direccion nuevaDireccion = new Direccion(calle, numeroDomicilio, barrio, ciudad, departamento, codigoPostal);
@@ -45,9 +51,14 @@ public class DireccionControlador {
     }
 
     @PutMapping("/api/direcciones")
-    public ResponseEntity<Object> modificarDirecciones(@RequestParam Long id, @RequestParam String calle
-            , @RequestParam String numeroDomicilio, @RequestParam String barrio, @RequestParam String ciudad
-            , @RequestParam String departamento, @RequestParam String codigoPostal) {
+    public ResponseEntity<Object> modificarDirecciones(
+            @RequestParam Long id,
+            @RequestParam String calle,
+            @RequestParam String numeroDomicilio,
+            @RequestParam String barrio,
+            @RequestParam String ciudad,
+            @RequestParam String departamento,
+            @RequestParam String codigoPostal) {
 
         Direccion direccion = direccionRepositorio.findById(id).orElse(null);
 

@@ -16,6 +16,8 @@ public class Pedido {
     private LocalDateTime fechaDePedido;
     private boolean pagado;
     private double montoTotal;
+    private PedidoMetodoDeEnvios metodoDeEnvios;
+    private PedidoMetodoDePago metodoDePago;
     @OneToMany(mappedBy="pedido", fetch= FetchType.EAGER)
     private Set<PedidoProducto> pedidoProductos = new HashSet<>();
     @ManyToOne(fetch = FetchType.EAGER)
