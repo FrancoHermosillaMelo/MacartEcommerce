@@ -10,8 +10,7 @@ public class PedidoProducto {
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
     @GenericGenerator(name = "native", strategy = "native")
     private long id;
-    private String cantidad;
-    private String precioTotal;
+    private int cantidad;
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "productoTiendaId")
     private ProductoTienda productoTienda;
@@ -22,9 +21,9 @@ public class PedidoProducto {
     public PedidoProducto() {
     }
 
-    public PedidoProducto(String cantidad, String precioTotal) {
+    public PedidoProducto(int cantidad, ProductoTienda productoTienda) {
         this.cantidad = cantidad;
-        this.precioTotal = precioTotal;
+        this.productoTienda = productoTienda;
     }
 
     public long getId() {
@@ -32,20 +31,12 @@ public class PedidoProducto {
     }
 
 
-    public String getCantidad() {
+    public int getCantidad() {
         return cantidad;
     }
 
-    public void setCantidad(String cantidad) {
+    public void setCantidad(int cantidad) {
         this.cantidad = cantidad;
-    }
-
-    public String getPrecioTotal() {
-        return precioTotal;
-    }
-
-    public void setPrecioTotal(String precioTotal) {
-        this.precioTotal = precioTotal;
     }
 
     public Pedido getPedido() {
