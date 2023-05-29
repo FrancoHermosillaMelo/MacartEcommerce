@@ -23,8 +23,6 @@ public class ProductoTienda {
     private String subCategoria;
     @OneToMany(mappedBy="productoTienda", fetch= FetchType.EAGER)
     private Set<PedidoProducto> pedidoproductos = new HashSet<>();
-    @OneToMany(mappedBy="productoTienda", fetch= FetchType.EAGER)
-    private Set<Promocion> promociones = new HashSet<>();
 
     public ProductoTienda() {
     }
@@ -43,10 +41,6 @@ public class ProductoTienda {
     public void agregarPedidoProducto(PedidoProducto pedidoproducto) {
         pedidoproducto.setProductoTienda(this);
         pedidoproductos.add(pedidoproducto);
-    }
-    public void agregarPromocion(Promocion promocion) {
-        promocion.setProductoTienda(this);
-        promociones.add(promocion);
     }
 
     public long getId() {
@@ -125,13 +119,6 @@ public class ProductoTienda {
         this.subCategoria = subCategoria;
     }
 
-    public Set<Promocion> getPromociones() {
-        return promociones;
-    }
-
-    public void setPromociones(Set<Promocion> promociones) {
-        this.promociones = promociones;
-    }
 
     public Set<PedidoProducto> getPedidoproductos() {
         return pedidoproductos;

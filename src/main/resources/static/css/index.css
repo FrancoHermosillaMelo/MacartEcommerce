@@ -421,7 +421,7 @@ ul {
 	}
 }
 
-@media (min-width: 320px) and (max-width: 900px) {
+@media only screen and(min-width: 320px) and (max-width: 900px) {
 	/*NAV*/
 	.div-iconos {
 		flex-direction: row !important;
@@ -434,7 +434,8 @@ ul {
 
 	/*GENERO*/
 	.div-genero {
-		flex-direction: column !important;
+		/* flex-direction: column !important; */
+		flex-wrap: wrap!important;
 	}
 	.div-mujer {
 		width: auto;
