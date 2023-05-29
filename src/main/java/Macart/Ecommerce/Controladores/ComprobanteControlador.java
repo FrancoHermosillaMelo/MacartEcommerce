@@ -3,9 +3,13 @@ package Macart.Ecommerce.Controladores;
 import Macart.Ecommerce.DTO.ComprobanteDTO;
 import Macart.Ecommerce.Modelos.Cliente;
 import Macart.Ecommerce.Modelos.Comprobante;
+import Macart.Ecommerce.Modelos.Pedido;
 import Macart.Ecommerce.Repositorio.ClienteRepositorio;
 import Macart.Ecommerce.Repositorio.ComprobanteRepositorio;
+import Macart.Ecommerce.Repositorio.PedidoRepositorio;
 import Macart.Ecommerce.Utilidades.ComprobanteUtilidades;
+import com.itextpdf.text.*;
+import com.itextpdf.text.pdf.PdfWriter;
 import net.bytebuddy.asm.Advice;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,6 +19,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.text.ParseException;
 import java.time.LocalDateTime;
 import java.util.Date;
@@ -27,6 +34,8 @@ public class ComprobanteControlador {
     private ComprobanteRepositorio comprobanteRepositorio;
     @Autowired
     private ClienteRepositorio clienteRepositorio;
+    @Autowired
+    private PedidoRepositorio pedidoRepositorio;
 
     @GetMapping("/api/comprobantes")
     public List<ComprobanteDTO> obtenerComprobantes(){
@@ -87,27 +96,43 @@ public class ComprobanteControlador {
         return new ResponseEntity<>(comprobantesTodos, HttpStatus.ACCEPTED);
     }
     @PostMapping("/api/comprobantes/pdf")
-    public ResponseEntity<Object> crearComprobantePDF (@RequestParam long idComprobante, @RequestParam String inicioFecha, @RequestParam String finFecha) throws ParseException {
+    public ResponseEntity<Object> crearComprobantePDF (@RequestParam long idComprobante, @RequestParam long idPedido) throws IOException, DocumentException {
         Comprobante comprobanteSolicitado = comprobanteRepositorio.findById(idComprobante).orElse(null);
+        Pedido pedidoSolicitado = pedidoRepositorio.findById(idPedido).orElse(null);
 
         if(comprobanteSolicitado == null){
             return new ResponseEntity<>("El comprobante no existe", HttpStatus.NOT_FOUND);
         }
-        if(inicioFecha.isBlank()){
-            return new ResponseEntity<>("La fecha de inicio no puede estar en blanco", HttpStatus.FORBIDDEN);
+        if(pedidoSolicitado == null){
+            return new ResponseEntity<>("El pedido no existe", HttpStatus.NOT_FOUND);
         }
-        if(finFecha.isBlank()){
-            return new ResponseEntity<>("La fecha fin no puede estar en blanco", HttpStatus.FORBIDDEN);
-        }
-
-        Date inicioFechaDate = ComprobanteUtilidades.stringtoDate(inicioFecha);
-        Date finFechaDate = ComprobanteUtilidades.stringtoDate(finFecha);
-
-        LocalDateTime inicioFechaLocalDateTime = ComprobanteUtilidades.dateToLocalDateTime(inicioFechaDate);
-        LocalDateTime finFechaLocalDateTime = ComprobanteUtilidades.dateToLocalDateTime(finFechaDate).plusDays(1).minusSeconds(1);
+        Cliente clienteDelPedido = pedidoSolicitado.getCliente();
 
 
-        return null;
+        Document document = new Document();
+        PdfWriter.getInstance(document, new FileOutputStream("C:\\Users\\Rates\\Documents\\Comprobante de pedido #" + idComprobante + ".pdf"));
+        document.open();
+
+        Image logo = Image.getInstance("C:\\Users\\Rates\\Documents\\Java Projects\\MacartEcommerce\\src\\main\\resources\\static\\img\\Black_Logo.png");
+        logo.scaleToFit(120, 120);
+        document.add(logo);
+
+        Font fontTitle = new Font(Font.FontFamily.HELVETICA, 25, Font.BOLD);
+        Paragraph title = new Paragraph("Señor/a: " + clienteDelPedido.getPrimerNombre() + " " +
+                clienteDelPedido.getSegundoNombre() + " " +
+                clienteDelPedido.getPrimerApellido() + " " +
+                clienteDelPedido.getSegundoApellido());
+        title.setAlignment(Paragraph.ALIGN_CENTER);
+        title.setSpacingBefore(20);
+        title.setSpacingAfter(20);
+        document.add(title);
+        document.close();
+
+//        Font fontSubTitle = new Font(Font.FontFamily.HELVETICA, 18, Font.BOLD);
+//        Paragraph subTitle = new Paragraph()
+
+
+        return new ResponseEntity<>("Pdf Creado correctamente", HttpStatus.CREATED);
     }
 
 }
