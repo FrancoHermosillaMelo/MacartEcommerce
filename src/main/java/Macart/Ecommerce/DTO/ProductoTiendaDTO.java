@@ -7,7 +7,6 @@ public class ProductoTiendaDTO {
     private String nombre;
     private double precio;
     private String descripcion;
-    private int cantidadStock;
     private ProductoTiendaTallaSuperior tallaSuperior;
     private ProductoTiendaTallaInferior tallaInferior;
     private String imagenUrl;
@@ -18,7 +17,6 @@ public class ProductoTiendaDTO {
         this.nombre = productoTienda.getNombre();
         this.precio = productoTienda.getPrecio();
         this.descripcion = productoTienda.getDescripcion();
-        this.cantidadStock = productoTienda.getCantidadStock();
         this.tallaSuperior = productoTienda.getTallaSuperior();
         this.tallaInferior = productoTienda.getTallaInferior();
         this.imagenUrl = productoTienda.getImagenUrl();
@@ -40,10 +38,6 @@ public class ProductoTiendaDTO {
 
     public String getDescripcion() {
         return descripcion;
-    }
-
-    public int getCantidadStock() {
-        return cantidadStock;
     }
 
     public ProductoTiendaTallaSuperior getTallaSuperior() {
