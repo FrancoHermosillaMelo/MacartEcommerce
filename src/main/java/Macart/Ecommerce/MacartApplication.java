@@ -10,6 +10,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @SpringBootApplication
 public class MacartApplication {
@@ -26,8 +27,8 @@ public CommandLineRunner initData(ClienteRepositorio clienteRepositorio, Direcci
 	return (args) -> {
 		// guardarclientes
 
-//		cliente1
-		Cliente cliente1 = new Cliente("Carlos","Andrés","Ruiz","Hinestroza","carlosandresgoo@gmail.com","6033603","322-567-8909",passwordEncoder.encode("123"));
+		//	cliente1
+		Cliente cliente1 = new Cliente("Carlos","Andrés","Ruiz","Hinestroza","carlosandresgoo@gmail.com","322-567-8909",passwordEncoder.encode("123"));
 		clienteRepositorio.save(cliente1);
 
 		Direccion direccion1 = new Direccion("Calle-47a","50-05","Barrio obrero","Copacabana","Antioquia","12345");
@@ -39,13 +40,27 @@ public CommandLineRunner initData(ClienteRepositorio clienteRepositorio, Direcci
 		pedidoRepositorio.save(pedido1);
 
 		Comprobante comprobante1 = new Comprobante(PedidoMetodoDePago.TRANSFERENCIA,"Transportadora",LocalDateTime.now(),150000.00 );
+		cliente1.agregarComprobantes(comprobante1);
 		comprobanteRepositorio.save(comprobante1);
+		clienteRepositorio.save(cliente1);
 
-		ProductoTienda productoTienda1 = new ProductoTienda("Camisa", 50000.00 , "Muy bonita", 200 , ProductoTiendaTallaSuperior.M, null, null, ProductoTiendaCategoriaGenero.HOMBRE, "Camisas"  );
+		// PRODUCTOS
+
+		ProductoTienda productoTienda1 = new ProductoTienda("Camisa Blanca", 50000.00 , "Camisa blanca de algodon", ProductoTiendaTallaSuperior.M, null, List.of("../static/img/camisaBlanca.jpg","../static/img/camisaBlanca2.jpg"), ProductoTiendaCategoriaGenero.HOMBRE, "Camisa"  );
 		productoTiendaRepositorio.save(productoTienda1);
 
-		ProductoTienda productoTienda2 = new ProductoTienda("Camisa blanca", 70000.00 , "Muy bonita", 100 , ProductoTiendaTallaSuperior.M, null, null, ProductoTiendaCategoriaGenero.HOMBRE, "Camisas"  );
+		ProductoTienda productoTienda2 = new ProductoTienda("Blusa Negra", 70000.00 , "Blusa negra de ribb de algodon", ProductoTiendaTallaSuperior.M, null, List.of("../static/img/blusaNegra.jpg","../static/img/blusaNegra2.jpg"), ProductoTiendaCategoriaGenero.MUJER, "Blusa");
 		productoTiendaRepositorio.save(productoTienda2);
+
+		ProductoTienda productoTienda3 = new ProductoTienda("Blusa Blanca", 50000, "Blusa blanca de ribb de algodón",ProductoTiendaTallaSuperior.S, null, List.of("../static/img/blusaBlanca.jpg", "../static/img/blusaBlanca2.jpg", "../static/img/blusaBlanca3.jpg"),ProductoTiendaCategoriaGenero.MUJER,"Blusa");
+		productoTiendaRepositorio.save(productoTienda3);
+
+		ProductoTienda productoTienda4 = new ProductoTienda("Bolso Jean", 40000, "Un bolso hecho de jean", null, null, List.of("../static/img/bolsoJean.png", "../static/img/bolsoJean2.png"),ProductoTiendaCategoriaGenero.MUJER, "Bolso");
+		productoTiendaRepositorio.save(productoTienda4);
+
+		ProductoTienda productoTienda5 = new ProductoTienda("Cartera Jean",45000,"Una cartera hecha de jean", null, null, List.of("../static/img/carteraJean.png", "../static/img/carteraJean2.png"), ProductoTiendaCategoriaGenero.MUJER, "Bolso");
+		productoTiendaRepositorio.save(productoTienda5);
+		// PEDIDOS PRODUCTOS
 
 		PedidoProducto pedidoProducto1 = new PedidoProducto(8, productoTienda1 );
 		pedido1.agregarPedidoProducto(pedidoProducto1);
@@ -56,12 +71,8 @@ public CommandLineRunner initData(ClienteRepositorio clienteRepositorio, Direcci
 		pedidoProductoRepositorio.save(pedidoProducto2);
 
 
-
-
-
-
 //		cliente2
-		Cliente cliente2 =new Cliente("Ivan","Ezequiel","Miguel","Hernandez","Ivan@gmail.com","6543603","355-567-5555",passwordEncoder.encode("321"));
+		Cliente cliente2 =new Cliente("Ivan","Ezequiel","Miguel","Hernandez","Ivan@gmail.com","355-567-5555",passwordEncoder.encode("321"));
 		clienteRepositorio.save(cliente2);
 
 		Direccion direccion2 = new Direccion("Calle-100Z","100-05","mar de plata","Boca","buenos aires","54321");
