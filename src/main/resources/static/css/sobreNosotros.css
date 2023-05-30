@@ -8,6 +8,9 @@
 	--color-grisOscuro: #5a5151;
 	--color-negro: #000000;
 }
+.modal-body.log{
+padding: 0 !important;
+}
 
 * {
 	margin: 0;
