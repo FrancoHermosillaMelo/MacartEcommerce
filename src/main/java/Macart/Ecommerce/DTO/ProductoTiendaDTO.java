@@ -12,7 +12,7 @@ public class ProductoTiendaDTO {
     private String descripcion;
     private ProductoTiendaTallaSuperior tallaSuperior;
     private ProductoTiendaTallaInferior tallaInferior;
-    private List<String> imagenenesUrl;
+    private List<String> imagenesUrl;
     private ProductoTiendaCategoriaGenero categoriaGenero;
     private String subCategoria;
     public ProductoTiendaDTO(ProductoTienda productoTienda) {
@@ -22,7 +22,7 @@ public class ProductoTiendaDTO {
         this.descripcion = productoTienda.getDescripcion();
         this.tallaSuperior = productoTienda.getTallaSuperior();
         this.tallaInferior = productoTienda.getTallaInferior();
-        this.imagenenesUrl = productoTienda.getImagenenesUrl();
+        this.imagenesUrl = productoTienda.getImagenenesUrl();
         this.categoriaGenero = productoTienda.getCategoriaGenero();
         this.subCategoria = productoTienda.getSubCategoria();
     }
@@ -59,7 +59,7 @@ public class ProductoTiendaDTO {
         return subCategoria;
     }
 
-    public List<String> getImagenenesUrl() {
-        return imagenenesUrl;
+    public List<String> getImagenesUrl() {
+        return imagenesUrl;
     }
 }
