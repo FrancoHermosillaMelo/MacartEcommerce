@@ -8,8 +8,8 @@
 	--color-grisOscuro: #5a5151;
 	--color-negro: #000000;
 }
-.modal-body.log{
-padding: 0 !important;
+.modal-body.log {
+	padding: 0 !important;
 }
 
 * {
@@ -347,6 +347,9 @@ footer .wave#wave4 {
 /*FIN FOOTER*/
 
 /*NAVBAR*/
+.swal2-confirm {
+	margin-right: 10px !important;
+}
 .activo {
 	border-bottom: 2px solid var(--color-rosado) !important;
 }

@@ -7,6 +7,7 @@ createApp({
 			clienteIngresado: '',
 			productos: '',
 			isCarritoInactivo: true,
+			carrito: [],
 			correo: '',
 			correoRegistro: '',
 			contraseña: '',
@@ -22,6 +23,7 @@ createApp({
 		this.roles();
 		this.data();
 		this.totalProductos();
+		this.carrito = JSON.parse(localStorage.getItem('carrito')) || [];
 	},
 	methods: {
 		totalProductos() {
@@ -48,6 +50,35 @@ createApp({
 		},
 		abrirCarrito() {
 			this.isCarritoInactivo = !this.isCarritoInactivo;
+		},
+		agregarAlCarrito(item) {
+			if (!this.productosRepetidos(item.id)) {
+				this.carrito.push({
+					nombre: item.nombre,
+					id: item.id,
+					contadorBoton: 1,
+					imagen: item.imagenesUrl[0],
+					precio: item.precio,
+				});
+			} else {
+				item.contadorBoton + 1;
+			}
+		},
+		productosRepetidos(productoId) {
+			return this.carrito.some(item => item.id === productoId);
+		},
+		agregarCantidadProducto(producto) {
+			if (producto.contadorBoton <= 19) {
+				producto.contadorBoton += 1;
+			}
+		},
+		disminuirCantidadProducto(producto) {
+			if (producto.contadorBoton > 1) {
+				producto.contadorBoton -= 1;
+			}
+		},
+		elimarDelCarrito(producto) {
+			this.carrito = this.carrito.filter(item => !(item.id === producto.id));
 		},
 		ingresar() {
 			axios
@@ -133,6 +164,9 @@ createApp({
 			this.segundoNombre = this.segundoNombre.charAt(0).toUpperCase() + this.segundoNombre.slice(1);
 			this.primerApellido = this.primerApellido.charAt(0).toUpperCase() + this.primerApellido.slice(1);
 			this.segundoApellido = this.segundoApellido.charAt(0).toUpperCase() + this.segundoApellido.slice(1);
+		},
+		guardarDatos() {
+			localStorage.setItem('carrito', JSON.stringify(this.carrito));
 		},
 	},
 }).mount('#app');
