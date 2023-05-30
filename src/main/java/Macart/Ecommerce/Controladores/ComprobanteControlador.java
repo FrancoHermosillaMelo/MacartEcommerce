@@ -70,7 +70,7 @@ public class ComprobanteControlador {
         LocalDateTime inicioFechaLocalDateTime = ComprobanteUtilidades.dateToLocalDateTime(inicioFechaDate);
         LocalDateTime finFechaLocalDateTime = ComprobanteUtilidades.dateToLocalDateTime(finFechaDate).plusDays(1).minusSeconds(1);
 
-        List<ComprobanteDTO> comprobantesCliente = comprobanteServicio.findByComprobantesClienteFecha(cliente, inicioFechaLocalDateTime, finFechaLocalDateTime).stream().map(comprobante -> new ComprobanteDTO(comprobante)).collect(Collectors.toList());
+        List<ComprobanteDTO> comprobantesCliente = comprobanteServicio.obtenerComprobantesClienteFecha(cliente, inicioFechaLocalDateTime, finFechaLocalDateTime).stream().map(comprobante -> new ComprobanteDTO(comprobante)).collect(Collectors.toList());
 
         return new ResponseEntity<>(comprobantesCliente,HttpStatus.ACCEPTED);
     }
@@ -90,14 +90,14 @@ public class ComprobanteControlador {
         LocalDateTime inicioFechaLocalDateTime = ComprobanteUtilidades.dateToLocalDateTime(inicioFechaDate);
         LocalDateTime finFechaLocalDateTime = ComprobanteUtilidades.dateToLocalDateTime(finFechaDate).plusDays(1).minusSeconds(1);
 
-        List<ComprobanteDTO> comprobantesTodos = comprobanteServicio.findByComprobantesTodosFecha(inicioFechaLocalDateTime, finFechaLocalDateTime).stream().map(comprobante -> new ComprobanteDTO(comprobante)).collect(Collectors.toList());
+        List<ComprobanteDTO> comprobantesTodos = comprobanteServicio.obtenerComprobantesTodosFecha(inicioFechaLocalDateTime, finFechaLocalDateTime).stream().map(comprobante -> new ComprobanteDTO(comprobante)).collect(Collectors.toList());
 
         return new ResponseEntity<>(comprobantesTodos, HttpStatus.ACCEPTED);
     }
     @PostMapping("/api/comprobantes/pdf")
     public ResponseEntity<Object> crearComprobantePDF (@RequestParam long idComprobante, @RequestParam long idPedido) throws IOException, DocumentException {
-        Comprobante comprobanteSolicitado = comprobanteServicio.findByComprobantesId(idComprobante);
-        Pedido pedidoSolicitado = pedidoServicio.findByPedidoId(idPedido);
+        Comprobante comprobanteSolicitado = comprobanteServicio.obtenerComprobantesId(idComprobante);
+        Pedido pedidoSolicitado = pedidoServicio.ObtenerPedidoPorId(idPedido);
 
         if(comprobanteSolicitado == null){
             return new ResponseEntity<>("El comprobante no existe", HttpStatus.NOT_FOUND);

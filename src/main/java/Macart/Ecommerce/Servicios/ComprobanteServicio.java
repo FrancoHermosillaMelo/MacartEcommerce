@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface ComprobanteServicio {
     List<ComprobanteDTO> obtenerComprobantes();
-    List<Comprobante> findByComprobantesClienteFecha(Cliente cliente, LocalDateTime inicioFecha, LocalDateTime finFecha);
-    List<Comprobante> findByComprobantesTodosFecha(LocalDateTime inicioFecha, LocalDateTime finFecha);
-    Comprobante findByComprobantesId (long id);
+    List<Comprobante> obtenerComprobantesClienteFecha(Cliente cliente, LocalDateTime inicioFecha, LocalDateTime finFecha);
+    List<Comprobante> obtenerComprobantesTodosFecha(LocalDateTime inicioFecha, LocalDateTime finFecha);
+    Comprobante obtenerComprobantesId (long id);
 }

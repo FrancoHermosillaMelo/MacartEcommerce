@@ -26,15 +26,15 @@ public class ComprobanteImplementacion implements ComprobanteServicio {
     }
 
     @Override
-    public List<Comprobante> findByComprobantesClienteFecha(Cliente cliente, LocalDateTime inicioFecha, LocalDateTime finFecha) {
+    public List<Comprobante> obtenerComprobantesClienteFecha(Cliente cliente, LocalDateTime inicioFecha, LocalDateTime finFecha) {
         return comprobanteRepositorio.findByComprobantesClienteFecha(cliente,  inicioFecha,  finFecha);
     }
 
     @Override
-    public List<Comprobante> findByComprobantesTodosFecha(LocalDateTime inicioFecha, LocalDateTime finFecha) {
+    public List<Comprobante> obtenerComprobantesTodosFecha(LocalDateTime inicioFecha, LocalDateTime finFecha) {
         return comprobanteRepositorio.findByComprobantesTodosFecha(inicioFecha,  finFecha);
     }
 
     @Override
-    public Comprobante findByComprobantesId(long id) {return comprobanteRepositorio.ObtenerComprobantePorId(id);}
+    public Comprobante obtenerComprobantesId(long id) {return comprobanteRepositorio.findById(id).orElse(null);}
 }

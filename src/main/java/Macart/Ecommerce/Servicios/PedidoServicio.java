@@ -12,5 +12,5 @@ public interface PedidoServicio {
     boolean isAdmin(Authentication authentication);
     void guardarPedido(Pedido pedido);
     List<Pedido> findByCliente(Cliente cliente);
-    Pedido findByPedidoId (long id);
+    Pedido ObtenerPedidoPorId (long id);
 }

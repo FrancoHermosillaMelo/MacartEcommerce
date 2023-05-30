@@ -36,6 +36,6 @@ public class PedidoProductoImplementacion implements PedidoProductoServicio {
     }
 
     @Override
-    public PedidoProducto ObtenerPedidoProductoPorId(long id) { return pedidoProductoRepositorio.ObtenerPedidoProductoPorId(id);}
+    public PedidoProducto ObtenerPedidoProductoPorId(long id) { return pedidoProductoRepositorio.findById(id).orElse(null);}
 
 }
