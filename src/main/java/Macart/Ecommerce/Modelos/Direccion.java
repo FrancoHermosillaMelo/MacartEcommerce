@@ -12,21 +12,23 @@ public class Direccion {
     private long id;
     private String calle;
     private String numeroDomicilio;
-    private String ciudad;
-    private String departamento;
-    private String codigoPostal;
+    private String barrio;
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "clientId")
     private Cliente cliente;
+    private String departamento;
+    private String ciudad;
+    private String codigoPostal;
 
     public Direccion() {
     }
 
-    public Direccion(String calle, String numeroDomicilio, String ciudad, String departamento, String codigoPostal) {
+    public Direccion(String calle, String numeroDomicilio, String barrio, String departamento, String ciudad, String codigoPostal) {
         this.calle = calle;
         this.numeroDomicilio = numeroDomicilio;
-        this.ciudad = ciudad;
+        this.barrio = barrio;
         this.departamento = departamento;
+        this.ciudad = ciudad;
         this.codigoPostal = codigoPostal;
     }
 
@@ -50,20 +52,35 @@ public class Direccion {
         this.numeroDomicilio = numeroDomicilio;
     }
 
+    public Cliente getCliente() {
+        return cliente;
+    }
+
+    public void setCliente(Cliente cliente) {
+        this.cliente = cliente;
+    }
+
+    public String getBarrio() {
+        return barrio;
+    }
+
+    public void setBarrio(String barrio) {
+        this.barrio = barrio;
+    }
+
+    public String getDepartamento() {
+        return departamento;
+    }
+    public void setDepartamento(String departamento) {
+        this.departamento = departamento;
+    }
+
     public String getCiudad() {
         return ciudad;
     }
 
     public void setCiudad(String ciudad) {
         this.ciudad = ciudad;
-    }
-
-    public String getDepartamento() {
-        return departamento;
-    }
-
-    public void setDepartamento(String departamento) {
-        this.departamento = departamento;
     }
 
     public String getCodigoPostal() {
@@ -73,13 +90,4 @@ public class Direccion {
     public void setCodigoPostal(String codigoPostal) {
         this.codigoPostal = codigoPostal;
     }
-
-    public Cliente getCliente() {
-        return cliente;
-    }
-
-    public void setCliente(Cliente cliente) {
-        this.cliente = cliente;
-    }
-
 }

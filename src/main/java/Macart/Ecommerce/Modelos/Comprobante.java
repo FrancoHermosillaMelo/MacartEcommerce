@@ -4,6 +4,7 @@ import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.Set;
 
 @Entity
 public class Comprobante {
@@ -11,20 +12,21 @@ public class Comprobante {
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
     @GenericGenerator(name = "native", strategy = "native")
     private long id;
-    private String metodoDePago;
+    private PedidoMetodoDePago metodoDePago;
     private String tipoDeEnvio;
     private LocalDateTime fechaDeComprobante;
     private double montoTotal;
+
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "clienteId")
     private Cliente cliente;
-    @OneToOne(mappedBy = "comprobante")
-    private Pedido pedido;
+
+
 
     public Comprobante() {
     }
 
-    public Comprobante(String metodoDePago, String tipoDeEnvio, LocalDateTime fechaDeComprobante, double montoTotal) {
+    public Comprobante(PedidoMetodoDePago metodoDePago, String tipoDeEnvio, LocalDateTime fechaDeComprobante, double montoTotal) {
         this.metodoDePago = metodoDePago;
         this.tipoDeEnvio = tipoDeEnvio;
         this.fechaDeComprobante = fechaDeComprobante;
@@ -35,11 +37,11 @@ public class Comprobante {
         return id;
     }
 
-    public String getMetodoDePago() {
+    public PedidoMetodoDePago getMetodoDePago() {
         return metodoDePago;
     }
 
-    public void setMetodoDePago(String metodoDePago) {
+    public void setMetodoDePago(PedidoMetodoDePago metodoDePago) {
         this.metodoDePago = metodoDePago;
     }
 
@@ -73,13 +75,5 @@ public class Comprobante {
 
     public void setCliente(Cliente cliente) {
         this.cliente = cliente;
-    }
-
-    public Pedido getPedido() {
-        return pedido;
-    }
-
-    public void setPedido(Pedido pedido) {
-        this.pedido = pedido;
     }
 }

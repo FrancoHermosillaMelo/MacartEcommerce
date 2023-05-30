@@ -1,9 +1,10 @@
 package Macart.Ecommerce.Repositorio;
 
-import Macart.Ecommerce.Modelos.Promocion;
+import Macart.Ecommerce.Modelos.PedidoProducto;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 
 @RepositoryRestResource
-public interface PromocionRepositorio extends JpaRepository<Promocion, Long> {
+public interface PedidoProductoRepositorio extends JpaRepository<PedidoProducto, Long> {
+
 }

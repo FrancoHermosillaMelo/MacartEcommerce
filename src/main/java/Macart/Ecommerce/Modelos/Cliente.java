@@ -17,39 +17,39 @@ public class Cliente {
     private String segundoApellido;
     private String correo;
     private String telefono;
-    private String celular;
     private String contraseña;
     @OneToMany(mappedBy="cliente", fetch= FetchType.EAGER)
     private Set<Pedido> pedidos = new HashSet<>();
     @OneToMany(mappedBy="cliente", fetch= FetchType.EAGER)
-    private Set<Comprobante> comprobantes = new HashSet<>();
-    @OneToMany(mappedBy="cliente", fetch= FetchType.EAGER)
     private Set<Direccion> direcciones = new HashSet<>();
+    @OneToMany(mappedBy = "cliente", fetch = FetchType.EAGER)
+    private Set<Comprobante> comprobantes = new HashSet<>();
 
     public Cliente() {
     }
 
-    public Cliente(String primerNombre, String segundoNombre, String primerApellido, String segundoApellido, String direccionDomicilio, String correo, String telefono, String celular, String contraseña) {
+    public Cliente(String primerNombre, String segundoNombre, String primerApellido, String segundoApellido, String correo, String telefono, String contraseña) {
         this.primerNombre = primerNombre;
         this.segundoNombre = segundoNombre;
         this.primerApellido = primerApellido;
         this.segundoApellido = segundoApellido;
         this.correo = correo;
         this.telefono = telefono;
-        this.celular = celular;
         this.contraseña = contraseña;
     }
     public void agregarPedido(Pedido pedido) {
         pedido.setCliente(this);
         pedidos.add(pedido);
     }
-    public void agregarComprobante(Comprobante comprobante) {
-        comprobante.setCliente(this);
-        comprobantes.add(comprobante);
-    }
+   
     public void agregarDirecciones(Direccion direccion) {
         direccion.setCliente(this);
         direcciones.add(direccion);
+    }
+
+    public void agregarComprobantes(Comprobante comprobante){
+        comprobante.setCliente(this);
+        comprobantes.add(comprobante);
     }
     public long getId() {
         return id;
@@ -103,14 +103,6 @@ public class Cliente {
         this.telefono = telefono;
     }
 
-    public String getCelular() {
-        return celular;
-    }
-
-    public void setCelular(String celular) {
-        this.celular = celular;
-    }
-
     public String getContraseña() {
         return contraseña;
     }
@@ -127,14 +119,6 @@ public class Cliente {
         this.pedidos = pedidos;
     }
 
-    public Set<Comprobante> getComprobantes() {
-        return comprobantes;
-    }
-
-    public void setComprobantes(Set<Comprobante> comprobantes) {
-        this.comprobantes = comprobantes;
-    }
-
     public Set<Direccion> getDirecciones() {
         return direcciones;
     }
@@ -142,6 +126,12 @@ public class Cliente {
     public void setDirecciones(Set<Direccion> direcciones) {
         this.direcciones = direcciones;
     }
+
+    public Set<Comprobante> getComprobantes() {
+        return comprobantes;
+    }
+
+    public void setComprobantes(Set<Comprobante> comprobantes) {
+        this.comprobantes = comprobantes;
+    }
 }
-
-
