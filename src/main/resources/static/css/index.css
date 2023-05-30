@@ -268,7 +268,7 @@ swiper-slide img {
 }
 .btn {
 	border-radius: 0 !important;
-	padding: 1rem;
+	padding: 1rem !important;
 }
 .div-sumar-restar > span {
 	font-size: 18px;
