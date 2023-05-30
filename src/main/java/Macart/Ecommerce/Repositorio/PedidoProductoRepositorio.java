@@ -6,5 +6,6 @@ import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 
 @RepositoryRestResource
 public interface PedidoProductoRepositorio extends JpaRepository<PedidoProducto, Long> {
+    PedidoProducto ObtenerPedidoProductoPorId(long id);
 
 }

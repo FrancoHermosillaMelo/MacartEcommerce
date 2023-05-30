@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 
 
 @RestController
@@ -23,16 +24,13 @@ public class DireccionControlador {
 
 
     @GetMapping("/api/clientes/direcciones")
-    public ResponseEntity<Object> obtenerDireccionesClientes(Authentication authentication) {
-        if(direccionServicio.isAdmin(authentication)){
-            return (new ResponseEntity<>(direccionServicio.obtenerDireccionesClientes(authentication), HttpStatus.ACCEPTED));
-        }
-        return new ResponseEntity<>("No tiene los permisos para solicitar estos datos", HttpStatus.FORBIDDEN);
+    public ResponseEntity<Object> obtenerDireccionesClientes() {
+            return (new ResponseEntity<>(direccionServicio.obtenerDireccionesClientes(), HttpStatus.ACCEPTED));
     }
 
 
     @PostMapping("/api/direcciones")
-    public ResponseEntity<Object> crearDirecciones(
+    public ResponseEntity<Object> crearDirecciones(Authentication authentication,
             @RequestParam Long clienteId,
             @RequestParam String calle,
             @RequestParam String numeroDomicilio,
@@ -52,7 +50,7 @@ public class DireccionControlador {
     }
 
     @PutMapping("/api/direcciones")
-    public ResponseEntity<Object> modificarDirecciones(
+    public ResponseEntity<Object> modificarDirecciones(Authentication authentication,
             @RequestParam Long id,
             @RequestParam String calle,
             @RequestParam String numeroDomicilio,

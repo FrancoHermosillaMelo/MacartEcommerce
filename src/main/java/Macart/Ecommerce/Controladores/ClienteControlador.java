@@ -27,11 +27,8 @@ public class ClienteControlador {
     private PasswordEncoder passwordEncoder;
 
     @GetMapping("/api/clientes")
-    public ResponseEntity<Object> obtenerClientes(Authentication authentication){
-        if(clienteServicio.isAdmin(authentication)){
-            return new ResponseEntity<>(clienteServicio.obtenerTodosLosClientes(authentication),HttpStatus.ACCEPTED);
-        }
-        return new ResponseEntity<>("No tiene los permisos para solicitar estos datos", HttpStatus.FORBIDDEN);
+    public ResponseEntity<Object> obtenerClientes(){
+        return new ResponseEntity<>(clienteServicio.obtenerTodosLosClientes(),HttpStatus.ACCEPTED);
     }
     @GetMapping("/api/clientes/actual/rol")
     public ResponseEntity<Object> getClientRol(Authentication authentication){

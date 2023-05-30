@@ -37,8 +37,11 @@ public class ProductoTiendaControlador {
     private ClienteServicio clienteServicio;
 
     @GetMapping("/api/productoTienda")
-    public ResponseEntity<Object> obtenerPedidoProductoTienda() {
-        return new ResponseEntity<>(productoTiendaServicio.obtenerTodosLosProductos(), HttpStatus.ACCEPTED);
+    public ResponseEntity<Object> obtenerPedidoProductoTienda(Authentication authentication) {
+        if(clienteServicio.isAdmin(authentication)){
+            return new ResponseEntity<>(clienteServicio.obtenerTodosLosClientes(authentication),HttpStatus.ACCEPTED);
+        }
+        return new ResponseEntity<>("No tiene los permisos para solicitar estos datos", HttpStatus.FORBIDDEN);
     }
 
     @GetMapping("/api/productoTienda/{id}")

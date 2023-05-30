@@ -8,7 +8,7 @@ import org.springframework.security.core.GrantedAuthority;
 import java.util.List;
 
 public interface ClienteServicio {
-    List<ClienteDTO> obtenerTodosLosClientes(Authentication authentication);
+    List<ClienteDTO> obtenerTodosLosClientes();
     Cliente obtenerClientePorId(long id);
     Cliente obtenerClientePorEmail(String email);
     Cliente obtenerClienteAutenticado(Authentication authentication);

@@ -10,7 +10,6 @@ import Macart.Ecommerce.Repositorio.PedidoRepositorio;
 import Macart.Ecommerce.Utilidades.ComprobanteUtilidades;
 import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.PdfWriter;
-import net.bytebuddy.asm.Advice;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,7 +18,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.ParseException;

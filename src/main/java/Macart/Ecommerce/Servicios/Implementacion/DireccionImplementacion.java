@@ -22,7 +22,7 @@ public class DireccionImplementacion implements DireccionServicio {
     private ClienteServicio clienteServicio;
 
     @Override
-    public List<DireccionDTO> obtenerDireccionesClientes(Authentication authentication) {
+    public List<DireccionDTO> obtenerDireccionesClientes() {
         return direccionRepositorio.findAll()
                 .stream().map(direccion ->
                         new DireccionDTO(direccion)).collect(toList());
