@@ -33,7 +33,7 @@ public class ClienteControlador {
         }
         return new ResponseEntity<>("No tiene los permisos para solicitar estos datos", HttpStatus.FORBIDDEN);
     }
-    @GetMapping("/clients/current/rol")
+    @GetMapping("/api/clientes/actual/rol")
     public GrantedAuthority getClientRol(Authentication authentication){
         return clienteServicio.obtenerRolCliente(authentication);
     }
