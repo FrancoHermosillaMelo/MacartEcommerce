@@ -42,4 +42,7 @@ public class PedidoImplementacion implements PedidoServicio {
 
     @Override
     public List<Pedido> findByCliente(Cliente cliente) {return pedidoRepositorio.findByCliente(cliente);}
+
+    @Override
+    public Pedido findByPedidoId(long id) {return pedidoRepositorio.ObtenerPedidoPorId(id);}
 }

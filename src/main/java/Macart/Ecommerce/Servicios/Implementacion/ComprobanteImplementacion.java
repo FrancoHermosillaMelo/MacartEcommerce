@@ -34,4 +34,7 @@ public class ComprobanteImplementacion implements ComprobanteServicio {
     public List<Comprobante> findByComprobantesTodosFecha(LocalDateTime inicioFecha, LocalDateTime finFecha) {
         return comprobanteRepositorio.findByComprobantesTodosFecha(inicioFecha,  finFecha);
     }
+
+    @Override
+    public Comprobante findByComprobantesId(long id) {return comprobanteRepositorio.ObtenerComprobantePorId(id);}
 }
