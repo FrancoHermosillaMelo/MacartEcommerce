@@ -69,7 +69,7 @@ public class ProductoTiendaControlador {
             @RequestParam String subCategoria,
             Authentication authentication) throws Exception {
 
-        ProductoTienda productoTiendaExistente = productoTiendaRepositorio.findByNombre(nombre);
+        ProductoTienda productoTiendaExistente = productoTiendaServicio.obtenerProductoPorNombre(nombre);
 
         if (productoTiendaExistente != null) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body("El producto ya existe.");

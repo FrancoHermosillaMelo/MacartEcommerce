@@ -42,6 +42,9 @@ a {
 }
 
 /*NAVBAR*/
+.activo {
+	border-bottom: 2px solid var(--color-rosado) !important;
+}
 .header-nav {
 	padding-left: 50px;
 	padding-right: 50px;
@@ -56,9 +59,10 @@ a {
 }
 .texto-nav {
 	font-size: 20px !important;
+	margin-left: 5px !important;
 }
 .hover-a:hover {
-	color: var(--color-rosado) !important;
+	border-bottom: 2px solid var(--color-rosado) !important;
 }
 .hover-iconos:hover {
 	transform: scale(1.2, 1.2) !important;
@@ -146,7 +150,7 @@ a {
 
 /*ENVIOS SEGURIDAD ETC*/
 .icono {
-	font-size: 22px;
+	font-size: 28px !important;
 	color: var(--color-rosado);
 }
 .titulo {
@@ -208,6 +212,74 @@ swiper-slide img {
 	object-fit: cover;
 }
 /*FIN DE CARUSEL*/
+
+/* CARRITO */
+
+.inactivo {
+	display: none;
+}
+#carrito {
+	position: absolute;
+	right: 0;
+	top: 0;
+	min-width: 30rem;
+	min-height: 30rem;
+	background-color: var(--color-blanco);
+}
+.icono-close {
+	color: var(--color-gris);
+}
+.div-carrito {
+	border-bottom: 1px solid var(--color-gris);
+	padding-bottom: 15px;
+	position: relative;
+}
+.div-carrito > h4 {
+	font-weight: 600;
+}
+.div-carrito > i {
+	position: absolute;
+	right: 10%;
+	cursor: pointer;
+}
+.div-info-carrito > div > img {
+	width: 150px;
+	object-fit: contain;
+}
+.div-value > a {
+	color: var(--color-grisOscuro) !important;
+}
+.form-select {
+	border-radius: 0 !important;
+}
+.form-select:focus {
+	border-color: var(--color-negro) !important;
+	box-shadow: none !important;
+}
+.div-info-carrito > div {
+	padding-bottom: 8px;
+	border-bottom: 1px solid var(--color-gris);
+}
+.info {
+	padding-left: 10px;
+	padding-right: 10px;
+}
+.boton-pago {
+	padding: 2rem;
+}
+.btn {
+	border-radius: 0 !important;
+	padding: 1rem !important;
+}
+.div-sumar-restar > span {
+	font-size: 18px;
+}
+.div-sumar-restar > i {
+	font-size: 22px;
+	cursor: pointer;
+}
+
+/* FIN CARRITO */
 
 /*FOOTER*/
 ul {
@@ -397,7 +469,7 @@ ul {
 	text-align: center;
 }
 .signup label {
-	color: var(--color-grisOscuro);
+	color: var(--color-negro);
 	cursor: pointer;
 }
 .signup label:hover {
@@ -421,7 +493,10 @@ ul {
 	}
 }
 
-@media only screen and(min-width: 320px) and (max-width: 900px) {
+@media only screen and (min-width: 320px) and (max-width: 900px) {
+	body {
+		overflow-x: hidden !important;
+	}
 	/*NAV*/
 	.div-iconos {
 		flex-direction: row !important;
@@ -434,8 +509,7 @@ ul {
 
 	/*GENERO*/
 	.div-genero {
-		/* flex-direction: column !important; */
-		flex-wrap: wrap!important;
+		flex-direction: column !important;
 	}
 	.div-mujer {
 		width: auto;
@@ -464,14 +538,47 @@ ul {
 
 	/*INFO*/
 	.div-info {
-		padding-left: 75px !important;
+		padding-left: 65px !important;
 	}
 	.div-info > div {
 		padding-bottom: 20px;
 	}
-
+	.elementos {
+		max-height: 20em;
+	}
+	.elementos > img {
+		width: 300px !important;
+	}
+	.descripcion {
+		width: 60vw !important;
+	}
+	.div-2 > img {
+		width: 300px !important;
+	}
+	swiper-container {
+		height: 45em;
+	}
 	swiper-slide img {
 		width: 100% !important;
 		height: auto !important;
+	}
+	swiper-slide {
+		min-height: 100vh !important;
+	}
+
+	/* CARRITO */
+	#carrito {
+		min-width: 22rem !important;
+	}
+	.div-value {
+		flex-direction: column !important;
+		justify-content: start !important;
+		align-content: start !important;
+	}
+	.div-value > a {
+		margin: 0 !important;
+	}
+	.info {
+		width: auto !important;
 	}
 }
