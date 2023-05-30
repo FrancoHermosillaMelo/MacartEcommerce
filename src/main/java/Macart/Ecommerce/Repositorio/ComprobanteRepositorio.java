@@ -16,4 +16,5 @@ public interface ComprobanteRepositorio extends JpaRepository<Comprobante, Long>
 
     @Query("SELECT c FROM Comprobante c WHERE c.fechaDeComprobante >=:inicioFecha AND c.fechaDeComprobante <=:finFecha")
     List<Comprobante> findByComprobantesTodosFecha(LocalDateTime inicioFecha, LocalDateTime finFecha);
+
 }

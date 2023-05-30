@@ -25,23 +25,15 @@ import java.util.List;
 import static java.util.stream.Collectors.toList;
 @RestController
 public class ProductoTiendaControlador {
-    @Autowired
-    private ClienteRepositorio clienteRepositorio;
-    @Autowired
-    private PedidoRepositorio pedidoRepositorio;
-    @Autowired
-    private PedidoProductoRepositorio pedidoProductoRepositorio;
+
     @Autowired
     private ProductoTiendaServicio productoTiendaServicio;
     @Autowired
     private ClienteServicio clienteServicio;
 
     @GetMapping("/api/productoTienda")
-    public ResponseEntity<Object> obtenerPedidoProductoTienda(Authentication authentication) {
-        if(clienteServicio.isAdmin(authentication)){
-            return new ResponseEntity<>(clienteServicio.obtenerTodosLosClientes(authentication),HttpStatus.ACCEPTED);
-        }
-        return new ResponseEntity<>("No tiene los permisos para solicitar estos datos", HttpStatus.FORBIDDEN);
+    public ResponseEntity<Object> obtenerPedidoProductoTienda() {
+        return new ResponseEntity<>(productoTiendaServicio.obtenerTodosLosProductos(),HttpStatus.ACCEPTED);
     }
 
     @GetMapping("/api/productoTienda/{id}")
@@ -112,7 +104,7 @@ public class ProductoTiendaControlador {
         nuevoProductoTienda.setSubCategoria(subCategoria);
         nuevoProductoTienda.setCategoriaGenero(categoriaGenero);
 
-        productoTiendaRepositorio.save(nuevoProductoTienda);
+        productoTiendaServicio.guardarProducto(nuevoProductoTienda);
 
         return ResponseEntity.status(HttpStatus.CREATED).body("Se creó el nuevo producto.");
     }
@@ -129,7 +121,7 @@ public class ProductoTiendaControlador {
             @RequestParam String categoriaGenero,
             @RequestParam String subCategoria
     ) {
-        ProductoTienda productoTiendaExistente = productoTiendaRepositorio.findById(id).orElse(null);
+        ProductoTienda productoTiendaExistente = productoTiendaServicio.obtenerProductoPorId(id);
 
         if (productoTiendaExistente != null) {
             productoTiendaExistente.setNombre(nombre);
@@ -161,7 +153,7 @@ public class ProductoTiendaControlador {
             productoTiendaExistente.setCategoriaGenero(toEnum(ProductoTiendaCategoriaGenero.class, categoriaGenero));
             productoTiendaExistente.setSubCategoria(subCategoria);
 
-            productoTiendaRepositorio.save(productoTiendaExistente);
+            productoTiendaServicio.guardarProducto(productoTiendaExistente);
 
             return ResponseEntity.status(HttpStatus.CREATED).body("Se modificó el producto con el nombre de: " + nombre);
         } else {
@@ -182,10 +174,10 @@ public class ProductoTiendaControlador {
 
     @DeleteMapping("/api/productoTienda")
     public ResponseEntity<Object> eliminarProductoTienda(@RequestParam long id) {
-        ProductoTienda productoTiendaExistente = productoTiendaRepositorio.findById(id).orElse(null);
+        ProductoTienda productoTiendaExistente = productoTiendaServicio.obtenerProductoPorId(id);
 
         if (productoTiendaExistente != null) {
-            productoTiendaRepositorio.delete(productoTiendaExistente);
+            productoTiendaServicio.borrarProducto(productoTiendaExistente);
             return ResponseEntity.status(HttpStatus.OK).body("Se eliminó el producto con el nombre de : " + productoTiendaExistente.getNombre());
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("El producto con el nombre de : " + productoTiendaExistente.getNombre() + " no fue encontrado");

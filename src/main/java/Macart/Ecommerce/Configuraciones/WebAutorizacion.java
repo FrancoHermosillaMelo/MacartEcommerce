@@ -24,7 +24,7 @@ public class WebAutorizacion {
         http.authorizeRequests()
                 .antMatchers(HttpMethod.POST,"/api/login", "/api/logout" ).permitAll()
 
-                .antMatchers("/**","/h2-console/**").permitAll()
+                .antMatchers("/**","/h2-console/**","/api/productoTienda").permitAll()
 
                 .antMatchers("/api/clientes",
                         "/api/clientes/actual",
