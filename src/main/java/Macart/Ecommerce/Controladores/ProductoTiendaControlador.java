@@ -1,6 +1,5 @@
 package Macart.Ecommerce.Controladores;
 
-import Macart.Ecommerce.DTO.PedidoProductoDTO;
 import Macart.Ecommerce.DTO.ProductoTiendaDTO;
 import Macart.Ecommerce.Modelos.ProductoTienda;
 import Macart.Ecommerce.Modelos.ProductoTiendaCategoriaGenero;
@@ -10,12 +9,16 @@ import Macart.Ecommerce.Repositorio.ClienteRepositorio;
 import Macart.Ecommerce.Repositorio.PedidoProductoRepositorio;
 import Macart.Ecommerce.Repositorio.PedidoRepositorio;
 import Macart.Ecommerce.Repositorio.ProductoTiendaRepositorio;
+import Macart.Ecommerce.Utilidades.ProductoTiendaUtilidades;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
+
 import static java.util.stream.Collectors.toList;
 @RestController
 public class ProductoTiendaControlador {
@@ -53,13 +56,12 @@ public class ProductoTiendaControlador {
             @RequestParam String nombre,
             @RequestParam double precio,
             @RequestParam String descripcion,
-            @RequestParam int cantidadStock,
             @RequestParam(required = false) ProductoTiendaTallaSuperior tallaSuperior,
             @RequestParam(required = false) ProductoTiendaTallaInferior tallaInferior,
-            @RequestParam(required = false) String imagenUrl,
+            @RequestParam(value = "archivo", required = false) MultipartFile[] imagenesUrl,
             @RequestParam ProductoTiendaCategoriaGenero categoriaGenero,
             @RequestParam String subCategoria
-    ) {
+    ) throws Exception {
 
         ProductoTienda productoTiendaExistente = productoTiendaRepositorio.findByNombre(nombre);
 
@@ -67,17 +69,33 @@ public class ProductoTiendaControlador {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body("El producto ya existe.");
         }
 
-        ProductoTienda nuevoProductoTienda = new ProductoTienda(
-                nombre,
-                precio,
-                descripcion,
-                cantidadStock,
-                tallaSuperior,
-                tallaInferior,
-                imagenUrl,
-                categoriaGenero,
-                subCategoria
-        );
+        ProductoTienda nuevoProductoTienda = new ProductoTienda(nombre);
+
+        List<String> imagenes = new ArrayList<>();
+        for(MultipartFile imagen : imagenesUrl){
+            if(imagen.isEmpty()){
+
+                return new ResponseEntity<>("El archivo está vacio", HttpStatus.FORBIDDEN);
+            }
+            if(imagen.getContentType().endsWith(".png")&&
+                    imagen.getContentType().endsWith(".jpeg")&&
+                    imagen.getContentType().endsWith(".png")){
+
+                return new ResponseEntity<>("Tipo de archivo no permitido", HttpStatus.FORBIDDEN);
+            }
+            if(imagen.getSize() > 8 * 1024 * 1024){
+
+                return new ResponseEntity<>("El tamaño del archivo supera los 5MB", HttpStatus.FORBIDDEN);
+            }
+            String url = ProductoTiendaUtilidades.guardarArchivo(imagen);
+            imagenes.add(url);
+        }
+
+        nuevoProductoTienda.setImagenenesUrl(imagenes);
+        nuevoProductoTienda.setPrecio(precio);
+        nuevoProductoTienda.setDescripcion(descripcion);
+        nuevoProductoTienda.setSubCategoria(subCategoria);
+        nuevoProductoTienda.setCategoriaGenero(categoriaGenero);
 
         productoTiendaRepositorio.save(nuevoProductoTienda);
 
@@ -90,10 +108,9 @@ public class ProductoTiendaControlador {
             @RequestParam String nombre,
             @RequestParam double precio,
             @RequestParam String descripcion,
-            @RequestParam int cantidadStock,
             @RequestParam(required = false) String tallaSuperior,
             @RequestParam(required = false) String tallaInferior,
-            @RequestParam(required = false) String imagenUrl,
+            @RequestParam(value = "archivo", required = false) MultipartFile[] imagenesUrl,
             @RequestParam String categoriaGenero,
             @RequestParam String subCategoria
     ) {
@@ -103,10 +120,29 @@ public class ProductoTiendaControlador {
             productoTiendaExistente.setNombre(nombre);
             productoTiendaExistente.setPrecio(precio);
             productoTiendaExistente.setDescripcion(descripcion);
-            productoTiendaExistente.setCantidadStock(cantidadStock);
             productoTiendaExistente.setTallaSuperior(toEnum(ProductoTiendaTallaSuperior.class, tallaSuperior));
             productoTiendaExistente.setTallaInferior(toEnum(ProductoTiendaTallaInferior.class, tallaInferior));
-            productoTiendaExistente.setImagenUrl(imagenUrl);
+
+            List<String> imagenes = new ArrayList<>();
+            for(MultipartFile imagen : imagenesUrl){
+                if(imagen.isEmpty()){
+
+                    return new ResponseEntity<>("El archivo está vacio", HttpStatus.FORBIDDEN);
+                }
+                if(imagen.getContentType().endsWith(".png")&&
+                        imagen.getContentType().endsWith(".jpeg")&&
+                        imagen.getContentType().endsWith(".png")){
+
+                    return new ResponseEntity<>("Tipo de archivo no permitido", HttpStatus.FORBIDDEN);
+                }
+                if(imagen.getSize() > 8 * 1024 * 1024){
+
+                    return new ResponseEntity<>("El tamaño del archivo supera los 5MB", HttpStatus.FORBIDDEN);
+                }
+                String url = ProductoTiendaUtilidades.guardarArchivo(imagen);
+                imagenes.add(url);
+            }
+            productoTiendaExistente.setImagenenesUrl(imagenes);
             productoTiendaExistente.setCategoriaGenero(toEnum(ProductoTiendaCategoriaGenero.class, categoriaGenero));
             productoTiendaExistente.setSubCategoria(subCategoria);
 
@@ -143,13 +179,3 @@ public class ProductoTiendaControlador {
 
 
 }
-
-
-
-
-
-
-
-
-
-

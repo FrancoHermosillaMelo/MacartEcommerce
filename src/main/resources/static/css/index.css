@@ -1,0 +1,477 @@
+@import url('https://fonts.googleapis.com/css2?family=Jost:wght@200;300;400;500;600;700&display=swap');
+@import url('https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css');
+
+:root {
+	--color-blanco: #ffffff;
+	--color-rosado: #f9c9d2;
+	--color-gris: #aa9ea0;
+	--color-grisOscuro: #5a5151;
+	--color-negro: #000000;
+}
+
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+	font-family: 'Jost', sans-serif;
+}
+a {
+	text-decoration: none !important;
+}
+.main-index {
+	min-height: 80vh;
+}
+/*WHATSAPP*/
+.whatsapp-logo {
+	position: fixed;
+	bottom: 20px;
+	right: 20px;
+	z-index: 9999;
+	font-size: 40px;
+	background-color: #25d366;
+	width: 50px;
+	height: 50px;
+	border-radius: 50%;
+}
+.whatsapp-logo > a {
+	color: var(--color-blanco) !important;
+	position: absolute;
+	font-size: 30px;
+	bottom: 5%;
+	left: 20%;
+}
+
+/*NAVBAR*/
+.header-nav {
+	padding-left: 50px;
+	padding-right: 50px;
+}
+.texto-logo {
+	font-weight: 700;
+	font-size: 30px !important;
+	color: var(--color-negro) !important;
+}
+.texto-logo > span {
+	color: var(--color-rosado);
+}
+.texto-nav {
+	font-size: 20px !important;
+}
+.hover-a:hover {
+	color: var(--color-rosado) !important;
+}
+.hover-iconos:hover {
+	transform: scale(1.2, 1.2) !important;
+	color: var(--color-rosado) !important;
+}
+.navbar-toggler {
+	border: none !important;
+}
+.navbar-toggler:focus {
+	box-shadow: none !important;
+}
+.boton-nav {
+	position: relative;
+	padding: 6px 24px;
+	border: 2px solid var(--color-rosado);
+	background: transparent;
+	border-radius: 6px;
+	transition: 0.3s ease;
+}
+.boton-nav:hover {
+	transform: scale(0.9, 0.9);
+}
+/*FIN NAVBAR*/
+
+/*MAIN*/
+.fondo-contenedor {
+	background: linear-gradient(rgba(5, 7, 12, 0.75), rgba(5, 7, 12, 0.75)), url(../img/fondotexto.svg);
+	height: 3em;
+}
+.span-texto {
+	font-weight: 500;
+}
+/*DIVS GENERO*/
+.div-mujer {
+	background-image: url(../img/MODELOMUJER.jpg);
+	background-size: cover;
+	background-repeat: no-repeat;
+	background-position-y: 18%;
+	height: 30em !important;
+	width: 50vw;
+}
+.div-hombre {
+	background-image: url(../img/MODELOHOMBRE.jpg);
+	background-size: cover;
+	background-repeat: no-repeat;
+	background-position-y: 15%;
+	height: 30em !important;
+	width: 50vw;
+}
+/*FIN DIV GENERO*/
+
+/*BOTON DE TIENDA*/
+.ov-btn-grow-box {
+	background: #fff;
+	color: var(--color-negro);
+	border: 2px solid var(--color-negro);
+	padding: 12px;
+	position: relative;
+	z-index: 1;
+	overflow: hidden;
+	display: inline-block;
+}
+.ov-btn-grow-box:hover {
+	color: #fff;
+}
+.ov-btn-grow-box::after {
+	content: '';
+	background: var(--color-negro);
+	position: absolute;
+	z-index: -1;
+	padding: 12px;
+	display: block;
+	left: 0;
+	right: 0;
+	top: 0;
+	bottom: 0;
+	transform: scale(0, 0);
+	transition: all 0.3s ease;
+}
+.ov-btn-grow-box:hover::after {
+	transition: all 0.3s ease-out;
+	transform: scale(1, 1);
+}
+/*FIN BOTON DE TIENDA*/
+
+/*ENVIOS SEGURIDAD ETC*/
+.icono {
+	font-size: 22px;
+	color: var(--color-rosado);
+}
+.titulo {
+	font-size: 18px;
+}
+.parrafo {
+	color: var(--color-gris);
+}
+/*CARUSEL*/
+.div-ropa {
+	border-top: 1px solid rgba(128, 128, 128, 0.261);
+}
+.texto-frase {
+	color: var(--color-gris);
+}
+.elementos {
+	flex: 1 0 auto;
+	margin: 0 50px;
+	height: 700px;
+}
+.div-1 {
+	position: relative;
+}
+.div-1 .div-2 {
+	position: absolute;
+	top: 0;
+	left: 0;
+	opacity: 0;
+	transition: 0.5s;
+}
+.div-1:hover .div-2 {
+	opacity: 1;
+}
+.elementos img {
+	object-fit: contain;
+	height: 500px;
+	box-shadow: 0px 0px 10px 0px black;
+}
+.descripcion {
+	padding-top: 10px;
+}
+swiper-container {
+	width: 100%;
+	height: 100%;
+}
+
+swiper-slide {
+	text-align: start;
+	font-size: 18px;
+	background: #fff;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+swiper-slide img {
+	display: block;
+	height: 100%;
+	object-fit: cover;
+}
+/*FIN DE CARUSEL*/
+
+/*FOOTER*/
+ul {
+	padding: 0;
+}
+.footer {
+	width: 100%;
+	min-height: 20vh;
+	position: relative;
+	bottom: 0;
+	left: 0;
+	padding: 2rem 8%;
+	background-color: var(--color-negro);
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
+}
+.logo-footer {
+	height: 50px;
+	margin-bottom: 0.5rem;
+}
+.social-icon-container,
+.footer-menu-container,
+.img-pagos {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-wrap: wrap;
+	gap: 0.5rem;
+}
+.social-icon {
+	font-size: 2rem;
+	margin: 0.5rem 0.5rem 0.5rem 0rem;
+	color: var(--color-blanco);
+	transition: 0.2s;
+}
+.social-icon:hover {
+	color: var(--color-rosado) !important;
+}
+.footer-menu-container {
+	list-style: none;
+	color: var(--color-blanco);
+	font-size: 18px;
+}
+.menu-item {
+	margin: 1rem 1rem;
+	cursor: pointer;
+	opacity: 0.6;
+}
+.menu-item:hover {
+	opacity: 1;
+}
+.pagos-icon-container {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
+	margin-bottom: 1rem;
+}
+.pagos-icon-container span {
+	color: var(--color-blanco);
+	opacity: 0.7;
+	margin-bottom: 0.5rem;
+}
+.pagos-icon-container span:hover {
+	opacity: 1;
+}
+.img-pagos img {
+	width: 60px;
+	opacity: 0.9;
+	transition: all 0.3s ease;
+}
+.img-pagos img:hover {
+	opacity: 1;
+	transform: scale(1.1);
+}
+.copyright {
+	color: var(--color-blanco);
+	opacity: 0.5;
+	text-align: center;
+}
+.footer .wave {
+	position: absolute;
+	top: -60px;
+	left: 0;
+	width: 100%;
+	height: 60px;
+	background: url(../img/wave.png);
+	background-size: 1000px 100px;
+}
+.footer .wave#wave1 {
+	z-index: 1000;
+	opacity: 1;
+	bottom: 0;
+	animation: animateWave 4s linear infinite;
+}
+.footer .wave#wave2 {
+	z-index: 999;
+	opacity: 0.5;
+	bottom: 10px;
+	animation: animateWave_02 4s linear infinite;
+}
+.footer .wave#wave3 {
+	z-index: 1000;
+	opacity: 0.2;
+	bottom: 15pxpx;
+	animation: animateWave_02 3s linear infinite;
+}
+.footer .wave#wave4 {
+	z-index: 999;
+	opacity: 0.7;
+	bottom: 20px;
+	animation: animateWave_02 3s linear infinite;
+}
+/* MODAL */
+
+.container {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	max-width: 430px;
+	width: 100%;
+	background: #fff;
+	border-radius: 7px;
+	box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
+}
+.container .registration {
+	display: none;
+}
+#check:checked ~ .registration {
+	display: block;
+}
+#check:checked ~ .login {
+	display: none;
+}
+#check {
+	display: none;
+}
+.container .form {
+	padding: 2rem;
+}
+.form header {
+	font-size: 2rem;
+	font-weight: 500;
+	text-align: center;
+	margin-bottom: 1.5rem;
+}
+.form input {
+	height: 60px;
+	width: 100%;
+	padding: 0 15px;
+	font-size: 17px;
+	margin-bottom: 1.3rem;
+	border: 1px solid #ddd;
+	border-radius: 6px;
+	outline: none;
+}
+.form input:focus {
+	box-shadow: 0 1px 0 rgba(0, 0, 0, 0.2);
+}
+.form a {
+	font-size: 16px;
+	color: var(--color-grisOscuro);
+	text-decoration: none;
+}
+.form a:hover {
+	text-decoration: underline;
+}
+.form input.button {
+	color: #fff;
+	background: var(--color-negro);
+	font-size: 1.2rem;
+	font-weight: 500;
+	letter-spacing: 1px;
+	margin-top: 1.7rem;
+	cursor: pointer;
+	transition: 0.4s;
+}
+.form input.button:hover {
+	background: var(--color-negro);
+	transform: scale(0.9, 0.9);
+}
+.signup {
+	font-size: 17px;
+	text-align: center;
+}
+.signup label {
+	color: var(--color-grisOscuro);
+	cursor: pointer;
+}
+.signup label:hover {
+	text-decoration: underline;
+}
+/* FIN MODAL */
+@keyframes animateWave {
+	0% {
+		background-position-x: 1000px;
+	}
+	100% {
+		background-position-x: 0px;
+	}
+}
+@keyframes animateWave_02 {
+	0% {
+		background-position-x: 0px;
+	}
+	100% {
+		background-position-x: 1000px;
+	}
+}
+
+@media only screen and(min-width: 320px) and (max-width: 900px) {
+	/*NAV*/
+	.div-iconos {
+		flex-direction: row !important;
+		justify-content: space-evenly !important;
+	}
+	ul {
+		padding: 0 !important;
+	}
+	/*NAV*/
+
+	/*GENERO*/
+	.div-genero {
+		/* flex-direction: column !important; */
+		flex-wrap: wrap!important;
+	}
+	.div-mujer {
+		width: auto;
+		position: relative;
+	}
+	.div-hombre {
+		width: auto;
+		position: relative;
+	}
+	.tienda-mujer {
+		position: absolute;
+		bottom: 0;
+		right: 30%;
+		padding: 0 !important;
+	}
+	.tienda-hombre {
+		position: absolute;
+		bottom: 0;
+		right: 30%;
+		padding: 0 !important;
+	}
+	.texto-genero {
+		text-align: center !important;
+	}
+	/*GENERO*/
+
+	/*INFO*/
+	.div-info {
+		padding-left: 75px !important;
+	}
+	.div-info > div {
+		padding-bottom: 20px;
+	}
+
+	swiper-slide img {
+		width: 100% !important;
+		height: auto !important;
+	}
+}

@@ -39,13 +39,12 @@ public class ClienteControlador {
             @RequestParam String segundoApellido,
             @RequestParam String correo,
             @RequestParam String telefono,
-            @RequestParam String celular,
             @RequestParam String contraseña) {
 
         if (clienteRepositorio.findByCorreo(correo) !=  null) {
             return new ResponseEntity<>("El correo electrónico ya está en uso", HttpStatus.FORBIDDEN);
         }
-        Cliente nuevoClient = new Cliente(primerNombre, segundoNombre, primerApellido, segundoApellido,correo,telefono,celular,contraseña);
+        Cliente nuevoClient = new Cliente(primerNombre, segundoNombre, primerApellido, segundoApellido,correo,telefono,contraseña);
         clienteRepositorio.save(nuevoClient);
 
         return new ResponseEntity<>(HttpStatus.CREATED);

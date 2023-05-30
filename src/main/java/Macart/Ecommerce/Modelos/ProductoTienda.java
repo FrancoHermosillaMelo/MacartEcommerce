@@ -3,7 +3,9 @@ package Macart.Ecommerce.Modelos;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -15,10 +17,10 @@ public class ProductoTienda {
     private String nombre;
     private double precio;
     private String descripcion;
-    private int cantidadStock;
     private  ProductoTiendaTallaSuperior tallaSuperior;
     private ProductoTiendaTallaInferior tallaInferior;
-    private String imagenUrl;
+    @ElementCollection
+    private List<String> imagenenesUrl = new ArrayList<String>();
     private ProductoTiendaCategoriaGenero categoriaGenero;
     private String subCategoria;
     @OneToMany(mappedBy="productoTienda", fetch= FetchType.EAGER)
@@ -27,17 +29,21 @@ public class ProductoTienda {
     public ProductoTienda() {
     }
 
-    public ProductoTienda(String nombre, double precio, String descripcion, int cantidadStock, ProductoTiendaTallaSuperior tallaSuperior, ProductoTiendaTallaInferior tallaInferior, String imagenUrl, ProductoTiendaCategoriaGenero categoriaGenero, String subCategoria) {
+    public ProductoTienda(String nombre, double precio, String descripcion, ProductoTiendaTallaSuperior tallaSuperior, ProductoTiendaTallaInferior tallaInferior, List<String>imagenesUrl, ProductoTiendaCategoriaGenero categoriaGenero, String subCategoria) {
         this.nombre = nombre;
         this.precio = precio;
         this.descripcion = descripcion;
-        this.cantidadStock = cantidadStock;
         this.tallaSuperior = tallaSuperior;
         this.tallaInferior = tallaInferior;
-        this.imagenUrl = imagenUrl;
+        this.imagenenesUrl = imagenesUrl;
         this.categoriaGenero = categoriaGenero;
         this.subCategoria = subCategoria;
     }
+
+    public ProductoTienda(String nombre) {
+        this.nombre = nombre;
+    }
+
     public void agregarPedidoProducto(PedidoProducto pedidoproducto) {
         pedidoproducto.setProductoTienda(this);
         pedidoproductos.add(pedidoproducto);
@@ -71,14 +77,6 @@ public class ProductoTienda {
         this.descripcion = descripcion;
     }
 
-    public int getCantidadStock() {
-        return cantidadStock;
-    }
-
-    public void setCantidadStock(int cantidadStock) {
-        this.cantidadStock = cantidadStock;
-    }
-
     public ProductoTiendaTallaSuperior getTallaSuperior() {
         return tallaSuperior;
     }
@@ -93,14 +91,6 @@ public class ProductoTienda {
 
     public void setTallaInferior(ProductoTiendaTallaInferior tallaInferior) {
         this.tallaInferior = tallaInferior;
-    }
-
-    public String getImagenUrl() {
-        return imagenUrl;
-    }
-
-    public void setImagenUrl(String imagenUrl) {
-        this.imagenUrl = imagenUrl;
     }
 
     public ProductoTiendaCategoriaGenero getCategoriaGenero() {
@@ -119,7 +109,6 @@ public class ProductoTienda {
         this.subCategoria = subCategoria;
     }
 
-
     public Set<PedidoProducto> getPedidoproductos() {
         return pedidoproductos;
     }
@@ -128,4 +117,11 @@ public class ProductoTienda {
         this.pedidoproductos = pedidoproductos;
     }
 
+    public List<String> getImagenenesUrl() {
+        return imagenenesUrl;
+    }
+
+    public void setImagenenesUrl(List<String> imagenenesUrl) {
+        this.imagenenesUrl = imagenenesUrl;
+    }
 }

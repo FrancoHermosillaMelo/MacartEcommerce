@@ -15,7 +15,6 @@ public class ClienteDTO {
     private String segundoApellido;
     private String correo;
     private String telefono;
-    private String celular;
     private Set<PedidoDTO> pedidos;
     private Set<DireccionDTO> direcciones;
     private Set<ComprobanteDTO> comprobantes;
@@ -28,7 +27,6 @@ public class ClienteDTO {
         this.segundoApellido = cliente.getSegundoApellido();
         this.correo = cliente.getCorreo();
         this.telefono = cliente.getTelefono();
-        this.celular = cliente.getCelular();
         this.pedidos = cliente.getPedidos().stream().map(pedido -> new PedidoDTO(pedido)).collect(Collectors.toSet());
         this.direcciones = cliente.getDirecciones().stream().map(direccion -> new DireccionDTO(direccion)).collect(Collectors.toSet());
         this.comprobantes = cliente.getComprobantes().stream().map(comprobante -> new ComprobanteDTO(comprobante)).collect(Collectors.toSet());
@@ -60,10 +58,6 @@ public class ClienteDTO {
 
     public String getTelefono() {
         return telefono;
-    }
-
-    public String getCelular() {
-        return celular;
     }
 
     public Set<PedidoDTO> getPedidos() {

@@ -2,7 +2,6 @@ package Macart.Ecommerce.Modelos;
 
 import org.hibernate.annotations.GenericGenerator;
 import javax.persistence.*;
-import java.awt.*;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -18,7 +17,6 @@ public class Cliente {
     private String segundoApellido;
     private String correo;
     private String telefono;
-    private String celular;
     private String contraseña;
     @OneToMany(mappedBy="cliente", fetch= FetchType.EAGER)
     private Set<Pedido> pedidos = new HashSet<>();
@@ -30,14 +28,13 @@ public class Cliente {
     public Cliente() {
     }
 
-    public Cliente(String primerNombre, String segundoNombre, String primerApellido, String segundoApellido, String correo, String telefono, String celular, String contraseña) {
+    public Cliente(String primerNombre, String segundoNombre, String primerApellido, String segundoApellido, String correo, String telefono, String contraseña) {
         this.primerNombre = primerNombre;
         this.segundoNombre = segundoNombre;
         this.primerApellido = primerApellido;
         this.segundoApellido = segundoApellido;
         this.correo = correo;
         this.telefono = telefono;
-        this.celular = celular;
         this.contraseña = contraseña;
     }
     public void agregarPedido(Pedido pedido) {
@@ -48,6 +45,11 @@ public class Cliente {
     public void agregarDirecciones(Direccion direccion) {
         direccion.setCliente(this);
         direcciones.add(direccion);
+    }
+
+    public void agregarComprobantes(Comprobante comprobante){
+        comprobante.setCliente(this);
+        comprobantes.add(comprobante);
     }
     public long getId() {
         return id;
@@ -99,14 +101,6 @@ public class Cliente {
 
     public void setTelefono(String telefono) {
         this.telefono = telefono;
-    }
-
-    public String getCelular() {
-        return celular;
-    }
-
-    public void setCelular(String celular) {
-        this.celular = celular;
     }
 
     public String getContraseña() {
