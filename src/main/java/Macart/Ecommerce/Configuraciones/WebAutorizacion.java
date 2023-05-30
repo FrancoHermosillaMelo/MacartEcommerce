@@ -22,9 +22,32 @@ public class WebAutorizacion {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
         http.authorizeRequests()
-
                 .antMatchers(HttpMethod.POST,"/api/login", "/api/logout" ).permitAll()
-                .antMatchers("/**").permitAll();
+
+                .antMatchers("/**","/h2-console/**").permitAll()
+
+                .antMatchers("/api/clientes",
+                        "/api/clientes/actual",
+                        "/api/clientes/direcciones",
+                        "/api/pedidos",
+                        "/api/clientes/{id}/pedidos",
+                        "/api/pedidoProducto",
+                        "/api/pedidoProducto/{id}",
+                        "/api/productoTienda",
+                        "/api/productoTienda/{id}").hasAnyAuthority("CLIENTE", "ADMIN")
+
+                .antMatchers(HttpMethod.POST,
+                        "/api/clientes",
+                        "/api/direcciones","/api/pedidos",
+                        "/api/productoTienda").hasAnyAuthority("CLIENTE", "ADMIN")
+
+                .antMatchers(HttpMethod.PUT,
+                        "/api/direcciones",
+                        "/api/productoTienda").hasAnyAuthority("CLIENTE", "ADMIN")
+
+                .antMatchers(HttpMethod.DELETE,"/api/productoTienda").hasAnyAuthority("CLIENTE", "ADMIN");
+
+
 
 
 
