@@ -28,7 +28,7 @@ public class ClienteControlador {
     @GetMapping("/api/clientes")
     public ResponseEntity<Object> obtenerClientes(Authentication authentication){
         if(clienteServicio.isAdmin(authentication)){
-            return new ResponseEntity<>(clienteServicio.obtenerTodosLosClientes(),HttpStatus.ACCEPTED);
+            return new ResponseEntity<>(clienteServicio.obtenerTodosLosClientes(authentication),HttpStatus.ACCEPTED);
         }
         return new ResponseEntity<>("No tiene los permisos para solicitar estos datos", HttpStatus.FORBIDDEN);
     }

@@ -1,32 +1,33 @@
 package Macart.Ecommerce.Controladores;
 
-import Macart.Ecommerce.DTO.ClienteDTO;
-import Macart.Ecommerce.DTO.DireccionDTO;
+
 import Macart.Ecommerce.Modelos.Cliente;
 import Macart.Ecommerce.Modelos.Direccion;
-import Macart.Ecommerce.Repositorio.ClienteRepositorio;
-import Macart.Ecommerce.Repositorio.DireccionRepositorio;
+import Macart.Ecommerce.Servicios.ClienteServicio;
+import Macart.Ecommerce.Servicios.DireccionServicio;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 
-import static java.util.stream.Collectors.toList;
 
 @RestController
 public class DireccionControlador {
     @Autowired
-    private ClienteRepositorio clienteRepositorio;
+    private ClienteServicio clienteServicio;
     @Autowired
-    private DireccionRepositorio direccionRepositorio;
+    private DireccionServicio direccionServicio;
+
+
 
     @GetMapping("/api/clientes/direcciones")
-    public List<DireccionDTO> obtenerDireccionesClientes() {
-        return direccionRepositorio.findAll()
-                .stream().map(direccion ->
-                        new DireccionDTO(direccion)).collect(toList());
+    public ResponseEntity<Object> obtenerDireccionesClientes(Authentication authentication) {
+        if(direccionServicio.isAdmin(authentication)){
+            return (new ResponseEntity<>(direccionServicio.obtenerDireccionesClientes(authentication), HttpStatus.ACCEPTED));
+        }
+        return new ResponseEntity<>("No tiene los permisos para solicitar estos datos", HttpStatus.FORBIDDEN);
     }
 
 
@@ -40,11 +41,11 @@ public class DireccionControlador {
             @RequestParam String departamento,
             @RequestParam String codigoPostal) {
 
-        Cliente cliente = clienteRepositorio.findById(clienteId).orElse(null);
+        Cliente cliente = clienteServicio.obtenerClientePorId(clienteId);
 
         Direccion nuevaDireccion = new Direccion(calle, numeroDomicilio, barrio, ciudad, departamento, codigoPostal);
         cliente.agregarDirecciones(nuevaDireccion);
-        direccionRepositorio.save(nuevaDireccion);
+        direccionServicio.guardarDireccion(nuevaDireccion);
 
 
         return ResponseEntity.status(HttpStatus.CREATED).body("Direccion creada");
@@ -60,7 +61,7 @@ public class DireccionControlador {
             @RequestParam String departamento,
             @RequestParam String codigoPostal) {
 
-        Direccion direccion = direccionRepositorio.findById(id).orElse(null);
+        Direccion direccion = direccionServicio.obtenerDireccionPorId(id);
 
         if (direccion != null) {
             direccion.setCalle(calle);
@@ -70,7 +71,7 @@ public class DireccionControlador {
             direccion.setDepartamento(departamento);
             direccion.setCodigoPostal(codigoPostal);
 
-            direccionRepositorio.save(direccion);
+            direccionServicio.guardarDireccion(direccion);
 
 
             return ResponseEntity.status(HttpStatus.CREATED).body("Direccion modificada");
