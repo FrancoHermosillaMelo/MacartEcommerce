@@ -20,7 +20,7 @@ public class ProductoTienda {
     private  ProductoTiendaTallaSuperior tallaSuperior;
     private ProductoTiendaTallaInferior tallaInferior;
     @ElementCollection
-    private List<String> imagenenesUrl = new ArrayList<String>();
+    private List<String> imagenesUrl = new ArrayList<String>();
     private ProductoTiendaCategoriaGenero categoriaGenero;
     private String subCategoria;
     @OneToMany(mappedBy="productoTienda", fetch= FetchType.EAGER)
@@ -35,7 +35,7 @@ public class ProductoTienda {
         this.descripcion = descripcion;
         this.tallaSuperior = tallaSuperior;
         this.tallaInferior = tallaInferior;
-        this.imagenenesUrl = imagenesUrl;
+        this.imagenesUrl = imagenesUrl;
         this.categoriaGenero = categoriaGenero;
         this.subCategoria = subCategoria;
     }
@@ -118,10 +118,10 @@ public class ProductoTienda {
     }
 
     public List<String> getImagenenesUrl() {
-        return imagenenesUrl;
+        return imagenesUrl;
     }
 
     public void setImagenenesUrl(List<String> imagenenesUrl) {
-        this.imagenenesUrl = imagenenesUrl;
+        this.imagenesUrl = imagenenesUrl;
     }
 }

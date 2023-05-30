@@ -15,6 +15,7 @@
 		/>
 		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" />
 		<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+		<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css" />
 		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css" />
 	</head>
 	<body>
@@ -44,16 +45,25 @@
 						</div>
 						<div class="collapse navbar-collapse justify-content-end" id="navbarNavAltMarkup">
 							<div class="div-iconos navbar-nav gap-3">
-								<button type="button" class="boton-nav" data-bs-toggle="modal" data-bs-target="#ModalForm">Ingresar</button>
-								<a class="nav-link texto-nav hover-iconos texto-iconos text-center" aria-current="page" href="#"><i class="bi bi-person"></i></a>
-								<a class="nav-link texto-nav hover-iconos texto-iconos text-center" href="#"><i @click="abrirCarrito" class="bi bi-bag"></i></a>
-								<a class="nav-link texto-nav hover-iconos texto-iconos text-center" href="#"><i class="bi bi-box-arrow-right"></i></a>
+								<template v-if="rol.length == 0">
+									<button type="button" class="boton-nav" data-bs-toggle="modal" data-bs-target="#ModalForm">Ingresar</button>
+								</template>
+								<template v-else>
+									<a class="nav-link texto-nav hover-iconos texto-iconos text-center" aria-current="page" href="#"
+										><i class="bi bi-person pe-1"></i>{{clienteIngresado.primerNombre}}</a
+									>
+									<a class="nav-link texto-nav hover-iconos texto-iconos text-center" href="#"><i @click="abrirCarrito" class="bi bi-bag"></i></a>
+									<a class="nav-link texto-nav hover-iconos texto-iconos text-center" href="#"
+										><i @click="salir" class="bi bi-box-arrow-right"></i
+									></a>
+								</template>
 							</div>
 						</div>
 					</div>
 				</nav>
 			</header>
 			<main class="pb-5 main-index">
+				{{primeraMayuscula}}
 				<div class="fondo-contenedor d-flex justify-content-center align-items-center">
 					<div class="row">
 						<div class="col-12">
@@ -135,23 +145,25 @@
 						autoplay-delay="3500"
 						autoplay-disable-on-interaction="false"
 					>
-						<swiper-slide>
-							<div class="elementos div-1">
-								<img src="./img/blusaBlanca.jpg" alt="Blusa Blanca" />
-								<div class="div-2">
-									<img src="./img/blusaBlanca3.jpg" alt="Blusa Blanca Atras" />
-								</div>
-								<div class="descripcion">
-									<h5>Blusa Blanca</h5>
-									<p>COP$ 50.000</p>
-									<div class="d-flex gap-1">
-										<a href="#" class="ov-btn-grow-box">CARRITO</a>
-										<a href="#" class="ov-btn-grow-box">DESCRIPCION</a>
+						<template v-for="producto of productos">
+							<swiper-slide>
+								<div class="elementos div-1">
+									<img :src="producto.imagenesUrl[0]" />
+									<div class="div-2">
+										<img :src="producto.imagenesUrl[1]" />
+									</div>
+									<div class="descripcion">
+										<h5>{{producto.nombre}}</h5>
+										<p>COP$ {{producto.precio.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}}</p>
+										<div class="d-flex gap-1">
+											<a href="#" class="ov-btn-grow-box">CARRITO</a>
+											<a href="#" class="ov-btn-grow-box">DESCRIPCION</a>
+										</div>
 									</div>
 								</div>
-							</div>
-						</swiper-slide>
-						<swiper-slide>
+							</swiper-slide>
+						</template>
+						<!-- <swiper-slide>
 							<div class="elementos div-1">
 								<img src="./img/blusaNegra.jpg" alt="Blusa negra" />
 								<div class="div-2">
@@ -214,7 +226,7 @@
 									</div>
 								</div>
 							</div>
-						</swiper-slide>
+						</swiper-slide> -->
 					</swiper-container>
 
 					<swiper-container
@@ -392,13 +404,14 @@
 							<button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
 							<div class="container">
 								<input type="checkbox" id="check" />
+
 								<div class="login form">
 									<header>Ingresar</header>
-									<form action="#">
-										<input type="text" placeholder="Introduce tu correo electrónico" />
-										<input type="password" placeholder="Ingresa tu contraseña" />
+									<form @submit.prevent="ingresar">
+										<input type="email" placeholder="Introduce tu correo electrónico" v-model="correo" />
+										<input type="password" placeholder="Ingresa tu contraseña" v-model="contraseña" />
 										<a href="#">¿Has olvidado tu contraseña?</a>
-										<input type="button" class="button" value="Acceder" />
+										<input type="submit" class="button" value="Acceder" />
 									</form>
 									<div class="signup">
 										<span class="signup"
@@ -407,22 +420,22 @@
 										</span>
 									</div>
 								</div>
+
 								<div class="registration form">
 									<header>Registrate</header>
-									<form action="#">
+									<form @submit.prevent="register">
 										<div class="d-flex gap-1">
-											<input type="text" placeholder="Nombre" required />
-											<input type="text" placeholder="Segundo nombre" />
+											<input type="text" placeholder="Nombre" required v-model="primerNombre" />
+											<input type="text" placeholder="Segundo nombre" v-model="segundoNombre" />
 										</div>
 										<div class="d-flex gap-1">
-											<input type="text" placeholder="Apellido" required />
-											<input type="text" placeholder="Segundo apellido" />
+											<input type="text" placeholder="Apellido" required v-model="primerApellido" />
+											<input type="text" placeholder="Segundo apellido" v-model="segundoApellido" />
 										</div>
-										<input type="tel" placeholder="Introduce tu numero de contacto" required />
-										<input type="text" placeholder="Introduce tu correo electrónico" required />
-										<input type="password" placeholder="Crear una contraseña" required />
-										<input type="password" placeholder="Confirmar la contraseña" required />
-										<input type="button" class="button" value="Registrate" />
+										<input type="tel" placeholder="Introduce tu numero de contacto" required v-model="telefono" />
+										<input type="text" placeholder="Introduce tu correo electrónico" required v-model="correoRegistro" />
+										<input type="password" placeholder="Crear una contraseña" required v-model="contraseñaRegistro" />
+										<input type="submit" class="button" value="Registrate" />
 									</form>
 									<div class="signup">
 										<span class="signup"
@@ -475,7 +488,7 @@
 							</p>
 						</div>
 						<div class="modal-footer">
-							<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+							<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
 						</div>
 					</div>
 				</div>
@@ -521,7 +534,7 @@
 							</p>
 						</div>
 						<div class="modal-footer">
-							<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+							<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
 						</div>
 					</div>
 				</div>
@@ -540,6 +553,9 @@
 		</script>
 		<script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
 		<script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-element-bundle.min.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+		<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
 		<script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
 		<script src="./js/index.js"></script>
 	</body>

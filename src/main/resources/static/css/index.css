@@ -150,7 +150,7 @@ a {
 
 /*ENVIOS SEGURIDAD ETC*/
 .icono {
-	font-size: 22px;
+	font-size: 28px !important;
 	color: var(--color-rosado);
 }
 .titulo {
@@ -240,6 +240,7 @@ swiper-slide img {
 .div-carrito > i {
 	position: absolute;
 	right: 10%;
+	cursor: pointer;
 }
 .div-info-carrito > div > img {
 	width: 150px;
@@ -493,6 +494,9 @@ ul {
 }
 
 @media only screen and (min-width: 320px) and (max-width: 900px) {
+	body {
+		overflow-x: hidden !important;
+	}
 	/*NAV*/
 	.div-iconos {
 		flex-direction: row !important;
@@ -560,5 +564,21 @@ ul {
 	}
 	swiper-slide {
 		min-height: 100vh !important;
+	}
+
+	/* CARRITO */
+	#carrito {
+		min-width: 22rem !important;
+	}
+	.div-value {
+		flex-direction: column !important;
+		justify-content: start !important;
+		align-content: start !important;
+	}
+	.div-value > a {
+		margin: 0 !important;
+	}
+	.info {
+		width: auto !important;
 	}
 }
