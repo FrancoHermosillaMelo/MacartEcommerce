@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -21,7 +22,8 @@ import static java.util.stream.Collectors.toList;
 public class ClienteControlador {
     @Autowired
     private ClienteServicio clienteServicio;
-
+    @Autowired
+    PasswordEncoder passwordEncoder;
 
     @GetMapping("/api/clientes")
     public ResponseEntity<Object> obtenerClientes(Authentication authentication){
@@ -45,10 +47,23 @@ public class ClienteControlador {
             @RequestParam String telefono,
             @RequestParam String contraseña) {
 
+        if(primerNombre.isBlank()){
+            return new ResponseEntity<>("El primer nombre no puede estar en blanco", HttpStatus.FORBIDDEN);
+        }
+        if(primerApellido.isBlank()){
+            return new ResponseEntity<>("El primer apellido no puede estar en blanco", HttpStatus.FORBIDDEN);
+        }
+        if(correo.isBlank()){
+            return new ResponseEntity<>("El email no puede estar en blanco", HttpStatus.FORBIDDEN);
+        }
+        if(contraseña.isBlank()){
+            return new ResponseEntity<>("La contraseña no puede estar en blanco", HttpStatus.FORBIDDEN);
+        }
+
         if (clienteServicio.obtenerClientePorEmail(correo) !=  null) {
             return new ResponseEntity<>("El correo electrónico ya está en uso", HttpStatus.FORBIDDEN);
         }
-        Cliente nuevoClient = new Cliente(primerNombre, segundoNombre, primerApellido, segundoApellido,correo,telefono,contraseña);
+        Cliente nuevoClient = new Cliente(primerNombre, segundoNombre, primerApellido, segundoApellido,correo,telefono, passwordEncoder.encode(contraseña));
         clienteServicio.guardarCliente(nuevoClient);
 
         return new ResponseEntity<>("Se ha registrado exitosamente",HttpStatus.CREATED);
