@@ -99,4 +99,5 @@ public class Pedido {
     public void setMetodoDePago(PedidoMetodoDePago metodoDePago) {
         this.metodoDePago = metodoDePago;
     }
+
 }

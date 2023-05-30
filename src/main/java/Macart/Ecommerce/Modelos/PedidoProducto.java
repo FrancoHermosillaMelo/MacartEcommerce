@@ -11,6 +11,7 @@ public class PedidoProducto {
     @GenericGenerator(name = "native", strategy = "native")
     private long id;
     private int cantidad;
+
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "productoTiendaId")
     private ProductoTienda productoTienda;
@@ -29,7 +30,6 @@ public class PedidoProducto {
     public long getId() {
         return id;
     }
-
 
     public int getCantidad() {
         return cantidad;
@@ -54,4 +54,5 @@ public class PedidoProducto {
     public void setProductoTienda(ProductoTienda productoTienda) {
         this.productoTienda = productoTienda;
     }
+
 }
