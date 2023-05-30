@@ -23,7 +23,7 @@ public class PedidoImplementacion implements PedidoServicio {
 
 
     @Override
-    public List<PedidoDTO> obtenerPedidos(Authentication authentication) {
+    public List<PedidoDTO> obtenerPedidos() {
         return pedidoRepositorio.findAll()
                 .stream().map(pedido ->
                         new PedidoDTO(pedido)).collect(toList());

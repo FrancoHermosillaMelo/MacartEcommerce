@@ -6,6 +6,7 @@ import Macart.Ecommerce.Modelos.ProductoTienda;
 import Macart.Ecommerce.Repositorio.ProductoTiendaRepositorio;
 import Macart.Ecommerce.Servicios.ProductoTiendaServicio;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,7 +18,7 @@ public class ProductoTiendaImplementacion implements ProductoTiendaServicio {
     @Autowired
     ProductoTiendaRepositorio productoTiendaRepositorio;
     @Override
-    public List<ProductoTiendaDTO> obtenerTodosLosProductos() {
+    public List<ProductoTiendaDTO> obtenerTodosLosProductos(Authentication authentication) {
         return productoTiendaRepositorio.findAll()
                 .stream().map(productoTienda ->
                         new ProductoTiendaDTO(productoTienda)).collect(toList());

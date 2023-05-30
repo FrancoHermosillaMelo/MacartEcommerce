@@ -22,7 +22,7 @@ public class PedidoProductoImplementacion implements PedidoProductoServicio {
     private PedidoProductoRepositorio pedidoProductoRepositorio;
 
     @Override
-    public List<PedidoProductoDTO> obtenerPedidoProducto(Authentication authentication) {
+    public List<PedidoProductoDTO> obtenerPedidoProducto() {
         return pedidoProductoRepositorio.findAll()
                 .stream().map(pedidoProducto ->
                         new PedidoProductoDTO(pedidoProducto)).collect(toList());

@@ -8,7 +8,7 @@ import org.springframework.security.core.Authentication;
 import java.util.List;
 
 public interface DireccionServicio {
-    List<DireccionDTO> obtenerDireccionesClientes(Authentication authentication);
+    List<DireccionDTO> obtenerDireccionesClientes();
     boolean isAdmin(Authentication authentication);
     void guardarDireccion(Direccion direccion);
     Direccion obtenerDireccionPorId(long id);

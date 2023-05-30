@@ -8,7 +8,7 @@ import org.springframework.security.core.Authentication;
 import java.util.List;
 
 public interface PedidoServicio {
-    List<PedidoDTO> obtenerPedidos(Authentication authentication);
+    List<PedidoDTO> obtenerPedidos();
     boolean isAdmin(Authentication authentication);
     void guardarPedido(Pedido pedido);
     List<Pedido> findByCliente(Cliente cliente);

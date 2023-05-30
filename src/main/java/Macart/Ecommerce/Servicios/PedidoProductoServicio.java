@@ -7,7 +7,7 @@ import org.springframework.security.core.Authentication;
 import java.util.List;
 
 public interface PedidoProductoServicio {
-    List<PedidoProductoDTO> obtenerPedidoProducto(Authentication authentication);
+    List<PedidoProductoDTO> obtenerPedidoProducto();
     boolean isAdmin(Authentication authentication);
     PedidoProducto ObtenerPedidoProductoPorId(long id);
 }
