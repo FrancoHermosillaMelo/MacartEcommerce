@@ -7,6 +7,9 @@ import Macart.Ecommerce.Modelos.Pedido;
 import Macart.Ecommerce.Repositorio.ClienteRepositorio;
 import Macart.Ecommerce.Repositorio.ComprobanteRepositorio;
 import Macart.Ecommerce.Repositorio.PedidoRepositorio;
+import Macart.Ecommerce.Servicios.ClienteServicio;
+import Macart.Ecommerce.Servicios.ComprobanteServicio;
+import Macart.Ecommerce.Servicios.PedidoServicio;
 import Macart.Ecommerce.Utilidades.ComprobanteUtilidades;
 import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.PdfWriter;
@@ -29,29 +32,27 @@ import java.util.stream.Collectors;
 @RestController
 public class ComprobanteControlador {
     @Autowired
-    private ComprobanteRepositorio comprobanteRepositorio;
+    private ComprobanteServicio comprobanteServicio;
     @Autowired
-    private ClienteRepositorio clienteRepositorio;
+     private ClienteServicio clienteServicio;
     @Autowired
-    private PedidoRepositorio pedidoRepositorio;
+    private PedidoServicio pedidoServicio;
+
 
     @GetMapping("/api/comprobantes")
-    public List<ComprobanteDTO> obtenerComprobantes(){
-        return comprobanteRepositorio.findAll()
-                .stream()
-                .map(comprobante -> new ComprobanteDTO(comprobante))
-                .collect(Collectors.toList());
+    public ResponseEntity<Object> obtenerComprobantes(){
+        return (new ResponseEntity<>(comprobanteServicio.obtenerComprobantes(), HttpStatus.ACCEPTED));
     }
     @GetMapping("/api/clientes/comprobantes")
     public List<ComprobanteDTO> obtenerComprobantesCliente(@RequestParam long idCliente){
-        return clienteRepositorio.findById(idCliente).getComprobantes()
+        return clienteServicio.obtenerClientePorId(idCliente).getComprobantes()
                 .stream()
                 .map(comprobante -> new ComprobanteDTO(comprobante))
                 .collect(Collectors.toList());
     }
     @GetMapping("/api/clientes/comprobantes/fechas")
     public ResponseEntity<Object> obtenerComprobantesClientePorFecha(@RequestParam String inicioFecha, @RequestParam String finFecha, @RequestParam long idCliente) throws ParseException {
-        Cliente cliente = clienteRepositorio.findById(idCliente);
+        Cliente cliente = clienteServicio.obtenerClientePorId(idCliente);
 
         if(cliente == null){
             return new ResponseEntity<>("El cliente no existe", HttpStatus.NOT_FOUND);
@@ -69,7 +70,7 @@ public class ComprobanteControlador {
         LocalDateTime inicioFechaLocalDateTime = ComprobanteUtilidades.dateToLocalDateTime(inicioFechaDate);
         LocalDateTime finFechaLocalDateTime = ComprobanteUtilidades.dateToLocalDateTime(finFechaDate).plusDays(1).minusSeconds(1);
 
-        List<ComprobanteDTO> comprobantesCliente = comprobanteRepositorio.findByComprobantesClienteFecha(cliente, inicioFechaLocalDateTime, finFechaLocalDateTime).stream().map(comprobante -> new ComprobanteDTO(comprobante)).collect(Collectors.toList());
+        List<ComprobanteDTO> comprobantesCliente = comprobanteServicio.findByComprobantesClienteFecha(cliente, inicioFechaLocalDateTime, finFechaLocalDateTime).stream().map(comprobante -> new ComprobanteDTO(comprobante)).collect(Collectors.toList());
 
         return new ResponseEntity<>(comprobantesCliente,HttpStatus.ACCEPTED);
     }
@@ -89,14 +90,14 @@ public class ComprobanteControlador {
         LocalDateTime inicioFechaLocalDateTime = ComprobanteUtilidades.dateToLocalDateTime(inicioFechaDate);
         LocalDateTime finFechaLocalDateTime = ComprobanteUtilidades.dateToLocalDateTime(finFechaDate).plusDays(1).minusSeconds(1);
 
-        List<ComprobanteDTO> comprobantesTodos = comprobanteRepositorio.findByComprobantesTodosFecha(inicioFechaLocalDateTime, finFechaLocalDateTime).stream().map(comprobante -> new ComprobanteDTO(comprobante)).collect(Collectors.toList());
+        List<ComprobanteDTO> comprobantesTodos = comprobanteServicio.findByComprobantesTodosFecha(inicioFechaLocalDateTime, finFechaLocalDateTime).stream().map(comprobante -> new ComprobanteDTO(comprobante)).collect(Collectors.toList());
 
         return new ResponseEntity<>(comprobantesTodos, HttpStatus.ACCEPTED);
     }
     @PostMapping("/api/comprobantes/pdf")
     public ResponseEntity<Object> crearComprobantePDF (@RequestParam long idComprobante, @RequestParam long idPedido) throws IOException, DocumentException {
-        Comprobante comprobanteSolicitado = comprobanteRepositorio.findById(idComprobante).orElse(null);
-        Pedido pedidoSolicitado = pedidoRepositorio.findById(idPedido).orElse(null);
+        Comprobante comprobanteSolicitado = comprobanteServicio.findByComprobantesId(idComprobante);
+        Pedido pedidoSolicitado = pedidoServicio.findByPedidoId(idPedido);
 
         if(comprobanteSolicitado == null){
             return new ResponseEntity<>("El comprobante no existe", HttpStatus.NOT_FOUND);

@@ -18,7 +18,7 @@ public class ProductoTiendaImplementacion implements ProductoTiendaServicio {
     @Autowired
     ProductoTiendaRepositorio productoTiendaRepositorio;
     @Override
-    public List<ProductoTiendaDTO> obtenerTodosLosProductos(Authentication authentication) {
+    public List<ProductoTiendaDTO> obtenerTodosLosProductos() {
         return productoTiendaRepositorio.findAll()
                 .stream().map(productoTienda ->
                         new ProductoTiendaDTO(productoTienda)).collect(toList());
@@ -32,5 +32,15 @@ public class ProductoTiendaImplementacion implements ProductoTiendaServicio {
     @Override
     public ProductoTienda obtenerProductoPorNombre(String nombre) {
         return productoTiendaRepositorio.findByNombre(nombre);
+    }
+
+    @Override
+    public void guardarProducto(ProductoTienda productoTienda) {
+
+    }
+
+    @Override
+    public void borrarProducto(ProductoTienda productoTienda) {
+        productoTiendaRepositorio.delete(productoTienda);
     }
 }
