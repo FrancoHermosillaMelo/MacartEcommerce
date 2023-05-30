@@ -43,9 +43,10 @@ public class ProductoTiendaControlador {
             ProductoTiendaDTO productoTiendaDTO = new ProductoTiendaDTO(productoTienda);
             return ResponseEntity.ok(productoTiendaDTO);
         } else {
-            return ResponseEntity.status(HttpStatus.CREATED).body("hola");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No se encontró el producto");
         }
     }
+
 
     @PostMapping("/api/productoTienda")
     public ResponseEntity<Object> crearNuevoProductoTienda(
@@ -85,37 +86,64 @@ public class ProductoTiendaControlador {
 
     @PutMapping("/api/productoTienda")
     public ResponseEntity<Object> modificarProductoTienda(
+            @RequestParam long id,
             @RequestParam String nombre,
             @RequestParam double precio,
             @RequestParam String descripcion,
             @RequestParam int cantidadStock,
-            @RequestParam(required = false) ProductoTiendaTallaSuperior tallaSuperior,
-            @RequestParam(required = false) ProductoTiendaTallaInferior tallaInferior,
+            @RequestParam(required = false) String tallaSuperior,
+            @RequestParam(required = false) String tallaInferior,
             @RequestParam(required = false) String imagenUrl,
-            @RequestParam ProductoTiendaCategoriaGenero categoriaGenero,
+            @RequestParam String categoriaGenero,
             @RequestParam String subCategoria
     ) {
-        ProductoTienda productoTiendaExistente = productoTiendaRepositorio.findByNombre(nombre);
+        ProductoTienda productoTiendaExistente = productoTiendaRepositorio.findById(id).orElse(null);
 
         if (productoTiendaExistente != null) {
             productoTiendaExistente.setNombre(nombre);
             productoTiendaExistente.setPrecio(precio);
             productoTiendaExistente.setDescripcion(descripcion);
             productoTiendaExistente.setCantidadStock(cantidadStock);
-            productoTiendaExistente.setTallaSuperior(tallaSuperior);
-            productoTiendaExistente.setTallaInferior(tallaInferior);
+            productoTiendaExistente.setTallaSuperior(toEnum(ProductoTiendaTallaSuperior.class, tallaSuperior));
+            productoTiendaExistente.setTallaInferior(toEnum(ProductoTiendaTallaInferior.class, tallaInferior));
             productoTiendaExistente.setImagenUrl(imagenUrl);
-            productoTiendaExistente.setCategoriaGenero(categoriaGenero);
+            productoTiendaExistente.setCategoriaGenero(toEnum(ProductoTiendaCategoriaGenero.class, categoriaGenero));
             productoTiendaExistente.setSubCategoria(subCategoria);
 
             productoTiendaRepositorio.save(productoTiendaExistente);
 
-            return ResponseEntity.status(HttpStatus.CREATED).body("Se modificó el producto con el nombre" + nombre);
+            return ResponseEntity.status(HttpStatus.CREATED).body("Se modificó el producto con el nombre de: " + nombre);
         } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("El producto con el" + nombre + "no fue encontrado");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("El producto con el nombre " + nombre + " no fue encontrado");
         }
     }
+
+    private <T extends Enum<T>> T toEnum(Class<T> enumClass, String value) {
+        if (value != null) {
+            try {
+                return Enum.valueOf(enumClass, value.toUpperCase());
+            } catch (IllegalArgumentException e) {
+                // Manejar el error si el valor proporcionado no coincide con ninguna constante del enumerado
+            }
+        }
+        return null;
+    }
+
+    @DeleteMapping("/api/productoTienda")
+    public ResponseEntity<Object> eliminarProductoTienda(@RequestParam long id) {
+        ProductoTienda productoTiendaExistente = productoTiendaRepositorio.findById(id).orElse(null);
+
+        if (productoTiendaExistente != null) {
+            productoTiendaRepositorio.delete(productoTiendaExistente);
+            return ResponseEntity.status(HttpStatus.OK).body("Se eliminó el producto con el nombre de : " + productoTiendaExistente.getNombre());
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("El producto con el nombre de : " + productoTiendaExistente.getNombre() + " no fue encontrado");
+        }
+    }
+
+
 }
+
 
 
 
