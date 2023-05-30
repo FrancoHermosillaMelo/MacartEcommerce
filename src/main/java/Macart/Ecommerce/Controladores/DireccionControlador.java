@@ -32,7 +32,7 @@ public class DireccionControlador {
 
 
     @PostMapping("/api/direcciones")
-    public ResponseEntity<Object> crearDirecciones(
+    public ResponseEntity<Object> crearDirecciones(Authentication authentication,
             @RequestParam Long clienteId,
             @RequestParam String calle,
             @RequestParam String numeroDomicilio,
@@ -52,7 +52,7 @@ public class DireccionControlador {
     }
 
     @PutMapping("/api/direcciones")
-    public ResponseEntity<Object> modificarDirecciones(
+    public ResponseEntity<Object> modificarDirecciones(Authentication authentication,
             @RequestParam Long id,
             @RequestParam String calle,
             @RequestParam String numeroDomicilio,
