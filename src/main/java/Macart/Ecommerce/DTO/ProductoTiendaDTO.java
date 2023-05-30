@@ -2,6 +2,9 @@ package Macart.Ecommerce.DTO;
 
 import Macart.Ecommerce.Modelos.*;
 
+import javax.persistence.ElementCollection;
+import java.util.List;
+
 public class ProductoTiendaDTO {
     private long id;
     private String nombre;
@@ -9,7 +12,7 @@ public class ProductoTiendaDTO {
     private String descripcion;
     private ProductoTiendaTallaSuperior tallaSuperior;
     private ProductoTiendaTallaInferior tallaInferior;
-    private String imagenUrl;
+    private List<String> imagenenesUrl;
     private ProductoTiendaCategoriaGenero categoriaGenero;
     private String subCategoria;
     public ProductoTiendaDTO(ProductoTienda productoTienda) {
@@ -19,7 +22,7 @@ public class ProductoTiendaDTO {
         this.descripcion = productoTienda.getDescripcion();
         this.tallaSuperior = productoTienda.getTallaSuperior();
         this.tallaInferior = productoTienda.getTallaInferior();
-        this.imagenUrl = productoTienda.getImagenUrl();
+        this.imagenenesUrl = productoTienda.getImagenenesUrl();
         this.categoriaGenero = productoTienda.getCategoriaGenero();
         this.subCategoria = productoTienda.getSubCategoria();
     }
@@ -48,10 +51,6 @@ public class ProductoTiendaDTO {
         return tallaInferior;
     }
 
-    public String getImagenUrl() {
-        return imagenUrl;
-    }
-
     public ProductoTiendaCategoriaGenero getCategoriaGenero() {
         return categoriaGenero;
     }
@@ -60,5 +59,7 @@ public class ProductoTiendaDTO {
         return subCategoria;
     }
 
-
+    public List<String> getImagenenesUrl() {
+        return imagenenesUrl;
+    }
 }
