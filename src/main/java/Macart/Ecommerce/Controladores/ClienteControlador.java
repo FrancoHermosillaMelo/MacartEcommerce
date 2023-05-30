@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -23,7 +24,7 @@ public class ClienteControlador {
     @Autowired
     private ClienteServicio clienteServicio;
     @Autowired
-    PasswordEncoder passwordEncoder;
+    private PasswordEncoder passwordEncoder;
 
     @GetMapping("/api/clientes")
     public ResponseEntity<Object> obtenerClientes(Authentication authentication){
@@ -31,6 +32,10 @@ public class ClienteControlador {
             return new ResponseEntity<>(clienteServicio.obtenerTodosLosClientes(authentication),HttpStatus.ACCEPTED);
         }
         return new ResponseEntity<>("No tiene los permisos para solicitar estos datos", HttpStatus.FORBIDDEN);
+    }
+    @GetMapping("/api/clientes/actual/rol")
+    public GrantedAuthority getClientRol(Authentication authentication){
+        return clienteServicio.obtenerRolCliente(authentication);
     }
    @GetMapping("/api/clientes/actual")
     public  ResponseEntity<Object> obtenerClienteActual(Authentication authentication){
