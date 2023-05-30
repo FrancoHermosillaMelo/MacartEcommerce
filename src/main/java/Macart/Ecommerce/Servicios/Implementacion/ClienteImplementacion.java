@@ -6,10 +6,13 @@ import Macart.Ecommerce.Repositorio.ClienteRepositorio;
 import Macart.Ecommerce.Servicios.ClienteServicio;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static java.util.stream.Collectors.toList;
 
 @Service
 public class ClienteImplementacion implements ClienteServicio {
@@ -44,6 +47,11 @@ public class ClienteImplementacion implements ClienteServicio {
         return authentication.getAuthorities()
                 .stream()
                 .anyMatch(role -> role.getAuthority().equals("ADMIN"));
+    }
+
+    @Override
+    public GrantedAuthority obtenerRolCliente(Authentication authentication) {
+        return authentication.getAuthorities().stream().collect(toList()).get(0);
     }
 
     @Override
