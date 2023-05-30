@@ -34,8 +34,11 @@ public class ClienteControlador {
         return new ResponseEntity<>("No tiene los permisos para solicitar estos datos", HttpStatus.FORBIDDEN);
     }
     @GetMapping("/api/clientes/actual/rol")
-    public GrantedAuthority getClientRol(Authentication authentication){
-        return clienteServicio.obtenerRolCliente(authentication);
+    public ResponseEntity<Object> getClientRol(Authentication authentication){
+        if(authentication.isAuthenticated()){
+            return new ResponseEntity<>(clienteServicio.obtenerRolCliente(authentication),HttpStatus.ACCEPTED);
+        }
+        return new ResponseEntity<>("El cliente no esta autenticado", HttpStatus.FORBIDDEN);
     }
    @GetMapping("/api/clientes/actual")
     public  ResponseEntity<Object> obtenerClienteActual(Authentication authentication){

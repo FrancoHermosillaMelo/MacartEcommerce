@@ -9,10 +9,13 @@ import Macart.Ecommerce.Repositorio.ClienteRepositorio;
 import Macart.Ecommerce.Repositorio.PedidoProductoRepositorio;
 import Macart.Ecommerce.Repositorio.PedidoRepositorio;
 import Macart.Ecommerce.Repositorio.ProductoTiendaRepositorio;
+import Macart.Ecommerce.Servicios.ClienteServicio;
+import Macart.Ecommerce.Servicios.ProductoTiendaServicio;
 import Macart.Ecommerce.Utilidades.ProductoTiendaUtilidades;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -29,18 +32,18 @@ public class ProductoTiendaControlador {
     @Autowired
     private PedidoProductoRepositorio pedidoProductoRepositorio;
     @Autowired
-    private ProductoTiendaRepositorio productoTiendaRepositorio;
+    private ProductoTiendaServicio productoTiendaServicio;
+    @Autowired
+    private ClienteServicio clienteServicio;
 
     @GetMapping("/api/productoTienda")
-    public List<ProductoTiendaDTO> obtenerPedidoProductoTienda() {
-        return productoTiendaRepositorio.findAll()
-                .stream().map(productoTienda ->
-                        new ProductoTiendaDTO(productoTienda)).collect(toList());
+    public ResponseEntity<Object> obtenerPedidoProductoTienda() {
+        return new ResponseEntity<>(productoTiendaServicio.obtenerTodosLosProductos(), HttpStatus.ACCEPTED);
     }
 
     @GetMapping("/api/productoTienda/{id}")
     public ResponseEntity<Object> obtenerProductoTiendaPorId(@PathVariable Long id) {
-        ProductoTienda productoTienda = productoTiendaRepositorio.findById(id).orElse(null);
+        ProductoTienda productoTienda = productoTiendaServicio.obtenerProductoPorId(id);
 
         if (productoTienda != null) {
             ProductoTiendaDTO productoTiendaDTO = new ProductoTiendaDTO(productoTienda);
@@ -60,13 +63,22 @@ public class ProductoTiendaControlador {
             @RequestParam(required = false) ProductoTiendaTallaInferior tallaInferior,
             @RequestParam(value = "archivo", required = false) MultipartFile[] imagenesUrl,
             @RequestParam ProductoTiendaCategoriaGenero categoriaGenero,
-            @RequestParam String subCategoria
-    ) throws Exception {
+            @RequestParam String subCategoria,
+            Authentication authentication) throws Exception {
 
         ProductoTienda productoTiendaExistente = productoTiendaRepositorio.findByNombre(nombre);
 
         if (productoTiendaExistente != null) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body("El producto ya existe.");
+        }
+        if(nombre.isBlank()){
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("El nombre no puede estar en blanco");
+        }
+        if(precio < 0){
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("El precio no puede estar en negativo");
+        }
+        if(subCategoria.isBlank()){
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("La subcategoria no puede estar en blanco");
         }
 
         ProductoTienda nuevoProductoTienda = new ProductoTienda(nombre);

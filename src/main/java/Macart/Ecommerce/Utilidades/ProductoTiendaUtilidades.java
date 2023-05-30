@@ -14,7 +14,7 @@ public final class ProductoTiendaUtilidades {
                 String nombreArchivo = UUID.randomUUID().toString() + "_" + archivo.getOriginalFilename();
                 String rutaDestino = "src\\main\\resources\\static\\img\\" + nombreArchivo;
                 FileUtils.writeByteArrayToFile(new File(rutaDestino), archivo.getBytes());
-                return "../static/img/" + nombreArchivo;
+                return "./img/" + nombreArchivo;
 
             } catch (IOException e) {
                 e.printStackTrace();
