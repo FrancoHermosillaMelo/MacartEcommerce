@@ -20,7 +20,7 @@ public class ClienteImplementacion implements ClienteServicio {
     private ClienteRepositorio clienteRepositorio;
 
     @Override
-    public List<ClienteDTO> obtenerTodosLosClientes() {
+    public List<ClienteDTO> obtenerTodosLosClientes(Authentication authentication) {
         return clienteRepositorio.findAll()
                 .stream()
                 .map(cliente -> new ClienteDTO(cliente))
