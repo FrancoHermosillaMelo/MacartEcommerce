@@ -22,7 +22,7 @@ createApp({
 		};
 	},
 	created() {
-		this.roles();
+		// this.roles();
 		this.data();
 		this.totalProductos();
 		this.clienteId = sessionStorage.getItem('clienteId'); // Obtén el identificador único del cliente desde el sessionStorage
@@ -31,6 +31,9 @@ createApp({
 			this.carritos[this.clienteId] = []; // Crea un carrito vacío para el cliente si no existe
 		}
 		this.carrito = this.carritos[this.clienteId]; // Asi
+	},
+	mounted() {
+		this.roles()
 	},
 	methods: {
 		totalProductos() {
@@ -58,9 +61,11 @@ createApp({
 			axios
 				.get('/api/clientes/actual/rol')
 				.then(response => {
-					this.rol = response.data.authority;
+					this.rol = response.data
 				})
-				.catch(error => console.log(error));
+				.catch(error => {
+					console.log(error)
+				});
 		},
 		abrirCarrito() {
 			this.isCarritoInactivo = !this.isCarritoInactivo;
@@ -99,7 +104,7 @@ createApp({
 				.post('/api/login', 'correo=' + this.correo + '&contraseña=' + this.contraseña)
 				.then(response => {
 					if (this.correo == 'admin@gmail.com') {
-						window.location.replace('/index.html');
+						window.location.replace('/index.html')
 					} else {
 						window.location.replace('/index.html');
 					}

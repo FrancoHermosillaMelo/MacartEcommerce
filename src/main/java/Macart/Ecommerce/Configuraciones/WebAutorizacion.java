@@ -24,7 +24,7 @@ public class WebAutorizacion {
         http.authorizeRequests()
                 .antMatchers(HttpMethod.POST,"/api/login", "/api/logout" ).permitAll()
 
-                .antMatchers("/**","/h2-console/**","/api/productoTienda").permitAll()
+                .antMatchers("/**","/h2-console/**","/api/productoTienda", "/api/clientes/actual/rol").permitAll()
 
                 .antMatchers("/api/clientes",
                         "/api/clientes/actual",
@@ -34,8 +34,7 @@ public class WebAutorizacion {
                         "/api/pedidoProducto",
                         "/api/pedidoProducto/{id}",
                         "/api/productoTienda",
-                        "/api/productoTienda/{id}",
-                        "/api/clientes/actual/rol").hasAnyAuthority("CLIENTE", "ADMIN")
+                        "/api/productoTienda/{id}").hasAnyAuthority("CLIENTE", "ADMIN")
 
                 .antMatchers(HttpMethod.POST,
                         "/api/clientes",
