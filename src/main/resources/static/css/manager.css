@@ -15,8 +15,14 @@
 	box-sizing: border-box;
 	font-family: 'Jost', sans-serif;
 }
+.swal2-confirm {
+	margin-right: 10px !important;
+}
 a {
 	text-decoration: none !important;
+}
+main {
+	min-height: 80vh !important;
 }
 
 /*NAVBAR*/
@@ -68,3 +74,34 @@ a {
 	width: 30em !important;
 	margin: auto;
 }
+/* BOTON */
+.boton {
+	text-shadow: 0px 1px rgba(0, 0, 0, 0.2);
+	text-align: center;
+	text-decoration: none;
+	font-family: 'Helvetica Neue', Helvetica, sans-serif;
+	display: inline-block;
+	color: #fff;
+	background: #7f8c8d;
+	padding: 7px 20px;
+	white-space: nowrap;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius: 100px;
+	margin: 10px 5px;
+	-webkit-transition: all 0.2s ease-in-out;
+	-ms-transition: all 0.2s ease-in-out;
+	-moz-transition: all 0.2s ease-in-out;
+	-o-transition: all 0.2s ease-in-out;
+	transition: all 0.2s ease-in-out;
+}
+
+.negro {
+	background: var(--color-negro);
+	box-shadow: 0px 5px 0px 0px rgb(36, 36, 36);
+}
+
+.negro:hover {
+	background: var(--color-negro);
+}
+/* FORMULARIO */

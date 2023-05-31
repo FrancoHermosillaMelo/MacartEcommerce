@@ -1,10 +1,10 @@
-const { createApp } = Vue;
+const {createApp} = Vue;
 
 createApp({
 	data() {
 		return {
 			rol: '',
-			clienteIngresado: [],
+			clienteIngresado: '',
 			productos: '',
 			isCarritoInactivo: true,
 			carrito: [],
@@ -18,14 +18,12 @@ createApp({
 			primerApellido: '',
 			segundoApellido: '',
 			telefono: '',
-			clienteId: "",
+			clienteId: '',
 		};
 	},
 	created() {
-		this.roles()
-	},
-	mounted() {
-		this.data()
+		// this.roles();
+		this.data();
 		this.totalProductos();
 		this.clienteId = sessionStorage.getItem('clienteId'); // Obtén el identificador único del cliente desde el sessionStorage
 		this.carritos = JSON.parse(localStorage.getItem('carritos')) || {}; // Obtiene los carritos almacenados en el localStorage
@@ -33,6 +31,9 @@ createApp({
 			this.carritos[this.clienteId] = []; // Crea un carrito vacío para el cliente si no existe
 		}
 		this.carrito = this.carritos[this.clienteId]; // Asi
+	},
+	mounted() {
+		this.roles();
 	},
 	methods: {
 		totalProductos() {
@@ -45,7 +46,9 @@ createApp({
 			axios
 				.get('/api/clientes/actual')
 				.then(response => {
+					this.datos = response.data;
 					this.clienteIngresado = response.data;
+					console.log(this.clienteIngresado);
 					this.clienteId = response.data.id;
 					sessionStorage.setItem('clienteId', this.clienteId); // Almacena el identificador único del cliente en el sessionStorage
 					if (!this.carritos[this.clienteId]) {
@@ -59,10 +62,10 @@ createApp({
 			axios
 				.get('/api/clientes/actual/rol')
 				.then(response => {
-					this.rol = response.data
+					this.rol = response.data;
 				})
 				.catch(error => {
-					console.log(error)
+					console.log(error);
 				});
 		},
 		abrirCarrito() {
@@ -102,8 +105,7 @@ createApp({
 				.post('/api/login', 'correo=' + this.correo + '&contraseña=' + this.contraseña)
 				.then(response => {
 					if (this.correo == 'admin@gmail.com') {
-						window.location.replace('/index.html')
-						this.data()
+						window.location.replace('/index.html');
 					} else {
 						window.location.replace('/index.html');
 					}
@@ -121,19 +123,19 @@ createApp({
 				.post(
 					'/api/clientes',
 					'primerNombre=' +
-					this.primerNombre +
-					'&segundoNombre=' +
-					this.segundoNombre +
-					'&primerApellido=' +
-					this.primerApellido +
-					'&segundoApellido=' +
-					this.segundoApellido +
-					'&telefono=' +
-					this.telefono +
-					'&correo=' +
-					this.correoRegistro +
-					'&contraseña=' +
-					this.contraseñaRegistro
+						this.primerNombre +
+						'&segundoNombre=' +
+						this.segundoNombre +
+						'&primerApellido=' +
+						this.primerApellido +
+						'&segundoApellido=' +
+						this.segundoApellido +
+						'&telefono=' +
+						this.telefono +
+						'&correo=' +
+						this.correoRegistro +
+						'&contraseña=' +
+						this.contraseñaRegistro
 				)
 				.then(response => {
 					this.correo = this.correoRegistro;
@@ -156,7 +158,8 @@ createApp({
 					autocapitalize: 'off',
 				},
 				showCancelButton: true,
-				confirmButtonText: 'Sure',
+				cancelButtonText: 'Cancelar',
+				confirmButtonText: 'Salir',
 				showLoaderOnConfirm: true,
 				preConfirm: login => {
 					return axios

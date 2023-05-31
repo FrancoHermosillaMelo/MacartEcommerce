@@ -20,7 +20,7 @@ a {
 }
 .blur:not(#carrito) {
 	transition: 0.1s filter;
-	filter: blur(3px);
+	filter: blur(2px);
 }
 .main-index {
 	min-height: 80vh;
@@ -436,6 +436,9 @@ ul {
 	bottom: 20px;
 	animation: animateWave_02 3s linear infinite;
 }
+.aFotter {
+	color: var(--color-blanco);
+}
 /* MODAL */
 
 .container {
@@ -587,6 +590,30 @@ ul {
 	}
 	/*GENERO*/
 
+	/* CARRUSEL */
+	swiper-container {
+		width: 100%;
+		height: 100%;
+	}
+
+	swiper-slide {
+		text-align: center;
+		font-size: 18px;
+		background: #fff;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+	}
+	swiper-slide img {
+		display: block;
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+	}
+	.swiper-button-next,
+	.swiper-button-prev {
+		color: black, black !important;
+	}
 	/*INFO*/
 	.div-info {
 		padding-left: 65px !important;
@@ -602,22 +629,6 @@ ul {
 	}
 	.descripcion {
 		width: 60vw !important;
-	}
-	.div-2 > img {
-		width: 300px !important;
-	}
-	swiper-container {
-		height: 45em;
-	}
-	swiper-slide img {
-		width: 100% !important;
-		height: auto !important;
-	}
-	swiper-slide {
-		min-height: 100vh !important;
-	}
-	.div-botones {
-		width: 10em !important;
 	}
 	.div-ropa {
 		padding-bottom: 50px !important;
