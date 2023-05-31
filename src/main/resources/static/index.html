@@ -17,9 +17,12 @@
 		<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
 		<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css" />
 		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css" />
+		<link rel="stylesheet" href="css/owl.carousel.min.css" />
+		<link rel="stylesheet" href="css/owl.theme.default.min.css" />
 	</head>
 	<body>
 		<div id="app">
+			<!-- <div :class="{'blur': !isCarritoInactivo}"> -->
 			<header class="header-nav">
 				<nav class="navbar navbar-expand-lg">
 					<div class="container-fluid">
@@ -52,8 +55,8 @@
 									<a class="nav-link texto-nav hover-iconos texto-iconos text-center" aria-current="page" href="#"
 										><i class="bi bi-person pe-1"></i>{{clienteIngresado.primerNombre}}</a
 									>
-									<a class="nav-link texto-nav hover-iconos texto-iconos text-center" href="#"
-										><i @click="abrirCarrito" class="bi bi-bag"></i><span class="text-carrito">{{carrito.length}}</span></a
+									<a @click="abrirCarrito" class="nav-link texto-nav hover-iconos texto-iconos text-center" href="#"
+										><i class="bi bi-bag"></i><span class="text-carrito">{{carrito.length}}</span></a
 									>
 									<a class="nav-link texto-nav hover-iconos texto-iconos text-center" href="#"
 										><i @click="salir" class="bi bi-box-arrow-right"></i
@@ -137,66 +140,54 @@
 						<h2 class="text-center fs-1">Lo mas pedido</h2>
 					</div>
 
-					<swiper-container
-						data-aos="fade-up"
-						data-aos-delay="400"
-						data-aos-duration="6000"
-						class="d-none d-md-block mySwiper"
-						space-between="200"
-						slides-per-view="3"
-						autoplay-delay="3500"
-						autoplay-disable-on-interaction="false"
-					>
+					<div class="div-card d-md-flex d-none justify-content-evenly flex-wrap">
 						<template v-for="producto of productos">
-							<swiper-slide>
-								<div class="elementos div-1">
-									<img :src="producto.imagenesUrl[0]" />
-									<div class="div-2">
-										<img :src="producto.imagenesUrl[1]" />
-									</div>
-									<div class="descripcion">
-										<h5>{{producto.nombre}}</h5>
-										<p>COP$ {{producto.precio.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}}</p>
-										<div class="div-botones d-flex gap-1 flex-wrap">
-											<a href="#" class="ov-btn-grow-box" @click="agregarAlCarrito(producto)">CARRITO</a>
-											<a href="#" class="ov-btn-grow-box">DESCRIPCION</a>
-										</div>
-									</div>
+							<div class="card div-1" style="width: 20rem">
+								<img :src="producto.imagenesUrl[0]" class="card-img-top" />
+								<div class="div-2">
+									<img :src="producto.imagenesUrl[1]" class="card-img-top" />
 								</div>
-							</swiper-slide>
+								<div class="card-body">
+									<h5 class="card-title">{{producto.nombre}}</h5>
+									<p class="card-text">COP$ {{producto.precio.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}}</p>
+									<a href="#" class="ov-btn-grow-box me-2" @click="agregarAlCarrito(producto)">CARRITO</a>
+									<a href="#" class="ov-btn-grow-box" @click="agregarAlCarrito(producto)">INFO <i class="bi bi-search-heart"></i></a>
+								</div>
+							</div>
 						</template>
-					</swiper-container>
+					</div>
+					<!-- </swiper-container> -->
 
-					<swiper-container
-						class="d-block d-md-none mySwiper"
-						space-between="30"
-						slides-per-view="1"
-						autoplay-delay="3500"
-						autoplay-disable-on-interaction="false"
-						data-aos="fade-up"
-						data-aos-delay="400"
-						data-aos-duration="6000"
-					>
-						<template v-for="producto of productos">
-							<swiper-slide>
-								<div class="elementos div-1">
-									<img :src="producto.imagenesUrl[0]" />
-									<div class="div-2">
-										<img :src="producto.imagenesUrl[1]" />
-									</div>
-									<div class="descripcion">
-										<h5>{{producto.nombre}}</h5>
-										<p>COP$ {{producto.precio.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}}</p>
-										<div class="d-flex gap-1">
-											<a href="#" class="ov-btn-grow-box">CARRITO</a>
-											<a href="#" class="ov-btn-grow-box">DESCRIPCION</a>
+					<div id="carouselExampleAutoplaying" class="carousel slide d-flex d-md-none" data-bs-ride="carousel">
+						<div class="carousel-inner">
+							<template v-for="producto of productos">
+								<div class="carousel-item active">
+									<div class="card div-1 m-auto" style="width: 20rem">
+										<img :src="producto.imagenesUrl[0]" class="card-img-top" />
+										<div class="div-2">
+											<img :src="producto.imagenesUrl[1]" class="card-img-top" />
+										</div>
+										<div class="card-body">
+											<h5 class="card-title">{{producto.nombre}}</h5>
+											<p class="card-text">COP$ {{producto.precio.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}}</p>
+											<a href="#" class="ov-btn-grow-box me-2" @click="agregarAlCarrito(producto)">CARRITO</a>
+											<a href="#" class="ov-btn-grow-box" @click="agregarAlCarrito(producto)">INFO <i class="bi bi-search-heart"></i></a>
 										</div>
 									</div>
 								</div>
-							</swiper-slide>
-						</template>
-					</swiper-container>
+							</template>
+						</div>
+						<button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="prev">
+							<span class="carousel-control-prev-icon" aria-hidden="true"></span>
+							<span class="visually-hidden">Previous</span>
+						</button>
+						<button class="carousel-control-next" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="next">
+							<span class="carousel-control-next-icon" aria-hidden="true"></span>
+							<span class="visually-hidden">Next</span>
+						</button>
+					</div>
 				</div>
+				<!-- </div> -->
 				{{guardarDatos}}
 				<aside id="carrito" :class="{inactivo : isCarritoInactivo}">
 					<div class="div-carrito pt-4 d-flex justify-content-center align-items-center">
@@ -225,8 +216,13 @@
 						</template>
 					</div>
 
+					<div class="pagototal d-flex align-items-center justify-content-around">
+						<h4>TOTAL</h4>
+						<span class="fs-5">COP$ {{totalDelCarrito.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}}</span>
+					</div>
+
 					<div class="boton-pago">
-						<a class="btn w-100 btn-dark" href="#">Continuar con el pago</a>
+						<a class="btn w-100 btn-dark" href="#">Continuar con la compra</a>
 					</div>
 				</aside>
 			</main>
@@ -335,9 +331,10 @@
 								1.3. Usted es responsable de mantener la confidencialidad de su cuenta y contraseña y de restringir el acceso a su computadora u otros
 								dispositivos para evitar cualquier acceso no autorizado a su cuenta. Propiedad intelectual<br />
 								2.1. El contenido del Sitio, incluidos, entre otros, el texto, los gráficos, las imágenes, los logotipos y el software, está protegido
-								por leyes de propiedad intelectual y pertenece a Macart o a terceros que han otorgado licencias a Macart para su uso. <br />2.2. Usted
-								acepta no copiar, distribuir, reproducir, modificar, alterar, exhibir, transmitir o explotar de ninguna manera cualquier parte del
-								contenido del Sitio, a menos que se le haya otorgado permiso expreso por escrito por parte de Macart. Compras y transacciones<br />
+								por leyes de propiedad intelectual y pertenece a Macart o a terceros que han otorgado licencias a Macart para su uso.
+								<br />2.2. Usted acepta no copiar, distribuir, reproducir, modificar, alterar, exhibir, transmitir o explotar de ninguna manera
+								cualquier parte del contenido del Sitio, a menos que se le haya otorgado permiso expreso por escrito por parte de Macart. Compras y
+								transacciones<br />
 								3.1. Al realizar una compra a través del Sitio, usted declara y garantiza que tiene al menos 18 años de edad o que cuenta con el
 								consentimiento de un padre o tutor legal.<br />
 								3.2. Todos los precios mostrados en el Sitio están en la moneda especificada y no incluyen impuestos ni gastos de envío, a menos que

@@ -52,7 +52,7 @@ public CommandLineRunner initData(ClienteRepositorio clienteRepositorio, Direcci
 		ProductoTienda productoTienda2 = new ProductoTienda("Blusa Negra", 70000.00 , "Blusa negra de ribb de algodon", ProductoTiendaTallaSuperior.M, null, List.of("./img/blusaNegra.jpg","./img/blusaNegra2.jpg"), ProductoTiendaCategoriaGenero.MUJER, "Blusa");
 		productoTiendaRepositorio.save(productoTienda2);
 
-		ProductoTienda productoTienda3 = new ProductoTienda("Blusa Blanca", 50000, "Blusa blanca de ribb de algodón",ProductoTiendaTallaSuperior.S, null, List.of("./img/blusaBlanca2.jpg", "./img/blusaBlanca3.jpg"),ProductoTiendaCategoriaGenero.MUJER,"Blusa");
+		ProductoTienda productoTienda3 = new ProductoTienda("Blusa Blanca", 50000, "Blusa blanca de ribb de algodón",ProductoTiendaTallaSuperior.S, null, List.of("./img/blusaBlanca.jpg", "./img/blusaBlanca3.jpg"),ProductoTiendaCategoriaGenero.MUJER,"Blusa");
 		productoTiendaRepositorio.save(productoTienda3);
 
 		ProductoTienda productoTienda4 = new ProductoTienda("Bolso Jean", 40000, "Un bolso hecho de jean", null, null, List.of("./img/bolsoJean.png", "./img/bolsoJean2.png"),ProductoTiendaCategoriaGenero.MUJER, "Bolso");
