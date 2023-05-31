@@ -18,6 +18,10 @@
 a {
 	text-decoration: none !important;
 }
+.blur:not(#carrito) {
+	transition: 0.1s filter;
+	filter: blur(3px);
+}
 .main-index {
 	min-height: 80vh;
 }
@@ -168,6 +172,33 @@ a {
 	color: var(--color-gris);
 }
 /*CARUSEL*/
+.card {
+	padding-top: 10px !important;
+	border: none !important;
+}
+.card > img {
+	height: 30em;
+	object-fit: cover;
+}
+.div-2 > img {
+	height: 30em;
+	object-fit: cover;
+}
+.div-card {
+	padding-bottom: 50px !important;
+}
+.div-1 {
+	position: relative;
+}
+.div-1 .div-2 {
+	position: absolute;
+	left: 0;
+	opacity: 0;
+	transition: 0.5s;
+}
+.div-1:hover .div-2 {
+	opacity: 1;
+}
 .div-ropa {
 	border-top: 1px solid rgba(128, 128, 128, 0.261);
 	padding-bottom: 8em !important;
@@ -180,19 +211,7 @@ a {
 	margin: 0 50px;
 	height: 700px;
 }
-.div-1 {
-	position: relative;
-}
-.div-1 .div-2 {
-	position: absolute;
-	top: 0;
-	left: 0;
-	opacity: 0;
-	transition: 0.5s;
-}
-.div-1:hover .div-2 {
-	opacity: 1;
-}
+
 .elementos img {
 	object-fit: contain;
 	height: 500px;
@@ -200,10 +219,6 @@ a {
 }
 .descripcion {
 	padding-top: 10px;
-}
-swiper-container {
-	width: 100%;
-	min-height: 50vh;
 }
 
 swiper-slide {
@@ -213,12 +228,17 @@ swiper-slide {
 	display: flex;
 	justify-content: center;
 	align-items: center;
+	margin: auto !important;
 }
 
 swiper-slide img {
 	display: block;
 	height: 100%;
 	object-fit: cover;
+}
+.carousel-control-next-icon,
+.carousel-control-prev-icon {
+	background-color: var(--color-negro);
 }
 
 /*FIN DE CARUSEL*/
@@ -234,7 +254,8 @@ swiper-slide img {
 	top: 0;
 	min-width: 30rem;
 	min-height: 30rem;
-	background-color: var(--color-blanco);
+	background-color: rgb(245, 245, 245);
+	box-shadow: -3px 3px 10px black;
 }
 .div-scroll {
 	max-height: 30rem;
@@ -291,6 +312,12 @@ swiper-slide img {
 .div-sumar-restar > i {
 	font-size: 22px;
 	cursor: pointer;
+}
+.pagototal {
+	height: 5em;
+	background-color: #212529;
+	color: var(--color-blanco);
+	margin-top: 15px;
 }
 
 /* FIN CARRITO */
@@ -418,7 +445,7 @@ ul {
 	transform: translate(-50%, -50%);
 	max-width: 430px;
 	width: 100%;
-	background: #fff;
+	background: #ffffff;
 	border-radius: 7px;
 	box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
 }
@@ -514,6 +541,9 @@ ul {
 @media only screen and (min-width: 320px) and (max-width: 1000px) {
 	body {
 		overflow-x: hidden !important;
+	}
+	.div-card {
+		display: none !important;
 	}
 	/*NAV*/
 	.div-iconos {

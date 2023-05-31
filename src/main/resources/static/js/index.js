@@ -168,5 +168,11 @@ createApp({
 		guardarDatos() {
 			localStorage.setItem('carrito', JSON.stringify(this.carrito));
 		},
+		totalDelCarrito() {
+			return this.carrito.reduce((acc, currentValue) => {
+				acc += currentValue.precio * currentValue.contadorBoton;
+				return acc;
+			}, 0);
+		},
 	},
 }).mount('#app');
