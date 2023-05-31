@@ -52,7 +52,9 @@
 									<a class="nav-link texto-nav hover-iconos texto-iconos text-center" aria-current="page" href="#"
 										><i class="bi bi-person pe-1"></i>{{clienteIngresado.primerNombre}}</a
 									>
-									<a class="nav-link texto-nav hover-iconos texto-iconos text-center" href="#"><i @click="abrirCarrito" class="bi bi-bag"></i></a>
+									<a class="nav-link texto-nav hover-iconos texto-iconos text-center" href="#"
+										><i @click="abrirCarrito" class="bi bi-bag"></i><span class="text-carrito">{{carrito.length}}</span></a
+									>
 									<a class="nav-link texto-nav hover-iconos texto-iconos text-center" href="#"
 										><i @click="salir" class="bi bi-box-arrow-right"></i
 									></a>
@@ -155,78 +157,14 @@
 									<div class="descripcion">
 										<h5>{{producto.nombre}}</h5>
 										<p>COP$ {{producto.precio.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}}</p>
-										<div class="d-flex gap-1">
-											<a href="#" class="ov-btn-grow-box">CARRITO</a>
+										<div class="div-botones d-flex gap-1 flex-wrap">
+											<a href="#" class="ov-btn-grow-box" @click="agregarAlCarrito(producto)">CARRITO</a>
 											<a href="#" class="ov-btn-grow-box">DESCRIPCION</a>
 										</div>
 									</div>
 								</div>
 							</swiper-slide>
 						</template>
-						<!-- <swiper-slide>
-							<div class="elementos div-1">
-								<img src="./img/blusaNegra.jpg" alt="Blusa negra" />
-								<div class="div-2">
-									<img src="./img/blusaNegra2.jpg" alt="Blusa negra" />
-								</div>
-								<div class="descripcion">
-									<h5>Blusa Negra</h5>
-									<p>COP$ 50.000</p>
-									<div class="d-flex gap-1">
-										<a href="#" class="ov-btn-grow-box">CARRITO</a>
-										<a href="#" class="ov-btn-grow-box">DESCRIPCION</a>
-									</div>
-								</div>
-							</div>
-						</swiper-slide>
-						<swiper-slide>
-							<div class="elementos div-1">
-								<img src="./img/camisaBlanca.jpg" alt="camisa blanca" />
-								<div class="div-2">
-									<img src="./img/camisaBlanca2.jpg" alt="camisa blanca" />
-								</div>
-								<div class="descripcion">
-									<h5>Camisa Blanca</h5>
-									<p>COP$ 50.000</p>
-									<div class="d-flex gap-1">
-										<a href="#" class="ov-btn-grow-box">CARRITO</a>
-										<a href="#" class="ov-btn-grow-box">DESCRIPCION</a>
-									</div>
-								</div>
-							</div>
-						</swiper-slide>
-						<swiper-slide>
-							<div class="elementos div-1">
-								<img src="./img/carteraJean.png" alt="cartera jean" />
-								<div class="div-2">
-									<img src="./img/carteraJean2.png" alt="cartera jean" />
-								</div>
-								<div class="descripcion">
-									<h5>Cartera de Jean</h5>
-									<p>COP$ 50.000</p>
-									<div class="d-flex gap-1">
-										<a href="#" class="ov-btn-grow-box">CARRITO</a>
-										<a href="#" class="ov-btn-grow-box">DESCRIPCION</a>
-									</div>
-								</div>
-							</div>
-						</swiper-slide>
-						<swiper-slide>
-							<div class="elementos div-1">
-								<img src="./img/bolsoJean.png" alt="Bolso Jean" />
-								<div class="div-2">
-									<img src="./img/bolsoJean2.png" alt="Bolso Jean" />
-								</div>
-								<div class="descripcion">
-									<h5>Bolso de Jean</h5>
-									<p>COP$ 50.000</p>
-									<div class="d-flex gap-1">
-										<a href="#" class="ov-btn-grow-box">CARRITO</a>
-										<a href="#" class="ov-btn-grow-box">DESCRIPCION</a>
-									</div>
-								</div>
-							</div>
-						</swiper-slide> -->
 					</swiper-container>
 
 					<swiper-container
@@ -239,126 +177,54 @@
 						data-aos-delay="400"
 						data-aos-duration="6000"
 					>
-						<swiper-slide>
-							<div class="elementos div-1">
-								<img src="./img/blusaBlanca.jpg" alt="Blusa Blanca" />
-								<div class="div-2">
-									<img src="./img/blusaBlanca3.jpg" alt="Blusa Blanca Atras" />
-								</div>
-								<div class="descripcion">
-									<h5>Blusa Blanca</h5>
-									<p>COP$ 50.000</p>
-									<div class="d-flex gap-1">
-										<a href="#" class="ov-btn-grow-box">CARRITO</a>
-										<a href="#" class="ov-btn-grow-box">DESCRIPCION</a>
+						<template v-for="producto of productos">
+							<swiper-slide>
+								<div class="elementos div-1">
+									<img :src="producto.imagenesUrl[0]" />
+									<div class="div-2">
+										<img :src="producto.imagenesUrl[1]" />
+									</div>
+									<div class="descripcion">
+										<h5>{{producto.nombre}}</h5>
+										<p>COP$ {{producto.precio.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}}</p>
+										<div class="d-flex gap-1">
+											<a href="#" class="ov-btn-grow-box">CARRITO</a>
+											<a href="#" class="ov-btn-grow-box">DESCRIPCION</a>
+										</div>
 									</div>
 								</div>
-							</div>
-						</swiper-slide>
-						<swiper-slide>
-							<div class="elementos div-1">
-								<img src="./img/blusaNegra.jpg" alt="Blusa negra" />
-								<div class="div-2">
-									<img src="./img/blusaNegra2.jpg" alt="Blusa negra" />
-								</div>
-								<div class="descripcion">
-									<h5>Blusa Negra</h5>
-									<p>COP$ 50.000</p>
-									<div class="d-flex gap-1">
-										<a href="#" class="ov-btn-grow-box">CARRITO</a>
-										<a href="#" class="ov-btn-grow-box">DESCRIPCION</a>
-									</div>
-								</div>
-							</div>
-						</swiper-slide>
-						<swiper-slide>
-							<div class="elementos div-1">
-								<img src="./img/camisaBlanca.jpg" alt="camisa blanca" />
-								<div class="div-2">
-									<img src="./img/camisaBlanca2.jpg" alt="camisa blanca" />
-								</div>
-								<div class="descripcion">
-									<h5>Camisa Blanca</h5>
-									<p>COP$ 50.000</p>
-									<div class="d-flex gap-1">
-										<a href="#" class="ov-btn-grow-box">CARRITO</a>
-										<a href="#" class="ov-btn-grow-box">DESCRIPCION</a>
-									</div>
-								</div>
-							</div>
-						</swiper-slide>
-						<swiper-slide>
-							<div class="elementos div-1">
-								<img src="./img/carteraJean.png" alt="cartera jean" />
-								<div class="div-2">
-									<img src="./img/carteraJean2.png" alt="cartera jean" />
-								</div>
-								<div class="descripcion">
-									<h5>Cartera de Jean</h5>
-									<p>COP$ 50.000</p>
-									<div class="d-flex gap-1">
-										<a href="#" class="ov-btn-grow-box">CARRITO</a>
-										<a href="#" class="ov-btn-grow-box">DESCRIPCION</a>
-									</div>
-								</div>
-							</div>
-						</swiper-slide>
-						<swiper-slide>
-							<div class="elementos div-1">
-								<img src="./img/bolsoJean.png" alt="Bolso Jean" />
-								<div class="div-2">
-									<img src="./img/bolsoJean2.png" alt="Bolso Jean" />
-								</div>
-								<div class="descripcion">
-									<h5>Bolso de Jean</h5>
-									<p>COP$ 50.000</p>
-									<div class="d-flex gap-1">
-										<a href="#" class="ov-btn-grow-box">CARRITO</a>
-										<a href="#" class="ov-btn-grow-box">DESCRIPCION</a>
-									</div>
-								</div>
-							</div>
-						</swiper-slide>
+							</swiper-slide>
+						</template>
 					</swiper-container>
 				</div>
-
+				{{guardarDatos}}
 				<aside id="carrito" :class="{inactivo : isCarritoInactivo}">
 					<div class="div-carrito pt-4 d-flex justify-content-center align-items-center">
-						<h4 class="text-center">Carrito (2)</h4>
+						<h4 class="text-center">Carrito ({{carrito.length}})</h4>
 						<i @click="abrirCarrito" class="icono-close bi bi-x fs-2"></i>
 					</div>
-					<div class="div-info-carrito">
-						<div class="d-flex align-items-center">
-							<img class="p-3" src="./img/blusaBlanca.jpg" />
-							<div class="col-8 info">
-								<h4>Blusa Blanca</h4>
-								<p>COP$ 50.000</p>
-								<div class="div-value d-flex align-items-center justify-content-evenly">
-									<div class="div-sumar-restar d-flex align-items-center">
-										<i class="pe-2 bi bi-dash-circle"></i>
-										<span>1</span>
-										<i class="ps-2 bi bi-plus-circle"></i>
+					<div class="div-scroll">
+						<template v-for="producto of carrito">
+							<div class="div-info-carrito">
+								<div class="d-flex align-items-center">
+									<img class="p-3" :src="producto.imagen" />
+									<div class="col-8 info">
+										<h4>{{producto.nombre}}</h4>
+										<p>COP$ {{producto.precio.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}}</p>
+										<div class="div-value d-flex align-items-center justify-content-evenly">
+											<div class="div-sumar-restar d-flex align-items-center">
+												<i class="pe-2 bi bi-dash-circle" @click="disminuirCantidadProducto(producto)"></i>
+												<span>{{producto.contadorBoton}}</span>
+												<i class="ps-2 bi bi-plus-circle" @click="agregarCantidadProducto(producto)"></i>
+											</div>
+											<a @click="elimarDelCarrito(producto)" class="fs-xs ms-auto" href="#"> <i class="bi bi-trash3"></i> Eliminar </a>
+										</div>
 									</div>
-									<a class="fs-xs ms-auto" href="#"> <i class="bi bi-trash3"></i> Eliminar </a>
 								</div>
 							</div>
-						</div>
-						<div class="d-flex align-items-center">
-							<img class="p-3" src="./img/blusaNegra.jpg" />
-							<div class="col-8 info">
-								<h4>Blusa Blanca</h4>
-								<p>COP$ 50.000</p>
-								<div class="div-value d-flex align-items-center justify-content-evenly">
-									<div class="div-sumar-restar d-flex align-items-center">
-										<i class="pe-2 bi bi-dash-circle"></i>
-										<span>1</span>
-										<i class="ps-2 bi bi-plus-circle"></i>
-									</div>
-									<a class="fs-xs ms-auto" href="#"> <i class="bi bi-trash3"></i> Eliminar </a>
-								</div>
-							</div>
-						</div>
+						</template>
 					</div>
+
 					<div class="boton-pago">
 						<a class="btn w-100 btn-dark" href="#">Continuar con el pago</a>
 					</div>
@@ -396,7 +262,7 @@
 				</div>
 				<span class="copyright">&copy;2023, Macart Costume. Todos los derechos reservados.</span>
 			</footer>
-			<!-- MODAL -->
+			<!-- MODAL ingresar -->
 			<div class="modal fade" id="ModalForm" tabindex="-1" aria-labelledby="ModalFormLabel" aria-hidden="true">
 				<div class="modal-dialog modal-dialog-centered">
 					<div class="modal-content">
