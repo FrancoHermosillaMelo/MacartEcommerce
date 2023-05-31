@@ -1,4 +1,4 @@
-const {createApp} = Vue;
+const { createApp } = Vue;
 
 createApp({
 	data() {
@@ -20,10 +20,13 @@ createApp({
 		};
 	},
 	created() {
-		this.roles();
+		// this.roles();
 		this.data();
 		this.totalProductos();
 		this.carrito = JSON.parse(localStorage.getItem('carrito')) || [];
+	},
+	mounted() {
+		this.roles()
 	},
 	methods: {
 		totalProductos() {
@@ -44,9 +47,11 @@ createApp({
 			axios
 				.get('/api/clientes/actual/rol')
 				.then(response => {
-					this.rol = response.data.authority;
+					this.rol = response.data
 				})
-				.catch(error => console.log(error));
+				.catch(error => {
+					console.log(error)
+				});
 		},
 		abrirCarrito() {
 			this.isCarritoInactivo = !this.isCarritoInactivo;
@@ -85,7 +90,7 @@ createApp({
 				.post('/api/login', 'correo=' + this.correo + '&contraseña=' + this.contraseña)
 				.then(response => {
 					if (this.correo == 'admin@gmail.com') {
-						window.location.replace('/index.html');
+						window.location.replace('/index.html')
 					} else {
 						window.location.replace('/index.html');
 					}
@@ -103,19 +108,19 @@ createApp({
 				.post(
 					'/api/clientes',
 					'primerNombre=' +
-						this.primerNombre +
-						'&segundoNombre=' +
-						this.segundoNombre +
-						'&primerApellido=' +
-						this.primerApellido +
-						'&segundoApellido=' +
-						this.segundoApellido +
-						'&telefono=' +
-						this.telefono +
-						'&correo=' +
-						this.correoRegistro +
-						'&contraseña=' +
-						this.contraseñaRegistro
+					this.primerNombre +
+					'&segundoNombre=' +
+					this.segundoNombre +
+					'&primerApellido=' +
+					this.primerApellido +
+					'&segundoApellido=' +
+					this.segundoApellido +
+					'&telefono=' +
+					this.telefono +
+					'&correo=' +
+					this.correoRegistro +
+					'&contraseña=' +
+					this.contraseñaRegistro
 				)
 				.then(response => {
 					this.correo = this.correoRegistro;

@@ -45,7 +45,7 @@
 						</div>
 						<div class="collapse navbar-collapse justify-content-end" id="navbarNavAltMarkup">
 							<div class="div-iconos navbar-nav gap-3">
-								<template v-if="rol.length == 0">
+								<template v-if="rol === 'VISITANTE'">
 									<button type="button" class="boton-nav" data-bs-toggle="modal" data-bs-target="#ModalForm">Ingresar</button>
 								</template>
 								<template v-else>
