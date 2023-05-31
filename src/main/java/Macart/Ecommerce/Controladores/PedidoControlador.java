@@ -45,13 +45,13 @@ public class PedidoControlador {
     }
 
     @PostMapping("/api/pedidos")
-    public ResponseEntity<Object> crearPedidos(Authentication authentication,
+    public ResponseEntity<Object> crearPedidos(
             @RequestParam Long clienteId,
             @RequestParam LocalDateTime fechaDePedido,
             @RequestParam double montoTotal,
             @RequestParam String metodoDeEnvio,
-            @RequestParam String metodoDePago,
-            @RequestParam String codigoPostal) {
+            @RequestParam String metodoDePago
+           ) {
 
         Cliente cliente = clienteServicio.obtenerClientePorId(clienteId);
 

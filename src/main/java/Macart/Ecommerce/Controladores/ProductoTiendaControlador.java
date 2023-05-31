@@ -5,10 +5,7 @@ import Macart.Ecommerce.Modelos.ProductoTienda;
 import Macart.Ecommerce.Modelos.ProductoTiendaCategoriaGenero;
 import Macart.Ecommerce.Modelos.ProductoTiendaTallaInferior;
 import Macart.Ecommerce.Modelos.ProductoTiendaTallaSuperior;
-import Macart.Ecommerce.Repositorio.ClienteRepositorio;
-import Macart.Ecommerce.Repositorio.PedidoProductoRepositorio;
-import Macart.Ecommerce.Repositorio.PedidoRepositorio;
-import Macart.Ecommerce.Repositorio.ProductoTiendaRepositorio;
+
 import Macart.Ecommerce.Servicios.ClienteServicio;
 import Macart.Ecommerce.Servicios.ProductoTiendaServicio;
 import Macart.Ecommerce.Utilidades.ProductoTiendaUtilidades;
@@ -21,8 +18,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 
-import static java.util.stream.Collectors.toList;
+
 @RestController
 public class ProductoTiendaControlador {
 
@@ -69,6 +67,10 @@ public class ProductoTiendaControlador {
         if(nombre.isBlank()){
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body("El nombre no puede estar en blanco");
         }
+        if (!Pattern.matches("^[a-zA-Z]+$", nombre)) {
+            return new ResponseEntity<>("El nombre solo puede contener letras", HttpStatus.FORBIDDEN);
+        }
+
         if(precio < 0){
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body("El precio no puede estar en negativo");
         }

@@ -77,6 +77,7 @@ public class ComprobanteControlador {
 
     @GetMapping("/api/comprobantes/fechas")
     public ResponseEntity<Object> obtenerComprobantesTodosPorFecha(@RequestParam String inicioFecha, @RequestParam String finFecha) throws ParseException {
+
         if (inicioFecha.isBlank()){
             return new ResponseEntity<>("La fecha de inicio no puede estar en blanco", HttpStatus.FORBIDDEN);
         }

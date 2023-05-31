@@ -41,5 +41,7 @@ public class DireccionImplementacion implements DireccionServicio {
     @Override
     public Direccion obtenerDireccionPorId(long id) {return direccionRepositorio.findById(id);}
 
+    @Override
+    public void borrarDireccion(Direccion direccion) {direccionRepositorio.delete(direccion);}
 
 }
