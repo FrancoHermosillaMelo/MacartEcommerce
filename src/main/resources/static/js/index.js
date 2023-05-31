@@ -1,4 +1,4 @@
-const {createApp} = Vue;
+const { createApp } = Vue;
 
 createApp({
 	data() {
@@ -8,6 +8,7 @@ createApp({
 			productos: '',
 			isCarritoInactivo: true,
 			carrito: [],
+			carritos: {},
 			correo: '',
 			correoRegistro: '',
 			contraseña: '',
@@ -17,13 +18,19 @@ createApp({
 			primerApellido: '',
 			segundoApellido: '',
 			telefono: '',
+			clienteId: "",
 		};
 	},
 	created() {
 		this.roles();
 		this.data();
 		this.totalProductos();
-		this.carrito = JSON.parse(localStorage.getItem('carrito')) || [];
+		this.clienteId = sessionStorage.getItem('clienteId'); // Obtén el identificador único del cliente desde el sessionStorage
+		this.carritos = JSON.parse(localStorage.getItem('carritos')) || {}; // Obtiene los carritos almacenados en el localStorage
+		if (!this.carritos[this.clienteId]) {
+			this.carritos[this.clienteId] = []; // Crea un carrito vacío para el cliente si no existe
+		}
+		this.carrito = this.carritos[this.clienteId]; // Asi
 	},
 	methods: {
 		totalProductos() {
@@ -36,7 +43,14 @@ createApp({
 			axios
 				.get('/api/clientes/actual')
 				.then(response => {
+					this.datos = response.data;
 					this.clienteIngresado = response.data;
+					this.clienteId = response.data.id;
+					sessionStorage.setItem('clienteId', this.clienteId); // Almacena el identificador único del cliente en el sessionStorage
+					if (!this.carritos[this.clienteId]) {
+						this.carritos[this.clienteId] = []; // Crea un carrito vacío para el cliente si no existe
+					}
+					this.carrito = this.carritos[this.clienteId]; // Asigna el carrito correspondiente al cliente actual
 				})
 				.catch(error => console.log(error));
 		},
@@ -103,19 +117,19 @@ createApp({
 				.post(
 					'/api/clientes',
 					'primerNombre=' +
-						this.primerNombre +
-						'&segundoNombre=' +
-						this.segundoNombre +
-						'&primerApellido=' +
-						this.primerApellido +
-						'&segundoApellido=' +
-						this.segundoApellido +
-						'&telefono=' +
-						this.telefono +
-						'&correo=' +
-						this.correoRegistro +
-						'&contraseña=' +
-						this.contraseñaRegistro
+					this.primerNombre +
+					'&segundoNombre=' +
+					this.segundoNombre +
+					'&primerApellido=' +
+					this.primerApellido +
+					'&segundoApellido=' +
+					this.segundoApellido +
+					'&telefono=' +
+					this.telefono +
+					'&correo=' +
+					this.correoRegistro +
+					'&contraseña=' +
+					this.contraseñaRegistro
 				)
 				.then(response => {
 					this.correo = this.correoRegistro;
@@ -166,7 +180,8 @@ createApp({
 			this.segundoApellido = this.segundoApellido.charAt(0).toUpperCase() + this.segundoApellido.slice(1);
 		},
 		guardarDatos() {
-			localStorage.setItem('carrito', JSON.stringify(this.carrito));
+			this.carritos[this.clienteId] = this.carrito;
+			localStorage.setItem('carritos', JSON.stringify(this.carritos));
 		},
 	},
 }).mount('#app');
