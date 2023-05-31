@@ -48,6 +48,7 @@ createApp({
 				.then(response => {
 					this.datos = response.data;
 					this.clienteIngresado = response.data;
+					console.log(this.clienteIngresado);
 					this.clienteId = response.data.id;
 					sessionStorage.setItem('clienteId', this.clienteId); // Almacena el identificador único del cliente en el sessionStorage
 					if (!this.carritos[this.clienteId]) {

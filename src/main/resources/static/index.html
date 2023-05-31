@@ -19,7 +19,7 @@
 	</head>
 	<body>
 		<div id="app">
-			<div :class="{'blur': !isCarritoInactivo}">
+			<!-- <div :class="{'blur': !isCarritoInactivo}"> -->
 			<header class="header-nav">
 				<nav class="navbar navbar-expand-lg">
 					<div class="container-fluid">
@@ -41,6 +41,9 @@
 								<a class="nav-link texto-nav hover-a text-center" href="#">Catálogo</a>
 								<a class="nav-link texto-nav hover-a text-center" href="./html/sobreNosotros.html">Sobre Nosotros</a>
 								<a class="nav-link texto-nav hover-a text-center" href="#">Preguntas Frecuentes</a>
+								<template v-if="rol === 'ADMIN'">
+									<a class="nav-link texto-nav hover-a text-center" href="./html/manager.html">Administrador</a>
+								</template>
 							</div>
 						</div>
 						<div class="collapse navbar-collapse justify-content-end" id="navbarNavAltMarkup">
@@ -180,7 +183,7 @@
 						</template>
 					</swiper-container>
 				</div>
-				</div>
+				<!-- </div> -->
 				{{guardarDatos}}
 				<aside id="carrito" :class="{inactivo : isCarritoInactivo}">
 					<div class="div-carrito pt-4 d-flex justify-content-center align-items-center">
