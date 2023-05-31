@@ -20,7 +20,6 @@ public class WebAutenticacion extends GlobalAuthenticationConfigurerAdapter {
 
     @Override
     public void init(AuthenticationManagerBuilder auth) throws Exception {
-
         auth.userDetailsService(inputName-> {
 
             Cliente cliente = clienteRepositorio.findByCorreo(inputName);
@@ -34,6 +33,7 @@ public class WebAutenticacion extends GlobalAuthenticationConfigurerAdapter {
                 }
 
                 return new User(cliente.getCorreo(), cliente.getContraseña(),
+
 
                         AuthorityUtils.createAuthorityList("CLIENTE"));
 
