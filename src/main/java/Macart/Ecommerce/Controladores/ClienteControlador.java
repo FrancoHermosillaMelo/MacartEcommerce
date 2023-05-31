@@ -39,11 +39,31 @@ public class ClienteControlador {
         }
         return "VISITANTE";
     }
-   @GetMapping("/api/clientes/actual")
+    @GetMapping("/api/clientes/actual")
     public  ResponseEntity<Object> obtenerClienteActual(Authentication authentication){
         Cliente clienteAutenticado = clienteServicio.obtenerClientePorEmail(authentication.getName());
         return new ResponseEntity<>(new ClienteDTO(clienteAutenticado), HttpStatus.ACCEPTED);
-   }
+    }
+    @GetMapping("/api/clientes/id")
+    public ResponseEntity<Object> obtenerClientePorId(Authentication authentication, @RequestParam long id){
+        Cliente clientePedido = clienteServicio.obtenerClientePorId(id);
+        Cliente clienteAutenticado = clienteServicio.obtenerClienteAutenticado(authentication);
+        if(clientePedido == null){
+            return new ResponseEntity<>("El cliente no existe", HttpStatus.FORBIDDEN);
+        }
+        if(!clienteServicio.isAdmin(authentication)){
+            if(clienteAutenticado.getCorreo().equalsIgnoreCase(clientePedido.getCorreo())){
+                return new ResponseEntity<>(new ClienteDTO(clientePedido), HttpStatus.ACCEPTED);
+            }else{
+                return new ResponseEntity<>("No tiene permisos para ver informacion de otros clientes", HttpStatus.FORBIDDEN);
+            }
+        }else{
+            return new ResponseEntity<>(new ClienteDTO(clientePedido), HttpStatus.ACCEPTED);
+        }
+
+
+
+    }
     @PostMapping("/api/clientes")
     public ResponseEntity<Object> registrarCliente(
             @RequestParam String primerNombre,

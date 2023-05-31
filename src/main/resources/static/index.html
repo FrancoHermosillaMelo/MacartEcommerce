@@ -22,6 +22,7 @@
 	</head>
 	<body>
 		<div id="app">
+			{{dataSegunRol}}
 			<!-- <div :class="{'blur': !isCarritoInactivo}"> -->
 			<header class="header-nav">
 				<nav class="navbar navbar-expand-lg">
@@ -259,7 +260,7 @@
 				<span class="copyright">&copy;2023, Macart Costume. Todos los derechos reservados.</span>
 			</footer>
 			<!-- MODAL ingresar -->
-			<div class="modal fade" id="ModalForm" tabindex="-1" aria-labelledby="ModalFormLabel" aria-hidden="true">
+			<div class="modal fade" id="ModalForm" ref="modal-login" tabindex="-1" aria-labelledby="ModalFormLabel" aria-hidden="true">
 				<div class="modal-dialog modal-dialog-centered">
 					<div class="modal-content">
 						<div class="modal-body">

@@ -4,7 +4,7 @@ createApp({
 	data() {
 		return {
 			rol: '',
-			clienteIngresado: '',
+			clienteIngresado: [],
 			productos: '',
 			isCarritoInactivo: true,
 			carrito: [],
@@ -22,8 +22,10 @@ createApp({
 		};
 	},
 	created() {
-		// this.roles();
-		this.data();
+		this.roles()
+	},
+	mounted() {
+		this.data()
 		this.totalProductos();
 		this.clienteId = sessionStorage.getItem('clienteId'); // Obtén el identificador único del cliente desde el sessionStorage
 		this.carritos = JSON.parse(localStorage.getItem('carritos')) || {}; // Obtiene los carritos almacenados en el localStorage
@@ -31,9 +33,6 @@ createApp({
 			this.carritos[this.clienteId] = []; // Crea un carrito vacío para el cliente si no existe
 		}
 		this.carrito = this.carritos[this.clienteId]; // Asi
-	},
-	mounted() {
-		this.roles()
 	},
 	methods: {
 		totalProductos() {
@@ -46,7 +45,6 @@ createApp({
 			axios
 				.get('/api/clientes/actual')
 				.then(response => {
-					this.datos = response.data;
 					this.clienteIngresado = response.data;
 					this.clienteId = response.data.id;
 					sessionStorage.setItem('clienteId', this.clienteId); // Almacena el identificador único del cliente en el sessionStorage
@@ -105,6 +103,7 @@ createApp({
 				.then(response => {
 					if (this.correo == 'admin@gmail.com') {
 						window.location.replace('/index.html')
+						this.data()
 					} else {
 						window.location.replace('/index.html');
 					}

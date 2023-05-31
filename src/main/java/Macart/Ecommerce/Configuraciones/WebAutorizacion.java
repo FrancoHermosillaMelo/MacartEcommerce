@@ -30,11 +30,13 @@ public class WebAutorizacion {
                         "/api/clientes/actual",
                         "/api/clientes/direcciones",
                         "/api/pedidos",
+                        "/api/comprobantes",
                         "/api/clientes/{id}/pedidos",
                         "/api/pedidoProducto",
                         "/api/pedidoProducto/{id}",
                         "/api/productoTienda",
-                        "/api/productoTienda/{id}").hasAnyAuthority("CLIENTE", "ADMIN")
+                        "/api/productoTienda/{id}",
+                        "/api/clientes/id").hasAnyAuthority("CLIENTE", "ADMIN")
 
                 .antMatchers(HttpMethod.POST,
                         "/api/clientes",

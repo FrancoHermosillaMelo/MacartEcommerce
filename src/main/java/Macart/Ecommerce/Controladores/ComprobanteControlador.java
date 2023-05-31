@@ -37,11 +37,13 @@ public class ComprobanteControlador {
      private ClienteServicio clienteServicio;
     @Autowired
     private PedidoServicio pedidoServicio;
+    @Autowired
+    private ComprobanteRepositorio comprobanteRepositorio;
 
 
     @GetMapping("/api/comprobantes")
-    public ResponseEntity<Object> obtenerComprobantes(){
-        return (new ResponseEntity<>(comprobanteServicio.obtenerComprobantes(), HttpStatus.ACCEPTED));
+    public List<ComprobanteDTO> obtenerComprobantes(){
+        return comprobanteServicio.obtenerTodosLosComprobantes();
     }
     @GetMapping("/api/clientes/comprobantes")
     public List<ComprobanteDTO> obtenerComprobantesCliente(@RequestParam long idCliente){
