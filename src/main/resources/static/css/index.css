@@ -436,6 +436,9 @@ ul {
 	bottom: 20px;
 	animation: animateWave_02 3s linear infinite;
 }
+.aFotter {
+	color: var(--color-blanco);
+}
 /* MODAL */
 
 .container {
@@ -602,22 +605,6 @@ ul {
 	}
 	.descripcion {
 		width: 60vw !important;
-	}
-	.div-2 > img {
-		width: 300px !important;
-	}
-	swiper-container {
-		height: 45em;
-	}
-	swiper-slide img {
-		width: 100% !important;
-		height: auto !important;
-	}
-	swiper-slide {
-		min-height: 100vh !important;
-	}
-	.div-botones {
-		width: 10em !important;
 	}
 	.div-ropa {
 		padding-bottom: 50px !important;
