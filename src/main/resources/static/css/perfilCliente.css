@@ -1,0 +1,31 @@
+.mainPerfil{
+min-height: 80vh;
+margin-bottom: 5rem;
+display: flex;
+flex-direction: column;
+align-items: center;
+}
+.mainPerfil h1{
+color: var(--color-negro);
+text-align: center;
+line-height: 1.5;
+font-size: 50px;
+font-weight: 800;
+text-transform: uppercase;
+letter-spacing: 1.5px;
+}
+.mainPerfil h1:after{
+content: '';
+height: 5px;
+width: 225px;
+background-color: var(--color-negro);
+display: block;
+margin: auto;
+}
+.formPerfil{
+min-width: 15rem;
+}
+.infoCliente{
+margin-top: 3rem;
+width: 800px !important;
+}
