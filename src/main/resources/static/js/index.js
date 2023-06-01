@@ -37,10 +37,13 @@ createApp({
 	},
 	methods: {
 		totalProductos() {
-			axios.get('/api/productoTienda').then(response => {
-				this.productos = response.data;
-				console.log(this.productos);
-			});
+			axios
+				.get('/api/productoTienda')
+				.then(response => {
+					this.productos = response.data;
+					console.log(this.productos);
+				})
+				.catch(error => console.log(error));
 		},
 		data() {
 			axios

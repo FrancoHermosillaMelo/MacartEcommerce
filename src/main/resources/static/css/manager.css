@@ -72,7 +72,6 @@ main {
 /*FIN NAVBAR*/
 .div-form {
 	width: 30em !important;
-	margin: auto;
 }
 /* BOTON */
 .boton {
@@ -104,4 +103,20 @@ main {
 .negro:hover {
 	background: var(--color-negro);
 }
-/* FORMULARIO */
+/* PRODUCTOS */
+.div-productos {
+	height: 30em;
+	overflow-y: scroll;
+}
+.div-productos-admin {
+	height: 13em;
+}
+.div-productos-admin > img {
+	height: 11em;
+	object-fit: cover;
+}
+@media only screen and (min-width: 320px) and (max-width: 1000px) {
+	.div-productos {
+		padding-top: 50px !important;
+	}
+}

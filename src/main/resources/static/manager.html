@@ -11,15 +11,15 @@
 			integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ"
 			crossorigin="anonymous"
 		/>
-		<link rel="shortcut icon" href="../img/favicon.jpg" type="image/x-icon" />
-		<link rel="stylesheet" href="../css/manager.css" />
+		<link rel="shortcut icon" href="./img/favicon.jpg" type="image/x-icon" />
+		<link rel="stylesheet" href="./css/manager.css" />
 	</head>
 	<body>
 		<div id="app">
 			<header class="header-nav">
 				<nav class="navbar navbar-expand-lg">
 					<div class="container-fluid">
-						<a class="navbar-brand texto-logo" href="../index.html">Ma<span>cart.</span></a>
+						<a class="navbar-brand texto-logo" href="./index.html">Ma<span>cart.</span></a>
 						<button
 							class="navbar-toggler"
 							type="button"
@@ -33,9 +33,9 @@
 						</button>
 						<div class="collapse navbar-collapse justify-content-end" id="navbarNavAltMarkup">
 							<div class="navbar-nav">
-								<a class="nav-link texto-nav hover-a text-center" href="../index.html">Inicio</a>
+								<a class="nav-link texto-nav hover-a text-center" href="./index.html">Inicio</a>
 								<a class="nav-link texto-nav hover-a text-center" href="#">Catálogo</a>
-								<a class="nav-link texto-nav hover-a text-center" href="./html/sobreNosotros.html">Sobre Nosotros</a>
+								<a class="nav-link texto-nav hover-a text-center" href="../html/sobreNosotros.html">Sobre Nosotros</a>
 								<a class="nav-link texto-nav hover-a text-center" href="#">Preguntas Frecuentes</a>
 								<template v-if="rol === 'ADMIN'">
 									<a class="nav-link activo texto-nav hover-a text-center" href="./html/manager.html">Administrador</a>
@@ -61,7 +61,7 @@
 					</div>
 				</nav>
 			</header>
-			<main class="d-flex justify-content-center align-items-center">
+			<main class="d-flex justify-content-around align-items-center flex-wrap">
 				<div class="div-form d-flex flex-column">
 					<form @submit.prevent="añadirProducto" enctype="multipart/form-data">
 						<div class="input-group mb-3">
@@ -132,6 +132,22 @@
 						</div>
 					</form>
 				</div>
+				<div class="div-productos">
+					<h2 class="pb-4">TODOS LOS PRODUCTOS</h2>
+					<template v-for="producto of productos">
+						<div class="div-productos-admin d-flex align-items-center pb-5">
+							<img :src="producto.imagenesUrl[0]" />
+							<div class="d-flex flex-column ms-3 justify-content-center">
+								<h5>{{producto.categoriaGenero}}</h5>
+								<h4>{{producto.nombre}}</h4>
+								<span>COP$ {{producto.precio}}</span>
+								<span>{{producto.subCategoria}}</span>
+								<span>Talle inferior : {{producto.tallaInferior}}</span>
+								<span>Talle Superior : {{producto.tallaSuperior}}</span>
+							</div>
+						</div>
+					</template>
+				</div>
 			</main>
 		</div>
 		<script
@@ -142,6 +158,6 @@
 		<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 		<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 		<script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
-		<script src="../js/manager.js"></script>
+		<script src="./js/manager.js"></script>
 	</body>
 </html>
