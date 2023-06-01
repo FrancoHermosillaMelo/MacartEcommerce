@@ -92,10 +92,5 @@ public CommandLineRunner initData(ClienteRepositorio clienteRepositorio, Direcci
 	};
 	}
 
-//	@EventListener(ApplicationReadyEvent.class)
-//	public void nviarCorreo(){
-//		enviarCorreoImplementacion.enviarCorreo("carlosandresgoo@gmail.com",
-//				"This is subject",
-//				"This is body of Email");
-//	}
+
 }

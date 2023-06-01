@@ -123,7 +123,7 @@ public class ComprobanteControlador {
         PdfWriter.getInstance(document, outputStream);
         document.open();
 
-        // Construir el contenido del PDF
+
         Image logo = Image.getInstance("C:\\Tareas mind hub\\Tercera parte del mind hub\\MacartEcommerce\\src\\main\\resources\\static\\img\\Black_Logo.png");
         logo.scaleToFit(120, 120);
         document.add(logo);
