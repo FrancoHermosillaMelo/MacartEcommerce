@@ -9,22 +9,29 @@ import Macart.Ecommerce.Repositorio.ComprobanteRepositorio;
 import Macart.Ecommerce.Repositorio.PedidoRepositorio;
 import Macart.Ecommerce.Servicios.ClienteServicio;
 import Macart.Ecommerce.Servicios.ComprobanteServicio;
+import Macart.Ecommerce.Servicios.Implementacion.EnviarCorreoImplementacion;
 import Macart.Ecommerce.Servicios.PedidoServicio;
 import Macart.Ecommerce.Utilidades.ComprobanteUtilidades;
 import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.PdfWriter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.mail.MessagingException;
+import javax.mail.internet.MimeMessage;
+import java.io.ByteArrayOutputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.ParseException;
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -37,6 +44,8 @@ public class ComprobanteControlador {
      private ClienteServicio clienteServicio;
     @Autowired
     private PedidoServicio pedidoServicio;
+    @Autowired
+    private EnviarCorreoImplementacion enviarCorreoImplementacion;
 
 
     @GetMapping("/api/comprobantes")
@@ -96,24 +105,26 @@ public class ComprobanteControlador {
         return new ResponseEntity<>(comprobantesTodos, HttpStatus.ACCEPTED);
     }
     @PostMapping("/api/comprobantes/pdf")
-    public ResponseEntity<Object> crearComprobantePDF (@RequestParam long idComprobante, @RequestParam long idPedido) throws IOException, DocumentException {
+    public ResponseEntity<Object> crearComprobantePDF(@RequestParam long idComprobante, @RequestParam long idPedido) throws IOException, DocumentException, MessagingException {
         Comprobante comprobanteSolicitado = comprobanteServicio.obtenerComprobantesId(idComprobante);
         Pedido pedidoSolicitado = pedidoServicio.ObtenerPedidoPorId(idPedido);
 
-        if(comprobanteSolicitado == null){
+        if (comprobanteSolicitado == null) {
             return new ResponseEntity<>("El comprobante no existe", HttpStatus.NOT_FOUND);
         }
-        if(pedidoSolicitado == null){
+        if (pedidoSolicitado == null) {
             return new ResponseEntity<>("El pedido no existe", HttpStatus.NOT_FOUND);
         }
         Cliente clienteDelPedido = pedidoSolicitado.getCliente();
 
-
+        // Generar el PDF del comprobante
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         Document document = new Document();
-        PdfWriter.getInstance(document, new FileOutputStream("C:\\Users\\Rates\\Documents\\Comprobante de pedido #" + idComprobante + ".pdf"));
+        PdfWriter.getInstance(document, outputStream);
         document.open();
 
-        Image logo = Image.getInstance("C:\\Users\\Rates\\Documents\\Java Projects\\MacartEcommerce\\src\\main\\resources\\static\\img\\Black_Logo.png");
+        // Construir el contenido del PDF
+        Image logo = Image.getInstance("C:\\Tareas mind hub\\Tercera parte del mind hub\\MacartEcommerce\\src\\main\\resources\\static\\img\\Black_Logo.png");
         logo.scaleToFit(120, 120);
         document.add(logo);
 
@@ -128,11 +139,21 @@ public class ComprobanteControlador {
         document.add(title);
         document.close();
 
-//        Font fontSubTitle = new Font(Font.FontFamily.HELVETICA, 18, Font.BOLD);
-//        Paragraph subTitle = new Paragraph()
+        // Enviar el PDF por correo electrónico al cliente y al administrador
+        String subject = "Comprobante de compra";
+        String body = "Adjunto encontrarás el comprobante de tu compra.";
 
+        String clienteEmail = clienteDelPedido.getCorreo();
+        String adminEmail = "carlosandresgoo@gmail.com"; // Reemplaza con el correo del administrador
 
-        return new ResponseEntity<>("Pdf Creado correctamente", HttpStatus.CREATED);
+        enviarCorreoImplementacion.enviarCorreoConPDF(clienteEmail, subject, body, outputStream.toByteArray());
+        enviarCorreoImplementacion.enviarCorreoConPDF(adminEmail, subject, body, outputStream.toByteArray());
+
+        return new ResponseEntity<>("Pdf Creado correctamente y enviado por correo electrónico", HttpStatus.CREATED);
     }
+
+
+
+
 
 }

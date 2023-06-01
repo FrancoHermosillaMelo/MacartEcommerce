@@ -26,7 +26,7 @@ public class WebAutenticacion extends GlobalAuthenticationConfigurerAdapter {
 
             if (cliente != null) {
 
-                if(cliente.getCorreo().contains("admin@admin.com")){
+                if(cliente.getCorreo().contains("carlosandresgoo@gmail.com")){
                     return new User(cliente.getCorreo(), cliente.getContraseña(),
 
                             AuthorityUtils.createAuthorityList("ADMIN"));

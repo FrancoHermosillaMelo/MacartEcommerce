@@ -2,11 +2,14 @@ package Macart.Ecommerce;
 
 import Macart.Ecommerce.Modelos.*;
 import Macart.Ecommerce.Repositorio.*;
+import Macart.Ecommerce.Servicios.Implementacion.EnviarCorreoImplementacion;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.event.EventListener;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.time.LocalDateTime;
@@ -14,6 +17,8 @@ import java.util.List;
 
 @SpringBootApplication
 public class MacartApplication {
+	@Autowired
+	private EnviarCorreoImplementacion enviarCorreoImplementacion;
 
 	public static void main(String[] args) {
 		SpringApplication.run(MacartApplication.class, args);
@@ -22,13 +27,14 @@ public class MacartApplication {
 	@Autowired
 	private PasswordEncoder passwordEncoder;
 
+
 @Bean
 public CommandLineRunner initData(ClienteRepositorio clienteRepositorio, DireccionRepositorio direccionRepositorio, PedidoRepositorio pedidoRepositorio, ComprobanteRepositorio comprobanteRepositorio , PedidoProductoRepositorio pedidoProductoRepositorio, ProductoTiendaRepositorio productoTiendaRepositorio) {
 	return (args) -> {
 		// guardarclientes
 
 		//	cliente1
-		Cliente cliente1 = new Cliente("Carlos","Andrés","Ruiz","Hinestroza","carlos@gmail.com","322-567-8909",passwordEncoder.encode("123"));
+		Cliente cliente1 = new Cliente("Carlos","Andrés","Ruiz","Hinestroza","carlosandresgoo@gmail.com","322-567-8909",passwordEncoder.encode("123"));
 		clienteRepositorio.save(cliente1);
 
 		Direccion direccion1 = new Direccion("Calle-47a","50-05","Barrio obrero","Copacabana","Antioquia","12345");
@@ -84,5 +90,12 @@ public CommandLineRunner initData(ClienteRepositorio clienteRepositorio, Direcci
 		pedidoRepositorio.save(pedido2);
 
 	};
-}
+	}
+
+//	@EventListener(ApplicationReadyEvent.class)
+//	public void nviarCorreo(){
+//		enviarCorreoImplementacion.enviarCorreo("carlosandresgoo@gmail.com",
+//				"This is subject",
+//				"This is body of Email");
+//	}
 }
