@@ -3,10 +3,7 @@ package Macart.Ecommerce.Modelos;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 public class ProductoTienda {
@@ -19,11 +16,11 @@ public class ProductoTienda {
     private String descripcion;
     private int stock;
     @ElementCollection
-    private  List<ProductoTiendaTallaSuperior> tallaSuperior = new ArrayList<ProductoTiendaTallaSuperior>();
+    private List<String> tallaSuperior = new ArrayList<>();
     @ElementCollection
-    private List<ProductoTiendaTallaInferior> tallaInferior = new ArrayList<ProductoTiendaTallaInferior>();
+    private List<String> tallaInferior = new ArrayList<>();
     @ElementCollection
-    private List<String> imagenesUrl = new ArrayList<String>();
+    private List<String> imagenesUrl = new ArrayList<>();
     private ProductoTiendaCategoriaGenero categoriaGenero;
     private String subCategoria;
     @OneToMany(mappedBy="productoTienda", fetch= FetchType.EAGER)
@@ -32,7 +29,7 @@ public class ProductoTienda {
     public ProductoTienda() {
     }
 
-    public ProductoTienda(String nombre, double precio, String descripcion, List<ProductoTiendaTallaSuperior> tallaSuperior, List<ProductoTiendaTallaInferior> tallaInferior, List<String>imagenesUrl, ProductoTiendaCategoriaGenero categoriaGenero, String subCategoria, int stock) {
+    public ProductoTienda(String nombre, double precio, String descripcion, List<String> tallaSuperior, List<String> tallaInferior, List<String>imagenesUrl, ProductoTiendaCategoriaGenero categoriaGenero, String subCategoria, int stock) {
         this.nombre = nombre;
         this.precio = precio;
         this.descripcion = descripcion;
@@ -48,6 +45,8 @@ public class ProductoTienda {
         this.nombre = nombre;
     }
 
+
+
     public void agregarPedidoProducto(PedidoProducto pedidoproducto) {
         pedidoproducto.setProductoTienda(this);
         pedidoproductos.add(pedidoproducto);
@@ -61,20 +60,20 @@ public class ProductoTienda {
         return stock;
     }
 
-    public void setTallaSuperior(List<ProductoTiendaTallaSuperior> tallaSuperior) {
-        this.tallaSuperior = tallaSuperior;
-    }
-
-    public void setTallaInferior(List<ProductoTiendaTallaInferior> tallaInferior) {
-        this.tallaInferior = tallaInferior;
-    }
-
-    public List<ProductoTiendaTallaSuperior> getTallaSuperior() {
+    public List<String> getTallaSuperior() {
         return tallaSuperior;
     }
 
-    public List<ProductoTiendaTallaInferior> getTallaInferior() {
+    public void setTallaSuperior(List<String> tallaSuperior) {
+        this.tallaSuperior = tallaSuperior;
+    }
+
+    public List<String> getTallaInferior() {
         return tallaInferior;
+    }
+
+    public void setTallaInferior(List<String> tallaInferior) {
+        this.tallaInferior = tallaInferior;
     }
 
     public void setStock(int stock) {
@@ -137,11 +136,4 @@ public class ProductoTienda {
         this.pedidoproductos = pedidoproductos;
     }
 
-    public List<String> getImagenenesUrl() {
-        return imagenesUrl;
-    }
-
-    public void setImagenenesUrl(List<String> imagenenesUrl) {
-        this.imagenesUrl = imagenenesUrl;
-    }
 }
