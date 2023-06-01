@@ -11,6 +11,7 @@
 			integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ"
 			crossorigin="anonymous"
 		/>
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" />
 		<link rel="shortcut icon" href="./img/favicon.jpg" type="image/x-icon" />
 		<link rel="stylesheet" href="./css/manager.css" />
 	</head>
@@ -61,19 +62,16 @@
 					</div>
 				</nav>
 			</header>
-			<main class="d-flex justify-content-around align-items-center flex-wrap">
+			<main class="d-flex justify-content-around align-items-center flex-wrap main">
 				<div class="div-form d-flex flex-column">
+					<h5 class="text-center text-white">AÑADIR PRODUCTO</h5>
 					<form @submit.prevent="añadirProducto" enctype="multipart/form-data">
 						<div class="input-group mb-3">
 							<span class="input-group-text" id="basic-addon1">PRODUCTO</span>
 							<input type="text" class="form-control" placeholder="Nombre del Producto" aria-describedby="basic-addon1" required v-model="nombre" />
 						</div>
 
-						<div class="form-check mb-3">
-							<input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" />
-							<label class="form-check-label" for="flexCheckDefault"> Talle superior </label>
-						</div>
-						<select class="form-select" aria-label="Default select example" v-model="talleSuperior">
+						<select class="form-select mb-2 text-center" aria-label="Default select example" v-model="talleSuperior">
 							<option selected value="">TALLE SUPERIOR</option>
 							<option value="XS">XS</option>
 							<option value="S">S</option>
@@ -81,11 +79,8 @@
 							<option value="L">L</option>
 							<option value="XL">XL</option>
 						</select>
-						<div class="form-check mb-3 mt-3">
-							<input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" />
-							<label class="form-check-label" for="flexCheckChecked"> Talle inferior </label>
-						</div>
-						<select class="form-select" aria-label="Default select example" v-model="talleInferior">
+
+						<select class="form-select text-center" aria-label="Default select example" v-model="talleInferior">
 							<option selected value="">TALLE INFERIOR</option>
 							<option value="S">S</option>
 							<option value="M">M</option>
@@ -93,12 +88,12 @@
 						</select>
 						<div class="d-flex justify-content-evenly align-items-center mb-2 mt-2">
 							<div class="form-check">
-								<input class="form-check-input" type="radio" value="HOMBRE" name="sexo" id="flexCheckDefault" v-model="genero" />
-								<label class="form-check-label" for="flexCheckDefault"> Hombre </label>
+								<input class="form-check-input" type="radio" value="HOMBRE" name="sexo" id="men" v-model="genero" />
+								<label class="form-check-label text-white" for="men"> Hombre </label>
 							</div>
 							<div class="form-check">
-								<input class="form-check-input" type="radio" value="MUJER" name="sexo" id="flexCheckChecked" v-model="genero" />
-								<label class="form-check-label" for="flexCheckChecked"> Mujer </label>
+								<input class="form-check-input" type="radio" value="MUJER" name="sexo" id="woman" v-model="genero" />
+								<label class="form-check-label text-white" for="woman"> Mujer </label>
 							</div>
 						</div>
 						<select class="form-select" aria-label="Default select example" required v-model="categoriaSub">
@@ -113,12 +108,12 @@
 							<option value="ACCESORIOS">ACCESORIOS</option>
 						</select>
 						<div class="mb-3 mt-3">
-							<label for="formFile" class="form-label">FOTO DEL PRODODUCTO</label>
+							<label for="formFile" class="form-label text-white">FOTO DEL PRODODUCTO</label>
 							<input class="form-control" type="file" id="image" accept="img/" name="archivo" v-model="imagen" />
 						</div>
 
 						<div class="input-group mb-3">
-							<span class="input-group-text">$</span>
+							<span class="input-group-text">COP$</span>
 							<input type="number" class="form-control" aria-label="Amount (to the nearest dollar)" required v-model="precio" />
 							<span class="input-group-text">.00</span>
 						</div>
@@ -132,23 +127,165 @@
 						</div>
 					</form>
 				</div>
-				<div class="div-productos">
-					<h2 class="pb-4">TODOS LOS PRODUCTOS</h2>
-					<template v-for="producto of productos">
-						<div class="div-productos-admin d-flex align-items-center pb-5">
-							<img :src="producto.imagenesUrl[0]" />
-							<div class="d-flex flex-column ms-3 justify-content-center">
-								<h5>{{producto.categoriaGenero}}</h5>
-								<h4>{{producto.nombre}}</h4>
-								<span>COP$ {{producto.precio}}</span>
-								<span>{{producto.subCategoria}}</span>
-								<span>Talle inferior : {{producto.tallaInferior}}</span>
-								<span>Talle Superior : {{producto.tallaSuperior}}</span>
+				<div>
+					<div class="input-group rounded buscar pb-5">
+						<input
+							type="search"
+							class="form-control rounded"
+							placeholder="Search"
+							aria-label="Search"
+							aria-describedby="search-addon"
+							v-model="busqueda"
+							@keyup="productosFiltrados"
+						/>
+					</div>
+					<h2 class="texto-producto pb-4 text-white text-center pe-3">TODOS LOS PRODUCTOS</h2>
+					<div class="div-productos">
+						<template v-if="productosFiltro.length > 0" v-for="producto of productosFiltro">
+							<div class="div-productos-admin d-flex align-items-center pb-5 flex-wrap">
+								<img :src="producto.imagenesUrl[0]" />
+								<div class="div-texto-admin d-flex flex-column ms-3 justify-content-center">
+									<h5 class="text-white">{{producto.categoriaGenero}}</h5>
+									<h4 class="text-white">{{producto.nombre}}</h4>
+									<span class="text-white">COP$ {{producto.precio.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}}</span>
+									<span class="text-white">{{producto.subCategoria}}</span>
+									<template v-if="producto.tallaInferior !== null">
+										<span class="text-white">Talle inferior: {{producto.tallaInferior}}</span>
+									</template>
+									<template v-if="producto.tallaSuperior !== null">
+										<span class="text-white">Talle superior: {{producto.tallaSuperior}}</span>
+									</template>
+								</div>
+								<div class="d-flex justify-content-center flex-column div-iconos-admin gap-2">
+									<i class="bi bi-pencil" data-bs-toggle="modal" data-bs-target="#modalEditor">Modificar</i>
+									<template v-if="producto.activo">
+										<i class="bi bi-trash3" @click="desactivarProducto(producto.id)">Desactivar</i>
+									</template>
+									<template v-else>
+										<i class="bi bi-trash3" @click="activarProducto(producto.id)">Activar</i>
+									</template>
+								</div>
 							</div>
-						</div>
-					</template>
+						</template>
+						<template v-else>
+							<h4 class="text-center text-white">No existe el producto</h4>
+						</template>
+					</div>
 				</div>
 			</main>
+			<footer class="footer pt-5">
+				<div class="waves">
+					<div class="wave" id="wave1"></div>
+					<div class="wave" id="wave2"></div>
+					<div class="wave" id="wave3"></div>
+					<div class="wave" id="wave4"></div>
+				</div>
+				<img class="logo-footer" src="./img/LogoMacart.png" alt="Logo de Macart" />
+				<div class="social-icon-container">
+					<a href="https://wa.me/message/UDEKP6X67HYRK1" class="social-icon" target="_blank"><i class="bi-whatsapp"></i></a>
+					<a href="https://www.instagram.com/macartcostume/" class="social-icon" target="_blank"><i class="bi-instagram"></i></a>
+					<a href="https://www.facebook.com/" class="social-icon" target="_blank"><i class="bi-facebook"></i></a>
+				</div>
+				<ul class="footer-menu-container">
+					<li class="menu-item"><a class="aFotter" href="./html/sobreNosotros.html">Sobre Nosotros</a></li>
+					<li class="menu-item">Preguntas Frecuentes</li>
+					<li class="menu-item" data-bs-toggle="modal" data-bs-target="#exampleModal2">Política de privacidad</li>
+					<li class="menu-item" data-bs-toggle="modal" data-bs-target="#exampleModal">Términos de uso</li>
+				</ul>
+				<div class="pagos-icon-container">
+					<span>Métodos de pago</span>
+					<div class="img-pagos">
+						<img src="./img/Mercado Pago.png" alt="Mercado Pago" />
+						<img src="./img/Visa.png" alt="Visa" />
+						<img src="./img/Mastercard.png" alt="Mastercard" />
+						<img src="./img/American Express.png" alt="American Express" />
+						<img src="./img/PSE.png" alt="PSE" />
+						<img src="./img/Efecty.png" alt="Efecty" />
+					</div>
+				</div>
+				<span class="copyright">&copy;2023, Macart Costume. Todos los derechos reservados.</span>
+			</footer>
+
+			<!-- MODAL DE MODIFICACION -->
+			<div class="modal fade" id="modalEditor" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h1 class="modal-title fs-5 text-center" id="exampleModalLabel">Editar Producto</h1>
+							<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+						</div>
+						<div class="modal-body">
+							<form @submit.prevent="editarDireccion">
+								<div class="input-group mb-3">
+									<span class="input-group-text" id="basic-addon1">PRODUCTO</span>
+									<input
+										type="text"
+										class="form-control"
+										placeholder="Nombre del Producto"
+										aria-describedby="basic-addon1"
+										required
+										v-model="nombre"
+									/>
+								</div>
+
+								<select class="form-select mb-2 text-center" aria-label="Default select example" v-model="talleSuperior">
+									<option selected value="">TALLE SUPERIOR</option>
+									<option value="XS">XS</option>
+									<option value="S">S</option>
+									<option value="M">M</option>
+									<option value="L">L</option>
+									<option value="XL">XL</option>
+								</select>
+
+								<select class="form-select text-center" aria-label="Default select example" v-model="talleInferior">
+									<option selected value="">TALLE INFERIOR</option>
+									<option value="S">S</option>
+									<option value="M">M</option>
+									<option value="L">L</option>
+								</select>
+								<div class="d-flex justify-content-evenly align-items-center mb-2 mt-2">
+									<div class="form-check">
+										<input class="form-check-input" type="radio" value="HOMBRE" name="sexo" id="men" v-model="genero" />
+										<label class="form-check-label" for="men"> Hombre </label>
+									</div>
+									<div class="form-check">
+										<input class="form-check-input" type="radio" value="MUJER" name="sexo" id="woman" v-model="genero" />
+										<label class="form-check-label" for="woman"> Mujer </label>
+									</div>
+								</div>
+								<select class="form-select" aria-label="Default select example" required v-model="categoriaSub">
+									<option selected value="">SELECIONAR SUBCATEGORIA</option>
+									<option value="BLUSA">BLUSA</option>
+									<option value="CAMISETA">CAMISETA</option>
+									<option value="BUZO">BUZO</option>
+									<option value="CHAQUETA">CHAQUETA</option>
+									<option value="PANTALON">PANTALON</option>
+									<option value="FALDA">FALDA</option>
+									<option value="SHORT">SHORT</option>
+									<option value="ACCESORIOS">ACCESORIOS</option>
+								</select>
+								<div class="mb-3 mt-3">
+									<label for="formFile" class="form-label text-white">FOTO DEL PRODODUCTO</label>
+									<input class="form-control" type="file" id="image" accept="img/" name="archivo" v-model="imagen" />
+								</div>
+
+								<div class="input-group mb-3">
+									<span class="input-group-text">COP$</span>
+									<input type="number" class="form-control" aria-label="Amount (to the nearest dollar)" required v-model="precio" />
+									<span class="input-group-text">.00</span>
+								</div>
+
+								<div class="input-group mb-3">
+									<span class="input-group-text">DESCRIPCION DEL PRODUCTO</span>
+									<textarea class="form-control" aria-label="With textarea" required v-model="descripcion"></textarea>
+								</div>
+								<button type="submit" class="btn btn-dark">Editar</button>
+								<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
 		</div>
 		<script
 			src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"

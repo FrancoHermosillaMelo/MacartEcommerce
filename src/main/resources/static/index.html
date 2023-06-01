@@ -141,7 +141,7 @@
 					</div>
 
 					<div class="div-card d-md-flex d-none justify-content-evenly flex-wrap">
-						<template v-for="producto of productos">
+						<template v-for="producto of productos.slice(0, 5)">
 							<div class="card div-1" style="width: 20rem">
 								<img :src="producto.imagenesUrl[0]" class="card-img-top" />
 								<div class="div-2">

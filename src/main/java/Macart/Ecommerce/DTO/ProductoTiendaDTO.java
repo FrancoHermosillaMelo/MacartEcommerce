@@ -15,6 +15,7 @@ public class ProductoTiendaDTO {
     private List<String> imagenesUrl;
     private ProductoTiendaCategoriaGenero categoriaGenero;
     private String subCategoria;
+    private boolean activo;
     public ProductoTiendaDTO(ProductoTienda productoTienda) {
         this.id = productoTienda.getId();
         this.nombre = productoTienda.getNombre();
@@ -25,6 +26,8 @@ public class ProductoTiendaDTO {
         this.imagenesUrl = productoTienda.getImagenenesUrl();
         this.categoriaGenero = productoTienda.getCategoriaGenero();
         this.subCategoria = productoTienda.getSubCategoria();
+        this.activo = productoTienda.isActivo();
+
     }
 
     public long getId() {
@@ -61,5 +64,9 @@ public class ProductoTiendaDTO {
 
     public List<String> getImagenesUrl() {
         return imagenesUrl;
+    }
+
+    public boolean isActivo() {
+        return activo;
     }
 }

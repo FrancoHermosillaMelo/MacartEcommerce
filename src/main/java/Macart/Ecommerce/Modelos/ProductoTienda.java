@@ -23,13 +23,14 @@ public class ProductoTienda {
     private List<String> imagenesUrl = new ArrayList<String>();
     private ProductoTiendaCategoriaGenero categoriaGenero;
     private String subCategoria;
+    private boolean activo;
     @OneToMany(mappedBy="productoTienda", fetch= FetchType.EAGER)
     private Set<PedidoProducto> pedidoproductos = new HashSet<>();
 
     public ProductoTienda() {
     }
 
-    public ProductoTienda(String nombre, double precio, String descripcion, ProductoTiendaTallaSuperior tallaSuperior, ProductoTiendaTallaInferior tallaInferior, List<String>imagenesUrl, ProductoTiendaCategoriaGenero categoriaGenero, String subCategoria) {
+    public ProductoTienda(String nombre, double precio, String descripcion, ProductoTiendaTallaSuperior tallaSuperior, ProductoTiendaTallaInferior tallaInferior, List<String>imagenesUrl, ProductoTiendaCategoriaGenero categoriaGenero, String subCategoria, boolean activo) {
         this.nombre = nombre;
         this.precio = precio;
         this.descripcion = descripcion;
@@ -38,6 +39,7 @@ public class ProductoTienda {
         this.imagenesUrl = imagenesUrl;
         this.categoriaGenero = categoriaGenero;
         this.subCategoria = subCategoria;
+        this.activo = activo;
     }
 
     public ProductoTienda(String nombre) {
@@ -123,5 +125,13 @@ public class ProductoTienda {
 
     public void setImagenenesUrl(List<String> imagenenesUrl) {
         this.imagenesUrl = imagenenesUrl;
+    }
+
+    public boolean isActivo() {
+        return activo;
+    }
+
+    public void setActivo(boolean activo) {
+        this.activo = activo;
     }
 }

@@ -46,20 +46,23 @@ public CommandLineRunner initData(ClienteRepositorio clienteRepositorio, Direcci
 
 		// PRODUCTOS
 
-		ProductoTienda productoTienda1 = new ProductoTienda("Camisa Blanca", 50000.00 , "Camisa blanca de algodon", ProductoTiendaTallaSuperior.M, null, List.of("./img/camisaBlanca.jpg","./img/camisaBlanca2.jpg"), ProductoTiendaCategoriaGenero.HOMBRE, "Camisa"  );
+		ProductoTienda productoTienda1 = new ProductoTienda("Camisa Blanca", 50000.00 , "Camisa blanca de algodon", ProductoTiendaTallaSuperior.M, null, List.of("./img/camisaBlanca.jpg","./img/camisaBlanca2.jpg"), ProductoTiendaCategoriaGenero.HOMBRE, "Camisa", true  );
 		productoTiendaRepositorio.save(productoTienda1);
 
-		ProductoTienda productoTienda2 = new ProductoTienda("Blusa Negra", 70000.00 , "Blusa negra de ribb de algodon", ProductoTiendaTallaSuperior.M, null, List.of("./img/blusaNegra.jpg","./img/blusaNegra2.jpg"), ProductoTiendaCategoriaGenero.MUJER, "Blusa");
+		ProductoTienda productoTienda2 = new ProductoTienda("Blusa Negra", 70000.00 , "Blusa negra de ribb de algodon", ProductoTiendaTallaSuperior.M, null, List.of("./img/blusaNegra.jpg","./img/blusaNegra2.jpg"), ProductoTiendaCategoriaGenero.MUJER, "Blusa", true);
 		productoTiendaRepositorio.save(productoTienda2);
 
-		ProductoTienda productoTienda3 = new ProductoTienda("Blusa Blanca", 50000, "Blusa blanca de ribb de algodón",ProductoTiendaTallaSuperior.S, null, List.of("./img/blusaBlanca.jpg", "./img/blusaBlanca2.jpg"),ProductoTiendaCategoriaGenero.MUJER,"Blusa");
+		ProductoTienda productoTienda3 = new ProductoTienda("Blusa Blanca", 50000, "Blusa blanca de ribb de algodón",ProductoTiendaTallaSuperior.S, null, List.of("./img/blusaBlanca.jpg", "./img/blusaBlanca2.jpg"),ProductoTiendaCategoriaGenero.MUJER,"Blusa", true);
 		productoTiendaRepositorio.save(productoTienda3);
 
-		ProductoTienda productoTienda4 = new ProductoTienda("Bolso Jean", 40000, "Un bolso hecho de jean", null, null, List.of("./img/bolso.jpg", "./img/bolso2.jpg"),ProductoTiendaCategoriaGenero.MUJER, "Bolso");
+		ProductoTienda productoTienda4 = new ProductoTienda("Bolso Jean", 40000, "Un bolso hecho de jean", null, null, List.of("./img/bolso.jpg", "./img/bolso2.jpg"),ProductoTiendaCategoriaGenero.MUJER, "Bolso", true);
 		productoTiendaRepositorio.save(productoTienda4);
 
-		ProductoTienda productoTienda5 = new ProductoTienda("Cartera Jean",45000,"Una cartera hecha de jean", null, null, List.of("./img/cartera.jpg", "./img/cartera2.jpg"), ProductoTiendaCategoriaGenero.MUJER, "Bolso");
+		ProductoTienda productoTienda5 = new ProductoTienda("Cartera Jean",45000,"Una cartera hecha de jean", null, null, List.of("./img/cartera.jpg", "./img/cartera2.jpg"), ProductoTiendaCategoriaGenero.MUJER, "Bolso", true);
 		productoTiendaRepositorio.save(productoTienda5);
+
+		ProductoTienda productoTienda6 = new ProductoTienda("Pantalon Verde", 52000, "Pantalon suave de algodon clasico", null, ProductoTiendaTallaInferior.M, List.of("./img/pantalonVerde.jpg", "./img/pantalonVerde2.jpg"), ProductoTiendaCategoriaGenero.HOMBRE, "Pantalon",true);
+		productoTiendaRepositorio.save(productoTienda6);
 		// PEDIDOS PRODUCTOS
 
 		PedidoProducto pedidoProducto1 = new PedidoProducto(8, productoTienda1 );

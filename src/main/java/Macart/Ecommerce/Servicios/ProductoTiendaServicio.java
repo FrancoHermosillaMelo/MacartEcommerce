@@ -12,5 +12,6 @@ public interface ProductoTiendaServicio {
     ProductoTienda obtenerProductoPorNombre(String nombre);
 
     void guardarProducto(ProductoTienda productoTienda);
-    void borrarProducto(ProductoTienda productoTienda);
+    void desactivarProducto(ProductoTienda productoTienda);
+    void activarProducto(ProductoTienda productoTienda);
 }
