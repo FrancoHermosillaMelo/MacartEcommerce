@@ -1,4 +1,4 @@
-const {createApp} = Vue;
+const { createApp } = Vue;
 
 createApp({
 	data() {
@@ -20,6 +20,11 @@ createApp({
 	created() {
 		this.data();
 		this.obtenerProductos();
+		// const widget = window.cloudinary.createUploadWidget(
+		// 	{ cloud_name: "dtis6pqyq", upload_preset: "upload-test" }, (error, response) => {
+		// 		console.log(error)
+		// 		console.log(response)
+		// 	})
 		this.clienteId = sessionStorage.getItem('clienteId'); // Obtén el identificador único del cliente desde el sessionStorage
 		this.carritos = JSON.parse(localStorage.getItem('carritos')) || {}; // Obtiene los carritos almacenados en el localStorage
 		if (!this.carritos[this.clienteId]) {
@@ -76,66 +81,44 @@ createApp({
 		añadirProducto() {
 			imagen = this.$refs.image.files
 			console.log(imagen)
-			 axios
-			 	.post(
-			 		'/api/productoTienda',
-			 		{
-			 			nombre: this.nombre,
-			 			precio: this.precio,
-			 			descripcion: this.descripcion,
-			 			tallaSuperior: this.talleSuperior,
-			 			tallaInferior: this.talleInferior,
-			 			imagenesUrl: imagen,
-			 			categoriaGenero: this.genero,
-			 			subCategoria: this.categoriaSub,
+			axios
+				.post(
+					'/api/productoTienda',
+					{
+						nombre: this.nombre,
+						precio: this.precio,
+						descripcion: this.descripcion,
+						tallaSuperior: this.talleSuperior,
+						tallaInferior: this.talleInferior,
+						imagenesUrl: imagen,
+						categoriaGenero: this.genero,
+						subCategoria: this.categoriaSub,
 						stock: 20,
-			 		},
-			 		{
-			 			headers: {
-			 				'Content-Type': 'multipart/form-data',
-			 			},
-			 		}
-			 	)
-			 	.then(response => {
-			 		Swal.fire({
-			 			icon: 'success',
-			 			text: 'Añadiste el producto con exito',
-			 			showConfirmButton: false,
-			 			timer: 2000,
-			 		});
-			 		console.log(response);
-			 	});
-		// 	 axios
-		// 	 	.post(
-		// 	 		'/api/productoTienda',
-		// 	 		'nombre=' +
-		// 	 			this.nombre +
-		// 	 			'&precio=' +
-		// 	 			this.precio +
-		// 	 			'&descripcion=' +
-		// 	 			this.descripcion +
-		// 	 			'&tallaSuperior=' +
-		// 	 			this.talleSuperior +
-		// 	 			'&tallaInferior=' +
-		// 	 			this.talleInferior +
-		// 	 			'&imagenesUrl=' +
-		// 	 			// this.$refs.input-file.files +
-		// 	 			'&categoriaGenero=' +
-		// 	 			this.genero +
-		// 	 			'&subCategoria=' +
-		// 	 			this.categoriaSub
-		// 	 	)
-		// 	 	.then(response => {
-		// 	 		Swal.fire({
-		// 	 			icon: 'success',
-		// 	 			text: 'Añadiste el producto con exito',
-		// 	 			showConfirmButton: false,
-		// 	 			timer: 2000,
-		// 	 		});
-		// 	 		console.log(response);
-		// 	 	})
-		// 	 	.catch(error => console.log(error));
-		 },
+					},
+					{
+						headers: {
+							'Content-Type': 'multipart/form-data',
+						},
+					}
+				)
+				.then(response => {
+					Swal.fire({
+						icon: 'success',
+						text: 'Añadiste el producto con exito',
+						showConfirmButton: false,
+						timer: 2000,
+					});
+					console.log(response);
+				});
+		},
+		abrirWidget() {
+			const widget = window.cloudinary.createUploadWidget(
+				{ cloud_name: "dtis6pqyq", upload_preset: "upload-test" }, (error, response) => {
+					console.log(error)
+					console.log(response)
+				})
+			widget.open()
+		},
 
 		salir() {
 			Swal.fire({

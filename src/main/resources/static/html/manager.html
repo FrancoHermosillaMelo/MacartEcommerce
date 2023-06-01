@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=, initial-scale=1.0" />
+		<title>MACART - Administrador/a</title>
+		<link
+			href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css"
+			rel="stylesheet"
+			integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ"
+			crossorigin="anonymous"
+		/>
+		<link rel="shortcut icon" href="../img/favicon.jpg" type="image/x-icon" />
+		<link rel="stylesheet" href="../css/manager.css" />
+		<script src="https://upload-widget.cloudinary.com/global/all.js" type="text/javascript"></script>  
+	</head>
+	<body>
+		<div id="app">
+			<header class="header-nav">
+				<nav class="navbar navbar-expand-lg">
+					<div class="container-fluid">
+						<a class="navbar-brand texto-logo" href="../index.html">Ma<span>cart.</span></a>
+						<button
+							class="navbar-toggler"
+							type="button"
+							data-bs-toggle="collapse"
+							data-bs-target="#navbarNavAltMarkup"
+							aria-controls="navbarNavAltMarkup"
+							aria-expanded="false"
+							aria-label="Toggle navigation"
+						>
+							<span class="navbar-toggler-icon"></span>
+						</button>
+						<div class="collapse navbar-collapse justify-content-end" id="navbarNavAltMarkup">
+							<div class="navbar-nav">
+								<a class="nav-link texto-nav hover-a text-center" href="../index.html">Inicio</a>
+								<a class="nav-link texto-nav hover-a text-center" href="#">Catálogo</a>
+								<a class="nav-link texto-nav hover-a text-center" href="./html/sobreNosotros.html">Sobre Nosotros</a>
+								<a class="nav-link texto-nav hover-a text-center" href="#">Preguntas Frecuentes</a>
+								<template v-if="rol === 'ADMIN'">
+									<a class="nav-link activo texto-nav hover-a text-center" href="./html/manager.html">Administrador</a>
+								</template>
+							</div>
+						</div>
+						<div class="collapse navbar-collapse justify-content-end" id="navbarNavAltMarkup">
+							<div class="div-iconos navbar-nav gap-3">
+								<template v-if="rol === 'VISITANTE'">
+									<button type="button" class="boton-nav" data-bs-toggle="modal" data-bs-target="#ModalForm">Ingresar</button>
+								</template>
+								<template v-else>
+									<a class="nav-link texto-nav hover-iconos texto-iconos text-center" aria-current="page" href="#"
+										><i class="bi bi-person pe-1"></i>{{clienteIngresado.primerNombre}}</a
+									>
+
+									<a class="nav-link texto-nav hover-iconos texto-iconos text-center" href="#"
+										><i @click="salir" class="bi bi-box-arrow-right"></i
+									></a>
+								</template>
+							</div>
+						</div>
+					</div>
+				</nav>
+			</header>
+			<main class="d-flex justify-content-center align-items-center">
+				<div class="div-form d-flex flex-column">
+					<form @submit.prevent="añadirProducto"enctype="multipart/form-data">
+						<div class="input-group mb-3">
+							<span class="input-group-text" id="basic-addon1">PRODUCTO</span>
+							<input type="text" class="form-control" placeholder="Nombre del Producto" aria-describedby="basic-addon1" required v-model="nombre" />
+						</div>
+
+						<div class="form-check mb-3">
+							<input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" />
+							<label class="form-check-label" for="flexCheckDefault"> Talle superior </label>
+						</div>
+						<select class="form-select" aria-label="Default select example" v-model="talleSuperior">
+							<option selected value="">TALLE SUPERIOR</option>
+							<option value="XS">XS</option>
+							<option value="S">S</option>
+							<option value="M">M</option>
+							<option value="L">L</option>
+							<option value="XL">XL</option>
+						</select>
+						<div class="form-check mb-3 mt-3">
+							<input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" />
+							<label class="form-check-label" for="flexCheckChecked"> Talle inferior </label>
+						</div>
+						<select class="form-select" aria-label="Default select example" v-model="talleInferior">
+							<option selected value="">TALLE INFERIOR</option>
+							<option value="S">S</option>
+							<option value="M">M</option>
+							<option value="L">L</option>
+						</select>
+						<div class="d-flex justify-content-evenly align-items-center mb-2 mt-2">
+							<div class="form-check">
+								<input class="form-check-input" type="radio" value="HOMBRE" name="sexo" id="flexCheckDefault" v-model="genero" />
+								<label class="form-check-label" for="flexCheckDefault"> Hombre </label>
+							</div>
+							<div class="form-check">
+								<input class="form-check-input" type="radio" value="MUJER" name="sexo" id="flexCheckChecked" v-model="genero" />
+								<label class="form-check-label" for="flexCheckChecked"> Mujer </label>
+							</div>
+						</div>
+						<select class="form-select" aria-label="Default select example" required v-model="categoriaSub">
+							<option selected value="">SELECIONAR SUBCATEGORIA</option>
+							<option value="BLUSA">BLUSA</option>
+							<option value="CAMISETA">CAMISETA</option>
+							<option value="BUZO">BUZO</option>
+							<option value="CHAQUETA">CHAQUETA</option>
+							<option value="PANTALON">PANTALON</option>
+							<option value="FALDA">FALDA</option>
+							<option value="SHORT">SHORT</option>
+							<option value="ACCESORIOS">ACCESORIOS</option>
+						</select>
+						<div class="d-flex justify-content-center">
+							<button type="button" @click="abrirWidget" class="boton negro" >Subir imagen</button>
+						</div>
+
+						<div class="input-group mb-3">
+							<span class="input-group-text">$</span>
+							<input type="number" class="form-control" aria-label="Amount (to the nearest dollar)" required v-model="precio" />
+							<span class="input-group-text">.00</span>
+						</div>
+
+						<div class="input-group mb-3">
+							<span class="input-group-text">DESCRIPCION DEL PRODUCTO</span>
+							<textarea class="form-control" aria-label="With textarea" required v-model="descripcion"></textarea>
+						</div>
+						<div class="d-flex justify-content-center">
+							<button type="submit" class="boton negro">Añadir producto</button>
+						</div>
+					</form>
+				</div>
+			</main>
+		</div>
+		<script
+			src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"
+			integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe"
+			crossorigin="anonymous"
+		></script>
+		<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+		<script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+		<script src="../js/manager.js"></script>
+	</body>
+</html>
