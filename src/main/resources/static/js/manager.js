@@ -14,12 +14,12 @@ createApp({
 			imagen: '',
 			genero: '',
 			categoriaSub: '',
+			productos: '',
 		};
 	},
 	created() {
-		// this.roles();
 		this.data();
-		this.totalProductos();
+		this.obtenerProductos();
 		this.clienteId = sessionStorage.getItem('clienteId'); // Obtén el identificador único del cliente desde el sessionStorage
 		this.carritos = JSON.parse(localStorage.getItem('carritos')) || {}; // Obtiene los carritos almacenados en el localStorage
 		if (!this.carritos[this.clienteId]) {
@@ -50,6 +50,15 @@ createApp({
 						this.carritos[this.clienteId] = []; // Crea un carrito vacío para el cliente si no existe
 					}
 					this.carrito = this.carritos[this.clienteId]; // Asigna el carrito correspondiente al cliente actual
+				})
+				.catch(error => console.log(error));
+		},
+		obtenerProductos() {
+			axios
+				.get('/api/productoTienda')
+				.then(response => {
+					this.productos = response.data;
+					console.log(this.productos);
 				})
 				.catch(error => console.log(error));
 		},
