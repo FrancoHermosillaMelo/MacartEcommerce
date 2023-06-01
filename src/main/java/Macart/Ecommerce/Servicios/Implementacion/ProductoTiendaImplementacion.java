@@ -40,7 +40,14 @@ public class ProductoTiendaImplementacion implements ProductoTiendaServicio {
     }
 
     @Override
-    public void borrarProducto(ProductoTienda productoTienda) {
-        productoTiendaRepositorio.delete(productoTienda);
+    public void desactivarProducto(ProductoTienda productoTienda) {
+        productoTienda.setActivo(false);
+        guardarProducto(productoTienda);
+    }
+
+    @Override
+    public void activarProducto(ProductoTienda productoTienda) {
+        productoTienda.setActivo(true);
+        guardarProducto(productoTienda);
     }
 }

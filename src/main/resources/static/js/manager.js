@@ -15,6 +15,9 @@ createApp({
 			genero: '',
 			categoriaSub: '',
 			productos: '',
+			productosFiltro: '',
+			busqueda: '',
+			productosActivos: '',
 		};
 	},
 	created() {
@@ -37,11 +40,6 @@ createApp({
 		console.log(this.$refs)
 	},
 	methods: {
-		totalProductos() {
-			axios.get('/api/productoTienda').then(response => {
-				this.productos = response.data;
-			});
-		},
 		data() {
 			axios
 				.get('/api/clientes/actual')
@@ -63,9 +61,15 @@ createApp({
 				.get('/api/productoTienda')
 				.then(response => {
 					this.productos = response.data;
+					this.productosFiltro = this.productos;
 					console.log(this.productos);
 				})
 				.catch(error => console.log(error));
+		},
+		productosFiltrados() {
+			this.productosFiltro = this.productos.filter(producto => {
+				return producto.nombre.toLowerCase().includes(this.busqueda.toLowerCase());
+			});
 		},
 		roles() {
 			axios
@@ -120,6 +124,64 @@ createApp({
 					}
 				})
 			widget.open()
+		},
+		desactivarProducto(id) {
+			Swal.fire({
+				title: 'Seguro que quieres desactivar este producto ?',
+				icon: 'warning',
+				showCancelButton: true,
+				confirmButtonColor: '#3085d6',
+				confirmButtonText: 'Desactivar',
+			}).then(result => {
+				if (result.isConfirmed) {
+					axios
+						.patch(`/api/productoTienda/${id}`)
+						.then(response => {
+							Swal.fire({
+								icon: 'success',
+								text: 'Se elimino correctamente',
+								showConfirmButton: false,
+								timer: 2000,
+							}).then(() => (window.location.href = '/manager.html'));
+						})
+						.catch(error => {
+							Swal.fire({
+								icon: 'error',
+								text: error.response.data,
+								confirmButtonColor: '#7c601893',
+							});
+						});
+				}
+			});
+		},
+		activarProducto(id) {
+			Swal.fire({
+				title: 'Seguro que quieres activar este producto ?',
+				icon: 'warning',
+				showCancelButton: true,
+				confirmButtonColor: '#3085d6',
+				confirmButtonText: 'Activar',
+			}).then(result => {
+				if (result.isConfirmed) {
+					axios
+						.patch(`/api/productoTienda/${id}`)
+						.then(response => {
+							Swal.fire({
+								icon: 'success',
+								text: 'Se activo correctamente',
+								showConfirmButton: false,
+								timer: 2000,
+							}).then(() => (window.location.href = '/manager.html'));
+						})
+						.catch(error => {
+							Swal.fire({
+								icon: 'error',
+								text: error.response.data,
+								confirmButtonColor: '#7c601893',
+							});
+						});
+				}
+			});
 		},
 
 		salir() {
