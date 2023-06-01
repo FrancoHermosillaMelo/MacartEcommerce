@@ -18,8 +18,10 @@ public class ProductoTienda {
     private double precio;
     private String descripcion;
     private int stock;
-    private  ProductoTiendaTallaSuperior tallaSuperior;
-    private ProductoTiendaTallaInferior tallaInferior;
+    @ElementCollection
+    private  List<ProductoTiendaTallaSuperior> tallaSuperior = new ArrayList<ProductoTiendaTallaSuperior>();
+    @ElementCollection
+    private List<ProductoTiendaTallaInferior> tallaInferior = new ArrayList<ProductoTiendaTallaInferior>();
     @ElementCollection
     private List<String> imagenesUrl = new ArrayList<String>();
     private ProductoTiendaCategoriaGenero categoriaGenero;
@@ -30,7 +32,7 @@ public class ProductoTienda {
     public ProductoTienda() {
     }
 
-    public ProductoTienda(String nombre, double precio, String descripcion, ProductoTiendaTallaSuperior tallaSuperior, ProductoTiendaTallaInferior tallaInferior, List<String>imagenesUrl, ProductoTiendaCategoriaGenero categoriaGenero, String subCategoria, int stock) {
+    public ProductoTienda(String nombre, double precio, String descripcion, List<ProductoTiendaTallaSuperior> tallaSuperior, List<ProductoTiendaTallaInferior> tallaInferior, List<String>imagenesUrl, ProductoTiendaCategoriaGenero categoriaGenero, String subCategoria, int stock) {
         this.nombre = nombre;
         this.precio = precio;
         this.descripcion = descripcion;
@@ -57,6 +59,22 @@ public class ProductoTienda {
 
     public int getStock() {
         return stock;
+    }
+
+    public void setTallaSuperior(List<ProductoTiendaTallaSuperior> tallaSuperior) {
+        this.tallaSuperior = tallaSuperior;
+    }
+
+    public void setTallaInferior(List<ProductoTiendaTallaInferior> tallaInferior) {
+        this.tallaInferior = tallaInferior;
+    }
+
+    public List<ProductoTiendaTallaSuperior> getTallaSuperior() {
+        return tallaSuperior;
+    }
+
+    public List<ProductoTiendaTallaInferior> getTallaInferior() {
+        return tallaInferior;
     }
 
     public void setStock(int stock) {
@@ -93,22 +111,6 @@ public class ProductoTienda {
 
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
-    }
-
-    public ProductoTiendaTallaSuperior getTallaSuperior() {
-        return tallaSuperior;
-    }
-
-    public void setTallaSuperior(ProductoTiendaTallaSuperior tallaSuperior) {
-        this.tallaSuperior = tallaSuperior;
-    }
-
-    public ProductoTiendaTallaInferior getTallaInferior() {
-        return tallaInferior;
-    }
-
-    public void setTallaInferior(ProductoTiendaTallaInferior tallaInferior) {
-        this.tallaInferior = tallaInferior;
     }
 
     public ProductoTiendaCategoriaGenero getCategoriaGenero() {

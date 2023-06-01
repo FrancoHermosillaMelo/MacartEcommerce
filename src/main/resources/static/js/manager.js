@@ -114,8 +114,10 @@ createApp({
 		abrirWidget() {
 			const widget = window.cloudinary.createUploadWidget(
 				{ cloud_name: "dtis6pqyq", upload_preset: "upload-test" }, (error, response) => {
-					console.log(error)
-					console.log(response)
+					if(!error && response && response.event === 'success'){
+						console.log("Subida correctamente", response.info)
+						
+					}
 				})
 			widget.open()
 		},

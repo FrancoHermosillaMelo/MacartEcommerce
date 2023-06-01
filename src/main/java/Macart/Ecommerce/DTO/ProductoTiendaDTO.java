@@ -10,8 +10,8 @@ public class ProductoTiendaDTO {
     private String nombre;
     private double precio;
     private String descripcion;
-    private ProductoTiendaTallaSuperior tallaSuperior;
-    private ProductoTiendaTallaInferior tallaInferior;
+    private List<ProductoTiendaTallaSuperior> tallaSuperior;
+    private List<ProductoTiendaTallaInferior> tallaInferior;
     private List<String> imagenesUrl;
     private ProductoTiendaCategoriaGenero categoriaGenero;
     private String subCategoria;
@@ -45,11 +45,11 @@ public class ProductoTiendaDTO {
         return descripcion;
     }
 
-    public ProductoTiendaTallaSuperior getTallaSuperior() {
+    public List<ProductoTiendaTallaSuperior> getTallaSuperior() {
         return tallaSuperior;
     }
 
-    public ProductoTiendaTallaInferior getTallaInferior() {
+    public List<ProductoTiendaTallaInferior> getTallaInferior() {
         return tallaInferior;
     }
 

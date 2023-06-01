@@ -11,6 +11,7 @@
 			integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ"
 			crossorigin="anonymous"
 		/>
+		<script src="https://upload-widget.cloudinary.com/global/all.js" type="text/javascript"></script>  
 		<link rel="shortcut icon" href="./img/favicon.jpg" type="image/x-icon" />
 		<link rel="stylesheet" href="./css/manager.css" />
 	</head>
@@ -112,9 +113,8 @@
 							<option value="SHORT">SHORT</option>
 							<option value="ACCESORIOS">ACCESORIOS</option>
 						</select>
-						<div class="mb-3 mt-3">
-							<label for="formFile" class="form-label">FOTO DEL PRODODUCTO</label>
-							<input class="form-control" type="file" id="image" accept="img/" name="archivo" v-model="imagen" />
+						<div class="d-flex justify-content-center">
+							<button type="button" class="boton negro" @click="abrirWidget" >Subir imagen</button>
 						</div>
 
 						<div class="input-group mb-3">
