@@ -11,10 +11,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.regex.Pattern;
@@ -125,6 +122,33 @@ public class ClienteControlador {
 
     }
 
+    @PutMapping("/api/clientes/{id}")
+    public ResponseEntity<Object> editarCliente(
+            @PathVariable("id") Long id,
+            @RequestParam String contraseña,
+            @RequestParam String telefono) {
+        Cliente cliente = clienteServicio.obtenerClientePorId(id);
 
+        if (cliente == null) {
+            return new ResponseEntity<>("No se encontró el cliente.", HttpStatus.NOT_FOUND);
+        }
 
+        if (contraseña != null && !contraseña.isEmpty()) {
+            if (!DireccionUtilidades.esContraseñaValida(contraseña)) {
+                return new ResponseEntity<>("La contraseña debe tener al menos 8 caracteres, incluyendo al menos un número y una letra mayúscula.", HttpStatus.FORBIDDEN);
+            }
+            cliente.setContraseña(passwordEncoder.encode(contraseña));
+        }
+
+        if (telefono != null && !telefono.isEmpty()) {
+            if (!telefono.matches("\\d+")) {
+                return new ResponseEntity<>("El teléfono debe contener solo números.", HttpStatus.FORBIDDEN);
+            }
+            cliente.setTelefono(telefono);
+        }
+
+        clienteServicio.guardarCliente(cliente);
+
+        return new ResponseEntity<>("Los datos del cliente se han actualizado exitosamente.", HttpStatus.OK);
+    }
 }

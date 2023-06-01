@@ -65,7 +65,7 @@ public class ProductoTiendaControlador {
         if (productoTiendaExistente != null) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body("El producto ya existe.");
         }
-        if(nombre.isBlank()){
+        if(nombre.isEmpty()){
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body("El nombre no puede estar en blanco");
         }
         if (!Pattern.matches("^[a-z A-Z]+$", nombre)) {

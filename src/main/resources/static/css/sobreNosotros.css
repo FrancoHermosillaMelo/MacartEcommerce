@@ -262,6 +262,7 @@ footer {
 	margin: 1rem 1rem;
 	cursor: pointer;
 	opacity: 0.6;
+	color: var(--color-blanco);
 }
 .menu-item:hover {
 	opacity: 1;
