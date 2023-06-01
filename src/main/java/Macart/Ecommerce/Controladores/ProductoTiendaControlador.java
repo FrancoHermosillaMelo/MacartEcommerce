@@ -54,9 +54,10 @@ public class ProductoTiendaControlador {
             @RequestParam String descripcion,
             @RequestParam(required = false) ProductoTiendaTallaSuperior tallaSuperior,
             @RequestParam(required = false) ProductoTiendaTallaInferior tallaInferior,
-            @RequestParam(value = "archivo", required = false) MultipartFile[] imagenesUrl,
+            @RequestPart(value = "archivo", required = false) MultipartFile[] imagenesUrl,
             @RequestParam ProductoTiendaCategoriaGenero categoriaGenero,
             @RequestParam String subCategoria,
+            @RequestParam int stock,
             Authentication authentication) throws Exception {
 
         ProductoTienda productoTiendaExistente = productoTiendaServicio.obtenerProductoPorNombre(nombre);
@@ -69,6 +70,10 @@ public class ProductoTiendaControlador {
         }
         if (!Pattern.matches("^[a-zA-Z]+$", nombre)) {
             return new ResponseEntity<>("El nombre solo puede contener letras", HttpStatus.FORBIDDEN);
+        }
+
+        if(stock < 1 ){
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("El stock no puede ser negativo u cero");
         }
 
         if(precio < 0){
@@ -105,6 +110,7 @@ public class ProductoTiendaControlador {
         nuevoProductoTienda.setDescripcion(descripcion);
         nuevoProductoTienda.setSubCategoria(subCategoria);
         nuevoProductoTienda.setCategoriaGenero(categoriaGenero);
+        nuevoProductoTienda.setStock(stock);
 
         productoTiendaServicio.guardarProducto(nuevoProductoTienda);
 
@@ -121,7 +127,8 @@ public class ProductoTiendaControlador {
             @RequestParam(required = false) String tallaInferior,
             @RequestParam(value = "archivo", required = false) MultipartFile[] imagenesUrl,
             @RequestParam String categoriaGenero,
-            @RequestParam String subCategoria
+            @RequestParam String subCategoria,
+            @RequestParam int stock
     ) {
         ProductoTienda productoTiendaExistente = productoTiendaServicio.obtenerProductoPorId(id);
 
@@ -131,6 +138,7 @@ public class ProductoTiendaControlador {
             productoTiendaExistente.setDescripcion(descripcion);
             productoTiendaExistente.setTallaSuperior(toEnum(ProductoTiendaTallaSuperior.class, tallaSuperior));
             productoTiendaExistente.setTallaInferior(toEnum(ProductoTiendaTallaInferior.class, tallaInferior));
+            productoTiendaExistente.setStock(stock);
 
             List<String> imagenes = new ArrayList<>();
             for(MultipartFile imagen : imagenesUrl){

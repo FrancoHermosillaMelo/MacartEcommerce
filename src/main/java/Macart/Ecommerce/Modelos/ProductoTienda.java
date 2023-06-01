@@ -17,6 +17,7 @@ public class ProductoTienda {
     private String nombre;
     private double precio;
     private String descripcion;
+    private int stock;
     private  ProductoTiendaTallaSuperior tallaSuperior;
     private ProductoTiendaTallaInferior tallaInferior;
     @ElementCollection
@@ -29,7 +30,7 @@ public class ProductoTienda {
     public ProductoTienda() {
     }
 
-    public ProductoTienda(String nombre, double precio, String descripcion, ProductoTiendaTallaSuperior tallaSuperior, ProductoTiendaTallaInferior tallaInferior, List<String>imagenesUrl, ProductoTiendaCategoriaGenero categoriaGenero, String subCategoria) {
+    public ProductoTienda(String nombre, double precio, String descripcion, ProductoTiendaTallaSuperior tallaSuperior, ProductoTiendaTallaInferior tallaInferior, List<String>imagenesUrl, ProductoTiendaCategoriaGenero categoriaGenero, String subCategoria, int stock) {
         this.nombre = nombre;
         this.precio = precio;
         this.descripcion = descripcion;
@@ -38,6 +39,7 @@ public class ProductoTienda {
         this.imagenesUrl = imagenesUrl;
         this.categoriaGenero = categoriaGenero;
         this.subCategoria = subCategoria;
+        this.stock = stock;
     }
 
     public ProductoTienda(String nombre) {
@@ -51,6 +53,22 @@ public class ProductoTienda {
 
     public long getId() {
         return id;
+    }
+
+    public int getStock() {
+        return stock;
+    }
+
+    public void setStock(int stock) {
+        this.stock = stock;
+    }
+
+    public List<String> getImagenesUrl() {
+        return imagenesUrl;
+    }
+
+    public void setImagenesUrl(List<String> imagenesUrl) {
+        this.imagenesUrl = imagenesUrl;
     }
 
     public String getNombre() {

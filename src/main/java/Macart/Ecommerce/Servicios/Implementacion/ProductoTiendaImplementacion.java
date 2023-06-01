@@ -36,7 +36,7 @@ public class ProductoTiendaImplementacion implements ProductoTiendaServicio {
 
     @Override
     public void guardarProducto(ProductoTienda productoTienda) {
-
+        productoTiendaRepositorio.save(productoTienda);
     }
 
     @Override

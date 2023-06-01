@@ -29,6 +29,7 @@ createApp({
 	},
 	mounted() {
 		this.roles();
+		console.log(this.$refs)
 	},
 	methods: {
 		totalProductos() {
@@ -64,65 +65,68 @@ createApp({
 		},
 
 		añadirProducto() {
-			axios
-				.post(
-					'/api/productoTienda',
-					{
-						nombre: this.nombre,
-						precio: this.precio,
-						descripcion: this.descripcion,
-						tallaSuperior: this.talleSuperior,
-						tallaInferior: this.talleInferior,
-						imagenesUrl: this.imagen,
-						categoriaGenero: this.genero,
-						subCategoria: this.categoriaSub,
-					},
-					{
-						headers: {
-							'Content-Type': 'multipart/form-data',
-						},
-					}
-				)
-				.then(response => {
-					Swal.fire({
-						icon: 'success',
-						text: 'Añadiste el producto con exito',
-						showConfirmButton: false,
-						timer: 2000,
-					});
-					console.log(response);
-				});
-			// axios
-			// 	.post(
-			// 		'/api/productoTienda',
-			// 		'nombre=' +
-			// 			this.nombre +
-			// 			'&precio=' +
-			// 			this.precio +
-			// 			'&descripcion=' +
-			// 			this.descripcion +
-			// 			'&tallaSuperior=' +
-			// 			this.talleSuperior +
-			// 			'&tallaInferior=' +
-			// 			this.talleInferior +
-			// 			'&imagenesUrl=' +
-			// 			this.imagen +
-			// 			'&categoriaGenero=' +
-			// 			this.genero +
-			// 			'&subCategoria=' +
-			// 			this.categoriaSub
-			// 	),
-			// 	.then(response => {
-			// 		Swal.fire({
-			// 			icon: 'success',
-			// 			text: 'Añadiste el producto con exito',
-			// 			showConfirmButton: false,
-			// 			timer: 2000,
-			// 		});
-			// 		console.log(response);
-			// 	})
-			// 	.catch(error => console.log(error));
-		},
+			imagen = this.$refs.image.files
+			console.log(imagen)
+			 axios
+			 	.post(
+			 		'/api/productoTienda',
+			 		{
+			 			nombre: this.nombre,
+			 			precio: this.precio,
+			 			descripcion: this.descripcion,
+			 			tallaSuperior: this.talleSuperior,
+			 			tallaInferior: this.talleInferior,
+			 			imagenesUrl: imagen,
+			 			categoriaGenero: this.genero,
+			 			subCategoria: this.categoriaSub,
+						stock: 20,
+			 		},
+			 		{
+			 			headers: {
+			 				'Content-Type': 'multipart/form-data',
+			 			},
+			 		}
+			 	)
+			 	.then(response => {
+			 		Swal.fire({
+			 			icon: 'success',
+			 			text: 'Añadiste el producto con exito',
+			 			showConfirmButton: false,
+			 			timer: 2000,
+			 		});
+			 		console.log(response);
+			 	});
+		// 	 axios
+		// 	 	.post(
+		// 	 		'/api/productoTienda',
+		// 	 		'nombre=' +
+		// 	 			this.nombre +
+		// 	 			'&precio=' +
+		// 	 			this.precio +
+		// 	 			'&descripcion=' +
+		// 	 			this.descripcion +
+		// 	 			'&tallaSuperior=' +
+		// 	 			this.talleSuperior +
+		// 	 			'&tallaInferior=' +
+		// 	 			this.talleInferior +
+		// 	 			'&imagenesUrl=' +
+		// 	 			// this.$refs.input-file.files +
+		// 	 			'&categoriaGenero=' +
+		// 	 			this.genero +
+		// 	 			'&subCategoria=' +
+		// 	 			this.categoriaSub
+		// 	 	)
+		// 	 	.then(response => {
+		// 	 		Swal.fire({
+		// 	 			icon: 'success',
+		// 	 			text: 'Añadiste el producto con exito',
+		// 	 			showConfirmButton: false,
+		// 	 			timer: 2000,
+		// 	 		});
+		// 	 		console.log(response);
+		// 	 	})
+		// 	 	.catch(error => console.log(error));
+		 },
 
 		salir() {
 			Swal.fire({
