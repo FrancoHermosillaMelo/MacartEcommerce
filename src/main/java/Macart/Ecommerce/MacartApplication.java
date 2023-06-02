@@ -34,8 +34,11 @@ public CommandLineRunner initData(ClienteRepositorio clienteRepositorio, Direcci
 		// guardarclientes
 
 		//	cliente1
-		Cliente cliente1 = new Cliente("Carlos","Andrés","Ruiz","Hinestroza","carlosandresgoo@gmail.com","322-567-8909",passwordEncoder.encode("123"));
+		Cliente cliente1 = new Cliente("Carlos","Andrés","Ruiz","Hinestroza","carlos@gmail.com","322-567-8909",passwordEncoder.encode("123"));
 		clienteRepositorio.save(cliente1);
+
+		Cliente admin = new Cliente("admin", null, "admin", null, "admin@admin.com", "322-567-8909", passwordEncoder.encode("123"));
+		clienteRepositorio.save(admin);
 
 		Direccion direccion1 = new Direccion("Calle-47a","50-05","Barrio obrero","Copacabana","Antioquia","12345");
 		cliente1.agregarDirecciones(direccion1);
@@ -45,23 +48,26 @@ public CommandLineRunner initData(ClienteRepositorio clienteRepositorio, Direcci
 		cliente1.agregarPedido(pedido1);
 		pedidoRepositorio.save(pedido1);
 
-
+		Comprobante comprobante1 = new Comprobante(PedidoMetodoDePago.TRANSFERENCIA,"Transportadora",LocalDateTime.now(),150000.00);
+		cliente1.agregarComprobantes(comprobante1);
+		comprobanteRepositorio.save(comprobante1);
+		clienteRepositorio.save(cliente1);
 
 		// PRODUCTOS
 
-		ProductoTienda productoTienda1 = new ProductoTienda("Camisa Blanca", 50000.00 , "Camisa blanca de algodon", ProductoTiendaTallaSuperior.M, null, List.of("./img/camisaBlanca.jpg","./img/camisaBlanca2.jpg"), ProductoTiendaCategoriaGenero.HOMBRE, "Camisa"  );
+		ProductoTienda productoTienda1 = new ProductoTienda("Camisa Blanca", 50000.00 , "Camisa blanca de algodon",List.of("XS","S", "M", "L", "XL"),null, List.of("https://live.staticflickr.com/65535/52943190902_f77c1e8be1_b.jpg","https://live.staticflickr.com/65535/52943190892_f386c30847_b.jpg"), ProductoTiendaCategoriaGenero.HOMBRE, "CAMISETA", 70 ,true);
 		productoTiendaRepositorio.save(productoTienda1);
 
-		ProductoTienda productoTienda2 = new ProductoTienda("Blusa Negra", 70000.00 , "Blusa negra de ribb de algodon", ProductoTiendaTallaSuperior.M, null, List.of("./img/blusaNegra.jpg","./img/blusaNegra2.jpg"), ProductoTiendaCategoriaGenero.MUJER, "Blusa");
+		ProductoTienda productoTienda2 = new ProductoTienda("Blusa Negra", 70000.00 , "Blusa negra de ribb de algodon", List.of("XS","S", "M", "L"), null, List.of("https://live.staticflickr.com/65535/52944252988_fb0e51c815_z.jpg","https://live.staticflickr.com/65535/52944177705_dfe76ea968_z.jpg"), ProductoTiendaCategoriaGenero.MUJER, "BLUSA", 200, true);
 		productoTiendaRepositorio.save(productoTienda2);
 
-		ProductoTienda productoTienda3 = new ProductoTienda("Blusa Blanca", 50000, "Blusa blanca de ribb de algodón",ProductoTiendaTallaSuperior.S, null, List.of("./img/blusaBlanca.jpg", "./img/blusaBlanca3.jpg"),ProductoTiendaCategoriaGenero.MUJER,"Blusa");
+		ProductoTienda productoTienda3 = new ProductoTienda("Blusa Blanca", 50000, "Blusa blanca de ribb de algodón",List.of("S", "M", "L"), null, List.of("https://live.staticflickr.com/65535/52943937034_c6e221c620_z.jpg","https://live.staticflickr.com/65535/52943937039_233c0f81c0_z.jpg"),ProductoTiendaCategoriaGenero.MUJER,"BlUSA", 15, true);
 		productoTiendaRepositorio.save(productoTienda3);
 
-		ProductoTienda productoTienda4 = new ProductoTienda("Bolso Jean", 40000, "Un bolso hecho de jean", null, null, List.of("./img/bolsoJean.png", "./img/bolsoJean2.png"),ProductoTiendaCategoriaGenero.MUJER, "Bolso");
+		ProductoTienda productoTienda4 = new ProductoTienda("Bolso Jean", 40000, "Un bolso hecho de jean", null, null, List.of("https://live.staticflickr.com/65535/52943190962_7cc5a9dc6c_b.jpg","https://live.staticflickr.com/65535/52944252948_4f7ce08553_b.jpg"),ProductoTiendaCategoriaGenero.MUJER, "ACCESORIOS", 80, true);
 		productoTiendaRepositorio.save(productoTienda4);
 
-		ProductoTienda productoTienda5 = new ProductoTienda("Cartera Jean",45000,"Una cartera hecha de jean", null, null, List.of("./img/carteraJean.png", "./img/carteraJean2.png"), ProductoTiendaCategoriaGenero.MUJER, "Bolso");
+		ProductoTienda productoTienda5 = new ProductoTienda("Cartera Jean",45000,"Una cartera hecha de jean", null, null, List.of("https://live.staticflickr.com/65535/52943791561_d03c42a9ec_b.jpg","https://live.staticflickr.com/65535/52944177635_05fff2935d_b.jpg"), ProductoTiendaCategoriaGenero.MUJER, "ACCESORIOS", 120, true);
 		productoTiendaRepositorio.save(productoTienda5);
 		// PEDIDOS PRODUCTOS
 
