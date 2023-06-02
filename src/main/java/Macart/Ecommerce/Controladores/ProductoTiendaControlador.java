@@ -2,7 +2,6 @@ package Macart.Ecommerce.Controladores;
 
 import Macart.Ecommerce.DTO.ProductoTiendaDTO;
 import Macart.Ecommerce.Modelos.ProductoTienda;
-import Macart.Ecommerce.Modelos.ProductoTiendaCategoriaGenero;
 
 import Macart.Ecommerce.Servicios.ClienteServicio;
 import Macart.Ecommerce.Servicios.ProductoTiendaServicio;
@@ -12,8 +11,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.List;
+
+import java.util.Map;
 import java.util.regex.Pattern;
 
 
@@ -70,21 +69,34 @@ public class ProductoTiendaControlador {
         if(productoTienda.getSubCategoria().isBlank()){
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body("La subcategoria no puede estar en blanco");
         }
-        for(String talla : productoTienda.getTallaSuperior()){
-            if (!talla.equalsIgnoreCase("XS") && !talla.equalsIgnoreCase("S") && !talla.equalsIgnoreCase("M") &&
-                    !talla.equalsIgnoreCase("L") && !talla.equalsIgnoreCase("XL")) {
-                return new ResponseEntity<>("Las tallas superiores disponibles son : 'XS','S','M','L','XL'", HttpStatus.FORBIDDEN);
-            }
-        }
-
-        for(String talla : productoTienda.getTallaInferior()){
-            if (!talla.equalsIgnoreCase("S") && !talla.equalsIgnoreCase("M") &&
-                    !talla.equalsIgnoreCase("L") && !talla.equalsIgnoreCase("XL")) {
-                return new ResponseEntity<>("Las tallas superiores disponibles son : 'S','M','L'", HttpStatus.FORBIDDEN);
-            }
-        }
 
         ProductoTienda nuevoProductoTienda = new ProductoTienda(productoTienda.getNombre());
+
+        Map<String, Integer> tallasSuperiores = productoTienda.getTallaSuperior();
+        for (Map.Entry<String, Integer> entry : tallasSuperiores.entrySet()) {
+            if (!entry.getKey().equalsIgnoreCase("XS") && !entry.getKey().equalsIgnoreCase("S") && !entry.getKey().equalsIgnoreCase("M") &&
+                    !entry.getKey().equalsIgnoreCase("L") && !entry.getKey().equalsIgnoreCase("XL")) {
+                return new ResponseEntity<>("Las tallas superiores disponibles son : 'XS','S','M','L','XL'", HttpStatus.FORBIDDEN);
+            }
+            if(!(entry.getValue() < 0)){
+                return new ResponseEntity<>("La cantidad de stock no puede ser negativa", HttpStatus.FORBIDDEN);
+            }
+            nuevoProductoTienda.agregarTallaSuperior(entry.getKey(), entry.getValue());
+        }
+        Map<String, Integer> tallasInferiores = productoTienda.getTallaInferior();
+        for (Map.Entry<String, Integer> entry : tallasInferiores.entrySet()) {
+            if(entry.getKey().isBlank()){
+                return new ResponseEntity<>("La talla no puede estar en blanco", HttpStatus.FORBIDDEN);
+            }
+            if (!entry.getKey().equalsIgnoreCase("S") && !entry.getKey().equalsIgnoreCase("M") &&
+                    !entry.getKey().equalsIgnoreCase("L") && !entry.getKey().equalsIgnoreCase("XL")) {
+                return new ResponseEntity<>("Las tallas superiores disponibles son : 'S','M','L'", HttpStatus.FORBIDDEN);
+            }
+            if(!(entry.getValue() < 0)){
+                return new ResponseEntity<>("La cantidad de stock no puede ser negativa", HttpStatus.FORBIDDEN);
+            }
+            nuevoProductoTienda.agregarTallaInferior(entry.getKey(), entry.getValue());
+        }
 
         for(String imagen : productoTienda.getImagenesUrl()){
             if(imagen.isEmpty()){
@@ -105,8 +117,6 @@ public class ProductoTiendaControlador {
         nuevoProductoTienda.setDescripcion(productoTienda.getDescripcion());
         nuevoProductoTienda.setSubCategoria(productoTienda.getSubCategoria());
         nuevoProductoTienda.setCategoriaGenero(productoTienda.getCategoriaGenero());
-        nuevoProductoTienda.setTallaSuperior(productoTienda.getTallaSuperior());
-        nuevoProductoTienda.setTallaInferior(productoTienda.getTallaInferior());
         nuevoProductoTienda.setStock(productoTienda.getStock());
         nuevoProductoTienda.setActivo(true);
 
@@ -137,20 +147,28 @@ public class ProductoTiendaControlador {
             if (productoTienda.getSubCategoria().isBlank()) {
                 return ResponseEntity.status(HttpStatus.FORBIDDEN).body("La subcategoria no puede estar en blanco");
             }
-
-            for (String talla : productoTienda.getTallaSuperior()) {
-                if (!talla.equalsIgnoreCase("XS") && !talla.equalsIgnoreCase("S") && !talla.equalsIgnoreCase("M") &&
-                        !talla.equalsIgnoreCase("L") && !talla.equalsIgnoreCase("XL")) {
+            Map<String, Integer> tallasSuperiores = productoTienda.getTallaSuperior();
+            for (Map.Entry<String, Integer> entry : tallasSuperiores.entrySet()) {
+                if (!entry.getKey().equalsIgnoreCase("XS") && !entry.getKey().equalsIgnoreCase("S") && !entry.getKey().equalsIgnoreCase("M") &&
+                        !entry.getKey().equalsIgnoreCase("L") && !entry.getKey().equalsIgnoreCase("XL")) {
                     return new ResponseEntity<>("Las tallas superiores disponibles son : 'XS','S','M','L','XL'", HttpStatus.FORBIDDEN);
                 }
+                if(!(entry.getValue() < 0)){
+                    return new ResponseEntity<>("La cantidad de stock no puede ser negativa", HttpStatus.FORBIDDEN);
+                }
+                productoTiendaExistente.actualizarUnidadesDisponiblesTallaSuperior(entry.getKey(), entry.getValue());
             }
-            for (String talla : productoTienda.getTallaInferior()) {
-                if (!talla.equalsIgnoreCase("S") && !talla.equalsIgnoreCase("M") &&
-                        !talla.equalsIgnoreCase("L") && !talla.equalsIgnoreCase("XL")) {
+            Map<String, Integer> tallasInferiores = productoTienda.getTallaInferior();
+            for (Map.Entry<String, Integer> entry : tallasInferiores.entrySet()) {
+                if (!entry.getKey().equalsIgnoreCase("S") && !entry.getKey().equalsIgnoreCase("M") &&
+                        !entry.getKey().equalsIgnoreCase("L") && !entry.getKey().equalsIgnoreCase("XL")) {
                     return new ResponseEntity<>("Las tallas superiores disponibles son : 'S','M','L'", HttpStatus.FORBIDDEN);
                 }
+                if(!(entry.getValue() < 0)){
+                    return new ResponseEntity<>("La cantidad de stock no puede ser negativa", HttpStatus.FORBIDDEN);
                 }
-            List<String> imagenes = new ArrayList<>();
+                productoTiendaExistente.actualizarUnidadesDisponiblesTallaSuperior(entry.getKey(), entry.getValue());
+            }
             for (String imagen : productoTienda.getImagenesUrl()) {
                 if (imagen.isEmpty()) {
 
@@ -162,13 +180,11 @@ public class ProductoTiendaControlador {
 
                     return new ResponseEntity<>("Tipo de archivo no permitido", HttpStatus.FORBIDDEN);
                 }
-                imagenes.add(imagen);
+
             }
             productoTiendaExistente.setNombre(productoTienda.getNombre());
             productoTiendaExistente.setPrecio(productoTienda.getPrecio());
             productoTiendaExistente.setDescripcion(productoTienda.getDescripcion());
-            productoTiendaExistente.setTallaInferior(productoTienda.getTallaInferior());
-            productoTiendaExistente.setTallaSuperior(productoTienda.getTallaSuperior());
             productoTiendaExistente.setStock(productoTienda.getStock());
             productoTiendaExistente.setImagenesUrl(productoTienda.getImagenesUrl());
             productoTiendaExistente.setCategoriaGenero(productoTienda.getCategoriaGenero());

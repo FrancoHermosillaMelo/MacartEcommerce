@@ -70,23 +70,28 @@
 							<h5 class="text-center text-white">TALLA SUPERIOR</h5>
 							<div class="d-flex justify-content-center gap-4 text-white">
 								<label class="form-check-label">
-									<input class="form-check-input" value="XS" type="checkbox" v-model="productoCrear.tallaSuperior">
+									<input class="form-check-input" value="XS" type="checkbox"
+										v-model="productoCrear.tallaSuperior.key">
 									XS
 								</label>
 								<label class="form-check-label">
-									<input class="form-check-input" value="S" type="checkbox" v-model="productoCrear.tallaSuperior">
+									<input class="form-check-input" value="S" type="checkbox"
+										v-model="productoCrear.tallaSuperior">
 									S
 								</label>
 								<label class="form-check-label">
-									<input class="form-check-input" value="M" type="checkbox" v-model="productoCrear.tallaSuperior">
+									<input class="form-check-input" value="M" type="checkbox"
+										v-model="productoCrear.tallaSuperior">
 									M
 								</label>
 								<label class="form-check-label">
-									<input class="form-check-input" value="L" type="checkbox" v-model="productoCrear.tallaSuperior">
+									<input class="form-check-input" value="L" type="checkbox"
+										v-model="productoCrear.tallaSuperior">
 									L
 								</label>
 								<label class="form-check-label">
-									<input class="form-check-input" value="XL" type="checkbox" v-model="productoCrear.tallaSuperior">
+									<input class="form-check-input" value="XL" type="checkbox"
+										v-model="productoCrear.tallaSuperior">
 									XL
 								</label>
 							</div>
@@ -95,15 +100,18 @@
 							<h5 class="text-center text-white">TALLA INFERIOR</h5>
 							<div class="d-flex justify-content-center gap-4 text-white">
 								<label class="form-check-label">
-									<input class="form-check-input" value="S" type="checkbox" v-model="productoCrear.tallaInferior">
+									<input class="form-check-input" value="S" type="checkbox"
+										v-model="productoCrear.tallaInferior">
 									S
 								</label>
 								<label class="form-check-label">
-									<input class="form-check-input" value="M" type="checkbox" v-model="productoCrear.tallaInferior">
+									<input class="form-check-input" value="M" type="checkbox"
+										v-model="productoCrear.tallaInferior">
 									M
 								</label>
 								<label class="form-check-label">
-									<input class="form-check-input" value="L" type="checkbox" v-model="productoCrear.tallaInferior">
+									<input class="form-check-input" value="L" type="checkbox"
+										v-model="productoCrear.tallaInferior">
 									L
 								</label>
 							</div>
@@ -129,7 +137,8 @@
 							<label class="form-check-label text-white" for="woman"> Mujer </label>
 						</div>
 					</div>
-					<select class="form-select" aria-label="Default select example" required v-model="productoCrear.subCategoria">
+					<select class="form-select" aria-label="Default select example" required
+						v-model="productoCrear.subCategoria">
 						<option selected value="">SELECIONAR SUBCATEGORIA</option>
 						<option value="BLUSA">BLUSA</option>
 						<option value="CAMISETA">CAMISETA</option>
@@ -140,7 +149,18 @@
 						<option value="SHORT">SHORT</option>
 						<option value="ACCESORIOS">ACCESORIOS</option>
 					</select>
-					<div class="d-flex justify-content-center">
+					<div class="d-flex flex-column justify-content-center">
+						<template v-if="productoCrear.imagenesUrl.length !== 0">
+							<div>
+								<h5 class="text-center text-white">Imagenes subidas</h5>
+								<template v-for="imagen of productoCrear.imagenesUrl">
+									<div class="contenedor-imagen-boton">
+										<img :src="imagen" class="imagen-subida" :alt="productoCrear.nombre">
+										<button type="button" id="boton-eliminar-imagen-subida" class="btn-close" aria-label="Close"></button>
+									</div>
+								</template>
+							</div>
+						</template>
 						<button type="button" class="boton negro" @click="abrirWidget">Subir imagen</button>
 					</div>
 
@@ -185,8 +205,8 @@
 								</template>
 							</div>
 							<div class="d-flex justify-content-center flex-column div-iconos-admin gap-2">
-								<i class="bi bi-pencil" data-bs-toggle="modal"
-									data-bs-target="#modalEditor" @click="cargarProductoModificar(producto.id)">Modificar</i>
+								<i class="bi bi-pencil" data-bs-toggle="modal" data-bs-target="#modalEditor"
+									@click="cargarProductoModificar(producto.id)">Modificar</i>
 								<template v-if="producto.activo">
 									<i class="bi bi-trash3" @click="desactivarProducto(producto.id)">Desactivar</i>
 								</template>
@@ -256,25 +276,30 @@
 							<div class="d-flex flex-column gap-4">
 								<div class="d-flex flex-column gap-2">
 									<h5 class="text-center">TALLA SUPERIOR</h5>
-									<div class="d-flex justify-content-center gap-4"> 
+									<div class="d-flex justify-content-center gap-4">
 										<label class="form-check-label">
-											<input class="form-check-input border-form" value="XS" type="checkbox" v-model="productoModificar.tallaSuperior">
+											<input class="form-check-input border-form" value="XS" type="checkbox"
+												v-model="productoModificar.tallaSuperior">
 											XS
 										</label>
 										<label class="form-check-label">
-											<input class="form-check-input border-form" value="S" type="checkbox" v-model="productoModificar.tallaSuperior">
+											<input class="form-check-input border-form" value="S" type="checkbox"
+												v-model="productoModificar.tallaSuperior">
 											S
 										</label>
 										<label class="form-check-label">
-											<input class="form-check-input border-form" value="M" type="checkbox" v-model="productoModificar.tallaSuperior">
+											<input class="form-check-input border-form" value="M" type="checkbox"
+												v-model="productoModificar.tallaSuperior">
 											M
 										</label>
 										<label class="form-check-label">
-											<input class="form-check-input border-form" value="L" type="checkbox" v-model="productoModificar.tallaSuperior">
+											<input class="form-check-input border-form" value="L" type="checkbox"
+												v-model="productoModificar.tallaSuperior">
 											L
 										</label>
 										<label class="form-check-label">
-											<input class="form-check-input border-form" value="XL" type="checkbox" v-model="productoModificar.tallaSuperior">
+											<input class="form-check-input border-form" value="XL" type="checkbox"
+												v-model="productoModificar.tallaSuperior">
 											XL
 										</label>
 									</div>
@@ -283,15 +308,18 @@
 									<h5 class="text-center">TALLA INFERIOR</h5>
 									<div class="d-flex justify-content-center gap-4">
 										<label class="form-check-label">
-											<input class="form-check-input border-form" value="S" type="checkbox" v-model="productoModificar.tallaInferior">
+											<input class="form-check-input border-form" value="S" type="checkbox"
+												v-model="productoModificar.tallaInferior">
 											S
 										</label>
 										<label class="form-check-label">
-											<input class="form-check-input border-form" value="M" type="checkbox" v-model="productoModificar.tallaInferior">
+											<input class="form-check-input border-form" value="M" type="checkbox"
+												v-model="productoModificar.tallaInferior">
 											M
 										</label>
 										<label class="form-check-label">
-											<input class="form-check-input border-form" value="L" type="checkbox" v-model="productoModificar.tallaInferior">
+											<input class="form-check-input border-form" value="L" type="checkbox"
+												v-model="productoModificar.tallaInferior">
 											L
 										</label>
 									</div>
@@ -300,24 +328,26 @@
 									<h5 class="text-center">CANTIDAD STOCK</h5>
 									<div class="d-flex justify-content-center">
 										<label class="form-label">
-											<input class="form-control border-form" type="number" v-model="productoModificar.stock">
+											<input class="form-control border-form" type="number"
+												v-model="productoModificar.stock">
 										</label>
 									</div>
 								</div>
 							</div>
 							<div class="d-flex justify-content-evenly align-items-center mb-2 mt-2">
 								<div class="form-check">
-									<input class="form-check-input border-form" type="radio" value="HOMBRE" name="sexo" id="men"
-										v-model="productoModificar.categoriaGenero" />
+									<input class="form-check-input border-form" type="radio" value="HOMBRE" name="sexo"
+										id="men" v-model="productoModificar.categoriaGenero" />
 									<label class="form-check-label" for="men"> Hombre </label>
 								</div>
 								<div class="form-check">
-									<input class="form-check-input border-form" type="radio" value="MUJER" name="sexo" id="woman"
-										v-model="productoModificar.categoriaGenero" />
+									<input class="form-check-input border-form" type="radio" value="MUJER" name="sexo"
+										id="woman" v-model="productoModificar.categoriaGenero" />
 									<label class="form-check-label" for="woman"> Mujer </label>
 								</div>
 							</div>
-							<select class="form-select border-form" aria-label="Default select example" required v-model="productoModificar.subCategoria">
+							<select class="form-select border-form" aria-label="Default select example" required
+								v-model="productoModificar.subCategoria">
 								<option selected value="">SELECIONAR SUBCATEGORIA</option>
 								<option value="BLUSA">BLUSA</option>
 								<option value="CAMISETA">CAMISETA</option>
@@ -331,20 +361,21 @@
 							<div class="d-flex justify-content-center">
 								<button type="button" class="boton negro" @click="abrirWidget">Subir imagen</button>
 							</div>
-		
+
 							<div class="input-group mb-3">
 								<span class="input-group-text border-form">COP$</span>
-								<input type="number" class="form-control border-form" aria-label="Amount (to the nearest dollar)" required
+								<input type="number" class="form-control border-form"
+									aria-label="Amount (to the nearest dollar)" required
 									v-model="productoModificar.precio" />
 								<span class="input-group-text border-form">.00</span>
 							</div>
-		
+
 							<div class="input-group mb-3">
 								<span class="input-group-text border-form">DESCRIPCION DEL PRODUCTO</span>
 								<textarea class="form-control border-form" aria-label="With textarea" required
 									v-model="productoModificar.descripcion"></textarea>
 							</div>
-							<button type="button" class="btn btn-dark" @click="modificarProducto" >Editar</button>
+							<button type="button" class="btn btn-dark" @click="modificarProducto">Editar</button>
 							<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
 						</form>
 					</div>

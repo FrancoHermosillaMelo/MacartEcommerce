@@ -55,19 +55,28 @@ public CommandLineRunner initData(ClienteRepositorio clienteRepositorio, Direcci
 
 		// PRODUCTOS
 
-		ProductoTienda productoTienda1 = new ProductoTienda("Camisa Blanca", 50000.00 , "Camisa blanca de algodon",List.of("XS","S", "M", "L", "XL"),null, List.of("./img/camisaBlanca.jpg","./img/camisaBlanca2.jpg"), ProductoTiendaCategoriaGenero.HOMBRE, "CAMISETA", 70 ,true);
+		ProductoTienda productoTienda1 = new ProductoTienda("Camisa Blanca", 50000.00 , "Camisa blanca de algodon", List.of("./img/camisaBlanca.jpg","./img/camisaBlanca2.jpg"), ProductoTiendaCategoriaGenero.HOMBRE, "CAMISETA", 70 ,true);
+		productoTienda1.agregarTallaSuperior("XS", 10);
+		productoTienda1.agregarTallaSuperior("S", 20);
+		productoTienda1.agregarTallaSuperior("L", 30);
 		productoTiendaRepositorio.save(productoTienda1);
 
-		ProductoTienda productoTienda2 = new ProductoTienda("Blusa Negra", 70000.00 , "Blusa negra de ribb de algodon", List.of("XS","S", "M", "L"), null, List.of("./img/blusaNegra.jpg","./img/blusaNegra2.jpg"), ProductoTiendaCategoriaGenero.MUJER, "BLUSA", 200, true);
+		ProductoTienda productoTienda2 = new ProductoTienda("Blusa Negra", 70000.00 , "Blusa negra de ribb de algodon", List.of("./img/blusaNegra.jpg","./img/blusaNegra2.jpg"), ProductoTiendaCategoriaGenero.MUJER, "BLUSA", 200, true);
+		productoTienda2.agregarTallaSuperior("XS", 10);
+		productoTienda2.agregarTallaSuperior("S", 20);
+		productoTienda2.agregarTallaSuperior("M", 30);
 		productoTiendaRepositorio.save(productoTienda2);
 
-		ProductoTienda productoTienda3 = new ProductoTienda("Blusa Blanca", 50000, "Blusa blanca de ribb de algodón",List.of("S", "M", "L"), null, List.of("./img/blusaBlanca.jpg", "./img/blusaBlanca2.jpg"),ProductoTiendaCategoriaGenero.MUJER,"BlUSA", 15, true);
+		ProductoTienda productoTienda3 = new ProductoTienda("Blusa Blanca", 50000, "Blusa blanca de ribb de algodón", List.of("./img/blusaBlanca.jpg", "./img/blusaBlanca2.jpg"),ProductoTiendaCategoriaGenero.MUJER,"BlUSA", 15, true);
+		productoTienda3.agregarTallaSuperior("XS", 10);
+		productoTienda3.agregarTallaSuperior("S", 20);
+		productoTienda3.agregarTallaSuperior("XL", 30);
 		productoTiendaRepositorio.save(productoTienda3);
 
-		ProductoTienda productoTienda4 = new ProductoTienda("Bolso Jean", 40000, "Un bolso hecho de jean", null, null, List.of("./img/bolso.jpg", "./img/bolso2.jpg"),ProductoTiendaCategoriaGenero.MUJER, "ACCESORIOS", 80, true);
+		ProductoTienda productoTienda4 = new ProductoTienda("Bolso Jean", 40000, "Un bolso hecho de jean", List.of("./img/bolso.jpg", "./img/bolso2.jpg"),ProductoTiendaCategoriaGenero.MUJER, "ACCESORIOS", 80, true);
 		productoTiendaRepositorio.save(productoTienda4);
 
-		ProductoTienda productoTienda5 = new ProductoTienda("Cartera Jean",45000,"Una cartera hecha de jean", null, null, List.of("./img/cartera.jpg", "./img/cartera2.jpg"), ProductoTiendaCategoriaGenero.MUJER, "ACCESORIOS", 120, true);
+		ProductoTienda productoTienda5 = new ProductoTienda("Cartera Jean",45000,"Una cartera hecha de jean", List.of("./img/cartera.jpg", "./img/cartera2.jpg"), ProductoTiendaCategoriaGenero.MUJER, "ACCESORIOS", 120, true);
 		productoTiendaRepositorio.save(productoTienda5);
 		// PEDIDOS PRODUCTOS
 

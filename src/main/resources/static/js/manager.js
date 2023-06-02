@@ -6,8 +6,6 @@ createApp({
 			rol: '',
 			clienteIngresado: '',
 			productos: [],
-			genero: '',
-			categoriaSub: '',
 			productos: '',
 			productosFiltro: '',
 			busqueda: '',
@@ -16,8 +14,12 @@ createApp({
 				nombre : "",
 				precio : "",
 				descripcion : "",
-				tallaSuperior : [],
-				tallaInferior : [],
+				tallaSuperior : {
+
+				},
+				tallaInferior : {
+
+				},
 				imagenesUrl : [],
 				categoriaGenero : "",
 				subCategoria : "",
@@ -28,8 +30,12 @@ createApp({
 				nombre : "",
 				precio : "",
 				descripcion : "",
-				tallaSuperior : [],
-				tallaInferior : [],
+				tallaSuperior : {
+
+				},
+				tallaInferior : [{
+
+				}],
 				imagenesUrl : [],
 				categoriaGenero : "",
 				subCategoria : "",

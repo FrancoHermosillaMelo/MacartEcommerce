@@ -172,6 +172,18 @@ body::-webkit-scrollbar-thumb {
 	border-color:black;
 }
 
+.imagen-subida{
+	width: 6rem;
+}
+
+.contenedor-imagen-boton{
+	position: relative;
+}
+
+#boton-eliminar-imagen-subida{
+	position: absolute;
+}
+
 /*MODAL*/
 .modal-content{
 	/* background-color: BLACK; */
