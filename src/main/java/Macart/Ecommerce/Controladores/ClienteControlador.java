@@ -11,10 +11,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.regex.Pattern;
@@ -83,12 +80,6 @@ public class ClienteControlador {
             return new ResponseEntity<>("Ingrese una dirección de correo electrónico válida.", HttpStatus.FORBIDDEN);
         }
 
-        if (telefono.isBlank()) {
-            return new ResponseEntity<>("El teléfono no puede estar en blanco.", HttpStatus.FORBIDDEN);
-        } else if (!telefono.matches("\\d+")) {
-            return new ResponseEntity<>("El teléfono debe contener solo números.", HttpStatus.FORBIDDEN);
-        }
-
         if (contraseña.isBlank()) {
             return new ResponseEntity<>("La contraseña no puede estar en blanco.", HttpStatus.FORBIDDEN);
         } else if (!DireccionUtilidades.esContraseñaValida(contraseña)) {
@@ -104,7 +95,21 @@ public class ClienteControlador {
         return new ResponseEntity<>("Se ha registrado exitosamente.",HttpStatus.CREATED);
 
     }
+    @PatchMapping("/api/numero")
+    public ResponseEntity<Object> editarNumero(Authentication authentication, @RequestParam String telefono){
+        Cliente clienteAutenticado = clienteServicio.obtenerClientePorEmail(authentication.getName());
+        if (telefono.isBlank()) {
+            return new ResponseEntity<>("El teléfono no puede estar en blanco.", HttpStatus.FORBIDDEN);
+        } else if (!telefono.matches("\\d+")) {
+            return new ResponseEntity<>("El teléfono debe contener solo números.", HttpStatus.FORBIDDEN);
+        }
+        if (telefono.equals(clienteAutenticado.getTelefono())){
+            return new ResponseEntity<>("Si vas a editar tu número, ingresa uno diferente al actual", HttpStatus.FORBIDDEN);
+        }
+        clienteAutenticado.setTelefono(telefono);
+        clienteServicio.guardarCliente(clienteAutenticado);
+        return new ResponseEntity<>("Se ha cambiado el número de contacto exitosamente.",HttpStatus.CREATED);
 
-
+    }
 
 }

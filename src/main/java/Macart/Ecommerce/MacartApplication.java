@@ -31,9 +31,13 @@ public CommandLineRunner initData(ClienteRepositorio clienteRepositorio, Direcci
 		Cliente cliente1 = new Cliente("Carlos","Andrés","Ruiz","Hinestroza","carlos@gmail.com","322-567-8909",passwordEncoder.encode("123"));
 		clienteRepositorio.save(cliente1);
 
-		Direccion direccion1 = new Direccion("Calle-47a","50-05","Barrio obrero","Copacabana","Antioquia","12345");
+		Direccion direccion1 = new Direccion("Calle-47a","50-05","Barrio obrero","Antioquia","Copacabana","12345");
 		cliente1.agregarDirecciones(direccion1);
 		direccionRepositorio.save(direccion1);
+
+		Direccion direccion3 = new Direccion("Calle-90","60-07","Barrio obrero","Antioquia","Copacabana","54321");
+		cliente1.agregarDirecciones(direccion3);
+		direccionRepositorio.save(direccion3);
 
 		Pedido pedido1 = new Pedido(LocalDateTime.now(),false,150000.00,"Transportadora", PedidoMetodoDePago.TRANSFERENCIA);
 		cliente1.agregarPedido(pedido1);
