@@ -108,6 +108,7 @@ public class ProductoTiendaControlador {
         nuevoProductoTienda.setTallaSuperior(productoTienda.getTallaSuperior());
         nuevoProductoTienda.setTallaInferior(productoTienda.getTallaInferior());
         nuevoProductoTienda.setStock(productoTienda.getStock());
+        nuevoProductoTienda.setActivo(true);
 
         productoTiendaServicio.guardarProducto(nuevoProductoTienda);
 
@@ -201,16 +202,21 @@ public class ProductoTiendaControlador {
 //        return null;
 //    }
 
-    @DeleteMapping("/api/productoTienda")
-    public ResponseEntity<Object> eliminarProductoTienda(@RequestParam long id) {
+    @PatchMapping("/api/productoTienda/{id}")
+    public ResponseEntity<Object> eliminarProductoTienda(@PathVariable long id) {
         ProductoTienda productoTiendaExistente = productoTiendaServicio.obtenerProductoPorId(id);
 
         if (productoTiendaExistente != null) {
-            productoTiendaServicio.borrarProducto(productoTiendaExistente);
+            if (productoTiendaExistente.isActivo()){
+                productoTiendaServicio.desactivarProducto(productoTiendaExistente);
+            }else{
+                productoTiendaServicio.activarProducto(productoTiendaExistente);
+            }
             return ResponseEntity.status(HttpStatus.OK).body("Se eliminó el producto con el nombre de : " + productoTiendaExistente.getNombre());
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("El producto con el nombre de : " + productoTiendaExistente.getNombre() + " no fue encontrado");
         }
+
     }
 
 

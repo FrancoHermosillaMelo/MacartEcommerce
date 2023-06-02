@@ -9,15 +9,17 @@ createApp({
 			nombre: '',
 			precio: '',
 			descripcion: '',
-			talleSuperior: '',
-			talleInferior: '',
-			imagen: '',
+			checkedTallaSuperior: [],
+			checkedTallaInferior: [],
+			imagenes: [],
 			genero: '',
 			categoriaSub: '',
 			productos: '',
 			productosFiltro: '',
 			busqueda: '',
 			productosActivos: '',
+			cantidadStock : "",
+
 		};
 	},
 	created() {
@@ -83,8 +85,7 @@ createApp({
 		},
 
 		añadirProducto() {
-			imagen = this.$refs.image.files
-			console.log(imagen)
+			console.log(this.imagenes)
 			axios
 				.post(
 					'/api/productoTienda',
@@ -92,18 +93,13 @@ createApp({
 						nombre: this.nombre,
 						precio: this.precio,
 						descripcion: this.descripcion,
-						tallaSuperior: this.talleSuperior,
-						tallaInferior: this.talleInferior,
-						imagenesUrl: imagen,
+						tallaSuperior: this.tallaSuperior,
+						tallaInferior: this.tallaInferior,
+						imagenesUrl: this.imagenes,
 						categoriaGenero: this.genero,
 						subCategoria: this.categoriaSub,
-						stock: 20,
+						stock: this.cantidadStock,
 					},
-					{
-						headers: {
-							'Content-Type': 'multipart/form-data',
-						},
-					}
 				)
 				.then(response => {
 					Swal.fire({
@@ -120,7 +116,8 @@ createApp({
 				{ cloud_name: "dtis6pqyq", upload_preset: "upload-test" }, (error, response) => {
 					if(!error && response && response.event === 'success'){
 						console.log("Subida correctamente", response.info)
-						
+						this.imagenes.push(response.info.url)
+						console.log(this.imagenes)	
 					}
 				})
 			widget.open()
