@@ -50,7 +50,7 @@ public class ComprobanteControlador {
 
     @GetMapping("/api/comprobantes")
     public ResponseEntity<Object> obtenerComprobantes(){
-        return (new ResponseEntity<>(comprobanteServicio.obtenerComprobantes(), HttpStatus.ACCEPTED));
+        return (new ResponseEntity<>(comprobanteServicio.obtenerTodosLosComprobantes(), HttpStatus.ACCEPTED));
     }
     @GetMapping("/api/clientes/comprobantes")
     public List<ComprobanteDTO> obtenerComprobantesCliente(@RequestParam long idCliente){

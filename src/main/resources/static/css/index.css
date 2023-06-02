@@ -20,7 +20,7 @@ a {
 }
 .blur:not(#carrito) {
 	transition: 0.1s filter;
-	filter: blur(3px);
+	filter: blur(2px);
 }
 .main-index {
 	min-height: 80vh;
@@ -239,6 +239,9 @@ swiper-slide img {
 .carousel-control-next-icon,
 .carousel-control-prev-icon {
 	background-color: var(--color-negro);
+}
+.carousel-item{
+overflow: hidden !important;
 }
 
 /*FIN DE CARUSEL*/

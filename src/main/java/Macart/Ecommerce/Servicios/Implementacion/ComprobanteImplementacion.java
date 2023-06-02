@@ -21,7 +21,7 @@ public class ComprobanteImplementacion implements ComprobanteServicio {
     private ComprobanteRepositorio comprobanteRepositorio;
 
     @Override
-    public List<ComprobanteDTO> obtenerComprobantes() {
+    public List<ComprobanteDTO> obtenerTodosLosComprobantes() {
         return comprobanteRepositorio.findAll()
                 .stream()
                 .map(comprobante -> new ComprobanteDTO(comprobante))

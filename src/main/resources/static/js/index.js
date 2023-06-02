@@ -37,10 +37,13 @@ createApp({
 	},
 	methods: {
 		totalProductos() {
-			axios.get('/api/productoTienda').then(response => {
-				this.productos = response.data;
-				console.log(this.productos);
-			});
+			axios
+				.get('/api/productoTienda')
+				.then(response => {
+					this.productos = response.data;
+					console.log(this.productos);
+				})
+				.catch(error => console.log(error));
 		},
 		data() {
 			axios
@@ -48,6 +51,7 @@ createApp({
 				.then(response => {
 					this.datos = response.data;
 					this.clienteIngresado = response.data;
+					console.log(this.clienteIngresado);
 					this.clienteId = response.data.id;
 					sessionStorage.setItem('clienteId', this.clienteId); // Almacena el identificador único del cliente en el sessionStorage
 					if (!this.carritos[this.clienteId]) {

@@ -3,18 +3,14 @@ package Macart.Ecommerce.Controladores;
 import Macart.Ecommerce.DTO.ProductoTiendaDTO;
 import Macart.Ecommerce.Modelos.ProductoTienda;
 import Macart.Ecommerce.Modelos.ProductoTiendaCategoriaGenero;
-import Macart.Ecommerce.Modelos.ProductoTiendaTallaInferior;
-import Macart.Ecommerce.Modelos.ProductoTiendaTallaSuperior;
 
 import Macart.Ecommerce.Servicios.ClienteServicio;
 import Macart.Ecommerce.Servicios.ProductoTiendaServicio;
-import Macart.Ecommerce.Utilidades.ProductoTiendaUtilidades;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,62 +45,70 @@ public class ProductoTiendaControlador {
 
     @PostMapping("/api/productoTienda")
     public ResponseEntity<Object> crearNuevoProductoTienda(
-            @RequestParam String nombre,
-            @RequestParam double precio,
-            @RequestParam String descripcion,
-            @RequestParam(required = false) ProductoTiendaTallaSuperior tallaSuperior,
-            @RequestParam(required = false) ProductoTiendaTallaInferior tallaInferior,
-            @RequestParam(value = "archivo", required = false) MultipartFile[] imagenesUrl,
-            @RequestParam ProductoTiendaCategoriaGenero categoriaGenero,
-            @RequestParam String subCategoria,
+            @RequestBody(required = false) ProductoTienda productoTienda,
             Authentication authentication) throws Exception {
 
-        ProductoTienda productoTiendaExistente = productoTiendaServicio.obtenerProductoPorNombre(nombre);
+        ProductoTienda productoTiendaExistente = productoTiendaServicio.obtenerProductoPorNombre(productoTienda.getNombre());
 
         if (productoTiendaExistente != null) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body("El producto ya existe.");
         }
-        if(nombre.isEmpty()){
+        if(productoTienda.getNombre().isEmpty()){
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body("El nombre no puede estar en blanco");
         }
-        if (!Pattern.matches("^[a-zA-Z]+$", nombre)) {
+        if (!Pattern.matches("^[a-z A-Z]+$", productoTienda.getNombre())) {
             return new ResponseEntity<>("El nombre solo puede contener letras", HttpStatus.FORBIDDEN);
         }
 
-        if(precio < 0){
+        if(productoTienda.getStock() < 1 ){
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("El stock no puede ser negativo u cero");
+        }
+
+        if(productoTienda.getPrecio() < 0){
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body("El precio no puede estar en negativo");
         }
-        if(subCategoria.isBlank()){
+        if(productoTienda.getSubCategoria().isBlank()){
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body("La subcategoria no puede estar en blanco");
         }
+        for(String talla : productoTienda.getTallaSuperior()){
+            if (!talla.equalsIgnoreCase("XS") && !talla.equalsIgnoreCase("S") && !talla.equalsIgnoreCase("M") &&
+                    !talla.equalsIgnoreCase("L") && !talla.equalsIgnoreCase("XL")) {
+                return new ResponseEntity<>("Las tallas superiores disponibles son : 'XS','S','M','L','XL'", HttpStatus.FORBIDDEN);
+            }
+        }
 
-        ProductoTienda nuevoProductoTienda = new ProductoTienda(nombre);
+        for(String talla : productoTienda.getTallaInferior()){
+            if (!talla.equalsIgnoreCase("S") && !talla.equalsIgnoreCase("M") &&
+                    !talla.equalsIgnoreCase("L") && !talla.equalsIgnoreCase("XL")) {
+                return new ResponseEntity<>("Las tallas superiores disponibles son : 'S','M','L'", HttpStatus.FORBIDDEN);
+            }
+        }
 
-        List<String> imagenes = new ArrayList<>();
-        for(MultipartFile imagen : imagenesUrl){
+        ProductoTienda nuevoProductoTienda = new ProductoTienda(productoTienda.getNombre());
+
+        for(String imagen : productoTienda.getImagenesUrl()){
             if(imagen.isEmpty()){
 
-                return new ResponseEntity<>("El archivo está vacio", HttpStatus.FORBIDDEN);
+                return new ResponseEntity<>("Las imagenes estan vacios", HttpStatus.FORBIDDEN);
             }
-            if(imagen.getContentType().endsWith(".png")&&
-                    imagen.getContentType().endsWith(".jpeg")&&
-                    imagen.getContentType().endsWith(".png")){
+            if(imagen.endsWith(".png")&&
+                    imagen.endsWith(".jpeg")&&
+                    imagen.endsWith(".png")){
 
                 return new ResponseEntity<>("Tipo de archivo no permitido", HttpStatus.FORBIDDEN);
             }
-            if(imagen.getSize() > 8 * 1024 * 1024){
-
-                return new ResponseEntity<>("El tamaño del archivo supera los 5MB", HttpStatus.FORBIDDEN);
-            }
-            String url = ProductoTiendaUtilidades.guardarArchivo(imagen);
-            imagenes.add(url);
         }
 
-        nuevoProductoTienda.setImagenenesUrl(imagenes);
-        nuevoProductoTienda.setPrecio(precio);
-        nuevoProductoTienda.setDescripcion(descripcion);
-        nuevoProductoTienda.setSubCategoria(subCategoria);
-        nuevoProductoTienda.setCategoriaGenero(categoriaGenero);
+
+        nuevoProductoTienda.setImagenesUrl(productoTienda.getImagenesUrl());
+        nuevoProductoTienda.setPrecio(productoTienda.getPrecio());
+        nuevoProductoTienda.setDescripcion(productoTienda.getDescripcion());
+        nuevoProductoTienda.setSubCategoria(productoTienda.getSubCategoria());
+        nuevoProductoTienda.setCategoriaGenero(productoTienda.getCategoriaGenero());
+        nuevoProductoTienda.setTallaSuperior(productoTienda.getTallaSuperior());
+        nuevoProductoTienda.setTallaInferior(productoTienda.getTallaInferior());
+        nuevoProductoTienda.setStock(productoTienda.getStock());
+        nuevoProductoTienda.setActivo(true);
 
         productoTiendaServicio.guardarProducto(nuevoProductoTienda);
 
@@ -113,77 +117,84 @@ public class ProductoTiendaControlador {
 
     @PutMapping("/api/productoTienda")
     public ResponseEntity<Object> modificarProductoTienda(
-            @RequestParam long id,
-            @RequestParam String nombre,
-            @RequestParam double precio,
-            @RequestParam String descripcion,
-            @RequestParam(required = false) String tallaSuperior,
-            @RequestParam(required = false) String tallaInferior,
-            @RequestParam(value = "archivo", required = false) MultipartFile[] imagenesUrl,
-            @RequestParam String categoriaGenero,
-            @RequestParam String subCategoria
+            @RequestBody(required = false) ProductoTienda productoTienda
     ) {
-        ProductoTienda productoTiendaExistente = productoTiendaServicio.obtenerProductoPorId(id);
+        ProductoTienda productoTiendaExistente = productoTiendaServicio.obtenerProductoPorId(productoTienda.getId());
 
         if (productoTiendaExistente != null) {
-            productoTiendaExistente.setNombre(nombre);
-            productoTiendaExistente.setPrecio(precio);
-            productoTiendaExistente.setDescripcion(descripcion);
-            productoTiendaExistente.setTallaSuperior(toEnum(ProductoTiendaTallaSuperior.class, tallaSuperior));
-            productoTiendaExistente.setTallaInferior(toEnum(ProductoTiendaTallaInferior.class, tallaInferior));
+            if (productoTienda.getNombre().isBlank()) {
+                return new ResponseEntity<>("El nombre esta vacio", HttpStatus.FORBIDDEN);
+            }
+            if (!Pattern.matches("^[a-z A-Z]+$", productoTienda.getNombre())) {
+                return new ResponseEntity<>("El nombre solo puede contener letras", HttpStatus.FORBIDDEN);
+            }
+            if (productoTienda.getPrecio() < 0) {
+                return new ResponseEntity<>("El precio no puede ser negativo", HttpStatus.FORBIDDEN);
+            }
+            if (productoTienda.getStock() < 1) {
+                return ResponseEntity.status(HttpStatus.FORBIDDEN).body("El stock no puede ser negativo u cero");
+            }
+            if (productoTienda.getSubCategoria().isBlank()) {
+                return ResponseEntity.status(HttpStatus.FORBIDDEN).body("La subcategoria no puede estar en blanco");
+            }
 
+            for (String talla : productoTienda.getTallaSuperior()) {
+                if (!talla.equalsIgnoreCase("XS") && !talla.equalsIgnoreCase("S") && !talla.equalsIgnoreCase("M") &&
+                        !talla.equalsIgnoreCase("L") && !talla.equalsIgnoreCase("XL")) {
+                    return new ResponseEntity<>("Las tallas superiores disponibles son : 'XS','S','M','L','XL'", HttpStatus.FORBIDDEN);
+                }
+            }
+            for (String talla : productoTienda.getTallaInferior()) {
+                if (!talla.equalsIgnoreCase("S") && !talla.equalsIgnoreCase("M") &&
+                        !talla.equalsIgnoreCase("L") && !talla.equalsIgnoreCase("XL")) {
+                    return new ResponseEntity<>("Las tallas superiores disponibles son : 'S','M','L'", HttpStatus.FORBIDDEN);
+                }
+                }
             List<String> imagenes = new ArrayList<>();
-            for(MultipartFile imagen : imagenesUrl){
-                if(imagen.isEmpty()){
+            for (String imagen : productoTienda.getImagenesUrl()) {
+                if (imagen.isEmpty()) {
 
                     return new ResponseEntity<>("El archivo está vacio", HttpStatus.FORBIDDEN);
                 }
-                if(imagen.getContentType().endsWith(".png")&&
-                        imagen.getContentType().endsWith(".jpeg")&&
-                        imagen.getContentType().endsWith(".png")){
+                if (imagen.endsWith(".png") &&
+                        imagen.endsWith(".jpeg") &&
+                        imagen.endsWith(".png")) {
 
                     return new ResponseEntity<>("Tipo de archivo no permitido", HttpStatus.FORBIDDEN);
                 }
-                if(imagen.getSize() > 8 * 1024 * 1024){
-
-                    return new ResponseEntity<>("El tamaño del archivo supera los 5MB", HttpStatus.FORBIDDEN);
-                }
-                String url = ProductoTiendaUtilidades.guardarArchivo(imagen);
-                imagenes.add(url);
+                imagenes.add(imagen);
             }
-            productoTiendaExistente.setImagenenesUrl(imagenes);
-            productoTiendaExistente.setCategoriaGenero(toEnum(ProductoTiendaCategoriaGenero.class, categoriaGenero));
-            productoTiendaExistente.setSubCategoria(subCategoria);
+            productoTiendaExistente.setNombre(productoTienda.getNombre());
+            productoTiendaExistente.setPrecio(productoTienda.getPrecio());
+            productoTiendaExistente.setDescripcion(productoTienda.getDescripcion());
+            productoTiendaExistente.setTallaInferior(productoTienda.getTallaInferior());
+            productoTiendaExistente.setTallaSuperior(productoTienda.getTallaSuperior());
+            productoTiendaExistente.setStock(productoTienda.getStock());
+            productoTiendaExistente.setImagenesUrl(productoTienda.getImagenesUrl());
+            productoTiendaExistente.setCategoriaGenero(productoTienda.getCategoriaGenero());
+            productoTiendaExistente.setSubCategoria(productoTienda.getSubCategoria());
 
             productoTiendaServicio.guardarProducto(productoTiendaExistente);
-
-            return ResponseEntity.status(HttpStatus.CREATED).body("Se modificó el producto con el nombre de: " + nombre);
-        } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("El producto con el nombre " + nombre + " no fue encontrado");
+            return ResponseEntity.status(HttpStatus.OK).body("Se modificó el producto con exito");
         }
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("El producto con el nombre " + productoTienda.getNombre() + " no fue encontrado");
     }
 
-    private <T extends Enum<T>> T toEnum(Class<T> enumClass, String value) {
-        if (value != null) {
-            try {
-                return Enum.valueOf(enumClass, value.toUpperCase());
-            } catch (IllegalArgumentException e) {
-                // Manejar el error si el valor proporcionado no coincide con ninguna constante del enumerado
-            }
-        }
-        return null;
-    }
-
-    @DeleteMapping("/api/productoTienda")
-    public ResponseEntity<Object> eliminarProductoTienda(@RequestParam long id) {
+    @PatchMapping("/api/productoTienda/{id}")
+    public ResponseEntity<Object> eliminarProductoTienda(@PathVariable long id) {
         ProductoTienda productoTiendaExistente = productoTiendaServicio.obtenerProductoPorId(id);
 
         if (productoTiendaExistente != null) {
-            productoTiendaServicio.borrarProducto(productoTiendaExistente);
+            if (productoTiendaExistente.isActivo()){
+                productoTiendaServicio.desactivarProducto(productoTiendaExistente);
+            }else{
+                productoTiendaServicio.activarProducto(productoTiendaExistente);
+            }
             return ResponseEntity.status(HttpStatus.OK).body("Se eliminó el producto con el nombre de : " + productoTiendaExistente.getNombre());
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("El producto con el nombre de : " + productoTiendaExistente.getNombre() + " no fue encontrado");
         }
+
     }
 
 

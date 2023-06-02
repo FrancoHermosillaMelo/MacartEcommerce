@@ -9,6 +9,7 @@ public class DireccionDTO {
     private String barrio;
     private String ciudad;
     private String departamento ;
+    private String codigoPostal;
     public DireccionDTO(Direccion direccion) {
         this.id = direccion.getId();
         this.calle = direccion.getCalle();
@@ -16,6 +17,7 @@ public class DireccionDTO {
         this.barrio = direccion.getBarrio();
         this.departamento = direccion.getDepartamento();
         this.ciudad = direccion.getCiudad();
+        this.codigoPostal = direccion.getCodigoPostal();
     }
 
     public long getId() {
@@ -41,4 +43,6 @@ public class DireccionDTO {
     public String getBarrio() {
         return barrio;
     }
+
+    public String getCodigoPostal() {return codigoPostal;}
 }

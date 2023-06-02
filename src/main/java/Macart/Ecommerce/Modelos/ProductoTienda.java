@@ -3,10 +3,7 @@ package Macart.Ecommerce.Modelos;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 public class ProductoTienda {
@@ -17,19 +14,24 @@ public class ProductoTienda {
     private String nombre;
     private double precio;
     private String descripcion;
-    private  ProductoTiendaTallaSuperior tallaSuperior;
-    private ProductoTiendaTallaInferior tallaInferior;
+    private int stock;
     @ElementCollection
-    private List<String> imagenesUrl = new ArrayList<String>();
+    private List<String> tallaSuperior = new ArrayList<>();
+    @ElementCollection
+    private List<String> tallaInferior = new ArrayList<>();
+    @ElementCollection
+    private List<String> imagenesUrl = new ArrayList<>();
     private ProductoTiendaCategoriaGenero categoriaGenero;
     private String subCategoria;
     @OneToMany(mappedBy="productoTienda", fetch= FetchType.EAGER)
     private Set<PedidoProducto> pedidoproductos = new HashSet<>();
 
+    private boolean activo;
+
     public ProductoTienda() {
     }
 
-    public ProductoTienda(String nombre, double precio, String descripcion, ProductoTiendaTallaSuperior tallaSuperior, ProductoTiendaTallaInferior tallaInferior, List<String>imagenesUrl, ProductoTiendaCategoriaGenero categoriaGenero, String subCategoria) {
+    public ProductoTienda(String nombre, double precio, String descripcion, List<String> tallaSuperior, List<String> tallaInferior, List<String>imagenesUrl, ProductoTiendaCategoriaGenero categoriaGenero, String subCategoria, int stock, boolean activo) {
         this.nombre = nombre;
         this.precio = precio;
         this.descripcion = descripcion;
@@ -38,11 +40,15 @@ public class ProductoTienda {
         this.imagenesUrl = imagenesUrl;
         this.categoriaGenero = categoriaGenero;
         this.subCategoria = subCategoria;
+        this.stock = stock;
+        this.activo = activo;
     }
 
     public ProductoTienda(String nombre) {
         this.nombre = nombre;
     }
+
+
 
     public void agregarPedidoProducto(PedidoProducto pedidoproducto) {
         pedidoproducto.setProductoTienda(this);
@@ -51,6 +57,38 @@ public class ProductoTienda {
 
     public long getId() {
         return id;
+    }
+
+    public int getStock() {
+        return stock;
+    }
+
+    public List<String> getTallaSuperior() {
+        return tallaSuperior;
+    }
+
+    public void setTallaSuperior(List<String> tallaSuperior) {
+        this.tallaSuperior = tallaSuperior;
+    }
+
+    public List<String> getTallaInferior() {
+        return tallaInferior;
+    }
+
+    public void setTallaInferior(List<String> tallaInferior) {
+        this.tallaInferior = tallaInferior;
+    }
+
+    public void setStock(int stock) {
+        this.stock = stock;
+    }
+
+    public List<String> getImagenesUrl() {
+        return imagenesUrl;
+    }
+
+    public void setImagenesUrl(List<String> imagenesUrl) {
+        this.imagenesUrl = imagenesUrl;
     }
 
     public String getNombre() {
@@ -77,22 +115,6 @@ public class ProductoTienda {
         this.descripcion = descripcion;
     }
 
-    public ProductoTiendaTallaSuperior getTallaSuperior() {
-        return tallaSuperior;
-    }
-
-    public void setTallaSuperior(ProductoTiendaTallaSuperior tallaSuperior) {
-        this.tallaSuperior = tallaSuperior;
-    }
-
-    public ProductoTiendaTallaInferior getTallaInferior() {
-        return tallaInferior;
-    }
-
-    public void setTallaInferior(ProductoTiendaTallaInferior tallaInferior) {
-        this.tallaInferior = tallaInferior;
-    }
-
     public ProductoTiendaCategoriaGenero getCategoriaGenero() {
         return categoriaGenero;
     }
@@ -117,11 +139,11 @@ public class ProductoTienda {
         this.pedidoproductos = pedidoproductos;
     }
 
-    public List<String> getImagenenesUrl() {
-        return imagenesUrl;
+    public boolean isActivo() {
+        return activo;
     }
 
-    public void setImagenenesUrl(List<String> imagenenesUrl) {
-        this.imagenesUrl = imagenenesUrl;
+    public void setActivo(boolean activo) {
+        this.activo = activo;
     }
 }

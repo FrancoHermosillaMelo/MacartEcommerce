@@ -1,9 +1,34 @@
+@import url('https://fonts.googleapis.com/css2?family=Jost:wght@200;300;400;500;600;700&display=swap');
+@import url('https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css');
+
+:root {
+	--color-blanco: #ffffff;
+	--color-rosado: #f9c9d2;
+	--color-gris: #aa9ea0;
+	--color-grisOscuro: #5a5151;
+	--color-negro: #000000;
+}
+.modal-body.log {
+	padding: 0 !important;
+}
+
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+	font-family: 'Jost', sans-serif;
+}
+a {
+	text-decoration: none !important;
+}
 .mainPerfil{
+min-height: 100vw;
 min-height: 80vh;
 margin-bottom: 5rem;
 display: flex;
 flex-direction: column;
 align-items: center;
+border-top: var(--color-grisOscuro) 1px solid;
 }
 .mainPerfil h1{
 color: var(--color-negro);
@@ -13,19 +38,157 @@ font-size: 50px;
 font-weight: 800;
 text-transform: uppercase;
 letter-spacing: 1.5px;
-}
-.mainPerfil h1:after{
-content: '';
-height: 5px;
-width: 225px;
-background-color: var(--color-negro);
-display: block;
-margin: auto;
+margin: 1.3rem 0 0 0 ;
 }
 .formPerfil{
 min-width: 15rem;
+background: var(--color-blanco)!important;
+}
+.todoPerfil{
+width: 98vw;
+}
+.opcPerfil{
+width: 20vw;
+height: 60vh;
+}
+.opcPerfil img{
+width: 180px;
+height: 240px;
+margin-top: 1rem;
+}
+.btnOpcPerfil{
+width: 20vw;
+height: 8vh;
+color: var(--color-negro);
+background: var(--color-blanco); 
+font-size: 18px;
+font-weight: 500;
+padding: 5px;
+}
+.btnOpcPerfil:hover{
+color: var(--color-negro); 
+background: #aa9ea053; 
+}
+.opcPerfil .btnOpcPerfil i{
+justify-self: end;
+font-size: 0.8rem;
+}
+.infoDirecciones h2{
+text-align: center;
+font-weight: 600;
+font-size: 35px;
+margin-bottom: 2rem;
+text-shadow: 0px 5px 5px #00000043;
+}
+.btnDireccion{
+width: 100%;
+margin-top: 1rem;
+font-size: 18px;
+font-weight: 500;
+background: var(--color-blanco);
+color: var(--color-negro); 
+padding: 5px;
+border: 1px solid var(--color-negro);
+}
+.btnDireccion:hover{
+background: #aa9ea053; 
+}
+.modificarDireccion{
+width: 30px;
+}
+.btnDireccionI{
+font-size: 18px;
+color: var(--color-negro);
+background: transparent;
+border: none;
+cursor: pointer;
+}
+.btnDireccionI:hover{
+color: var(--color-gris);  
+}
+.opcPerfilC{
+height: 100%;
+}
+.infoClienteC{
+margin-top: 2rem;
+width: 800px;
+height: 60% !important;
+border: #5a5151 2px solid;
+border-radius: 12px;
+padding: 2rem;
+box-shadow: 5px 5px 10px #0000004a;
+background: url(../img/fondoPerfil.jpg);
+background-position: center;
+background-repeat: no-repeat;
+background-size: cover;
+}
+.infoClienteC h2{
+text-align: center;
+font-weight: 600;
+font-size: 35px;
+margin-bottom: 2rem;
+text-shadow: 0px 5px 5px #0000003d;
 }
 .infoCliente{
-margin-top: 3rem;
-width: 800px !important;
+margin-bottom: 1rem;
+}
+.infoCliente1 input, .infoCliente2 input{
+margin: 0rem 1rem 1rem 1rem;
+}
+.infoCliente1 label, .infoCliente2 label{
+font-weight: 600;
+}
+.infoDirecciones{
+margin-top: 2rem;
+width: 800px ;
+height: 80% !important;
+display: none !important;
+border: #5a5151 2px solid;
+border-radius: 12px;
+padding: 2rem;
+box-shadow: 5px 5px 10px #0000004a;
+background: url(../img/fondoPerfil.jpg);
+background-position: center;
+background-repeat: no-repeat;
+background-size: cover;
+}
+.infoDirecciones h2{
+text-align: center;
+}
+.infoPedidos{
+margin-top: 2rem;
+width: 800px ;
+height: 80% !important;
+display: none !important;
+border: #5a5151 2px solid;
+border-radius: 12px;
+padding: 2rem;
+box-shadow: 5px 5px 10px #0000004a;
+background: url(../img/fondoPerfil.jpg);
+background-position: center;
+background-repeat: no-repeat;
+background-size: cover;	
+display: none !important;
+}
+.opcPerfilC.show .infoClienteC{
+display: none !important;
+}
+.opcPerfilC.show .infoDirecciones{
+display: block !important;
+}
+.opcPerfilC.showP .infoDirecciones, .opcPerfilC.showP .infoClienteC{
+display: none !important;
+}
+.opcPerfilC.showP .infoPedidos{
+display: block !important;
+}
+.listaDirecciones{
+width: 220px;
+min-height: 300px;
+border: #5a5151 1px solid;
+box-shadow: 5px 5px 10px #00000045;
+background:var(--color-blanco);
+}
+.listaDirecciones span{
+font-weight: 600;
 }
