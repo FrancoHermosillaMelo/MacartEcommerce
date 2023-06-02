@@ -1,4 +1,4 @@
-const { createApp } = Vue;
+const {createApp} = Vue;
 
 createApp({
 	data() {
@@ -12,30 +12,29 @@ createApp({
 			productosFiltro: '',
 			busqueda: '',
 			productosActivos: '',
-			productoCrear : {
-				nombre : "",
-				precio : "",
-				descripcion : "",
-				tallaSuperior : [],
-				tallaInferior : [],
-				imagenesUrl : [],
-				categoriaGenero : "",
-				subCategoria : "",
-				stock : "",
+			productoCrear: {
+				nombre: '',
+				precio: '',
+				descripcion: '',
+				tallaSuperior: [],
+				tallaInferior: [],
+				imagenesUrl: [],
+				categoriaGenero: '',
+				subCategoria: '',
+				stock: '',
 			},
-			productoModificar : {
-				id : "",
-				nombre : "",
-				precio : "",
-				descripcion : "",
-				tallaSuperior : [],
-				tallaInferior : [],
-				imagenesUrl : [],
-				categoriaGenero : "",
-				subCategoria : "",
-				stock : "",
-			}
-
+			productoModificar: {
+				id: '',
+				nombre: '',
+				precio: '',
+				descripcion: '',
+				tallaSuperior: [],
+				tallaInferior: [],
+				imagenesUrl: [],
+				categoriaGenero: '',
+				subCategoria: '',
+				stock: '',
+			},
 		};
 	},
 	created() {
@@ -55,7 +54,6 @@ createApp({
 	},
 	mounted() {
 		this.roles();
-		console.log(this.$refs)
 	},
 	methods: {
 		data() {
@@ -80,13 +78,13 @@ createApp({
 				.then(response => {
 					this.productos = response.data;
 					this.productosFiltro = this.productos;
-					console.log(this.productos);
+					this.genero = Array.from(new Set(response.data.map(producto => producto.categoriaGenero)));
 				})
 				.catch(error => console.log(error));
 		},
 		productosFiltrados() {
 			this.productosFiltro = this.productos.filter(producto => {
-				return producto.nombre.toLowerCase().includes(this.busqueda.toLowerCase());
+				return producto.nombre.toLowerCase().includes(this.check.includes(producto.categoriaGenero)) || this.check == 0;
 			});
 		},
 		roles() {
@@ -101,31 +99,25 @@ createApp({
 		},
 
 		añadirProducto() {
-			console.log(this.imagenes)
-			axios
-				.post(
-					'/api/productoTienda',{productoCrear},
-				)
-				.then(response => {
-					Swal.fire({
-						icon: 'success',
-						text: 'Añadiste el producto con exito',
-						showConfirmButton: false,
-						timer: 2000,
-					});
-					console.log(response);
+			axios.post('/api/productoTienda', this.productoCrear).then(response => {
+				Swal.fire({
+					icon: 'success',
+					text: 'Añadiste el producto con exito',
+					showConfirmButton: false,
+					timer: 2000,
 				});
+				console.log(response);
+			});
 		},
 		abrirWidget() {
-			const widget = window.cloudinary.createUploadWidget(
-				{ cloud_name: "dtis6pqyq", upload_preset: "upload-test" }, (error, response) => {
-					if(!error && response && response.event === 'success'){
-						console.log("Subida correctamente", response.info)
-						this.productoCrear.imagenesUrl.push(response.info.url)
-						console.log(this.productoCrear.imagenesUrl)	
-					}
-				})
-			widget.open()
+			const widget = window.cloudinary.createUploadWidget({cloud_name: 'dtis6pqyq', upload_preset: 'upload-test'}, (error, response) => {
+				if (!error && response && response.event === 'success') {
+					console.log('Subida correctamente', response.info);
+					this.productoCrear.imagenesUrl.push(response.info.url);
+					console.log(this.productoCrear.imagenesUrl);
+				}
+			});
+			widget.open();
 		},
 		desactivarProducto(id) {
 			Swal.fire({
@@ -185,20 +177,21 @@ createApp({
 				}
 			});
 		},
-		cargarProductoModificar(id){
-			axios.get(`/api/productoTienda/${id}`)
-			.then(response =>{
-				this.productoModificar = response.data	
-			})
-			.catch(error =>
-				Swal.fire({
-					icon: 'error',
-					text: error.response.data,
-					confirmButtonColor: '#7c601893',
+		cargarProductoModificar(id) {
+			axios
+				.get(`/api/productoTienda/${id}`)
+				.then(response => {
+					this.productoModificar = response.data;
 				})
-			);
+				.catch(error =>
+					Swal.fire({
+						icon: 'error',
+						text: error.response.data,
+						confirmButtonColor: '#7c601893',
+					})
+				);
 		},
-		modificarProducto(){
+		modificarProducto() {
 			Swal.fire({
 				title: '¿Estas seguro que quieres modificar este producto?',
 				inputAttributes: {

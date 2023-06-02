@@ -240,8 +240,8 @@ swiper-slide img {
 .carousel-control-prev-icon {
 	background-color: var(--color-negro);
 }
-.carousel-item{
-overflow: hidden !important;
+.carousel-item {
+	overflow: hidden !important;
 }
 
 /*FIN DE CARUSEL*/
@@ -256,9 +256,10 @@ overflow: hidden !important;
 	right: 0;
 	top: 0;
 	min-width: 30rem;
-	min-height: 30rem;
+	min-height: 20rem;
 	background-color: rgb(245, 245, 245);
 	box-shadow: -3px 3px 10px black;
+	z-index: 99999;
 }
 .div-scroll {
 	max-height: 30rem;

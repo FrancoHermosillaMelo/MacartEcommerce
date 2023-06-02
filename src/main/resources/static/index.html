@@ -20,7 +20,7 @@
 	<body>
 		<div id="app">
 			{{dataSegunRol}}
-			<!-- <div :class="{'blur': !isCarritoInactivo}"> -->
+
 			<header class="header-nav">
 				<nav class="navbar navbar-expand-lg">
 					<div class="container-fluid">
@@ -53,7 +53,7 @@
 									<button type="button" class="boton-nav" data-bs-toggle="modal" data-bs-target="#ModalForm">Ingresar</button>
 								</template>
 								<template v-else>
-									<a class="nav-link texto-nav hover-iconos texto-iconos text-center" aria-current="page" href="#"
+									<a class="nav-link texto-nav hover-iconos texto-iconos text-center" aria-current="page" href="./html/perfilCliente.html"
 										><i class="bi bi-person pe-1"></i>{{clienteIngresado.primerNombre}}</a
 									>
 									<a @click="abrirCarrito" class="nav-link texto-nav hover-iconos texto-iconos text-center" href="#"
@@ -84,11 +84,11 @@
 					</a>
 				</div>
 
-				<div data-aos="fade-up" data-aos-duration="5000" class="div-genero pt-3 d-flex">
+				<div data-aos="fade-up" data-aos-duration="5000" data-aos-easing="ease-in-out" class="div-genero pt-3 d-flex">
 					<div class="ps-sm-5 div-mujer d-flex flex-column align-items-start justify-content-center">
 						<div class="tienda-mujer">
 							<h2 class="fs-1 texto-genero">Mujer</h2>
-							<a href="#" class="ov-btn-grow-box">CATÁLOGO <i class="bi bi-arrow-right"></i></a>
+							<a href="./html/catalogo.html?check=true" class="ov-btn-grow-box">CATÁLOGO <i class="bi bi-arrow-right"></i></a>
 						</div>
 					</div>
 					<div class="ps-sm-5 div-hombre d-flex flex-column align-items-start justify-content-center">
@@ -184,7 +184,6 @@
 						</template>
 					</swiper-container>
 				</div>
-				<!-- </div> -->
 				{{guardarDatos}}
 				<aside id="carrito" :class="{inactivo : isCarritoInactivo}">
 					<div class="div-carrito pt-4 d-flex justify-content-center align-items-center">

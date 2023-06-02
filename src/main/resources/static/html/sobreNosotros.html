@@ -45,8 +45,8 @@
 					<div class="collapse navbar-collapse justify-content-end" id="navbarNavAltMarkup">
 						<div class="navbar-nav">
 							<a class="nav-link texto-nav hover-a text-center" href="../index.html">Inicio</a>
-							<a class="nav-link texto-nav hover-a text-center" href="#">Catálogo</a>
-							<a class="nav-link activo texto-nav hover-a text-center" aria-current="page" href="#">Sobre Nosotros</a>
+							<a class="nav-link texto-nav hover-a text-center" href="./catalogo.html">Catálogo</a>
+							<a class="nav-link activo texto-nav hover-a text-center" href="#">Sobre Nosotros</a>
 							<a class="nav-link texto-nav hover-a text-center" href="#">Preguntas Frecuentes</a>
 						</div>
 					</div>
@@ -67,6 +67,14 @@
 			</nav>
 		</header>
 		<main class="mainNosotros">
+			{{primeraMayuscula}}
+
+			<div class="whatsapp-logo">
+				<a href="https://wa.me/message/UDEKP6X67HYRK1" target="_blank">
+					<i class="bi bi-whatsapp"></i>
+				</a>
+			</div>
+
 			<div class="wrapperUs1">
 				<div class="testimonialUs">
 					<article>
@@ -148,8 +156,8 @@
 								<div class="login form">
 									<header>Ingresar</header>
 									<form @submit.prevent="ingresar">
-										<input type="email" placeholder="Introduce tu correo electrónico" v-model="correo" name="correo"/>
-										<input type="password" placeholder="Ingresa tu contraseña" v-model="contraseña" name="contraseña"/>
+										<input type="email" placeholder="Introduce tu correo electrónico" v-model="correo" name="correo" />
+										<input type="password" placeholder="Ingresa tu contraseña" v-model="contraseña" name="contraseña" />
 										<a href="#">¿Has olvidado tu contraseña?</a>
 										<input type="submit" class="button" value="Acceder" />
 									</form>
@@ -165,16 +173,16 @@
 									<header>Registrate</header>
 									<form @submit.prevent="register">
 										<div class="d-flex gap-1">
-											<input type="text" placeholder="Nombre" required v-model="primerNombre" name="primer nombre"/>
-											<input type="text" placeholder="Segundo nombre" v-model="segundoNombre" name="segundo nombre"/>
+											<input type="text" placeholder="Nombre" required v-model="primerNombre" name="primer nombre" />
+											<input type="text" placeholder="Segundo nombre" v-model="segundoNombre" name="segundo nombre" />
 										</div>
 										<div class="d-flex gap-1">
-											<input type="text" placeholder="Apellido" required v-model="primerApellido" name="primer apellido"/>
-											<input type="text" placeholder="Segundo apellido" v-model="segundoApellido" name="segundo apellido"/>
+											<input type="text" placeholder="Apellido" required v-model="primerApellido" name="primer apellido" />
+											<input type="text" placeholder="Segundo apellido" v-model="segundoApellido" name="segundo apellido" />
 										</div>
-										<input type="tel" placeholder="Introduce tu numero de contacto" required v-model="telefono" name="telefono"/>
-										<input type="text" placeholder="Introduce tu correo electrónico" required v-model="correoRegistro" name="correo"/>
-										<input type="password" placeholder="Crear una contraseña" required v-model="contraseñaRegistro" name="contraseña"/>
+										<input type="tel" placeholder="Introduce tu numero de contacto" required v-model="telefono" name="telefono" />
+										<input type="text" placeholder="Introduce tu correo electrónico" required v-model="correoRegistro" name="correo" />
+										<input type="password" placeholder="Crear una contraseña" required v-model="contraseñaRegistro" name="contraseña" />
 										<input type="submit" class="button" value="Registrate" />
 									</form>
 									<div class="signup">
