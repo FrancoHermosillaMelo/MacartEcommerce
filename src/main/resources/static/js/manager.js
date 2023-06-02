@@ -101,8 +101,6 @@ createApp({
 		},
 
 		añadirProducto() {
-			console.log(this.imagenes)
-			let productoCrear2 = this.productoCrear
 			axios
 				.post(
 					'/api/productoTienda',
