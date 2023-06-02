@@ -581,4 +581,33 @@ ul {
 	.info {
 		width: auto !important;
 	}
+};
+
+
+
+@media only screen and (max-width: 576px) {
+	.modal-dialog{
+		width:90% !important;
+	}
+
 }
+/* 
+@media (max-width: 1199px) {
+	.d-flex.gap-4 {
+	  height: 60% !important;
+	}
+  } */
+
+/*modal product*/
+
+/* @media only screen and (min-width: 320px) and (max-width: 900px) {
+	.my-custom-class #modalProducto {
+		align-items: center !important;
+		width: 10% !important;
+	}
+} */
+
+
+  
+
+

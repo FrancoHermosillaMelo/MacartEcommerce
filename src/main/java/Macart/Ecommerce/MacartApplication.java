@@ -46,19 +46,19 @@ public CommandLineRunner initData(ClienteRepositorio clienteRepositorio, Direcci
 
 		// PRODUCTOS
 
-		ProductoTienda productoTienda1 = new ProductoTienda("Camisa Blanca", 50000.00 , "Camisa blanca de algodon", ProductoTiendaTallaSuperior.M, null, List.of("./img/camisaBlanca.jpg","./img/camisaBlanca2.jpg"), ProductoTiendaCategoriaGenero.HOMBRE, "Camisa"  );
+		ProductoTienda productoTienda1 = new ProductoTienda("Camisa Blanca", 50000.00 , "Es una prenda de vestir clásica y versátil que ofrece estilo y comodidad. Está confeccionada con algodón de alta calidad, lo que garantiza una sensación suave y transpirable en la piel.", ProductoTiendaTallaSuperior.M, null, List.of("./img/camisaBlanca.jpg","./img/camisaBlanca2.jpg"), ProductoTiendaCategoriaGenero.HOMBRE, "Camisa"  );
 		productoTiendaRepositorio.save(productoTienda1);
 
-		ProductoTienda productoTienda2 = new ProductoTienda("Blusa Negra", 70000.00 , "Blusa negra de ribb de algodon", ProductoTiendaTallaSuperior.M, null, List.of("./img/blusaNegra.jpg","./img/blusaNegra2.jpg"), ProductoTiendaCategoriaGenero.MUJER, "Blusa");
+		ProductoTienda productoTienda2 = new ProductoTienda("Blusa Negra", 70000.00 , " Es una prenda imprescindible en el armario femenino. Está confeccionada con algodón suave y de alta calidad, lo que brinda una sensación cómoda y transpirable en la piel. ", ProductoTiendaTallaSuperior.M, null, List.of("./img/blusaNegra.jpg","./img/blusaNegra2.jpg"), ProductoTiendaCategoriaGenero.MUJER, "Blusa");
 		productoTiendaRepositorio.save(productoTienda2);
 
-		ProductoTienda productoTienda3 = new ProductoTienda("Blusa Blanca", 50000, "Blusa blanca de ribb de algodón",ProductoTiendaTallaSuperior.S, null, List.of("./img/blusaBlanca2.jpg", "./img/blusaBlanca3.jpg"),ProductoTiendaCategoriaGenero.MUJER,"Blusa");
+		ProductoTienda productoTienda3 = new ProductoTienda("Blusa Blanca", 50000, "Es una prenda elegante y moderna que combina estilo y comodidad. Está confeccionada con un tejido de algodón de alta calidad con una textura de rib, lo que le confiere un aspecto único y sofisticado.",ProductoTiendaTallaSuperior.S, null, List.of("./img/blusaBlanca2.jpg", "./img/blusaBlanca3.jpg"),ProductoTiendaCategoriaGenero.MUJER,"Blusa");
 		productoTiendaRepositorio.save(productoTienda3);
 
-		ProductoTienda productoTienda4 = new ProductoTienda("Bolso Jean", 40000, "Un bolso hecho de jean", null, null, List.of("./img/bolsoJean.png", "./img/bolsoJean2.png"),ProductoTiendaCategoriaGenero.MUJER, "Bolso");
+		ProductoTienda productoTienda4 = new ProductoTienda("Bolso Jean", 40000, "Una una pieza de moda única y estilizada. Este bolso está confeccionado utilizando tela de jean resistente y duradera, lo que le confiere un aspecto casual y a la vez sofisticado.", null, null, List.of("./img/bolsoJean.png", "./img/bolsoJean2.png"),ProductoTiendaCategoriaGenero.MUJER, "Bolso");
 		productoTiendaRepositorio.save(productoTienda4);
 
-		ProductoTienda productoTienda5 = new ProductoTienda("Cartera Jean",45000,"Una cartera hecha de jean", null, null, List.of("./img/carteraJean.png", "./img/carteraJean2.png"), ProductoTiendaCategoriaGenero.MUJER, "Bolso");
+		ProductoTienda productoTienda5 = new ProductoTienda("Cartera Jean",45000," Esta cartera está confeccionada utilizando tela de jean resistente y duradera, lo que le confiere un aspecto casual y a la vez moderno.", null, null, List.of("./img/carteraJean.png", "./img/carteraJean2.png"), ProductoTiendaCategoriaGenero.MUJER, "Bolso");
 		productoTiendaRepositorio.save(productoTienda5);
 		// PEDIDOS PRODUCTOS
 

@@ -106,7 +106,7 @@ a {
        
 
     body {
-        background-image: url('../images/fondo.png');
+        background-image: url('../img/fondo.png');
         background-repeat: no-repeat;
         background-size: cover;
         background-position: center;
@@ -231,7 +231,7 @@ body{
   left: 0;
   width: 100%;
   height: 60px;
-  background: url(../images/Footer/wave.png);
+  background: url(../img/wave.png);
   background-size: 1000px 100px;
   }
   footer .wave#wave1{
