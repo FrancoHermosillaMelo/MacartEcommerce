@@ -78,7 +78,7 @@ public class ProductoTiendaControlador {
                     !entry.getKey().equalsIgnoreCase("L") && !entry.getKey().equalsIgnoreCase("XL")) {
                 return new ResponseEntity<>("Las tallas superiores disponibles son : 'XS','S','M','L','XL'", HttpStatus.FORBIDDEN);
             }
-            if(!(entry.getValue() < 0)){
+            if((entry.getValue() < 0)){
                 return new ResponseEntity<>("La cantidad de stock no puede ser negativa", HttpStatus.FORBIDDEN);
             }
             nuevoProductoTienda.agregarTallaSuperior(entry.getKey(), entry.getValue());
@@ -92,7 +92,7 @@ public class ProductoTiendaControlador {
                     !entry.getKey().equalsIgnoreCase("L") && !entry.getKey().equalsIgnoreCase("XL")) {
                 return new ResponseEntity<>("Las tallas superiores disponibles son : 'S','M','L'", HttpStatus.FORBIDDEN);
             }
-            if(!(entry.getValue() < 0)){
+            if((entry.getValue() < 0)){
                 return new ResponseEntity<>("La cantidad de stock no puede ser negativa", HttpStatus.FORBIDDEN);
             }
             nuevoProductoTienda.agregarTallaInferior(entry.getKey(), entry.getValue());
@@ -153,7 +153,7 @@ public class ProductoTiendaControlador {
                         !entry.getKey().equalsIgnoreCase("L") && !entry.getKey().equalsIgnoreCase("XL")) {
                     return new ResponseEntity<>("Las tallas superiores disponibles son : 'XS','S','M','L','XL'", HttpStatus.FORBIDDEN);
                 }
-                if(!(entry.getValue() < 0)){
+                if((entry.getValue() < 0)){
                     return new ResponseEntity<>("La cantidad de stock no puede ser negativa", HttpStatus.FORBIDDEN);
                 }
                 productoTiendaExistente.actualizarUnidadesDisponiblesTallaSuperior(entry.getKey(), entry.getValue());
@@ -164,7 +164,7 @@ public class ProductoTiendaControlador {
                         !entry.getKey().equalsIgnoreCase("L") && !entry.getKey().equalsIgnoreCase("XL")) {
                     return new ResponseEntity<>("Las tallas superiores disponibles son : 'S','M','L'", HttpStatus.FORBIDDEN);
                 }
-                if(!(entry.getValue() < 0)){
+                if((entry.getValue() < 0)){
                     return new ResponseEntity<>("La cantidad de stock no puede ser negativa", HttpStatus.FORBIDDEN);
                 }
                 productoTiendaExistente.actualizarUnidadesDisponiblesTallaSuperior(entry.getKey(), entry.getValue());
