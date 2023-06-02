@@ -21,7 +21,7 @@ public class WebAutorizacion {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
-        http.authorizeRequests()
+        http.cors().and().authorizeRequests()
                 .antMatchers(HttpMethod.POST,"/api/login", "/api/logout" ).permitAll()
 
                 .antMatchers("/**","/h2-console/**","/api/productoTienda", "/api/clientes/actual/rol").permitAll()

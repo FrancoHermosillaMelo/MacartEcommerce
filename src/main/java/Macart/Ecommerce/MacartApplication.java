@@ -45,10 +45,7 @@ public CommandLineRunner initData(ClienteRepositorio clienteRepositorio, Direcci
 		cliente1.agregarPedido(pedido1);
 		pedidoRepositorio.save(pedido1);
 
-		Comprobante comprobante1 = new Comprobante(PedidoMetodoDePago.TRANSFERENCIA,"Transportadora",LocalDateTime.now(),150000.00 );
-		cliente1.agregarComprobantes(comprobante1);
-		comprobanteRepositorio.save(comprobante1);
-		clienteRepositorio.save(cliente1);
+
 
 		// PRODUCTOS
 
