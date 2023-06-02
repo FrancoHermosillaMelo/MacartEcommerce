@@ -19,6 +19,7 @@ import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -104,6 +105,7 @@ public class ComprobanteControlador {
 
         return new ResponseEntity<>(comprobantesTodos, HttpStatus.ACCEPTED);
     }
+    @Transactional
     @PostMapping("/api/comprobantes/pdf")
     public ResponseEntity<Object> crearComprobantePDF(@RequestParam long idComprobante, @RequestParam long idPedido) throws IOException, DocumentException, MessagingException {
         Comprobante comprobanteSolicitado = comprobanteServicio.obtenerComprobantesId(idComprobante);

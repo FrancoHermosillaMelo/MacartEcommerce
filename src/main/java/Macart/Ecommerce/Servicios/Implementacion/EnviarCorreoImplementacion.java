@@ -39,16 +39,4 @@ public class EnviarCorreoImplementacion {
     }
 
 
-
-//    public void enviarCorreo(String toEmail, String subject, String body) {
-//        SimpleMailMessage message = new SimpleMailMessage();
-//        message.setFrom("carlosandresgoo@gmail.com");
-//        message.setTo(toEmail);
-//        message.setText(body);
-//        message.setSubject(subject);
-//
-//        emailSender.send(message);
-//        System.out.println("Correo enviado");
-//    }
-
 }
