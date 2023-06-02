@@ -19,6 +19,8 @@ createApp({
 			segundoApellido: '',
 			telefono: '',
 			clienteId: '',
+			productoPorId:"", 
+			imgProductoPorId:""
 		};
 	},
 	created() {
@@ -153,6 +155,13 @@ createApp({
 					})
 				);
 		},
+		obtenerIdProducto(id){
+			axios.get('/api/productoTienda/' + id)
+			.then(response => {this.productoPorId = response.data
+				this.imgProductoPorId = this.productoPorId.imagenesUrl
+			})
+			.catch(error => console.log (error))
+		},
 
 		salir() {
 			Swal.fire({
@@ -161,8 +170,7 @@ createApp({
 					autocapitalize: 'off',
 				},
 				showCancelButton: true,
-				cancelButtonText: 'Cancelar',
-				confirmButtonText: 'Salir',
+				confirmButtonText: 'Sure',
 				showLoaderOnConfirm: true,
 				preConfirm: login => {
 					return axios
@@ -201,3 +209,19 @@ createApp({
 		},
 	},
 }).mount('#app');
+
+
+// Obtén las referencias a las imágenes pequeña y grande
+var imagenPequena = document.getElementById('imagenPequena');
+var imagenGrande = document.getElementById('imagenGrande');
+
+// Manejador de eventos para hacer clic en la imagen pequeña
+imagenPequena.addEventListener('click', function() {
+  // Obtén las URLs de las imágenes pequeña y grande
+  var urlImagenPequena = imagenPequena.src;
+  var urlImagenGrande = imagenGrande.src;
+  
+  // Intercambia las URLs de las imágenes
+  imagenPequena.src = urlImagenGrande;
+  imagenGrande.src = urlImagenPequena;
+});
