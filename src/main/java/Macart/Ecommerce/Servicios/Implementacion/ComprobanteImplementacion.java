@@ -6,6 +6,7 @@ import Macart.Ecommerce.Modelos.Comprobante;
 import Macart.Ecommerce.Repositorio.ComprobanteRepositorio;
 import Macart.Ecommerce.Servicios.ClienteServicio;
 import Macart.Ecommerce.Servicios.ComprobanteServicio;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -14,11 +15,13 @@ import java.util.stream.Collectors;
 
 @Service
 public class ComprobanteImplementacion implements ComprobanteServicio {
+    @Autowired
     private ClienteServicio clienteServicio;
+    @Autowired
     private ComprobanteRepositorio comprobanteRepositorio;
 
     @Override
-    public List<ComprobanteDTO> obtenerComprobantes() {
+    public List<ComprobanteDTO> obtenerTodosLosComprobantes() {
         return comprobanteRepositorio.findAll()
                 .stream()
                 .map(comprobante -> new ComprobanteDTO(comprobante))

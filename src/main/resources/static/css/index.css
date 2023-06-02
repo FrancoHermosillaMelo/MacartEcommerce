@@ -20,7 +20,7 @@ a {
 }
 .blur:not(#carrito) {
 	transition: 0.1s filter;
-	filter: blur(3px);
+	filter: blur(2px);
 }
 .main-index {
 	min-height: 80vh;
@@ -593,6 +593,30 @@ ul {
 	}
 	/*GENERO*/
 
+	/* CARRUSEL */
+	swiper-container {
+		width: 100%;
+		height: 100%;
+	}
+
+	swiper-slide {
+		text-align: center;
+		font-size: 18px;
+		background: #fff;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+	}
+	swiper-slide img {
+		display: block;
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+	}
+	.swiper-button-next,
+	.swiper-button-prev {
+		color: black, black !important;
+	}
 	/*INFO*/
 	.div-info {
 		padding-left: 65px !important;

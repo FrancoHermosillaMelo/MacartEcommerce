@@ -1,4 +1,4 @@
-const { createApp } = Vue;
+const {createApp} = Vue;
 
 createApp({
 	data() {
@@ -18,7 +18,7 @@ createApp({
 			primerApellido: '',
 			segundoApellido: '',
 			telefono: '',
-			clienteId: "",
+			clienteId: '',
 		};
 	},
 	created() {
@@ -33,14 +33,17 @@ createApp({
 		this.carrito = this.carritos[this.clienteId]; // Asi
 	},
 	mounted() {
-		this.roles()
+		this.roles();
 	},
 	methods: {
 		totalProductos() {
-			axios.get('/api/productoTienda').then(response => {
-				this.productos = response.data;
-				console.log(this.productos);
-			});
+			axios
+				.get('/api/productoTienda')
+				.then(response => {
+					this.productos = response.data;
+					console.log(this.productos);
+				})
+				.catch(error => console.log(error));
 		},
 		data() {
 			axios
@@ -48,6 +51,7 @@ createApp({
 				.then(response => {
 					this.datos = response.data;
 					this.clienteIngresado = response.data;
+					console.log(this.clienteIngresado);
 					this.clienteId = response.data.id;
 					sessionStorage.setItem('clienteId', this.clienteId); // Almacena el identificador único del cliente en el sessionStorage
 					if (!this.carritos[this.clienteId]) {
@@ -61,10 +65,10 @@ createApp({
 			axios
 				.get('/api/clientes/actual/rol')
 				.then(response => {
-					this.rol = response.data
+					this.rol = response.data;
 				})
 				.catch(error => {
-					console.log(error)
+					console.log(error);
 				});
 		},
 		abrirCarrito() {
@@ -104,7 +108,7 @@ createApp({
 				.post('/api/login', 'correo=' + this.correo + '&contraseña=' + this.contraseña)
 				.then(response => {
 					if (this.correo == 'admin@gmail.com') {
-						window.location.replace('/index.html')
+						window.location.replace('/index.html');
 					} else {
 						window.location.replace('/index.html');
 					}
@@ -122,19 +126,19 @@ createApp({
 				.post(
 					'/api/clientes',
 					'primerNombre=' +
-					this.primerNombre +
-					'&segundoNombre=' +
-					this.segundoNombre +
-					'&primerApellido=' +
-					this.primerApellido +
-					'&segundoApellido=' +
-					this.segundoApellido +
-					'&telefono=' +
-					this.telefono +
-					'&correo=' +
-					this.correoRegistro +
-					'&contraseña=' +
-					this.contraseñaRegistro
+						this.primerNombre +
+						'&segundoNombre=' +
+						this.segundoNombre +
+						'&primerApellido=' +
+						this.primerApellido +
+						'&segundoApellido=' +
+						this.segundoApellido +
+						'&telefono=' +
+						this.telefono +
+						'&correo=' +
+						this.correoRegistro +
+						'&contraseña=' +
+						this.contraseñaRegistro
 				)
 				.then(response => {
 					this.correo = this.correoRegistro;
@@ -157,7 +161,8 @@ createApp({
 					autocapitalize: 'off',
 				},
 				showCancelButton: true,
-				confirmButtonText: 'Sure',
+				cancelButtonText: 'Cancelar',
+				confirmButtonText: 'Salir',
 				showLoaderOnConfirm: true,
 				preConfirm: login => {
 					return axios

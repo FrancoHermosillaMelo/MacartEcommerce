@@ -2,11 +2,14 @@ package Macart.Ecommerce;
 
 import Macart.Ecommerce.Modelos.*;
 import Macart.Ecommerce.Repositorio.*;
+import Macart.Ecommerce.Servicios.Implementacion.EnviarCorreoImplementacion;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.event.EventListener;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.time.LocalDateTime;
@@ -14,6 +17,8 @@ import java.util.List;
 
 @SpringBootApplication
 public class MacartApplication {
+	@Autowired
+	private EnviarCorreoImplementacion enviarCorreoImplementacion;
 
 	public static void main(String[] args) {
 		SpringApplication.run(MacartApplication.class, args);
@@ -21,6 +26,7 @@ public class MacartApplication {
 
 	@Autowired
 	private PasswordEncoder passwordEncoder;
+
 
 @Bean
 public CommandLineRunner initData(ClienteRepositorio clienteRepositorio, DireccionRepositorio direccionRepositorio, PedidoRepositorio pedidoRepositorio, ComprobanteRepositorio comprobanteRepositorio , PedidoProductoRepositorio pedidoProductoRepositorio, ProductoTiendaRepositorio productoTiendaRepositorio) {
@@ -31,38 +37,37 @@ public CommandLineRunner initData(ClienteRepositorio clienteRepositorio, Direcci
 		Cliente cliente1 = new Cliente("Carlos","Andrés","Ruiz","Hinestroza","carlos@gmail.com","322-567-8909",passwordEncoder.encode("123"));
 		clienteRepositorio.save(cliente1);
 
-		Direccion direccion1 = new Direccion("Calle-47a","50-05","Barrio obrero","Antioquia","Copacabana","12345");
+		Cliente admin = new Cliente("admin", null, "admin", null, "admin@admin.com", "322-567-8909", passwordEncoder.encode("123"));
+		clienteRepositorio.save(admin);
+
+		Direccion direccion1 = new Direccion("Calle-47a","50-05","Barrio obrero","Copacabana","Antioquia","12345");
 		cliente1.agregarDirecciones(direccion1);
 		direccionRepositorio.save(direccion1);
-
-		Direccion direccion3 = new Direccion("Calle-90","60-07","Barrio obrero","Antioquia","Copacabana","54321");
-		cliente1.agregarDirecciones(direccion3);
-		direccionRepositorio.save(direccion3);
 
 		Pedido pedido1 = new Pedido(LocalDateTime.now(),false,150000.00,"Transportadora", PedidoMetodoDePago.TRANSFERENCIA);
 		cliente1.agregarPedido(pedido1);
 		pedidoRepositorio.save(pedido1);
 
-		Comprobante comprobante1 = new Comprobante(PedidoMetodoDePago.TRANSFERENCIA,"Transportadora",LocalDateTime.now(),150000.00 );
+		Comprobante comprobante1 = new Comprobante(PedidoMetodoDePago.TRANSFERENCIA,"Transportadora",LocalDateTime.now(),150000.00);
 		cliente1.agregarComprobantes(comprobante1);
 		comprobanteRepositorio.save(comprobante1);
 		clienteRepositorio.save(cliente1);
 
 		// PRODUCTOS
 
-		ProductoTienda productoTienda1 = new ProductoTienda("Camisa Blanca", 50000.00 , "Camisa blanca de algodon", ProductoTiendaTallaSuperior.M, null, List.of("./img/camisaBlanca.jpg","./img/camisaBlanca2.jpg"), ProductoTiendaCategoriaGenero.HOMBRE, "Camisa"  );
+		ProductoTienda productoTienda1 = new ProductoTienda("Camisa Blanca", 50000.00 , "Camisa blanca de algodon",List.of("XS","S", "M", "L", "XL"),null, List.of("./img/camisaBlanca.jpg","./img/camisaBlanca2.jpg"), ProductoTiendaCategoriaGenero.HOMBRE, "Camisa", 70 ,true);
 		productoTiendaRepositorio.save(productoTienda1);
 
-		ProductoTienda productoTienda2 = new ProductoTienda("Blusa Negra", 70000.00 , "Blusa negra de ribb de algodon", ProductoTiendaTallaSuperior.M, null, List.of("./img/blusaNegra.jpg","./img/blusaNegra2.jpg"), ProductoTiendaCategoriaGenero.MUJER, "Blusa");
+		ProductoTienda productoTienda2 = new ProductoTienda("Blusa Negra", 70000.00 , "Blusa negra de ribb de algodon", List.of("XS","S", "M", "L"), null, List.of("./img/blusaNegra.jpg","./img/blusaNegra2.jpg"), ProductoTiendaCategoriaGenero.MUJER, "Blusa", 200, true);
 		productoTiendaRepositorio.save(productoTienda2);
 
-		ProductoTienda productoTienda3 = new ProductoTienda("Blusa Blanca", 50000, "Blusa blanca de ribb de algodón",ProductoTiendaTallaSuperior.S, null, List.of("./img/blusaBlanca.jpg", "./img/blusaBlanca3.jpg"),ProductoTiendaCategoriaGenero.MUJER,"Blusa");
+		ProductoTienda productoTienda3 = new ProductoTienda("Blusa Blanca", 50000, "Blusa blanca de ribb de algodón",List.of("S", "M", "L"), null, List.of("./img/blusaBlanca.jpg", "./img/blusaBlanca2.jpg"),ProductoTiendaCategoriaGenero.MUJER,"Blusa", 15, true);
 		productoTiendaRepositorio.save(productoTienda3);
 
-		ProductoTienda productoTienda4 = new ProductoTienda("Bolso Jean", 40000, "Un bolso hecho de jean", null, null, List.of("./img/bolsoJean.png", "./img/bolsoJean2.png"),ProductoTiendaCategoriaGenero.MUJER, "Bolso");
+		ProductoTienda productoTienda4 = new ProductoTienda("Bolso Jean", 40000, "Un bolso hecho de jean", null, null, List.of("./img/bolso.jpg", "./img/bolso2.jpg"),ProductoTiendaCategoriaGenero.MUJER, "Bolso", 80, true);
 		productoTiendaRepositorio.save(productoTienda4);
 
-		ProductoTienda productoTienda5 = new ProductoTienda("Cartera Jean",45000,"Una cartera hecha de jean", null, null, List.of("./img/carteraJean.png", "./img/carteraJean2.png"), ProductoTiendaCategoriaGenero.MUJER, "Bolso");
+		ProductoTienda productoTienda5 = new ProductoTienda("Cartera Jean",45000,"Una cartera hecha de jean", null, null, List.of("./img/cartera.jpg", "./img/cartera2.jpg"), ProductoTiendaCategoriaGenero.MUJER, "Bolso", 120, true);
 		productoTiendaRepositorio.save(productoTienda5);
 		// PEDIDOS PRODUCTOS
 
@@ -88,5 +93,7 @@ public CommandLineRunner initData(ClienteRepositorio clienteRepositorio, Direcci
 		pedidoRepositorio.save(pedido2);
 
 	};
-}
+	}
+
+
 }

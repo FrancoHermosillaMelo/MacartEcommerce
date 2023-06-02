@@ -50,8 +50,7 @@ public class PedidoControlador {
             @RequestParam LocalDateTime fechaDePedido,
             @RequestParam double montoTotal,
             @RequestParam String metodoDeEnvio,
-            @RequestParam String metodoDePago
-           ) {
+            @RequestParam String metodoDePago) {
 
         Cliente cliente = clienteServicio.obtenerClientePorId(clienteId);
 
