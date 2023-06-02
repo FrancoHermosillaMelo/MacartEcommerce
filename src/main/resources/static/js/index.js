@@ -7,6 +7,8 @@ createApp({
 			clienteIngresado: '',
 			productos: '',
 			isCarritoInactivo: true,
+			carrito: [],
+			carritos: {},
 			correo: '',
 			correoRegistro: '',
 			contraseña: '',
@@ -16,27 +18,48 @@ createApp({
 			primerApellido: '',
 			segundoApellido: '',
 			telefono: '',
+			clienteId: '',
 			productoPorId:"", 
 			imgProductoPorId:""
 		};
 	},
 	created() {
-		this.roles();
+		// this.roles();
 		this.data();
 		this.totalProductos();
+		this.clienteId = sessionStorage.getItem('clienteId'); // Obtén el identificador único del cliente desde el sessionStorage
+		this.carritos = JSON.parse(localStorage.getItem('carritos')) || {}; // Obtiene los carritos almacenados en el localStorage
+		if (!this.carritos[this.clienteId]) {
+			this.carritos[this.clienteId] = []; // Crea un carrito vacío para el cliente si no existe
+		}
+		this.carrito = this.carritos[this.clienteId]; // Asi
+	},
+	mounted() {
+		this.roles();
 	},
 	methods: {
 		totalProductos() {
-			axios.get('/api/productoTienda').then(response => {
-				this.productos = response.data;
-				console.log(this.productos);
-			});
+			axios
+				.get('/api/productoTienda')
+				.then(response => {
+					this.productos = response.data;
+					console.log(this.productos);
+				})
+				.catch(error => console.log(error));
 		},
 		data() {
 			axios
 				.get('/api/clientes/actual')
 				.then(response => {
+					this.datos = response.data;
 					this.clienteIngresado = response.data;
+					console.log(this.clienteIngresado);
+					this.clienteId = response.data.id;
+					sessionStorage.setItem('clienteId', this.clienteId); // Almacena el identificador único del cliente en el sessionStorage
+					if (!this.carritos[this.clienteId]) {
+						this.carritos[this.clienteId] = []; // Crea un carrito vacío para el cliente si no existe
+					}
+					this.carrito = this.carritos[this.clienteId]; // Asigna el carrito correspondiente al cliente actual
 				})
 				.catch(error => console.log(error));
 		},
@@ -44,12 +67,43 @@ createApp({
 			axios
 				.get('/api/clientes/actual/rol')
 				.then(response => {
-					this.rol = response.data.authority;
+					this.rol = response.data;
 				})
-				.catch(error => console.log(error));
+				.catch(error => {
+					console.log(error);
+				});
 		},
 		abrirCarrito() {
 			this.isCarritoInactivo = !this.isCarritoInactivo;
+		},
+		agregarAlCarrito(item) {
+			if (!this.productosRepetidos(item.id)) {
+				this.carrito.push({
+					nombre: item.nombre,
+					id: item.id,
+					contadorBoton: 1,
+					imagen: item.imagenesUrl[0],
+					precio: item.precio,
+				});
+			} else {
+				item.contadorBoton + 1;
+			}
+		},
+		productosRepetidos(productoId) {
+			return this.carrito.some(item => item.id === productoId);
+		},
+		agregarCantidadProducto(producto) {
+			if (producto.contadorBoton <= 19) {
+				producto.contadorBoton += 1;
+			}
+		},
+		disminuirCantidadProducto(producto) {
+			if (producto.contadorBoton > 1) {
+				producto.contadorBoton -= 1;
+			}
+		},
+		elimarDelCarrito(producto) {
+			this.carrito = this.carrito.filter(item => !(item.id === producto.id));
 		},
 		ingresar() {
 			axios
@@ -142,6 +196,16 @@ createApp({
 			this.segundoNombre = this.segundoNombre.charAt(0).toUpperCase() + this.segundoNombre.slice(1);
 			this.primerApellido = this.primerApellido.charAt(0).toUpperCase() + this.primerApellido.slice(1);
 			this.segundoApellido = this.segundoApellido.charAt(0).toUpperCase() + this.segundoApellido.slice(1);
+		},
+		guardarDatos() {
+			this.carritos[this.clienteId] = this.carrito;
+			localStorage.setItem('carritos', JSON.stringify(this.carritos));
+		},
+		totalDelCarrito() {
+			return this.carrito.reduce((acc, currentValue) => {
+				acc += currentValue.precio * currentValue.contadorBoton;
+				return acc;
+			}, 0);
 		},
 	},
 }).mount('#app');
