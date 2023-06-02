@@ -117,90 +117,68 @@ public class ProductoTiendaControlador {
 
     @PutMapping("/api/productoTienda")
     public ResponseEntity<Object> modificarProductoTienda(
-            @RequestParam long id,
-            @RequestParam String nombre,
-            @RequestParam double precio,
-            @RequestParam String descripcion,
-            @RequestParam(required = false) List<String> tallaSuperior,
-            @RequestParam(required = false) List<String> tallaInferior,
-            @RequestParam(required = false) List<String> imagenesUrl,
-            @RequestParam String categoriaGenero,
-            @RequestParam String subCategoria,
-            @RequestParam int stock
+            @RequestBody(required = false) ProductoTienda productoTienda
     ) {
-        ProductoTienda productoTiendaExistente = productoTiendaServicio.obtenerProductoPorId(id);
+        ProductoTienda productoTiendaExistente = productoTiendaServicio.obtenerProductoPorId(productoTienda.getId());
 
         if (productoTiendaExistente != null) {
-            if (nombre.isBlank()) {
+            if (productoTienda.getNombre().isBlank()) {
                 return new ResponseEntity<>("El nombre esta vacio", HttpStatus.FORBIDDEN);
             }
-            if (!Pattern.matches("^[a-z A-Z]+$", nombre)) {
+            if (!Pattern.matches("^[a-z A-Z]+$", productoTienda.getNombre())) {
                 return new ResponseEntity<>("El nombre solo puede contener letras", HttpStatus.FORBIDDEN);
             }
-            if (precio < 0) {
+            if (productoTienda.getPrecio() < 0) {
                 return new ResponseEntity<>("El precio no puede ser negativo", HttpStatus.FORBIDDEN);
             }
-            if (stock < 1) {
+            if (productoTienda.getStock() < 1) {
                 return ResponseEntity.status(HttpStatus.FORBIDDEN).body("El stock no puede ser negativo u cero");
             }
-            if (subCategoria.isBlank()) {
+            if (productoTienda.getSubCategoria().isBlank()) {
                 return ResponseEntity.status(HttpStatus.FORBIDDEN).body("La subcategoria no puede estar en blanco");
             }
 
-            for (String talla : tallaSuperior) {
+            for (String talla : productoTienda.getTallaSuperior()) {
                 if (!talla.equalsIgnoreCase("XS") && !talla.equalsIgnoreCase("S") && !talla.equalsIgnoreCase("M") &&
                         !talla.equalsIgnoreCase("L") && !talla.equalsIgnoreCase("XL")) {
                     return new ResponseEntity<>("Las tallas superiores disponibles son : 'XS','S','M','L','XL'", HttpStatus.FORBIDDEN);
                 }
             }
-            for (String talla : tallaInferior) {
+            for (String talla : productoTienda.getTallaInferior()) {
                 if (!talla.equalsIgnoreCase("S") && !talla.equalsIgnoreCase("M") &&
                         !talla.equalsIgnoreCase("L") && !talla.equalsIgnoreCase("XL")) {
                     return new ResponseEntity<>("Las tallas superiores disponibles son : 'S','M','L'", HttpStatus.FORBIDDEN);
                 }
-                productoTiendaExistente.setNombre(nombre);
-                productoTiendaExistente.setPrecio(precio);
-                productoTiendaExistente.setDescripcion(descripcion);
-                productoTiendaExistente.setTallaInferior(tallaInferior);
-                productoTiendaExistente.setTallaSuperior(tallaSuperior);
-                productoTiendaExistente.setStock(stock);
-
-                List<String> imagenes = new ArrayList<>();
-                for (String imagen : imagenesUrl) {
-                    if (imagen.isEmpty()) {
-
-                        return new ResponseEntity<>("El archivo está vacio", HttpStatus.FORBIDDEN);
-                    }
-                    if (imagen.endsWith(".png") &&
-                            imagen.endsWith(".jpeg") &&
-                            imagen.endsWith(".png")) {
-
-                        return new ResponseEntity<>("Tipo de archivo no permitido", HttpStatus.FORBIDDEN);
-                    }
-                    imagenes.add(imagen);
                 }
-                productoTiendaExistente.setImagenesUrl(imagenes);
-                productoTiendaExistente.setCategoriaGenero(ProductoTiendaCategoriaGenero.valueOf(categoriaGenero));
-                productoTiendaExistente.setSubCategoria(subCategoria);
+            List<String> imagenes = new ArrayList<>();
+            for (String imagen : productoTienda.getImagenesUrl()) {
+                if (imagen.isEmpty()) {
 
-                productoTiendaServicio.guardarProducto(productoTiendaExistente);
+                    return new ResponseEntity<>("El archivo está vacio", HttpStatus.FORBIDDEN);
+                }
+                if (imagen.endsWith(".png") &&
+                        imagen.endsWith(".jpeg") &&
+                        imagen.endsWith(".png")) {
 
-                return ResponseEntity.status(HttpStatus.CREATED).body("Se modificó el producto con el nombre de: " + nombre);
+                    return new ResponseEntity<>("Tipo de archivo no permitido", HttpStatus.FORBIDDEN);
+                }
+                imagenes.add(imagen);
             }
-        }
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("El producto con el nombre " + nombre + " no fue encontrado");
-    }
+            productoTiendaExistente.setNombre(productoTienda.getNombre());
+            productoTiendaExistente.setPrecio(productoTienda.getPrecio());
+            productoTiendaExistente.setDescripcion(productoTienda.getDescripcion());
+            productoTiendaExistente.setTallaInferior(productoTienda.getTallaInferior());
+            productoTiendaExistente.setTallaSuperior(productoTienda.getTallaSuperior());
+            productoTiendaExistente.setStock(productoTienda.getStock());
+            productoTiendaExistente.setImagenesUrl(productoTienda.getImagenesUrl());
+            productoTiendaExistente.setCategoriaGenero(productoTienda.getCategoriaGenero());
+            productoTiendaExistente.setSubCategoria(productoTienda.getSubCategoria());
 
-//    private <T extends Enum<T>> T toEnum(Class<T> enumClass, String value) {
-//        if (value != null) {
-//            try {
-//                return Enum.valueOf(enumClass, value.toUpperCase());
-//            } catch (IllegalArgumentException e) {
-//                // Manejar el error si el valor proporcionado no coincide con ninguna constante del enumerado
-//            }
-//        }
-//        return null;
-//    }
+            productoTiendaServicio.guardarProducto(productoTiendaExistente);
+            return ResponseEntity.status(HttpStatus.OK).body("Se modificó el producto con exito");
+        }
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("El producto con el nombre " + productoTienda.getNombre() + " no fue encontrado");
+    }
 
     @PatchMapping("/api/productoTienda/{id}")
     public ResponseEntity<Object> eliminarProductoTienda(@PathVariable long id) {

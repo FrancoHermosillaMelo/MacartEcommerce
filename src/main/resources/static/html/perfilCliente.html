@@ -43,7 +43,7 @@
 					</div>
 					<div class="collapse navbar-collapse justify-content-end" id="navbarNavAltMarkup">
 						<div class="div-iconos navbar-nav gap-3">
-							<template v-if="rol.length == 0">
+							<template v-if="rol === 'VISITANTE'">
 								<button type="button" class="boton-nav" data-bs-toggle="modal" data-bs-target="#ModalForm">Ingresar</button>
 							</template>
 							<template v-else>
@@ -59,26 +59,143 @@
 		</header>
 		<main class="mainPerfil">
             <h1>Tu perfil</h1>
-        <div class="infoCliente d-flex justify-content-evenly">
+            <div class="todoPerfil d-flex justify-content-center gap-5">
+            <div class="opcPerfil d-flex align-items-center flex-column justify-content-center flex-wrap mt-3">
+                <button class="btnOpcPerfil" type="button" @click="mostrarInfo" style="border-left: none;border-right: none;border-bottom: none;border-top: 1px solid #aa9ea0;">Información Personal<i class="bi bi-caret-right" style="margin-left: 4rem;"></i></button>
+                <button class="btnOpcPerfil" type="button" @click="mostrarDirecciones" style="border-left: none;border-right: none;border-top: 1px solid #aa9ea0;border-bottom: 1px solid #aa9ea0;">Tus direcciones<i class="bi bi-caret-right" style="margin-left: 6.8rem;"></i></button>
+                <button class="btnOpcPerfil" type="button" @click="mostrarPedidos" style="border-left: none;border-right: none;border-top: none;border-bottom: 1px solid #aa9ea0 ;">Tus Pedidos<i class="bi bi-caret-right" style="margin-left: 8.4rem;"></i></button>
+                <img src="../img/chicaFeliz.png" alt="">
+            </div>
+    <div class="d-flex justify-content-center align-items-center flex-column flex-wrap opcPerfilC">
+        <section class="infoClienteC d-flex flex-column">
+        <h2>Tu información personal</h2>
+        <div class="infoCliente d-flex justify-content-evenly flex-wrap">
             <div class="infoCliente1">
-                <label for="primerNombre">Primer Nombre</label>
+                <label for="primerNombres">Primer Nombre</label>
                 <input class="form-control formPerfil" type="text" id="primerNombre" :value="clienteIngresado.primerNombre" disabled>
                 <label for="segundoNombre">Segundo Nombre</label>
                 <input class="form-control formPerfil" type="text" id="segundoNombre" :value="clienteIngresado.segundoNombre == '' ? 'Dato no ingresado' : clienteIngresado.segundoNombre" disabled>
+                <label for="correo">Correo Electrónico</label>
+                <input class="form-control formPerfil" type="text" id="correo" :value="clienteIngresado.correo" disabled>
+            </div>
+            <div class="infoCliente2">
                 <label for="primerApellido">Primer Apellido</label>
                 <input class="form-control formPerfil" type="text" id="primerApellido" :value="clienteIngresado.primerApellido" disabled>
                 <label for="segundoApellido">Segundo Apellido</label>
                 <input class="form-control formPerfil" type="text" id="segundoApellido" :value="clienteIngresado.segundoApellido == '' ? 'Dato no ingresado' : clienteIngresado.segundoApellido" disabled>
-            </div>
-                <div class="infoCliente2">
-                <label for="correo">Correo Electrónico</label>
-                <input class="form-control formPerfil" type="text" id="correo" :value="clienteIngresado.correo" disabled>
-                <label for="telefono">Número de contacto</label>
+                <label for="telefono">Número de contacto <i data-bs-toggle="modal" data-bs-target="#modalEditarNumero" class="bi bi-pencil btnDireccionI"></i></label>
                 <input class="form-control formPerfil" type="text" id="telefono" :value="clienteIngresado.telefono" disabled>
             </div>
         </div>
-            
+    </section>
+    <section class="infoDirecciones d-flex justify-content-center flex-column">
+        <h2>Tus Direcciones</h2>
+        <div class="infoDireccionesC d-flex justify-content-center align-items-center flex-wrap gap-5">
+            <div class="listaDirecciones d-flex justify-content-center flex-column align-items-center flex-wrap" v-for="direccion of direcciones">
+            <p><span>Departamento </span>{{direccion.departamento}}</p>
+            <p><span>Ciudad </span>{{direccion.ciudad}}</p>
+            <p><span>Barrio </span>{{direccion.barrio}}</p>
+            <p><span>Dirección </span>{{direccion.calle}} {{direccion.numeroDomicilio}}</p>
+            <p><span>Código Postal </span>{{direccion.codigoPostal}}</p>
+            <div class="modificarDireccion d-flex gap-3 align-items-center justify-content-evenly">
+                <button data-bs-toggle="modal" data-bs-target="#modalEditarDireccion" @click="filtrarDireccion(direccion.id)" class="bi bi-pencil btnDireccionI"></button>
+                <button @click="borrarDireccion(direccion.id)" class="bi bi-trash btnDireccionI"></button>
+                </div>
+           </div>
+        </div>
+        <div class="d-flex mt-2">
+            <button v-if="direcciones.length < 2" class="btnDireccion" type="button" data-bs-toggle="modal" data-bs-target="#modalAgregarDireccion"> Agregar Dirección</button>
+        </div>
 
+    </section>
+        <section class="infoPedidos d-flex flex-column align-items-center">
+            <h2 class="text-center">Tus pedidos</h2>
+        </section>
+    </div>
+</div>
+            <!-- MODAL AGREGAR DIRECCIÓN -->
+            <div class="modal fade" id="modalAgregarDireccion" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h1 class="modal-title fs-5 text-center" id="exampleModalLabel">Nueva Dirección</h1>
+							<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+						</div>
+						<div class="modal-body">
+                            <form @submit.prevent="agregarDireccion">
+			                <label for="departamento">Departamento</label>
+                            <input class="form-control formPerfil" type="text" id="departamento" v-model="departamento" required>
+                            <label for="ciudad">Ciudad</label>
+                            <input class="form-control formPerfil" type="text" id="ciudad" v-model="ciudad" required>
+                            <label for="barrio">Barrio</label>
+                            <input class="form-control formPerfil" type="text" id="barrio" v-model="barrio" required>
+                            <label for="calle">Calle, Carrera, etc.</label>
+                            <input class="form-control formPerfil" type="text" id="calle" v-model="calle" required>
+                            <label for="numeroDomicilio">Número de Domicilio</label>
+                            <input class="form-control formPerfil" type="text" id="numeroDomicilio" v-model="numeroDomicilio" required>
+                            <label for="codigoPostal">Código Postal</label>
+                            <input class="form-control formPerfil" type="text" id="codigoPostal" v-model="codigoPostal" required>
+                            <div class="modal-footer">
+                                <button type="submit" class="btn" style="background: #f9c9d2 !important;">Agregar</button>
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                            </div>
+                        </form>
+						</div>
+					</div>
+				</div>
+			</div>
+            <!-- MODAL EDITAR DIRECCIÓN -->
+            <div class="modal fade" id="modalEditarDireccion" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h1 class="modal-title fs-5 text-center" id="exampleModalLabel">Editar Dirección</h1>
+							<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+						</div>
+						<div class="modal-body">
+                            <form @submit.prevent="editarDireccion">
+			                <label for="departamento">Departamento</label>
+                            <input class="form-control formPerfil" type="text" id="departamento" v-model="departamento2" :placeholder="departamentoE" required>
+                            <label for="ciudad">Ciudad</label>
+                            <input class="form-control formPerfil" type="text" id="ciudad" v-model="ciudad2" :placeholder="ciudadE" required>
+                            <label for="barrio">Barrio</label>
+                            <input class="form-control formPerfil" type="text" id="barrio" v-model="barrio2" :placeholder="barrioE" required>
+                            <label for="calle">Calle, Carrera, etc.</label>
+                            <input class="form-control formPerfil" type="text" id="calle" v-model="calle2" :placeholder="calleE" required>
+                            <label for="numeroDomicilio">Número de Domicilio</label>
+                            <input class="form-control formPerfil" type="text" id="numeroDomicilio" v-model="numeroDomicilio2" :placeholder="numeroDomicilioE" required>
+                            <label for="codigoPostal">Código Postal</label>
+                            <input class="form-control formPerfil" type="text" id="codigoPostal" v-model="codigoPostal2" :placeholder="codigoPostalE" required>
+                            <div class="modal-footer">
+                                <button type="submit" class="btn" style="background: #f9c9d2 !important;">Aplicar</button>
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                            </div>
+                        </form>
+						</div>
+					</div>
+				</div>
+			</div>
+            <!-- MODAL EDITAR NÚMERO -->
+            <div class="modal fade" id="modalEditarNumero" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h1 class="modal-title fs-5 text-center" id="exampleModalLabel">Editar Dirección</h1>
+							<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+						</div>
+						<div class="modal-body">
+                            <form @submit.prevent="editarNumero">
+                                <label for="telefono">Número de contacto</label>
+                                <input class="form-control formPerfil" :placeholder="telefonoE" type="text" id="telefono" v-model="telefono" required>
+                            <div class="modal-footer">
+                                <button type="submit" class="btn" style="background: #f9c9d2 !important;">Aplicar</button>
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                            </div>
+                        </form>
+						</div>
+					</div>
+				</div>
+			</div>
 			<!-- MODAL TERMINOS DE USO -->
 			<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
 				<div class="modal-dialog">

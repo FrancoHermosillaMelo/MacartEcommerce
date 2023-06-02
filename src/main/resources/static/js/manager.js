@@ -6,19 +6,35 @@ createApp({
 			rol: '',
 			clienteIngresado: '',
 			productos: [],
-			nombre: '',
-			precio: '',
-			descripcion: '',
-			checkedTallaSuperior: [],
-			checkedTallaInferior: [],
-			imagenes: [],
 			genero: '',
 			categoriaSub: '',
 			productos: '',
 			productosFiltro: '',
 			busqueda: '',
 			productosActivos: '',
-			cantidadStock : "",
+			productoCrear : {
+				nombre : "",
+				precio : "",
+				descripcion : "",
+				tallaSuperior : [],
+				tallaInferior : [],
+				imagenesUrl : [],
+				categoriaGenero : "",
+				subCategoria : "",
+				stock : "",
+			},
+			productoModificar : {
+				id : "",
+				nombre : "",
+				precio : "",
+				descripcion : "",
+				tallaSuperior : [],
+				tallaInferior : [],
+				imagenesUrl : [],
+				categoriaGenero : "",
+				subCategoria : "",
+				stock : "",
+			}
 
 		};
 	},
@@ -88,18 +104,7 @@ createApp({
 			console.log(this.imagenes)
 			axios
 				.post(
-					'/api/productoTienda',
-					{
-						nombre: this.nombre,
-						precio: this.precio,
-						descripcion: this.descripcion,
-						tallaSuperior: this.tallaSuperior,
-						tallaInferior: this.tallaInferior,
-						imagenesUrl: this.imagenes,
-						categoriaGenero: this.genero,
-						subCategoria: this.categoriaSub,
-						stock: this.cantidadStock,
-					},
+					'/api/productoTienda',{productoCrear},
 				)
 				.then(response => {
 					Swal.fire({
@@ -116,8 +121,8 @@ createApp({
 				{ cloud_name: "dtis6pqyq", upload_preset: "upload-test" }, (error, response) => {
 					if(!error && response && response.event === 'success'){
 						console.log("Subida correctamente", response.info)
-						this.imagenes.push(response.info.url)
-						console.log(this.imagenes)	
+						this.productoCrear.imagenesUrl.push(response.info.url)
+						console.log(this.productoCrear.imagenesUrl)	
 					}
 				})
 			widget.open()
@@ -180,7 +185,51 @@ createApp({
 				}
 			});
 		},
-
+		cargarProductoModificar(id){
+			axios.get(`/api/productoTienda/${id}`)
+			.then(response =>{
+				this.productoModificar = response.data	
+			})
+			.catch(error =>
+				Swal.fire({
+					icon: 'error',
+					text: error.response.data,
+					confirmButtonColor: '#7c601893',
+				})
+			);
+		},
+		modificarProducto(){
+			Swal.fire({
+				title: '¿Estas seguro que quieres modificar este producto?',
+				inputAttributes: {
+					autocapitalize: 'off',
+				},
+				showCancelButton: true,
+				cancelButtonText: 'Cancelar',
+				confirmButtonText: 'Confirmar',
+				showLoaderOnConfirm: true,
+				preConfirm: login => {
+					return axios
+						.put('/api/productoTienda', this.productoModificar)
+						.then(response => {
+							Swal.fire({
+								icon: 'success',
+								text: 'Se modifico correctamente',
+								showConfirmButton: false,
+								timer: 2000,
+							}).then(() => (window.location.href = '/manager.html'));
+						})
+						.catch(error =>
+							Swal.fire({
+								icon: 'error',
+								text: error.response.data,
+								confirmButtonColor: '#7c601893',
+							})
+						);
+				},
+				allowOutsideClick: () => !Swal.isLoading(),
+			});
+		},
 		salir() {
 			Swal.fire({
 				title: '¿Estas seguro que quieres salir de tu cuenta?',

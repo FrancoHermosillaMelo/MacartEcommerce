@@ -79,18 +79,18 @@ public class ClienteControlador {
             return new ResponseEntity<>("El primer apellido no puede estar en blanco.", HttpStatus.FORBIDDEN);
         }
 
-        if (!Pattern.matches("^[a-zA-Z]+$", primerNombre)) {
+        if (!Pattern.matches("^[a-z A-Z]+$", primerNombre)) {
             return new ResponseEntity<>("El primer nombre solo puede contener letras.", HttpStatus.FORBIDDEN);
         }
 
-        if (!Pattern.matches("^[a-zA-Z]+$", primerApellido)) {
+        if (!Pattern.matches("^[a-z A-Z]+$", primerApellido)) {
             return new ResponseEntity<>("El primer apellido solo puede contener letras.", HttpStatus.FORBIDDEN);
         }
-        if (!segundoNombre.isEmpty() && !Pattern.matches("^[a-zA-Z]+$", segundoNombre)) {
+        if (!segundoNombre.isEmpty() && !Pattern.matches("^[a-z A-Z]+$", segundoNombre)) {
             return new ResponseEntity<>("El segundo nombre solo puede contener letras.", HttpStatus.FORBIDDEN);
         }
 
-        if (!segundoApellido.isEmpty() && !Pattern.matches("^[a-zA-Z]+$", segundoApellido)) {
+        if (!segundoApellido.isEmpty() && !Pattern.matches("^[a-z A-Z]+$", segundoApellido)) {
             return new ResponseEntity<>("El segundo apellido solo puede contener letras.", HttpStatus.FORBIDDEN);
         }
 
