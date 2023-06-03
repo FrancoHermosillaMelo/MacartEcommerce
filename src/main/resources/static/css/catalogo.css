@@ -114,6 +114,9 @@ li {
 .span-texto {
 	font-weight: 500;
 }
+.py-11 {
+	padding-bottom: 10em;
+}
 /* ACORDEON */
 .ul-categoria {
 	padding-left: 0 !important;
@@ -164,7 +167,8 @@ li {
 	box-shadow: none !important;
 }
 .selectores > label {
-	font-size: 19px !important;
+	font-size: 18px !important;
+	color: var(--color-grisOscuro) !important;
 }
 
 /* FIN DEL ACORDEON */

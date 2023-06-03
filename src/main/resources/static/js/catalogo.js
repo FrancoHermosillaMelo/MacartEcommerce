@@ -4,12 +4,14 @@ createApp({
 	data() {
 		return {
 			sexo: '',
+			categoriaTipo: '',
 			check: [],
+			checkCategoria: [],
 			checkCatalogo: new URLSearchParams(location.search).get('check'),
 			productosFiltrados: {},
 			rol: '',
 			clienteIngresado: '',
-			productos: '',
+			productos: [],
 			isCarritoInactivo: true,
 			carrito: [],
 			carritos: {},
@@ -50,6 +52,8 @@ createApp({
 					this.productosFiltrados = this.productos;
 					this.sexo = Array.from(new Set(this.productos.map(sexo => sexo.categoriaGenero)));
 					console.log(this.sexo);
+					this.categoriaTipo = Array.from(new Set(this.productos.map(tipo => tipo.subCategoria)));
+					console.log(this.categoriaTipo);
 				})
 				.catch(error => console.log(error));
 		},
@@ -209,7 +213,16 @@ createApp({
 		},
 		filtroCruzados() {
 			this.productosFiltrados = this.productos.filter(producto => {
-				return producto.nombre.toLowerCase() && (this.check.includes(producto.categoriaGenero) || this.check == 0);
+				return (
+					producto.nombre.toLowerCase() &&
+					((this.check.includes(producto.categoriaGenero) && (this.checkCategoria.includes(producto.subCategoria) || this.checkCategoria == 0)) ||
+						this.check == 0)
+				);
+			});
+		},
+		filtrosCategoria() {
+			this.productosFiltrados = this.productos.filter(producto => {
+				return producto.nombre.toLowerCase() && (this.checkCategoria.includes(producto.subCategoria) || this.checkCategoria == 0);
 			});
 		},
 	},

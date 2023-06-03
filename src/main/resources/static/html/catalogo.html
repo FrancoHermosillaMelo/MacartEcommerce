@@ -65,7 +65,7 @@
 				</nav>
 			</header>
 			<main>
-				{{primeraMayuscula}} {{filtroCruzados}}
+				{{primeraMayuscula}} {{filtroCruzados}} {{filtrosCategoria}}
 				<div class="fondo-contenedor d-flex justify-content-center align-items-center">
 					<div class="row">
 						<div class="col-12">
@@ -88,11 +88,11 @@
 							<div class="col-12 col-md-2 cold-lg-3">
 								<div class="d-flex justify-content-around mb-3">
 									<div class="form-check">
-										<input class="form-check-input" type="checkbox" value="HOMBRE" v-model="check" @click="filtroCruzados" id="flexCheckDefault" />
+										<input class="form-check-input" type="checkbox" value="HOMBRE" v-model="check" id="flexCheckDefault" />
 										<label class="form-check-label" for="flexCheckDefault"> Hombre </label>
 									</div>
 									<div class="form-check">
-										<input class="form-check-input" type="checkbox" value="MUJER" v-model="check" @click="filtroCruzados" id="flexCheckChecked" />
+										<input class="form-check-input" type="checkbox" value="MUJER" v-model="check" id="flexCheckChecked" />
 										<label class="form-check-label" for="flexCheckChecked"> Mujer </label>
 									</div>
 								</div>
@@ -124,35 +124,35 @@
 													<li class="li-categoria"><a href="#" class="a-categoria">Accesorios</a></li> -->
 
 													<div class="selectores mt-1">
-														<input class="input-categoria me-2" type="checkbox" value="" id="cbox1" />
+														<input class="input-categoria me-2" type="checkbox" value="BLUSA" v-model="checkCategoria" id="cbox1" />
 														<label for="cbox1"> Blusas </label>
 													</div>
 													<div class="selectores">
-														<input class="input-categoria me-2" type="checkbox" id="cbox2" value="second_checkbox" />
+														<input class="input-categoria me-2" type="checkbox" id="cbox2" v-model="checkCategoria" value="CAMISETA" />
 														<label for="cbox2">Camisetas</label>
 													</div>
 													<div class="selectores">
-														<input class="input-categoria me-2" type="checkbox" id="cbox3" value="second_checkbox" />
+														<input class="input-categoria me-2" type="checkbox" id="cbox3" v-model="checkCategoria" value="BUZO" />
 														<label for="cbox3">Buzos</label>
 													</div>
 													<div class="selectores">
-														<input class="input-categoria me-2" type="checkbox" id="cbox4" value="second_checkbox" />
+														<input class="input-categoria me-2" type="checkbox" id="cbox4" v-model="checkCategoria" value="CHAQUETA" />
 														<label for="cbox4">Chaquetas</label>
 													</div>
 													<div class="selectores">
-														<input class="input-categoria me-2" type="checkbox" id="cbox5" value="second_checkbox" />
+														<input class="input-categoria me-2" type="checkbox" id="cbox5" v-model="checkCategoria" value="PANTALON" />
 														<label for="cbox5">Pantalones</label>
 													</div>
 													<div class="selectores">
-														<input class="input-categoria me-2" type="checkbox" id="cbox6" value="second_checkbox" />
+														<input class="input-categoria me-2" type="checkbox" id="cbox6" v-model="checkCategoria" value="FALDA" />
 														<label for="cbox6">Faldas</label>
 													</div>
 													<div class="selectores">
-														<input class="input-categoria me-2" type="checkbox" id="cbox7" value="second_checkbox" />
+														<input class="input-categoria me-2" type="checkbox" id="cbox7" v-model="checkCategoria" value="SHORT" />
 														<label for="cbox7">Shorts</label>
 													</div>
 													<div class="selectores">
-														<input class="input-categoria me-2" type="checkbox" id="cbox8" value="second_checkbox" />
+														<input class="input-categoria me-2" type="checkbox" id="cbox8" v-model="checkCategoria" value="ACCESORIOS" />
 														<label for="cbox8">Accesorios</label>
 													</div>
 												</ul>
