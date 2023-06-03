@@ -16,11 +16,8 @@ public class ProductoTienda {
     private String nombre;
     private double precio;
     private String descripcion;
-    private int stock;
     @ElementCollection
-    private Map<String, Integer> tallaSuperior = new HashMap<>();
-    @ElementCollection
-    private Map<String, Integer> tallaInferior = new HashMap<>();
+    private Map<String, Integer> tallas =  new HashMap<>();
     @ElementCollection
     private List<String> imagenesUrl = new ArrayList<>();
     private ProductoTiendaCategoriaGenero categoriaGenero;
@@ -33,14 +30,13 @@ public class ProductoTienda {
     public ProductoTienda() {
     }
 
-    public ProductoTienda(String nombre, double precio, String descripcion, List<String>imagenesUrl, ProductoTiendaCategoriaGenero categoriaGenero, String subCategoria, int stock, boolean activo) {
+    public ProductoTienda(String nombre, double precio, String descripcion, List<String>imagenesUrl, ProductoTiendaCategoriaGenero categoriaGenero, String subCategoria, boolean activo) {
         this.nombre = nombre;
         this.precio = precio;
         this.descripcion = descripcion;
         this.imagenesUrl = imagenesUrl;
         this.categoriaGenero = categoriaGenero;
         this.subCategoria = subCategoria;
-        this.stock = stock;
         this.activo = activo;
     }
 
@@ -52,49 +48,29 @@ public class ProductoTienda {
         pedidoproducto.setProductoTienda(this);
         pedidoproductos.add(pedidoproducto);
     }
-    public void agregarTallaSuperior(String talla, int stock){
-        tallaSuperior.put(talla, stock);
+    public void agregarTalla(String medida, int cantidad){
+        tallas.put(medida, cantidad);
     }
-
-    public void actualizarUnidadesDisponiblesTallaSuperior(String talla, int nuevasUnidades) {
-        tallaSuperior.put(talla, nuevasUnidades);
-    }
-
-    public void agregarTallaInferior(String talla, int stock){
-        tallaInferior.put(talla, stock);
-    }
-
-    public void actualizarUnidadesDisponiblesTallaInferior(String talla, int nuevasUnidades) {
-        tallaInferior.put(talla, nuevasUnidades);
-    }
+//    public void actualizarCantidadTalla(String talla, int nuevaCantidad) {
+//        if (tallas.containsKey(talla)) {
+//            tallas.put(talla, nuevaCantidad);
+//        } else {
+//            System.out.println("La talla '" + talla + "' no existe para el producto '" + nombre + "'.");
+//        }
+//    }
 
     public long getId() {
         return id;
     }
 
-    public int getStock() {
-        return stock;
+    public Map<String, Integer> getTallas() {
+        return tallas;
     }
 
-    public Map<String, Integer> getTallaSuperior() {
-        return tallaSuperior;
+    public void setTallas(Map<String, Integer> medidas) {
+        this.tallas = medidas;
     }
 
-    public void setTallaSuperior(Map<String, Integer> tallaSuperior) {
-        this.tallaSuperior = tallaSuperior;
-    }
-
-    public Map<String, Integer> getTallaInferior() {
-        return tallaInferior;
-    }
-
-    public void setTallaInferior(Map<String, Integer> tallaInferior) {
-        this.tallaInferior = tallaInferior;
-    }
-
-    public void setStock(int stock) {
-        this.stock = stock;
-    }
 
     public List<String> getImagenesUrl() {
         return imagenesUrl;
