@@ -65,7 +65,7 @@
 				</nav>
 			</header>
 			<main>
-				{{primeraMayuscula}}
+				{{primeraMayuscula}} {{filtroCruzados}}
 				<div class="fondo-contenedor d-flex justify-content-center align-items-center">
 					<div class="row">
 						<div class="col-12">
@@ -88,11 +88,11 @@
 							<div class="col-12 col-md-2 cold-lg-3">
 								<div class="d-flex justify-content-around mb-3">
 									<div class="form-check">
-										<input class="form-check-input" type="checkbox" value="HOMBRE" v-model="check" @change="filtroCruzados" id="flexCheckDefault" />
+										<input class="form-check-input" type="checkbox" value="HOMBRE" v-model="check" @click="filtroCruzados" id="flexCheckDefault" />
 										<label class="form-check-label" for="flexCheckDefault"> Hombre </label>
 									</div>
 									<div class="form-check">
-										<input class="form-check-input" type="checkbox" value="MUJER" v-model="check" @change="filtroCruzados" id="flexCheckChecked" />
+										<input class="form-check-input" type="checkbox" value="MUJER" v-model="check" @click="filtroCruzados" id="flexCheckChecked" />
 										<label class="form-check-label" for="flexCheckChecked"> Mujer </label>
 									</div>
 								</div>
@@ -114,14 +114,47 @@
 											<div class="accordion-body">
 												<ul class="ul-categoria">
 													<li><a href="#" class="a-categoria">Todos los productos</a></li>
-													<li class="li-categoria"><a href="#" class="a-categoria">Blusas</a></li>
+													<!-- <li class="li-categoria"><a href="#" class="a-categoria">Blusas</a></li>
 													<li class="li-categoria"><a href="#" class="a-categoria">Camisetas</a></li>
 													<li class="li-categoria"><a href="#" class="a-categoria">Buzos</a></li>
 													<li class="li-categoria"><a href="#" class="a-categoria">Chaquetas</a></li>
 													<li class="li-categoria"><a href="#" class="a-categoria">Pantalones</a></li>
 													<li class="li-categoria"><a href="#" class="a-categoria">Faldas</a></li>
 													<li class="li-categoria"><a href="#" class="a-categoria">Shorts</a></li>
-													<li class="li-categoria"><a href="#" class="a-categoria">Accesorios</a></li>
+													<li class="li-categoria"><a href="#" class="a-categoria">Accesorios</a></li> -->
+
+													<div class="selectores mt-1">
+														<input class="input-categoria me-2" type="checkbox" value="" id="cbox1" />
+														<label for="cbox1"> Blusas </label>
+													</div>
+													<div class="selectores">
+														<input class="input-categoria me-2" type="checkbox" id="cbox2" value="second_checkbox" />
+														<label for="cbox2">Camisetas</label>
+													</div>
+													<div class="selectores">
+														<input class="input-categoria me-2" type="checkbox" id="cbox3" value="second_checkbox" />
+														<label for="cbox3">Buzos</label>
+													</div>
+													<div class="selectores">
+														<input class="input-categoria me-2" type="checkbox" id="cbox4" value="second_checkbox" />
+														<label for="cbox4">Chaquetas</label>
+													</div>
+													<div class="selectores">
+														<input class="input-categoria me-2" type="checkbox" id="cbox5" value="second_checkbox" />
+														<label for="cbox5">Pantalones</label>
+													</div>
+													<div class="selectores">
+														<input class="input-categoria me-2" type="checkbox" id="cbox6" value="second_checkbox" />
+														<label for="cbox6">Faldas</label>
+													</div>
+													<div class="selectores">
+														<input class="input-categoria me-2" type="checkbox" id="cbox7" value="second_checkbox" />
+														<label for="cbox7">Shorts</label>
+													</div>
+													<div class="selectores">
+														<input class="input-categoria me-2" type="checkbox" id="cbox8" value="second_checkbox" />
+														<label for="cbox8">Accesorios</label>
+													</div>
 												</ul>
 											</div>
 										</div>
@@ -136,7 +169,7 @@
 												aria-expanded="false"
 												aria-controls="flush-collapseTwo"
 											>
-												Talles Superior
+												Tallas
 											</button>
 										</h2>
 										<div id="flush-collapseTwo" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
@@ -166,38 +199,7 @@
 											</div>
 										</div>
 									</div>
-									<div class="accordion-item">
-										<h2 class="accordion-header">
-											<button
-												class="accordion-button collapsed fs-5"
-												type="button"
-												data-bs-toggle="collapse"
-												data-bs-target="#flush-collapseThree"
-												aria-expanded="false"
-												aria-controls="flush-collapseThree"
-											>
-												Talles Inferior
-											</button>
-										</h2>
-										<div id="flush-collapseThree" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
-											<div class="accordion-body">
-												<div>
-													<div class="form-check form-check-inline form-check-size mb-2">
-														<input class="form-check-input" id="talleSeis" value="S" type="checkbox" />
-														<label class="form-check-label" for="talleSeis"> S </label>
-													</div>
-													<div class="form-check form-check-inline form-check-size mb-2">
-														<input class="form-check-input" id="talleSiete" value="M" type="checkbox" />
-														<label class="form-check-label" for="talleSiete"> M </label>
-													</div>
-													<div class="form-check form-check-inline form-check-size mb-2">
-														<input class="form-check-input" id="talleOcho" value="L" type="checkbox" />
-														<label class="form-check-label" for="talleOcho"> L </label>
-													</div>
-												</div>
-											</div>
-										</div>
-									</div>
+
 									<div class="accordion-item">
 										<h2 class="accordion-header">
 											<button

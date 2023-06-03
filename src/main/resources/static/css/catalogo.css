@@ -163,6 +163,10 @@ li {
 	border-color: rgba(128, 128, 128, 0.363) !important;
 	box-shadow: none !important;
 }
+.selectores > label {
+	font-size: 19px !important;
+}
+
 /* FIN DEL ACORDEON */
 
 /* CARTAS */
@@ -232,7 +236,7 @@ li {
 	transform: scale(1, 1);
 }
 /*FIN BOTON DE TIENDA*/
-/* FOOTER */
+
 /*FOOTER*/
 ul {
 	padding: 0;

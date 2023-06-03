@@ -168,14 +168,10 @@ body::-webkit-scrollbar-thumb {
 	box-shadow: 0 0 0 0.05rem white !important;
 }
 
-.border-form{
-	border-color:black;
+.border-form {
+	border-color: black;
 }
 
-/*MODAL*/
-.modal-content{
-	/* background-color: BLACK; */
-}
 /*FOOTER*/
 ul {
 	padding: 0;
