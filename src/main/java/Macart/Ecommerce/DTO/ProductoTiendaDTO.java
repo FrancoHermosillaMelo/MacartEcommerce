@@ -4,14 +4,15 @@ import Macart.Ecommerce.Modelos.*;
 
 import javax.persistence.ElementCollection;
 import java.util.List;
+import java.util.Map;
 
 public class ProductoTiendaDTO {
     private long id;
     private String nombre;
     private double precio;
     private String descripcion;
-    private List<String> tallaSuperior;
-    private List<String> tallaInferior;
+    private Map<String,Integer> tallaSuperior;
+    private Map<String,Integer> tallaInferior;
     private List<String> imagenesUrl;
     private ProductoTiendaCategoriaGenero categoriaGenero;
     private String subCategoria;
@@ -46,13 +47,15 @@ public class ProductoTiendaDTO {
     public String getDescripcion() {
         return descripcion;
     }
-    public List<String> getTallaSuperior() {
+
+    public Map<String, Integer> getTallaSuperior() {
         return tallaSuperior;
     }
 
-    public List<String> getTallaInferior() {
+    public Map<String, Integer> getTallaInferior() {
         return tallaInferior;
     }
+
     public ProductoTiendaCategoriaGenero getCategoriaGenero() {
         return categoriaGenero;
     }
