@@ -246,7 +246,7 @@
 														<div>
 															<h5 class="card-title">{{producto.nombre}}</h5>
 															<p class="card-text">COP$ {{producto.precio.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}}</p>
-															<template v-if="producto.tallaInferior.length !== 0">
+															<!-- <template v-if="producto.tallaInferior.length !== 0">
 																<select class="form-select mb-2 text-center" aria-label="Default select example">
 																	<option selected value="">TALLA</option>
 																	<option value="1">{{producto.tallaInferior}}</option>
@@ -257,7 +257,7 @@
 																	<option selected value="">TALLA</option>
 																	<option value="1">{{producto.tallaSuperior}}</option>
 																</select>
-															</template>
+															</template> -->
 														</div>
 														<div>
 															<a href="#" class="ov-btn-grow-box me-2" @click.prevent="agregarAlCarrito(producto)">CARRITO</a>
