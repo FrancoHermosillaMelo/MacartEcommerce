@@ -21,4 +21,7 @@ public final class ProductoTiendaUtilidades {
                 return null;
             }
     }
+    public static int randomNumber(int min, int max){
+        return (int) (Math.random() * max + min );
+    }
 }
