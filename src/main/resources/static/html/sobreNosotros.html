@@ -47,11 +47,22 @@
 							<a class="nav-link texto-nav hover-a text-center" href="../index.html">Inicio</a>
 							<a class="nav-link texto-nav hover-a text-center" href="./catalogo.html">Catálogo</a>
 							<a class="nav-link activo texto-nav hover-a text-center" href="#">Sobre Nosotros</a>
-							<a class="nav-link texto-nav hover-a text-center" href="#">Preguntas Frecuentes</a>
+							<a class="nav-link texto-nav hover-a text-center" href="./preguntasFrecuentes.html">Preguntas Frecuentes</a>
 						</div>
 					</div>
 					<div class="collapse navbar-collapse justify-content-end" id="navbarNavAltMarkup">
 						<div class="div-iconos navbar-nav gap-3">
+							<template v-if="rol !== 'VISITANTE'">
+								<div class="d-flex justify-content-center align-items-center">
+									<template v-if="clienteIngresado.verificado === false">
+
+									</template>
+									<template v-else>
+										<img class="foto-verificada" src="../img/icons8-cuenta-verificada-48.png"
+											alt="cuenta-verificada" title="cuenta-verificada">
+									</template>
+								</div>
+							</template>
 							<template v-if="rol === 'VISITANTE'">
 								<button type="button" class="boton-nav" data-bs-toggle="modal" data-bs-target="#ModalForm">Ingresar</button>
 							</template>

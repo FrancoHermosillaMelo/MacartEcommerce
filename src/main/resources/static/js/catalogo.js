@@ -1,4 +1,4 @@
-const {createApp} = Vue;
+const { createApp } = Vue;
 
 createApp({
 	data() {
@@ -25,6 +25,8 @@ createApp({
 			segundoApellido: '',
 			telefono: '',
 			clienteId: '',
+			token: "",
+			verificado: false,
 		};
 	},
 	created() {
@@ -70,6 +72,7 @@ createApp({
 						this.carritos[this.clienteId] = []; // Crea un carrito vacío para el cliente si no existe
 					}
 					this.carrito = this.carritos[this.clienteId]; // Asigna el carrito correspondiente al cliente actual
+					this.verificado = response.data.verificado === true;
 				})
 				.catch(error => console.log(error));
 		},
@@ -84,19 +87,31 @@ createApp({
 				});
 		},
 		abrirCarrito() {
-			this.isCarritoInactivo = !this.isCarritoInactivo;
+			if (this.clienteIngresado.verificado == false) {
+				Swal.fire('Debes verificar tu cuenta para entrar al carrito de compra, dirigete al inicio para verificarte.')
+			} else {
+				this.isCarritoInactivo = !this.isCarritoInactivo;
+			}
 		},
 		agregarAlCarrito(item) {
-			if (!this.productosRepetidos(item.id)) {
-				this.carrito.push({
-					nombre: item.nombre,
-					id: item.id,
-					contadorBoton: 1,
-					imagen: item.imagenesUrl[0],
-					precio: item.precio,
-				});
+			if (this.rol === 'VISITANTE') {
+				Swal.fire('Debes registrarte para poder agregar productos al carrito de compra. Dirígete al inicio para registrarte.');
+			} else if (this.clienteIngresado.verificado === false) {
+				Swal.fire('Debes verificar tu cuenta para añadir los productos al carrito de compra. Dirígete al inicio para verificar tu cuenta.');
 			} else {
-				item.contadorBoton + 1;
+				if (this.verificado === true && (this.clienteIngresado.rol === 'CLIENTE' || this.clienteIngresado.rol === 'ADMIN')) {
+					if (!this.productosRepetidos(item.id)) {
+						this.carrito.push({
+							nombre: item.nombre,
+							id: item.id,
+							contadorBoton: 1,
+							imagen: item.imagenesUrl[0],
+							precio: item.precio,
+						});
+					} else {
+						item.contadorBoton++;
+					}
+				}
 			}
 		},
 		productosRepetidos(productoId) {
@@ -119,11 +134,18 @@ createApp({
 			axios
 				.post('/api/login', 'correo=' + this.correo + '&contraseña=' + this.contraseña)
 				.then(response => {
-					if (this.correo == 'admin@gmail.com') {
-						window.location.replace('/index.html');
-					} else {
-						window.location.replace('/index.html');
-					}
+					Swal.fire({
+						icon: 'success',
+						text: 'Ingreso Exitoso',
+						showConfirmButton: false,
+						timer: 2000,
+					}).then(() => {
+						if (this.correo == 'admin@gmail.com') {
+							window.location.replace('/html/catalogo.html');
+						} else {
+							window.location.replace('/html/catalogo.html');
+						}
+					});
 				})
 				.catch(error =>
 					Swal.fire({
@@ -138,19 +160,19 @@ createApp({
 				.post(
 					'/api/clientes',
 					'primerNombre=' +
-						this.primerNombre +
-						'&segundoNombre=' +
-						this.segundoNombre +
-						'&primerApellido=' +
-						this.primerApellido +
-						'&segundoApellido=' +
-						this.segundoApellido +
-						'&telefono=' +
-						this.telefono +
-						'&correo=' +
-						this.correoRegistro +
-						'&contraseña=' +
-						this.contraseñaRegistro
+					this.primerNombre +
+					'&segundoNombre=' +
+					this.segundoNombre +
+					'&primerApellido=' +
+					this.primerApellido +
+					'&segundoApellido=' +
+					this.segundoApellido +
+					'&telefono=' +
+					this.telefono +
+					'&correo=' +
+					this.correoRegistro +
+					'&contraseña=' +
+					this.contraseñaRegistro
 				)
 				.then(response => {
 					this.correo = this.correoRegistro;

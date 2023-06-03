@@ -104,6 +104,10 @@ li {
 	color: var(--color-negro) !important;
 	padding: 5px;
 }
+.foto-verificada{
+	height: 1.4rem;
+	width: 1.4rem;
+}
 /*FIN NAVBAR*/
 
 /* MAIN */

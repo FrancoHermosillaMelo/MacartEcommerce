@@ -1,4 +1,4 @@
-const {createApp} = Vue;
+const { createApp } = Vue;
 
 createApp({
 	data() {
@@ -19,8 +19,8 @@ createApp({
 			segundoApellido: '',
 			telefono: '',
 			clienteId: '',
-			productoPorId:"", 
-			imgProductoPorId:"",
+			productoPorId: "",
+			imgProductoPorId: "",
 			token: "",
 			verificado: false,
 		};
@@ -29,12 +29,13 @@ createApp({
 		// this.roles();
 		this.data();
 		this.totalProductos();
-		this.clienteId = sessionStorage.getItem('clienteId'); // Obtén el identificador único del cliente desde el sessionStorage
-		this.carritos = JSON.parse(localStorage.getItem('carritos')) || {}; // Obtiene los carritos almacenados en el localStorage
+		this.clienteId = sessionStorage.getItem('clienteId');
+		this.carritos = JSON.parse(localStorage.getItem('carritos')) || {};
 		if (!this.carritos[this.clienteId]) {
-			this.carritos[this.clienteId] = []; // Crea un carrito vacío para el cliente si no existe
+			this.carritos[this.clienteId] = [];
 		}
-		this.carrito = this.carritos[this.clienteId]; // Asi
+		this.carrito = this.carritos[this.clienteId];
+
 	},
 	mounted() {
 		this.roles();
@@ -55,11 +56,12 @@ createApp({
 					this.datos = response.data;
 					this.clienteIngresado = response.data;
 					this.clienteId = response.data.id;
-					sessionStorage.setItem('clienteId', this.clienteId); // Almacena el identificador único del cliente en el sessionStorage
+					sessionStorage.setItem('clienteId', this.clienteId);
 					if (!this.carritos[this.clienteId]) {
-						this.carritos[this.clienteId] = []; // Crea un carrito vacío para el cliente si no existe
+						this.carritos[this.clienteId] = [];
 					}
-					this.carrito = this.carritos[this.clienteId]; // Asigna el carrito correspondiente al cliente actual
+					this.carrito = this.carritos[this.clienteId];
+					this.verificado = response.data.verificado === true;
 				})
 				.catch(error => console.log(error));
 		},
@@ -81,23 +83,25 @@ createApp({
 			}
 		},
 		agregarAlCarrito(item) {
-			if (this.clienteIngresado.verificado === false) {
-				Swal.fire('Debes verificar tu cuenta para añadir los productos al carrito de compra');
-			}else{
-			if (this.verificado) {
-				if (!this.productosRepetidos(item.id)) {
-					this.carrito.push({
-						nombre: item.nombre,
-						id: item.id,
-						contadorBoton: 1,
-						imagen: item.imagenesUrl[0],
-						precio: item.precio,
-					});
-				} else {
-					item.contadorBoton++;
+			if (this.rol === 'VISITANTE') {
+				Swal.fire('Debes registrarte para poder agregar productos al carrito de compra. Dirígete al inicio para registrarte.');
+			} else if (this.clienteIngresado.verificado === false) {
+				Swal.fire('Debes verificar tu cuenta para añadir los productos al carrito de compra.');
+			} else {
+				if (this.verificado === true && (this.rol === 'CLIENTE' || this.rol === 'ADMIN')) {
+					if (!this.productosRepetidos(item.id)) {
+						this.carrito.push({
+							nombre: item.nombre,
+							id: item.id,
+							contadorBoton: 1,
+							imagen: item.imagenesUrl[0],
+							precio: item.precio,
+						});
+					} else {
+						item.contadorBoton++;
+					}
 				}
 			}
-		}
 		},
 		productosRepetidos(productoId) {
 			return this.carrito.some(item => item.id === productoId);
@@ -135,7 +139,7 @@ createApp({
 				.catch(error =>
 					Swal.fire({
 						icon: 'error',
-						text: error.response.data,
+						text: "Tu contraseña y correo son incorrectos",
 						confirmButtonColor: '#7c601893',
 					})
 				);
@@ -145,19 +149,19 @@ createApp({
 				.post(
 					'/api/clientes',
 					'primerNombre=' +
-						this.primerNombre +
-						'&segundoNombre=' +
-						this.segundoNombre +
-						'&primerApellido=' +
-						this.primerApellido +
-						'&segundoApellido=' +
-						this.segundoApellido +
-						'&telefono=' +
-						this.telefono +
-						'&correo=' +
-						this.correoRegistro +
-						'&contraseña=' +
-						this.contraseñaRegistro
+					this.primerNombre +
+					'&segundoNombre=' +
+					this.segundoNombre +
+					'&primerApellido=' +
+					this.primerApellido +
+					'&segundoApellido=' +
+					this.segundoApellido +
+					'&telefono=' +
+					this.telefono +
+					'&correo=' +
+					this.correoRegistro +
+					'&contraseña=' +
+					this.contraseñaRegistro
 				)
 				.then(response => {
 					Swal.fire({
@@ -180,12 +184,13 @@ createApp({
 					})
 				);
 		},
-		obtenerIdProducto(id){
+		obtenerIdProducto(id) {
 			axios.get('/api/productoTienda/' + id)
-			.then(response => {this.productoPorId = response.data
-				this.imgProductoPorId = this.productoPorId.imagenesUrl
-			})
-			.catch(error => console.log (error))
+				.then(response => {
+					this.productoPorId = response.data
+					this.imgProductoPorId = this.productoPorId.imagenesUrl
+				})
+				.catch(error => console.log(error))
 		},
 		verificarCuenta() {
 			axios.post('/api/clientes/autenticar', 'token=' + this.token)
@@ -253,19 +258,21 @@ createApp({
 		},
 	},
 }).mount('#app');
-
-
 // Obtén las referencias a las imágenes pequeña y grande
 var imagenPequena = document.getElementById('imagenPequena');
 var imagenGrande = document.getElementById('imagenGrande');
 
 // Manejador de eventos para hacer clic en la imagen pequeña
-imagenPequena.addEventListener('click', function() {
-  // Obtén las URLs de las imágenes pequeña y grande
-  var urlImagenPequena = imagenPequena.src;
-  var urlImagenGrande = imagenGrande.src;
-  
-  // Intercambia las URLs de las imágenes
-  imagenPequena.src = urlImagenGrande;
-  imagenGrande.src = urlImagenPequena;
-});
+imagenPequena.addEventListener('click', function () {
+	// Obtén las URLs de las imágenes pequeña y grande
+	var urlImagenPequena = imagenPequena.src;
+	var urlImagenGrande = imagenGrande.src;
+
+	// Intercambia las URLs de las imágenes
+	imagenPequena.src = urlImagenGrande;
+	imagenGrande.src = urlImagenPequena;
+})
+
+
+
+

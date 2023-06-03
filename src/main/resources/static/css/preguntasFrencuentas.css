@@ -24,35 +24,61 @@ a {
 
 
 /*NAVBAR*/
+.activo {
+	border-bottom: 2px solid var(--color-rosado) !important;
+}
 .header-nav {
-     padding-left: 50px;
-     padding-right: 50px;
-    }
-    .texto-logo {
-     font-weight: 700;
-     font-size: 30px !important;
-      color: var(--color-negro) !important;
-    }
-    .texto-logo > span {
-      color: var(--color-rosado);
-    }
-    .texto-nav {
-    font-size: 20px !important;
-    }
-    .hover-a:hover {
-     color: var(--color-rosado) !important;
-    }
-    .hover-iconos:hover {
-    transform: scale(1.2, 1.2) !important;
-     color: var(--color-rosado) !important;
-    }
-    .navbar-toggler {
-     border: none !important;
-    }
-    .navbar-toggler:focus {
-     box-shadow: none !important;
-    }
-
+	padding-left: 50px;
+	padding-right: 50px;
+}
+.texto-logo {
+	font-weight: 700;
+	font-size: 30px !important;
+	color: var(--color-negro) !important;
+}
+.texto-logo > span {
+	color: var(--color-rosado);
+}
+.texto-nav {
+	font-size: 20px !important;
+	margin-left: 5px !important;
+}
+.hover-a {
+	max-width: fit-content;
+}
+.hover-a:hover {
+	border-bottom: 2px solid var(--color-rosado) !important;
+}
+.hover-iconos:hover {
+	transform: scale(1.2, 1.2) !important;
+	color: var(--color-rosado) !important;
+}
+.navbar-toggler {
+	border: none !important;
+}
+.navbar-toggler:focus {
+	box-shadow: none !important;
+}
+.boton-nav {
+	position: relative;
+	padding: 6px 24px;
+	border: 2px solid var(--color-rosado);
+	background: transparent;
+	border-radius: 6px;
+	transition: 0.3s ease;
+}
+.boton-nav:hover {
+	transform: scale(0.9, 0.9);
+}
+.texto-carrito {
+	background-color: var(--color-rosado) !important;
+	color: var(--color-negro) !important;
+	padding: 5px;
+}
+.foto-verificada{
+	height: 1.4rem;
+	width: 1.4rem;
+}
 /*FIN NAVBAR*/
 
 

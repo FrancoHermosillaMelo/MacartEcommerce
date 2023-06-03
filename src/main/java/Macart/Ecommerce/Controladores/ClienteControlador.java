@@ -141,16 +141,13 @@ public class ClienteControlador {
 
     @PostMapping("/api/clientes/autenticar")
     public ResponseEntity<Object> autenticarCliente(@RequestParam String token) {
-        // Obtener el cliente actual autenticado
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Cliente cliente = clienteServicio.obtenerClientePorEmail(authentication.getName());
 
-        // Verificar si el cliente existe y el token es válido
         if (cliente == null || !cliente.getTokenAutenticacion().equals(token)) {
             return new ResponseEntity<>("La autenticación no es válida.", HttpStatus.FORBIDDEN);
         }
 
-        // Actualizar el estado de autenticación del cliente a true
         cliente.setVerificado(true);
         clienteServicio.guardarCliente(cliente);
 

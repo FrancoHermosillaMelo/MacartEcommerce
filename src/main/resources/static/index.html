@@ -41,7 +41,7 @@
 								<a class="nav-link activo texto-nav hover-a text-center" aria-current="page" href="./index.html">Inicio</a>
 								<a class="nav-link texto-nav hover-a text-center" href="./html/catalogo.html">Catálogo</a>
 								<a class="nav-link texto-nav hover-a text-center" href="./html/sobreNosotros.html">Sobre Nosotros</a>
-								<a class="nav-link texto-nav hover-a text-center" href="#">Preguntas Frecuentes</a>
+								<a class="nav-link texto-nav hover-a text-center" href="./html/preguntasFrecuentes.html">Preguntas Frecuentes</a>
 								<template v-if="rol === 'ADMIN'">
 									<a class="nav-link texto-nav hover-a text-center" href="./manager.html">Administrador</a>
 								</template>
@@ -59,7 +59,7 @@
 									</template>
 									<template v-else>
 										<div class="d-flex justify-content-center align-items-center">
-											<p class="cuenta-verificado"><img class="foto-verificada" src="./img/icons8-cuenta-verificada-48.png" alt="cuenta-verificada"></p>
+											<p class="cuenta-verificado"><img class="foto-verificada" src="./img/icons8-cuenta-verificada-48.png" alt="cuenta-verificada" title="cuenta-verificada"></p>
 										</div>
 									</template>
 								</template>
@@ -165,8 +165,8 @@
 								<div class="card-body">
 									<h5 class="card-title">{{producto.nombre}}</h5>
 									<p class="card-text">COP$ {{producto.precio.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}}</p>
-									<a href="#" class="ov-btn-grow-box me-2" @click.prevent="agregarAlCarrito(producto)">CARRITO</a>
-									<a href="#" class="ov-btn-grow-box" @click="agregarAlCarrito(producto)">INFO <i class="bi bi-search-heart"></i></a>
+									<a href="#" class="ov-btn-grow-box me-2" @click="agregarAlCarrito(producto)">CARRITO</a>
+									<a href="#" class="ov-btn-grow-box">INFO <i class="bi bi-search-heart"></i></a>
 								</div>
 							</div>
 						</template>
@@ -190,8 +190,8 @@
 									<div class="card-body">
 										<h5 class="card-title">{{producto.nombre}}</h5>
 										<p class="card-text">COP$ {{producto.precio.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}}</p>
-										<a href="#" class="ov-btn-grow-box me-2" @click.prevent="agregarAlCarrito(producto)">CARRITO</a>
-										<a href="#" class="ov-btn-grow-box" @click="agregarAlCarrito(producto)">INFO <i class="bi bi-search-heart"></i></a>
+										<a href="#" class="ov-btn-grow-box me-2"  @click.prevent="agregarAlCarrito(producto)">CARRITO</a>
+										<a href="#" class="ov-btn-grow-box" >INFO <i class="bi bi-search-heart"></i></a>
 									</div>
 								</div>
 							</swiper-slide>
