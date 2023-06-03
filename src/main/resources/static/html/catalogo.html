@@ -4,9 +4,9 @@
 		<meta charset="UTF-8" />
 		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<title>MACART - Tienda de Ropa</title>
-		<link rel="shortcut icon" href="./img/favicon.jpg" type="image/x-icon" />
-		<link rel="stylesheet" href="./css/index.css" />
+		<title>Macart - Catálogo</title>
+		<link rel="shortcut icon" href="../img/favicon.jpg" type="image/x-icon" />
+		<link rel="stylesheet" href="../css/catalogo.css" />
 		<link
 			href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css"
 			rel="stylesheet"
@@ -14,17 +14,13 @@
 			crossorigin="anonymous"
 		/>
 		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" />
-		<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
-		<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css" />
 	</head>
 	<body>
 		<div id="app">
-			{{dataSegunRol}}
-
 			<header class="header-nav">
 				<nav class="navbar navbar-expand-lg">
 					<div class="container-fluid">
-						<a class="navbar-brand texto-logo" href="./index.html">Ma<span>cart.</span></a>
+						<a class="navbar-brand texto-logo" href="../index.html">Ma<span>cart.</span></a>
 						<button
 							class="navbar-toggler"
 							type="button"
@@ -38,12 +34,12 @@
 						</button>
 						<div class="collapse navbar-collapse justify-content-end" id="navbarNavAltMarkup">
 							<div class="navbar-nav">
-								<a class="nav-link activo texto-nav hover-a text-center" aria-current="page" href="./index.html">Inicio</a>
-								<a class="nav-link texto-nav hover-a text-center" href="./html/catalogo.html">Catálogo</a>
-								<a class="nav-link texto-nav hover-a text-center" href="./html/sobreNosotros.html">Sobre Nosotros</a>
+								<a class="nav-link texto-nav hover-a text-center" aria-current="page" href="../index.html">Inicio</a>
+								<a class="nav-link activo texto-nav hover-a text-center" href="#">Catálogo</a>
+								<a class="nav-link texto-nav hover-a text-center" href="../html/sobreNosotros.html">Sobre Nosotros</a>
 								<a class="nav-link texto-nav hover-a text-center" href="#">Preguntas Frecuentes</a>
 								<template v-if="rol === 'ADMIN'">
-									<a class="nav-link texto-nav hover-a text-center" href="./manager.html">Administrador</a>
+									<a class="nav-link texto-nav hover-a text-center" href="../manager.html">Administrador</a>
 								</template>
 							</div>
 						</div>
@@ -53,7 +49,7 @@
 									<button type="button" class="boton-nav" data-bs-toggle="modal" data-bs-target="#ModalForm">Ingresar</button>
 								</template>
 								<template v-else>
-									<a class="nav-link texto-nav hover-iconos texto-iconos text-center" aria-current="page" href="./html/perfilCliente.html"
+									<a class="nav-link texto-nav hover-iconos texto-iconos text-center" aria-current="page" href="./perfilCliente.html"
 										><i class="bi bi-person pe-1"></i>{{clienteIngresado.primerNombre}}</a
 									>
 									<a @click="abrirCarrito" class="nav-link texto-nav hover-iconos texto-iconos text-center" href="#"
@@ -68,15 +64,17 @@
 					</div>
 				</nav>
 			</header>
-			<main class="pb-5 main-index">
-				{{primeraMayuscula}}
+			<main>
+				{{primeraMayuscula}} {{filtroCruzados}}
 				<div class="fondo-contenedor d-flex justify-content-center align-items-center">
 					<div class="row">
 						<div class="col-12">
-							<span class="text-center text-white heading-xxs letter-spacing-xl span-texto">🤍 DESLUMBRA CON TU ESTILO 🤍 </span>
+							<span class="text-center text-white heading-xxs letter-spacing-xl span-texto">⚡ DISFRUTA DE TU COMPRA ⚡</span>
 						</div>
 					</div>
 				</div>
+
+				<div class="div-imagen mt-4"></div>
 
 				<div class="whatsapp-logo">
 					<a href="https://wa.me/message/UDEKP6X67HYRK1" target="_blank">
@@ -84,106 +82,197 @@
 					</a>
 				</div>
 
-				<div data-aos="fade-up" data-aos-duration="5000" data-aos-easing="ease-in-out" class="div-genero pt-3 d-flex">
-					<div class="ps-sm-5 div-mujer d-flex flex-column align-items-start justify-content-center">
-						<div class="tienda-mujer">
-							<h2 class="fs-1 texto-genero">Mujer</h2>
-							<a href="./html/catalogo.html?check=MUJER" class="ov-btn-grow-box">CATÁLOGO <i class="bi bi-arrow-right"></i></a>
-						</div>
-					</div>
-					<div class="ps-sm-5 div-hombre d-flex flex-column align-items-start justify-content-center">
-						<div class="tienda-hombre">
-							<h2 class="text-white texto-genero">Hombre</h2>
-							<a href="./html/catalogo.html?check=HOMBRE" class="ov-btn-grow-box">CATÁLOGO <i class="bi bi-arrow-right"></i></a>
-						</div>
-					</div>
-				</div>
-
-				<div
-					data-aos="fade-right"
-					data-aos-duration="6000"
-					data-aos-delay="300"
-					class="div-info pt-5 pb-5 d-flex justify-content-sm-evenly justify-content-xs-center flex-wrap"
-				>
-					<div class="d-flex">
-						<i class="bi bi-lock icono"></i>
-						<div class="ms-3">
-							<h5 class="m-0 titulo">COMPRA SEGURA</h5>
-							<p class="m-0 parrafo">Estas en buenas manos</p>
-						</div>
-					</div>
-					<div class="d-flex">
-						<i class="bi bi-truck icono"></i>
-						<div class="ms-3">
-							<h5 class="m-0 titulo">ENVÍO GRATIS</h5>
-							<p class="m-0 parrafo">superiores a COP$100.000</p>
-						</div>
-					</div>
-					<div class="d-flex">
-						<i class="bi bi-arrow-repeat icono"></i>
-						<div class="ms-3">
-							<h5 class="m-0 titulo">DEVOLUCIONES GRATIS</h5>
-							<p class="m-0 parrafo">Devolución de dinero en 15 días</p>
-						</div>
-					</div>
-					<div class="d-flex">
-						<i class="bi bi-tag icono"></i>
-						<div class="ms-3">
-							<h5 class="m-0 titulo">MUCHOS ESTILOS</h5>
-							<p class="m-0 parrafo">Tenemos todo lo que necesitas</p>
-						</div>
-					</div>
-				</div>
-
-				<div data-aos="fade-left" data-aos-duration="6000" data-aos-delay="300" class="pt-5 div-ropa">
-					<div class="pb-5">
-						<h6 class="text-center texto-frase">NUEVO</h6>
-						<h2 class="text-center fs-1">Lo más pedido</h2>
-					</div>
-
-					<div class="div-card d-md-flex d-none justify-content-evenly flex-wrap">
-						<template v-for="producto of productos.slice(0, 5)">
-							<div class="card div-1" style="width: 20rem">
-								<img :src="producto.imagenesUrl[0]" class="card-img-top" />
-								<div class="div-2">
-									<img :src="producto.imagenesUrl[1]" class="card-img-top" />
+				<section class="py-11">
+					<div>
+						<div class="d-flex justify-content-center mt-5 flex-wrap">
+							<div class="col-12 col-md-2 cold-lg-3">
+								<div class="d-flex justify-content-around mb-3">
+									<div class="form-check">
+										<input class="form-check-input" type="checkbox" value="HOMBRE" v-model="check" @click="filtroCruzados" id="flexCheckDefault" />
+										<label class="form-check-label" for="flexCheckDefault"> Hombre </label>
+									</div>
+									<div class="form-check">
+										<input class="form-check-input" type="checkbox" value="MUJER" v-model="check" @click="filtroCruzados" id="flexCheckChecked" />
+										<label class="form-check-label" for="flexCheckChecked"> Mujer </label>
+									</div>
 								</div>
-								<div class="card-body">
-									<h5 class="card-title">{{producto.nombre}}</h5>
-									<p class="card-text">COP$ {{producto.precio.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}}</p>
-									<a href="#" class="ov-btn-grow-box me-2" @click.prevent="agregarAlCarrito(producto)">CARRITO</a>
-									<a href="#" class="ov-btn-grow-box" @click="agregarAlCarrito(producto)">INFO <i class="bi bi-search-heart"></i></a>
+								<div class="accordion accordion-flush" id="accordionFlushExample">
+									<div class="accordion-item">
+										<h2 class="accordion-header">
+											<button
+												class="accordion-button collapsed fs-5"
+												type="button"
+												data-bs-toggle="collapse"
+												data-bs-target="#flush-collapseOne"
+												aria-expanded="false"
+												aria-controls="flush-collapseOne"
+											>
+												Categoria
+											</button>
+										</h2>
+										<div id="flush-collapseOne" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
+											<div class="accordion-body">
+												<ul class="ul-categoria">
+													<li><a href="#" class="a-categoria">Todos los productos</a></li>
+													<!-- <li class="li-categoria"><a href="#" class="a-categoria">Blusas</a></li>
+													<li class="li-categoria"><a href="#" class="a-categoria">Camisetas</a></li>
+													<li class="li-categoria"><a href="#" class="a-categoria">Buzos</a></li>
+													<li class="li-categoria"><a href="#" class="a-categoria">Chaquetas</a></li>
+													<li class="li-categoria"><a href="#" class="a-categoria">Pantalones</a></li>
+													<li class="li-categoria"><a href="#" class="a-categoria">Faldas</a></li>
+													<li class="li-categoria"><a href="#" class="a-categoria">Shorts</a></li>
+													<li class="li-categoria"><a href="#" class="a-categoria">Accesorios</a></li> -->
+
+													<div class="selectores mt-1">
+														<input class="input-categoria me-2" type="checkbox" value="" id="cbox1" />
+														<label for="cbox1"> Blusas </label>
+													</div>
+													<div class="selectores">
+														<input class="input-categoria me-2" type="checkbox" id="cbox2" value="second_checkbox" />
+														<label for="cbox2">Camisetas</label>
+													</div>
+													<div class="selectores">
+														<input class="input-categoria me-2" type="checkbox" id="cbox3" value="second_checkbox" />
+														<label for="cbox3">Buzos</label>
+													</div>
+													<div class="selectores">
+														<input class="input-categoria me-2" type="checkbox" id="cbox4" value="second_checkbox" />
+														<label for="cbox4">Chaquetas</label>
+													</div>
+													<div class="selectores">
+														<input class="input-categoria me-2" type="checkbox" id="cbox5" value="second_checkbox" />
+														<label for="cbox5">Pantalones</label>
+													</div>
+													<div class="selectores">
+														<input class="input-categoria me-2" type="checkbox" id="cbox6" value="second_checkbox" />
+														<label for="cbox6">Faldas</label>
+													</div>
+													<div class="selectores">
+														<input class="input-categoria me-2" type="checkbox" id="cbox7" value="second_checkbox" />
+														<label for="cbox7">Shorts</label>
+													</div>
+													<div class="selectores">
+														<input class="input-categoria me-2" type="checkbox" id="cbox8" value="second_checkbox" />
+														<label for="cbox8">Accesorios</label>
+													</div>
+												</ul>
+											</div>
+										</div>
+									</div>
+									<div class="accordion-item">
+										<h2 class="accordion-header">
+											<button
+												class="accordion-button collapsed fs-5"
+												type="button"
+												data-bs-toggle="collapse"
+												data-bs-target="#flush-collapseTwo"
+												aria-expanded="false"
+												aria-controls="flush-collapseTwo"
+											>
+												Tallas
+											</button>
+										</h2>
+										<div id="flush-collapseTwo" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
+											<div class="accordion-body">
+												<div>
+													<div class="form-check form-check-inline form-check-size mb-2">
+														<input class="form-check-input" id="talleUno" value="XS" type="checkbox" />
+														<label class="form-check-label" for="talleUno"> XS </label>
+													</div>
+													<div class="form-check form-check-inline form-check-size mb-2">
+														<input class="form-check-input" id="talleDos" value="S" type="checkbox" />
+														<label class="form-check-label" for="talleDos"> S </label>
+													</div>
+													<div class="form-check form-check-inline form-check-size mb-2">
+														<input class="form-check-input" id="talleTres" value="M" type="checkbox" />
+														<label class="form-check-label" for="talleTres"> M </label>
+													</div>
+													<div class="form-check form-check-inline form-check-size mb-2">
+														<input class="form-check-input" id="talleCuatro" value="L" type="checkbox" />
+														<label class="form-check-label" for="talleCuatro"> L </label>
+													</div>
+													<div class="form-check form-check-inline form-check-size mb-2">
+														<input class="form-check-input" id="talleCinco" value="XL" type="checkbox" />
+														<label class="form-check-label" for="talleCinco"> XL </label>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+
+									<div class="accordion-item">
+										<h2 class="accordion-header">
+											<button
+												class="accordion-button collapsed fs-5"
+												type="button"
+												data-bs-toggle="collapse"
+												data-bs-target="#flush-collapseFour"
+												aria-expanded="false"
+												aria-controls="flush-collapseFour"
+											>
+												Precio
+											</button>
+										</h2>
+										<div id="flush-collapseFour" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
+											<div class="accordion-body">
+												<div class="form-check mb-3">
+													<input class="form-check-input" id="precioUno" type="checkbox" />
+													<label class="form-check-label" for="precioUno"> COP$ 10.000 - COP$ 49.000 </label>
+												</div>
+												<div class="form-check mb-3">
+													<input class="form-check-input" id="precioDos" type="checkbox" />
+													<label class="form-check-label" for="precioDos"> COP$ 50.000 - COP$ 99.000 </label>
+												</div>
+												<div class="form-check mb-3">
+													<input class="form-check-input" id="precioTres" type="checkbox" />
+													<label class="form-check-label" for="precioTres"> COP$ 100.000 - COP$ 200.000 </label>
+												</div>
+											</div>
+										</div>
+									</div>
 								</div>
 							</div>
-						</template>
-					</div>
-
-					<!-- </CELULAR > -->
-					<swiper-container
-						class="mySwiper d-flex d-md-none"
-						navigation="true"
-						centered-slides="true"
-						autoplay-delay="2500"
-						autoplay-disable-on-interaction="false"
-					>
-						<template v-for="producto of productos">
-							<swiper-slide>
-								<div class="card div-1 m-auto" style="width: 20rem">
-									<img :src="producto.imagenesUrl[0]" class="card-img-top" />
-									<div class="div-2">
-										<img :src="producto.imagenesUrl[1]" class="card-img-top" />
-									</div>
-									<div class="card-body">
-										<h5 class="card-title">{{producto.nombre}}</h5>
-										<p class="card-text">COP$ {{producto.precio.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}}</p>
-										<a href="#" class="ov-btn-grow-box me-2" @click.prevent="agregarAlCarrito(producto)">CARRITO</a>
-										<a href="#" class="ov-btn-grow-box" @click="agregarAlCarrito(producto)">INFO <i class="bi bi-search-heart"></i></a>
+							<div class="col-12 col-md-8 cold-lg-9">
+								<div class="row">
+									<div>
+										<div class="div-card d-flex justify-content-evenly flex-wrap">
+											<template v-for="producto of productosFiltrados">
+												<div class="card div-1">
+													<img :src="producto.imagenesUrl[0]" class="card-img-top" />
+													<div class="div-2">
+														<img :src="producto.imagenesUrl[1]" class="card-img-top" />
+													</div>
+													<div class="card-body d-flex flex-column justify-content-between">
+														<div>
+															<h5 class="card-title">{{producto.nombre}}</h5>
+															<p class="card-text">COP$ {{producto.precio.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}}</p>
+															<template v-if="producto.tallaInferior.length !== 0">
+																<select class="form-select mb-2 text-center" aria-label="Default select example">
+																	<option selected value="">TALLA</option>
+																	<option value="1">{{producto.tallaInferior}}</option>
+																</select>
+															</template>
+															<template v-if="producto.tallaSuperior.length !== 0">
+																<select class="form-select mb-2 text-center" aria-label="Default select example">
+																	<option selected value="">TALLA</option>
+																	<option value="1">{{producto.tallaSuperior}}</option>
+																</select>
+															</template>
+														</div>
+														<div>
+															<a href="#" class="ov-btn-grow-box me-2" @click.prevent="agregarAlCarrito(producto)">CARRITO</a>
+															<a href="#" class="ov-btn-grow-box" @click="agregarAlCarrito(producto)">INFO <i class="bi bi-search-heart"></i></a>
+														</div>
+													</div>
+												</div>
+											</template>
+										</div>
 									</div>
 								</div>
-							</swiper-slide>
-						</template>
-					</swiper-container>
-				</div>
+							</div>
+						</div>
+					</div>
+				</section>
 				{{guardarDatos}}
 				<aside id="carrito" :class="{inactivo : isCarritoInactivo}">
 					<div class="div-carrito pt-4 d-flex justify-content-center align-items-center">
@@ -229,14 +318,14 @@
 					<div class="wave" id="wave3"></div>
 					<div class="wave" id="wave4"></div>
 				</div>
-				<img class="logo-footer" src="./img/LogoMacart.png" alt="Logo de Macart" />
+				<img class="logo-footer" src="../img/LogoMacart.png" alt="Logo de Macart" />
 				<div class="social-icon-container">
 					<a href="https://wa.me/message/UDEKP6X67HYRK1" class="social-icon" target="_blank"><i class="bi-whatsapp"></i></a>
 					<a href="https://www.instagram.com/macartcostume/" class="social-icon" target="_blank"><i class="bi-instagram"></i></a>
 					<a href="https://www.facebook.com/" class="social-icon" target="_blank"><i class="bi-facebook"></i></a>
 				</div>
 				<ul class="footer-menu-container">
-					<li class="menu-item"><a class="aFotter" href="./html/sobreNosotros.html">Sobre Nosotros</a></li>
+					<li class="menu-item"><a class="aFotter" href="../html/sobreNosotros.html">Sobre Nosotros</a></li>
 					<li class="menu-item">Preguntas Frecuentes</li>
 					<li class="menu-item" data-bs-toggle="modal" data-bs-target="#exampleModal2">Política de privacidad</li>
 					<li class="menu-item" data-bs-toggle="modal" data-bs-target="#exampleModal">Términos de uso</li>
@@ -244,12 +333,12 @@
 				<div class="pagos-icon-container">
 					<span>Métodos de pago</span>
 					<div class="img-pagos">
-						<img src="./img/Mercado Pago.png" alt="Mercado Pago" />
-						<img src="./img/Visa.png" alt="Visa" />
-						<img src="./img/Mastercard.png" alt="Mastercard" />
-						<img src="./img/American Express.png" alt="American Express" />
-						<img src="./img/PSE.png" alt="PSE" />
-						<img src="./img/Efecty.png" alt="Efecty" />
+						<img src="../img/Mercado Pago.png" alt="Mercado Pago" />
+						<img src="../img/Visa.png" alt="Visa" />
+						<img src="../img/Mastercard.png" alt="Mastercard" />
+						<img src="../img/American Express.png" alt="American Express" />
+						<img src="../img/PSE.png" alt="PSE" />
+						<img src="../img/Efecty.png" alt="Efecty" />
 					</div>
 				</div>
 				<span class="copyright">&copy;2023, Macart Costume. Todos los derechos reservados.</span>
@@ -404,17 +493,9 @@
 			integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe"
 			crossorigin="anonymous"
 		></script>
-		<script src="https://unpkg.com/aos@next/dist/aos.js"></script>
-		<script>
-			AOS.init({
-				once: true,
-			});
-		</script>
 		<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 		<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-		<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
 		<script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
-		<script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-element-bundle.min.js"></script>
-		<script src="./js/index.js"></script>
+		<script src="../js/catalogo.js"></script>
 	</body>
 </html>

@@ -3,6 +3,10 @@ const {createApp} = Vue;
 createApp({
 	data() {
 		return {
+			sexo: '',
+			check: [],
+			checkCatalogo: new URLSearchParams(location.search).get('check'),
+			productosFiltrados: {},
 			rol: '',
 			clienteIngresado: '',
 			productos: '',
@@ -19,8 +23,6 @@ createApp({
 			segundoApellido: '',
 			telefono: '',
 			clienteId: '',
-			productoPorId:"", 
-			imgProductoPorId:""
 		};
 	},
 	created() {
@@ -36,6 +38,7 @@ createApp({
 	},
 	mounted() {
 		this.roles();
+		this.check.push(this.checkCatalogo);
 	},
 	methods: {
 		totalProductos() {
@@ -43,9 +46,14 @@ createApp({
 				.get('/api/productoTienda')
 				.then(response => {
 					this.productos = response.data;
+					console.log(this.productos);
+					this.productosFiltrados = this.productos;
+					this.sexo = Array.from(new Set(this.productos.map(sexo => sexo.categoriaGenero)));
+					console.log(this.sexo);
 				})
 				.catch(error => console.log(error));
 		},
+
 		data() {
 			axios
 				.get('/api/clientes/actual')
@@ -107,18 +115,11 @@ createApp({
 			axios
 				.post('/api/login', 'correo=' + this.correo + '&contraseña=' + this.contraseña)
 				.then(response => {
-					Swal.fire({
-						icon: 'success',
-						text: 'Ingreso Exitoso',
-						showConfirmButton: false,
-						timer: 2000,
-					}).then(() => {
-						if (this.correo == 'admin@gmail.com') {
-							window.location.replace('/index.html');
-						} else {
-							window.location.replace('/index.html');
-						}
-					});
+					if (this.correo == 'admin@gmail.com') {
+						window.location.replace('/index.html');
+					} else {
+						window.location.replace('/index.html');
+					}
 				})
 				.catch(error =>
 					Swal.fire({
@@ -148,17 +149,9 @@ createApp({
 						this.contraseñaRegistro
 				)
 				.then(response => {
-					Swal.fire({
-						icon: 'success',
-						text: 'Se envio a tu correo la validacion',
-						showConfirmButton: false,
-						timer: 2000,
-					}).then(() => {
-						this.correo = this.correoRegistro;
-						this.contraseña = this.contraseñaRegistro;
-						window.location.replace('/index.html');
-						// this.ingresar();
-					});
+					this.correo = this.correoRegistro;
+					this.contraseña = this.contraseñaRegistro;
+					this.ingresar();
 				})
 				.catch(error =>
 					Swal.fire({
@@ -168,13 +161,6 @@ createApp({
 					})
 				);
 		},
-		obtenerIdProducto(id){
-			axios.get('/api/productoTienda/' + id)
-			.then(response => {this.productoPorId = response.data
-				this.imgProductoPorId = this.productoPorId.imagenesUrl
-			})
-			.catch(error => console.log (error))
-		},
 
 		salir() {
 			Swal.fire({
@@ -183,7 +169,8 @@ createApp({
 					autocapitalize: 'off',
 				},
 				showCancelButton: true,
-				confirmButtonText: 'Sure',
+				cancelButtonText: 'Cancelar',
+				confirmButtonText: 'Salir',
 				showLoaderOnConfirm: true,
 				preConfirm: login => {
 					return axios
@@ -220,21 +207,10 @@ createApp({
 				return acc;
 			}, 0);
 		},
+		filtroCruzados() {
+			this.productosFiltrados = this.productos.filter(producto => {
+				return producto.nombre.toLowerCase() && (this.check.includes(producto.categoriaGenero) || this.check == 0);
+			});
+		},
 	},
 }).mount('#app');
-
-
-// Obtén las referencias a las imágenes pequeña y grande
-var imagenPequena = document.getElementById('imagenPequena');
-var imagenGrande = document.getElementById('imagenGrande');
-
-// Manejador de eventos para hacer clic en la imagen pequeña
-imagenPequena.addEventListener('click', function() {
-  // Obtén las URLs de las imágenes pequeña y grande
-  var urlImagenPequena = imagenPequena.src;
-  var urlImagenGrande = imagenGrande.src;
-  
-  // Intercambia las URLs de las imágenes
-  imagenPequena.src = urlImagenGrande;
-  imagenGrande.src = urlImagenPequena;
-});
