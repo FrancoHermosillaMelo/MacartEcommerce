@@ -117,6 +117,30 @@ a {
 .cuenta-verificado{
 	margin: 0 !important;
 }
+.btn-verificar{
+	position: relative;
+	padding: 6px 24px;
+	border: 2px solid var(--color-rosado);
+	background: transparent;
+	border-radius: 5px;
+	transition: 0.3s ease;
+}
+.btn-verificar:hover {
+	transform: scale(1.1, 1.1) !important;
+	color: var(--color-rosado) !important;
+}
+
+.input-verificado{
+	padding: 6px 24px;
+	border: 2px solid var(--color-rosado);
+	background: transparent;
+	border-radius: 5px;
+	transition: 0.3s ease;
+}
+.foto-veficada{
+	height: 1.6rem;
+	width: 1.6rem;
+}
 
 /*FIN NAVBAR*/
 
@@ -782,20 +806,5 @@ ul {
 
 
 
-.notification {
-	position: fixed;
-	top: 50%;
-	left: 50%;
-	transform: translate(-50%, -50%);
-	background-color: #ffffff;
-	padding: 20px;
-	border: 1px solid #000000;
-	box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-	z-index: 9999;
-  }
-  
-  .hidden {
-	display: none;
-  }
-  
+
 

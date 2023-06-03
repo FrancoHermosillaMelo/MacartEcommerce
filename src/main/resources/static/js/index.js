@@ -57,9 +57,9 @@ createApp({
 					this.clienteIngresado = response.data;
 					console.log(this.clienteIngresado);
 					this.clienteId = response.data.id;
-					sessionStorage.setItem('clienteId', this.clienteId);  
+					sessionStorage.setItem('clienteId', this.clienteId);
 					if (!this.carritos[this.clienteId]) {
-						this.carritos[this.clienteId] = []; 
+						this.carritos[this.clienteId] = [];
 					}
 					this.carrito = this.carritos[this.clienteId];
 					this.verificado = response.data.verificado === true;
@@ -79,12 +79,15 @@ createApp({
 		},
 		abrirCarrito() {
 			if (this.clienteIngresado.verificado == false) {
-				Swal.fire('Debes verificar tu cuenta para añadir los productos al carrito de compra ')
+				Swal.fire('Debes verificar tu cuenta para entrar al carrito de compra.')
 			} else {
 				this.isCarritoInactivo = !this.isCarritoInactivo;
 			}
 		},
 		agregarAlCarrito(item) {
+			if (this.clienteIngresado.verificado === false) {
+				Swal.fire('Debes verificar tu cuenta para añadir los productos al carrito de compra');
+			}else{
 			if (this.verificado) {
 				if (!this.productosRepetidos(item.id)) {
 					this.carrito.push({
@@ -98,6 +101,7 @@ createApp({
 					item.contadorBoton++;
 				}
 			}
+		}
 		},
 		productosRepetidos(productoId) {
 			return this.carrito.some(item => item.id === productoId);
