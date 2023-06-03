@@ -1,4 +1,4 @@
-const {createApp} = Vue;
+const { createApp } = Vue;
 
 createApp({
 	data() {
@@ -6,35 +6,41 @@ createApp({
 			rol: '',
 			clienteIngresado: '',
 			productos: [],
-			genero: '',
-			categoriaSub: '',
-			productos: '',
 			productosFiltro: '',
 			busqueda: '',
 			productosActivos: '',
+			checkTallaCrear: [],
+			checkTallaModificar: [],
+			stockXSCrear : "",
+			stockSCrear :"",
+			stockMCrear : "",
+			stockLCrear :"",
+			stockXLCrear : "",
 			productoCrear: {
-				nombre: '',
-				precio: '',
-				descripcion: '',
-				tallaSuperior: [],
-				tallaInferior: [],
+				nombre: "",
+				precio: "",
+				descripcion: "",
+				tallas: {},
 				imagenesUrl: [],
-				categoriaGenero: '',
-				subCategoria: '',
-				stock: '',
+				categoriaGenero: "",
+				subCategoria: "",
 			},
+			stockXSModificar : "",
+			stockSModificar : "",
+			stockMModificar : "",
+			stockLModificar : "",
+			stockXLModificar : "",
 			productoModificar: {
-				id: '',
-				nombre: '',
-				precio: '',
-				descripcion: '',
-				tallaSuperior: [],
-				tallaInferior: [],
+				id: "",
+				nombre: "",
+				precio: "",
+				descripcion: "",
+				tallas: {},
 				imagenesUrl: [],
-				categoriaGenero: '',
-				subCategoria: '',
-				stock: '',
-			},
+				categoriaGenero: "",
+				subCategoria: "",
+			}
+
 		};
 	},
 	created() {
@@ -54,6 +60,58 @@ createApp({
 	},
 	mounted() {
 		this.roles();
+		console.log(this.$refs)
+	},
+	computed: {
+		añadirObject() {
+			this.checkTallaCrear.map(talla => {
+				if (talla === 'XS') {
+					this.productoCrear.tallas[talla] = this.stockXSCrear
+				}
+				if(talla === 'S'){
+					this.productoCrear.tallas[talla] = this.stockSCrear
+				}
+				if(talla === 'M'){
+					this.productoCrear.tallas[talla] = this.stockMCrear
+				}
+				if(talla === 'L'){
+					this.productoCrear.tallas[talla] = this.stockLCrear
+				}talla === 'XL'
+				if(talla === 'XL'){
+					this.productoCrear.tallas[talla] = this.stockXLCrear
+				}
+			})
+
+			this.checkTallaModificar.map(talla => {
+				if (talla === 'XS') {
+					this.productoModificar.tallas[talla] = this.stockXSModificar
+				}
+				if(talla === 'S'){
+					this.productoModificar.tallas[talla] = this.stockSModificar
+				}
+				if(talla === 'M'){
+					this.productoModificar.tallas[talla] = this.stockMModificar
+				}
+				if(talla === 'L'){
+					this.productoModificar.tallas[talla] = this.stockLModificar
+				}
+				if(talla === 'XL'){
+					this.productoModificar.tallas[talla] = this.stockXLModificar
+				}
+			})
+		},
+		updateObject() {
+			for (const key in this.productoCrear.tallas) {
+				if (!this.checkTallaCrear.includes(key)) {
+					delete this.productoCrear.tallas[key]
+				}
+			}
+			for (const key in this.productoCrear.tallas) {
+				if (!this.checkTallaModificar.includes(key)) {
+					delete this.productoModificar.tallas[key]
+				}
+			}
+		}
 	},
 	methods: {
 		data() {
@@ -78,13 +136,13 @@ createApp({
 				.then(response => {
 					this.productos = response.data;
 					this.productosFiltro = this.productos;
-					this.genero = Array.from(new Set(response.data.map(producto => producto.categoriaGenero)));
+					console.log(this.productos);
 				})
 				.catch(error => console.log(error));
 		},
 		productosFiltrados() {
 			this.productosFiltro = this.productos.filter(producto => {
-				return producto.nombre.toLowerCase().includes(this.check.includes(producto.categoriaGenero)) || this.check == 0;
+				return producto.nombre.toLowerCase().includes(this.busqueda.toLowerCase());
 			});
 		},
 		roles() {
@@ -99,25 +157,37 @@ createApp({
 		},
 
 		añadirProducto() {
-			axios.post('/api/productoTienda', this.productoCrear).then(response => {
-				Swal.fire({
-					icon: 'success',
-					text: 'Añadiste el producto con exito',
-					showConfirmButton: false,
-					timer: 2000,
+			axios
+				.post(
+					'/api/productoTienda',
+					this.productoCrear,
+				)
+				.then(response => {
+					Swal.fire({
+						icon: 'success',
+						text: 'Añadiste el producto con exito',
+						showConfirmButton: false,
+						timer: 2000,
+					});
+					console.log(response);
 				});
-				console.log(response);
-			});
 		},
 		abrirWidget() {
-			const widget = window.cloudinary.createUploadWidget({cloud_name: 'dtis6pqyq', upload_preset: 'upload-test'}, (error, response) => {
-				if (!error && response && response.event === 'success') {
-					console.log('Subida correctamente', response.info);
-					this.productoCrear.imagenesUrl.push(response.info.url);
-					console.log(this.productoCrear.imagenesUrl);
-				}
-			});
-			widget.open();
+			const widget = window.cloudinary.createUploadWidget(
+				{ cloud_name: "dtis6pqyq", upload_preset: "upload-test" }, (error, response) => {
+					if (!error && response && response.event === 'success') {
+						console.log("Subida correctamente", response.info)
+						this.productoCrear.imagenesUrl.push(response.info.url)
+						console.log(this.productoCrear.imagenesUrl)
+					}
+				})
+			widget.open()
+		},
+		eliminarImagenSubida(imagenUrl){
+			console.log(imagenUrl)
+			this.productoCrear.imagenesUrl = this.productoCrear.imagenesUrl.filter(imagen =>{
+				!imagen.includes('imagenUrl') 
+			})
 		},
 		desactivarProducto(id) {
 			Swal.fire({
@@ -178,10 +248,42 @@ createApp({
 			});
 		},
 		cargarProductoModificar(id) {
-			axios
-				.get(`/api/productoTienda/${id}`)
+			axios.get(`/api/productoTienda/${id}`)
 				.then(response => {
-					this.productoModificar = response.data;
+					// VACIAMOS LAS PROPIEDADES PARA QUE NO QUEDEN DATOS DE OTROS PRODUCTOS
+					this.checkTallaModificar = []
+					this.stockXSModificar = ""
+					this.stockSModificar = ""
+					this.stockMModificar = ""
+					this.stockLModificar = ""
+					this.stockXLModificar = ""
+					this.productoModificar = response.data
+					//PROCEDIMIENTO PARA QUE CUANDO TRAIGA EL PRODUCTO, CARGUE LOS CHECKS QUE CONTIENE Y SI CIERRA EL MODAL, VUELVE A SUS VALORES PREDETERMINADOS CUANDO LO ABRA 
+					for (const key in this.productoModificar.tallas) {
+						if (!this.checkTallaModificar.includes(key)) {
+							if(key === 'XS'){
+								this.checkTallaModificar.push(key)
+								this.stockXSModificar = this.productoModificar.tallas[key]
+							}
+							if(key === 'S'){
+								this.checkTallaModificar.push(key)
+								this.stockSModificar = this.productoModificar.tallas[key]
+							}
+							if(key === 'M'){
+								this.checkTallaModificar.push(key)
+								this.stockMModificar = this.productoModificar.tallas[key]
+							}
+							if(key === 'L'){
+								this.checkTallaModificar.push(key)
+								this.stockLModificar = this.productoModificar.tallas[key]
+							}
+							if(key === 'XL'){
+								this.checkTallaModificar.push(key)
+								this.stockXLModificar = this.productoModificar.tallas[key]
+							}
+						}
+					}
+					
 				})
 				.catch(error =>
 					Swal.fire({
@@ -223,6 +325,7 @@ createApp({
 				allowOutsideClick: () => !Swal.isLoading(),
 			});
 		},
+
 		salir() {
 			Swal.fire({
 				title: '¿Estas seguro que quieres salir de tu cuenta?',
