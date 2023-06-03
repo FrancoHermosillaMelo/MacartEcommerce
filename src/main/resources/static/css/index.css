@@ -654,6 +654,8 @@ ul {
 };
 
 
+/*MODAL DESCRIPTION*/
+
 @media only screen and (max-width: 576px) {
 	.modal-dialog{
 		width:90% !important;
@@ -674,6 +676,22 @@ ul {
 	 border-radius: 5%; 
 	 object-fit: cover;
 	 cursor: pointer;
+}
+
+#contenedorImagenes{
+	max-width: 40vh;
+}
+
+#contenedorImagenGrande{
+	max-width: 40vh;
+}
+
+#contenedorImagenPequena{
+	width: 20%;
+}
+
+#contenedorButtons{
+	max-height: 5%;
 }
 
 

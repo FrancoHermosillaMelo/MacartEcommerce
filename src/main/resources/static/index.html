@@ -315,7 +315,7 @@
 		</div>
 
 		<!-- MODAL productos -->
-		<div class="modal fade" id="exampleProduct-xl" tabindex="-1" role="dialog"
+		<!-- <div class="modal fade" id="exampleProduct-xl" tabindex="-1" role="dialog"
 			aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
 			<div class="modal-dialog modal-xl modal-dialog-centered justify-content-center align-items-center"
 				role="document">
@@ -325,7 +325,7 @@
 								<div class="d-flex flex-column mt-3 me-1 gap-3">
 									<div class="justify-content-center align-items-center">
 									<div class="d-flex justify-content-center align-items-center">
-									<div class="justify-content-center" style="max-width: 100%;">
+									<div class="justify-content-center" style="max-width: 40vh;">
 										<img id="imagenGrande" :src="imgProductoPorId[0]" class="img-fluid">
 									</div>
 									</div>
@@ -381,6 +381,80 @@
 							</div>
 					</div>
 					<div class="modal-footer gap-1 container-fluid " style="max-height: 5%;">
+						<button type="button" class="ov-btn-grow-box fs-4"
+						@click.prevent="agregarAlCarrito(producto)">CARRITO</button>
+						<button type="button" class="ov-btn-grow-box fs-4" data-bs-dismiss="modal">CERRAR</button>
+					</div>
+				</div>
+			</div>
+		</div> -->
+
+		<div class="modal fade" id="exampleProduct-xl" tabindex="-1" role="dialog"
+			aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+			<div class="modal-dialog modal-xl modal-dialog-centered justify-content-center align-items-center"
+				role="document">
+				<div class="modal-content" id="modalProducto">
+					<div class="modal-body d-flex flex-column flex-lg-row gap-2">
+							<div>
+								<div class="d-flex flex-column mt-3 me-1 gap-3 align-items-center">
+									<div class="justify-content-center align-items-center" id="contenedorImagenes" >
+									<div class="d-flex justify-content-center align-items-center">
+									<div class="justify-content-center" id="contenedorImagenGrande">
+										<img id="imagenGrande" :src="imgProductoPorId[0]" class="img-fluid">
+									</div>
+									</div>
+									
+									<div class="d-flex justify-content-start align-items-start mt-2">
+									<div id="contenedorImagenPequena">
+										<img id="imagenPequena" :src="imgProductoPorId[1]">
+									</div>
+									</div>
+								 </div>
+								</div>								
+							</div>
+
+							<div class="mt-3 mx-2">
+								<h5 class="text-muted fs-2">{{productoPorId.subCategoria}}</h5>
+								<h5 class="fs-2">{{productoPorId.nombre}}</h5>
+								<p class="text-muted fs-2 mt-2">
+									${{ productoPorId.precio ?
+									productoPorId.precio.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",") : ''
+									}}
+								</p>
+								<div class="mt-3 gap-2 fs-2 mb-4 px-2 text-justify">
+									{{productoPorId.descripcion}}
+								</div>
+								<div class="d-flex flex-wrap align-items-start gap-3">
+									<div>
+										<div class="gap-1  fs-2"
+											:class="{ 'talle-disponible': productoPorId.tallaSuperior !== null }">
+											<template v-if="productoPorId.tallaSuperior">
+												<h6 class="text-muted mt-2 fs-2">Talle Superior Disponible:</h6>
+												<div class="ov-btn-grow-box">
+													{{ productoPorId.tallaSuperior }}
+												</div>
+											</template>
+											<template v-else>
+											</template>
+										</div>
+									</div>
+									<div>
+										<div class="gap-1 fs-2"
+											:class="{ 'talle-disponible': productoPorId.tallaInferior !== null }">
+											<template v-if="productoPorId.tallaInferior">
+												<h6 class="text-muted mt-2 fs-2">Talle Inferior Disponible:</h6>
+												<div class="ov-btn-grow-box">
+													{{ productoPorId.tallaInferior }}
+												</div>
+											</template>
+											<template v-else>
+											</template>
+										</div>
+									</div>
+								</div>
+							</div>
+					</div>
+					<div class="modal-footer gap-1 container-fluid " id="contenedorButtons">
 						<button type="button" class="ov-btn-grow-box fs-4"
 						@click.prevent="agregarAlCarrito(producto)">CARRITO</button>
 						<button type="button" class="ov-btn-grow-box fs-4" data-bs-dismiss="modal">CERRAR</button>
