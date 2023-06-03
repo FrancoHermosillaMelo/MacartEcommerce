@@ -39,14 +39,17 @@ public class WebAutorizacion {
                         "/api/comprobantes/fechas",
                         "/api/clientes/comprobantes/fechas",
                         "/api/clientes/comprobantes",
-                        "/api/comprobantes").hasAnyAuthority("CLIENTE", "ADMIN")
+                        "/api/comprobantes",
+                        "/api/clientes/autenticar").hasAnyAuthority("CLIENTE", "ADMIN")
 
                 .antMatchers(HttpMethod.POST,
                         "/api/clientes",
                         "/api/direcciones",
                         "/api/pedidos",
                         "/api/productoTienda",
-                        "/api/comprobantes/pdf").hasAnyAuthority("CLIENTE", "ADMIN")
+                        "/api/comprobantes/pdf",
+                        "/api/clientes/{id}",
+                        "/api/clientes/autenticar").hasAnyAuthority("CLIENTE", "ADMIN")
 
                 .antMatchers(HttpMethod.PUT,
                         "/api/direcciones",

@@ -31,13 +31,14 @@ public class MacartApplication {
 @Bean
 public CommandLineRunner initData(ClienteRepositorio clienteRepositorio, DireccionRepositorio direccionRepositorio, PedidoRepositorio pedidoRepositorio, ComprobanteRepositorio comprobanteRepositorio , PedidoProductoRepositorio pedidoProductoRepositorio, ProductoTiendaRepositorio productoTiendaRepositorio) {
 	return (args) -> {
-		// guardarclientes
+		// guardarcliente
 
 		//	cliente1
-		Cliente cliente1 = new Cliente("Carlos","Andrés","Ruiz","Hinestroza","carlos@gmail.com","322-567-8909",passwordEncoder.encode("123"));
+
+		Cliente cliente1 = new Cliente("Carlos","Andrés","Ruiz","Hinestroza","carlos@gmail.com","322-567-8909",passwordEncoder.encode("123"),true,"D3BA09");
 		clienteRepositorio.save(cliente1);
 
-		Cliente admin = new Cliente("admin", null, "admin", null, "admin@admin.com", "322-567-8909", passwordEncoder.encode("123"));
+		Cliente admin = new Cliente("admin", null, "admin", null, "carlosandresgoo@gmail.com", "322-567-8909", passwordEncoder.encode("123"),true,"D4BE10");
 		clienteRepositorio.save(admin);
 
 		Direccion direccion1 = new Direccion("Calle-47a","50-05","Barrio obrero","Copacabana","Antioquia","12345");
@@ -48,10 +49,7 @@ public CommandLineRunner initData(ClienteRepositorio clienteRepositorio, Direcci
 		cliente1.agregarPedido(pedido1);
 		pedidoRepositorio.save(pedido1);
 
-		Comprobante comprobante1 = new Comprobante(PedidoMetodoDePago.TRANSFERENCIA,"Transportadora",LocalDateTime.now(),150000.00);
-		cliente1.agregarComprobantes(comprobante1);
-		comprobanteRepositorio.save(comprobante1);
-		clienteRepositorio.save(cliente1);
+
 
 		// PRODUCTOS
 
@@ -81,7 +79,7 @@ public CommandLineRunner initData(ClienteRepositorio clienteRepositorio, Direcci
 
 
 //		cliente2
-		Cliente cliente2 =new Cliente("Ivan","Ezequiel","Miguel","Hernandez","Ivan@gmail.com","355-567-5555",passwordEncoder.encode("321"));
+		Cliente cliente2 =new Cliente("Ivan","Ezequiel","Miguel","Hernandez","Ivan@gmail.com","355-567-5555",passwordEncoder.encode("321"),false,"D4BO11");
 		clienteRepositorio.save(cliente2);
 
 		Direccion direccion2 = new Direccion("Calle-100Z","100-05","mar de plata","Boca","buenos aires","54321");
