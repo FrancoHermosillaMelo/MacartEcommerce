@@ -41,7 +41,6 @@ createApp({
 				.get('/api/productoTienda')
 				.then(response => {
 					this.productos = response.data;
-					console.log(this.productos);
 				})
 				.catch(error => console.log(error));
 		},
@@ -51,7 +50,6 @@ createApp({
 				.then(response => {
 					this.datos = response.data;
 					this.clienteIngresado = response.data;
-					console.log(this.clienteIngresado);
 					this.clienteId = response.data.id;
 					sessionStorage.setItem('clienteId', this.clienteId); // Almacena el identificador único del cliente en el sessionStorage
 					if (!this.carritos[this.clienteId]) {
@@ -107,11 +105,18 @@ createApp({
 			axios
 				.post('/api/login', 'correo=' + this.correo + '&contraseña=' + this.contraseña)
 				.then(response => {
-					if (this.correo == 'admin@gmail.com') {
-						window.location.replace('/index.html');
-					} else {
-						window.location.replace('/index.html');
-					}
+					Swal.fire({
+						icon: 'success',
+						text: 'Ingreso Exitoso',
+						showConfirmButton: false,
+						timer: 2000,
+					}).then(() => {
+						if (this.correo == 'admin@gmail.com') {
+							window.location.replace('/index.html');
+						} else {
+							window.location.replace('/index.html');
+						}
+					});
 				})
 				.catch(error =>
 					Swal.fire({
@@ -141,9 +146,17 @@ createApp({
 						this.contraseñaRegistro
 				)
 				.then(response => {
-					this.correo = this.correoRegistro;
-					this.contraseña = this.contraseñaRegistro;
-					this.ingresar();
+					Swal.fire({
+						icon: 'success',
+						text: 'Se envio a tu correo la validacion',
+						showConfirmButton: false,
+						timer: 2000,
+					}).then(() => {
+						this.correo = this.correoRegistro;
+						this.contraseña = this.contraseñaRegistro;
+						window.location.replace('/index.html');
+						// this.ingresar();
+					});
 				})
 				.catch(error =>
 					Swal.fire({

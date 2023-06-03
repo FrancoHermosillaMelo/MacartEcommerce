@@ -88,11 +88,11 @@
 							<div class="col-12 col-md-2 cold-lg-3">
 								<div class="d-flex justify-content-around mb-3">
 									<div class="form-check">
-										<input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" />
+										<input class="form-check-input" type="checkbox" value="HOMBRE" v-model="check" @change="filtroCruzados" id="flexCheckDefault" />
 										<label class="form-check-label" for="flexCheckDefault"> Hombre </label>
 									</div>
 									<div class="form-check">
-										<input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" />
+										<input class="form-check-input" type="checkbox" value="MUJER" v-model="check" @change="filtroCruzados" id="flexCheckChecked" />
 										<label class="form-check-label" for="flexCheckChecked"> Mujer </label>
 									</div>
 								</div>
@@ -234,7 +234,7 @@
 								<div class="row">
 									<div>
 										<div class="div-card d-flex justify-content-evenly flex-wrap">
-											<template v-for="producto of productos">
+											<template v-for="producto of productosFiltrados">
 												<div class="card div-1">
 													<img :src="producto.imagenesUrl[0]" class="card-img-top" />
 													<div class="div-2">
@@ -494,6 +494,6 @@
 		<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 		<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 		<script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
-		<script src="../js/index.js"></script>
+		<script src="../js/catalogo.js"></script>
 	</body>
 </html>
