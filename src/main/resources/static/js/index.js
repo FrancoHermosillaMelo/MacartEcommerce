@@ -20,7 +20,9 @@ createApp({
 			telefono: '',
 			clienteId: '',
 			productoPorId:"", 
-			imgProductoPorId:""
+			imgProductoPorId:"",
+			token: "",
+			verificado: false,
 		};
 	},
 	created() {
@@ -72,20 +74,30 @@ createApp({
 				});
 		},
 		abrirCarrito() {
-			this.isCarritoInactivo = !this.isCarritoInactivo;
+			if (this.clienteIngresado.verificado == false) {
+				Swal.fire('Debes verificar tu cuenta para entrar al carrito de compra.')
+			} else {
+				this.isCarritoInactivo = !this.isCarritoInactivo;
+			}
 		},
 		agregarAlCarrito(item) {
-			if (!this.productosRepetidos(item.id)) {
-				this.carrito.push({
-					nombre: item.nombre,
-					id: item.id,
-					contadorBoton: 1,
-					imagen: item.imagenesUrl[0],
-					precio: item.precio,
-				});
-			} else {
-				item.contadorBoton + 1;
+			if (this.clienteIngresado.verificado === false) {
+				Swal.fire('Debes verificar tu cuenta para añadir los productos al carrito de compra');
+			}else{
+			if (this.verificado) {
+				if (!this.productosRepetidos(item.id)) {
+					this.carrito.push({
+						nombre: item.nombre,
+						id: item.id,
+						contadorBoton: 1,
+						imagen: item.imagenesUrl[0],
+						precio: item.precio,
+					});
+				} else {
+					item.contadorBoton++;
+				}
 			}
+		}
 		},
 		productosRepetidos(productoId) {
 			return this.carrito.some(item => item.id === productoId);
@@ -175,7 +187,26 @@ createApp({
 			})
 			.catch(error => console.log (error))
 		},
-
+		verificarCuenta() {
+			axios.post('/api/clientes/autenticar', 'token=' + this.token)
+				.then(response => {
+					this.verificado = true;
+					Swal.fire({
+						icon: 'success',
+						text: 'La cuenta se ha verificado exitosamente',
+						confirmButtonColor: '#7c601893',
+					}).then(() => {
+						location.reload();
+					});
+				})
+				.catch(error => {
+					Swal.fire({
+						icon: 'error',
+						text: 'Error al verificar la cuenta: ' + error.response.data,
+						confirmButtonColor: '#7c601893',
+					});
+				});
+		},
 		salir() {
 			Swal.fire({
 				title: '¿Estas seguro que quieres salir de tu cuenta?',

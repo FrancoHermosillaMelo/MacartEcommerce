@@ -49,6 +49,20 @@
 						</div>
 						<div class="collapse navbar-collapse justify-content-end" id="navbarNavAltMarkup">
 							<div class="div-iconos navbar-nav gap-3">
+								<template v-if="rol !== 'VISITANTE'">
+									<template v-if="clienteIngresado.verificado === false">
+										<div class="d-flex justify-content-center align-items-center">
+											<input class="mx-2 p-1 input-verificado" type="text" v-model="token"
+												placeholder="Ingrese el código aquí">
+											<button class="p-1 btn-verificar" @click.prevent="verificarCuenta">Verificar</button>
+										</div>
+									</template>
+									<template v-else>
+										<div class="d-flex justify-content-center align-items-center">
+											<p class="cuenta-verificado"><img class="foto-verificada" src="./img/icons8-cuenta-verificada-48.png" alt="cuenta-verificada"></p>
+										</div>
+									</template>
+								</template>
 								<template v-if="rol === 'VISITANTE'">
 									<button type="button" class="boton-nav" data-bs-toggle="modal" data-bs-target="#ModalForm">Ingresar</button>
 								</template>
