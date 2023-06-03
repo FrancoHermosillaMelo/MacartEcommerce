@@ -1,6 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Jost:wght@200;300;400;500;600;700&display=swap');
 @import url('https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css');
 
+
 :root {
 	--color-blanco: #ffffff;
 	--color-rosado: #f9c9d2;
@@ -21,91 +22,66 @@
 a {
 	text-decoration: none !important;
 }
-/* Sobre nosotros */
-.wrapperUs1 {
-	min-height: 60vh;
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	align-items: center;
-	width: 100%;
-	background-image: linear-gradient(rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0.45)), url(../img/FondoAbout1.png);
-	background-position: center;
-	background-repeat: no-repeat;
-	background-size: cover;
+.containerSN0{
+display: flex;
+justify-content: space-evenly;
+flex-direction: row;
 }
-.wrapperUs2 {
-	min-height: 60vh;
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	align-items: center;
-	width: 100%;
-	background-image: linear-gradient(rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0.45)), url(../img/FondoAbout2.png);
-	background-position: center;
-	background-repeat: no-repeat;
-	background-size: cover;
-	box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.409);
-	margin-bottom: 3rem;
+.containerSN{
+background: url(../img/fondoSN.jpg);
+background-position: center;
+background-repeat: no-repeat;
+background-size: cover;
+width: 45%;
+height: auto;
+padding: 30px;
+border: 1px solid var(--color-negro);
+display: flex;
+align-items: center;
+flex-wrap: wrap;
+margin: 1rem 0 2rem 0;
+box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
 }
-.testimonialUs {
-	padding: 30px 100px;
+.containerSN h3{
+color: var(--color-negro);
+text-align: center;
+line-height: 1.5;
+font-size: 30px;
+font-weight: 800;
+text-transform: uppercase;
+letter-spacing: 1.5px;
+margin: 0;
 }
-article {
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	align-items: center;
+.cImgP p{
+margin-bottom: 1rem;
 }
-article h1 {
-	color: var(--color-blanco);
-	text-align: center;
-	line-height: 1.5;
-	font-size: 50px;
-	font-weight: 800;
-	text-transform: uppercase;
-	letter-spacing: 1.5px;
+.circleImg{
+width: 200px;
+height: 200px;
+background: url(../img/favicon.jpg);
+background-position: center;
+background-repeat: no-repeat;
+background-size: cover;
+border-radius: 50%;
+float: left;
+shape-outside: circle();
+margin: 20px 20px 20px 0;
+filter: drop-shadow(-10px -5px 4px #0000003c);
 }
-article h1:after {
-	content: '';
-	height: 5px;
-	width: 225px;
-	background-color: var(--color-blanco);
-	display: block;
-	margin: auto;
+.circleImg2{
+width: 200px;
+height: 200px;
+background: url(../img/SobreCreadora.jpg);
+background-position: center;
+background-repeat: no-repeat;
+background-size: cover;
+border-radius: 50%;
+float: left;
+shape-outside: circle();
+margin: 20px 20px 20px 0;
+filter: drop-shadow(-10px -5px 4px #0000003c);
 }
-article img {
-	height: 200px;
-	width: 200px;
-	border: 2px solid var(--color-blanco);
-	border-radius: 50%;
-	margin-top: 40px;
-}
-blockquote {
-	color: var(--color-blanco);
-	text-align: justify;
-	line-height: 1.5;
-	letter-spacing: 1px;
-	font-family: sans-serif;
-	font-size: 20px;
-	margin-top: 30px;
-}
-article h5 {
-	color: var(--color-blanco);
-	text-align: center;
-	line-height: 1.5;
-	text-transform: uppercase;
-	font-size: 28px;
-	margin-top: 30px;
-	letter-spacing: 1.5px;
-}
-article p {
-	color: var(--color-blanco);
-	text-align: center;
-	line-height: 1.5;
-	letter-spacing: 1px;
-	font-size: 17px;
-}
+
 /* Misión Visión */
 .containerUs {
 	position: relative;
@@ -113,7 +89,7 @@ article p {
 	display: flex;
 	justify-content: space-between;
 	flex-wrap: wrap;
-	margin: 20px;
+	margin: -20px 20px 20px 20px;
 	padding: 20px 0;
 }
 .containerUs .cardUs {
@@ -190,6 +166,7 @@ article p {
 	font-weight: 800;
 	text-transform: uppercase;
 	letter-spacing: 1.5px;
+	margin: 0;
 }
 .mapa h2:after,
 .mainNosotros h2:after {
@@ -405,7 +382,7 @@ footer .wave#wave4 {
 	transform: translate(-50%, -50%);
 	max-width: 430px;
 	width: 100%;
-	background: #fff;
+	background: #ffffff;
 	border-radius: 7px;
 	box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
 }
@@ -476,22 +453,27 @@ footer .wave#wave4 {
 .signup label:hover {
 	text-decoration: underline;
 }
+/* Contraseña */
+.inputBox{
+	position: relative;
+	width: 100%;
+	height: 40px;
+	}
+	.inputBox i.pw-hide{
+	right: 25px;
+	cursor: pointer;
+	position: absolute;
+	top: 93%;
+	transform: translateY(-93%);
+	font-size: 18px;
+	}
+	/* Fin Contraseña */
 
 @media (min-width: 320px) and (max-width: 900px) {
 	/*NAV*/
 	.div-iconos {
 		flex-direction: row !important;
 		justify-content: space-evenly !important;
-	}
-}
-@media (min-width: 352px) and (max-width: 496px) {
-	.testimonialUs {
-		padding: 30px 28px;
-	}
-}
-@media (min-width: 320px) and (max-width: 352px) {
-	.testimonialUs {
-		padding: 20px 12px;
 	}
 }
 /* Mapa */
@@ -528,6 +510,24 @@ footer .wave#wave4 {
 		font-size: 30px;
 		margin-bottom: 1;
 	}
+}
+/* Sobre nosotros */
+@media (max-width: 905px){
+.containerSN0{
+flex-direction: column;
+justify-content: center;
+align-items: center;
+}
+.containerSN{
+width: 90vw;
+}
+}
+@media (max-width: 426px){
+.circleImg, .circleImg2{
+width: 120px;
+height: 120px;
+margin: 10px 10px 10px 0;
+}
 }
 /* Misión Visión */
 @media (max-width: 1162px) {

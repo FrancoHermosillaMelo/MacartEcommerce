@@ -40,13 +40,18 @@ public CommandLineRunner initData(ClienteRepositorio clienteRepositorio, Direcci
 		Cliente admin = new Cliente("admin", null, "admin", null, "admin@admin.com", "322-567-8909", passwordEncoder.encode("123"));
 		clienteRepositorio.save(admin);
 
-		Direccion direccion1 = new Direccion("Calle-47a","50-05","Barrio obrero","Copacabana","Antioquia","12345");
+		Direccion direccion1 = new Direccion("Calle-47a","50-05","Barrio obrero","Antioquia","Copacabana","12345");
 		cliente1.agregarDirecciones(direccion1);
 		direccionRepositorio.save(direccion1);
 
-		Pedido pedido1 = new Pedido(LocalDateTime.now(),false,150000.00,"Transportadora", PedidoMetodoDePago.TRANSFERENCIA);
+		Pedido pedido1 = new Pedido(LocalDateTime.now(),false,540000.00,"Transportadora", PedidoMetodoDePago.TRANSFERENCIA);
 		cliente1.agregarPedido(pedido1);
 		pedidoRepositorio.save(pedido1);
+
+		Pedido pedido3 = new Pedido (LocalDateTime.now(), true, 1275000.00, "Transportadora", PedidoMetodoDePago.EFECTIVO);
+		cliente1.agregarPedido(pedido3);
+		pedidoRepositorio.save(pedido3);
+
 
 		Comprobante comprobante1 = new Comprobante(PedidoMetodoDePago.TRANSFERENCIA,"Transportadora",LocalDateTime.now(),150000.00);
 		cliente1.agregarComprobantes(comprobante1);
@@ -78,6 +83,28 @@ public CommandLineRunner initData(ClienteRepositorio clienteRepositorio, Direcci
 		PedidoProducto pedidoProducto2 = new PedidoProducto(2, productoTienda2 );
 		pedido1.agregarPedidoProducto(pedidoProducto2);
 		pedidoProductoRepositorio.save(pedidoProducto2);
+
+//		Pedido 3 primer cliente prueba 450 140 300 160 225
+
+		PedidoProducto pedidoProducto3 = new PedidoProducto(9, productoTienda1 );
+		pedido3.agregarPedidoProducto(pedidoProducto3);
+		pedidoProductoRepositorio.save(pedidoProducto3);
+
+		PedidoProducto pedidoProducto4 = new PedidoProducto(2, productoTienda2 );
+		pedido3.agregarPedidoProducto(pedidoProducto4);
+		pedidoProductoRepositorio.save(pedidoProducto4);
+
+		PedidoProducto pedidoProducto5 = new PedidoProducto(6, productoTienda3 );
+		pedido3.agregarPedidoProducto(pedidoProducto5);
+		pedidoProductoRepositorio.save(pedidoProducto5);
+
+		PedidoProducto pedidoProducto6 = new PedidoProducto(4, productoTienda4 );
+		pedido3.agregarPedidoProducto(pedidoProducto6);
+		pedidoProductoRepositorio.save(pedidoProducto6);
+
+		PedidoProducto pedidoProducto7 = new PedidoProducto(5, productoTienda5 );
+		pedido3.agregarPedidoProducto(pedidoProducto7);
+		pedidoProductoRepositorio.save(pedidoProducto7);
 
 
 //		cliente2
