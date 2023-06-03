@@ -89,7 +89,7 @@ body::-webkit-scrollbar-thumb {
 }
 /*FIN NAVBAR*/
 .div-form {
-	width: 30em !important;
+	width: auto !important;
 }
 /* BOTON */
 .boton {
@@ -167,9 +167,26 @@ body::-webkit-scrollbar-thumb {
 	border-color: var(--color-negro) !important;
 	box-shadow: 0 0 0 0.05rem white !important;
 }
+.form-control{
+	width: 5rem;
+}
 
 .border-form{
 	border-color:black;
+}
+
+.imagen-subida{
+	width: 6rem;
+}
+
+.contenedor-imagen-boton{
+	position: relative;
+}
+
+#boton-eliminar-imagen-subida{
+	position: absolute;
+    top: 0px;
+    right: 0px;
 }
 
 /*MODAL*/

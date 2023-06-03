@@ -1,6 +1,8 @@
 package Macart.Ecommerce.Modelos;
 
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import java.util.*;
@@ -14,11 +16,8 @@ public class ProductoTienda {
     private String nombre;
     private double precio;
     private String descripcion;
-    private int stock;
     @ElementCollection
-    private List<String> tallaSuperior = new ArrayList<>();
-    @ElementCollection
-    private List<String> tallaInferior = new ArrayList<>();
+    private Map<String, Integer> tallas =  new HashMap<>();
     @ElementCollection
     private List<String> imagenesUrl = new ArrayList<>();
     private ProductoTiendaCategoriaGenero categoriaGenero;
@@ -31,16 +30,13 @@ public class ProductoTienda {
     public ProductoTienda() {
     }
 
-    public ProductoTienda(String nombre, double precio, String descripcion, List<String> tallaSuperior, List<String> tallaInferior, List<String>imagenesUrl, ProductoTiendaCategoriaGenero categoriaGenero, String subCategoria, int stock, boolean activo) {
+    public ProductoTienda(String nombre, double precio, String descripcion, List<String>imagenesUrl, ProductoTiendaCategoriaGenero categoriaGenero, String subCategoria, boolean activo) {
         this.nombre = nombre;
         this.precio = precio;
         this.descripcion = descripcion;
-        this.tallaSuperior = tallaSuperior;
-        this.tallaInferior = tallaInferior;
         this.imagenesUrl = imagenesUrl;
         this.categoriaGenero = categoriaGenero;
         this.subCategoria = subCategoria;
-        this.stock = stock;
         this.activo = activo;
     }
 
@@ -48,40 +44,33 @@ public class ProductoTienda {
         this.nombre = nombre;
     }
 
-
-
     public void agregarPedidoProducto(PedidoProducto pedidoproducto) {
         pedidoproducto.setProductoTienda(this);
         pedidoproductos.add(pedidoproducto);
     }
+    public void agregarTalla(String medida, int cantidad){
+        tallas.put(medida, cantidad);
+    }
+//    public void actualizarCantidadTalla(String talla, int nuevaCantidad) {
+//        if (tallas.containsKey(talla)) {
+//            tallas.put(talla, nuevaCantidad);
+//        } else {
+//            System.out.println("La talla '" + talla + "' no existe para el producto '" + nombre + "'.");
+//        }
+//    }
 
     public long getId() {
         return id;
     }
 
-    public int getStock() {
-        return stock;
+    public Map<String, Integer> getTallas() {
+        return tallas;
     }
 
-    public List<String> getTallaSuperior() {
-        return tallaSuperior;
+    public void setTallas(Map<String, Integer> medidas) {
+        this.tallas = medidas;
     }
 
-    public void setTallaSuperior(List<String> tallaSuperior) {
-        this.tallaSuperior = tallaSuperior;
-    }
-
-    public List<String> getTallaInferior() {
-        return tallaInferior;
-    }
-
-    public void setTallaInferior(List<String> tallaInferior) {
-        this.tallaInferior = tallaInferior;
-    }
-
-    public void setStock(int stock) {
-        this.stock = stock;
-    }
 
     public List<String> getImagenesUrl() {
         return imagenesUrl;
