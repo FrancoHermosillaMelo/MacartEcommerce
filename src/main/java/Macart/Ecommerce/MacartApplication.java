@@ -57,25 +57,25 @@ public CommandLineRunner initData(ClienteRepositorio clienteRepositorio, Direcci
 		// PRODUCTOS
 
 		ProductoTienda productoTienda1 = new ProductoTienda("Camisa Blanca", 50000.00 , "Camisa blanca de algodon",List.of("https://live.staticflickr.com/65535/52943190902_f77c1e8be1_b.jpg","https://live.staticflickr.com/65535/52943190892_f386c30847_b.jpg"), ProductoTiendaCategoriaGenero.HOMBRE, "CAMISETA",true);
-		productoTienda1.agregarTalla("XS", ProductoTiendaUtilidades.randomNumber(0,150));
-		productoTienda1.agregarTalla("M", ProductoTiendaUtilidades.randomNumber(0,150));
-		productoTienda1.agregarTalla("L", ProductoTiendaUtilidades.randomNumber(0,150));
-		productoTienda1.agregarTalla("XL", ProductoTiendaUtilidades.randomNumber(0,150));
+		productoTienda1.agregarTalla("XS", ProductoTiendaUtilidades.randomNumber(1,50));
+		productoTienda1.agregarTalla("M", ProductoTiendaUtilidades.randomNumber(1,50));
+		productoTienda1.agregarTalla("L", ProductoTiendaUtilidades.randomNumber(1,50));
+		productoTienda1.agregarTalla("XL", ProductoTiendaUtilidades.randomNumber(1,50));
 		productoTiendaRepositorio.save(productoTienda1);
 
 		ProductoTienda productoTienda2 = new ProductoTienda("Blusa Negra", 70000.00 , "Blusa negra de ribb de algodon", List.of("https://live.staticflickr.com/65535/52944252988_fb0e51c815_z.jpg","https://live.staticflickr.com/65535/52944177705_dfe76ea968_z.jpg"), ProductoTiendaCategoriaGenero.MUJER, "BLUSA", true);
-		productoTienda1.agregarTalla("XS",ProductoTiendaUtilidades.randomNumber(0,150));
-		productoTienda1.agregarTalla("S", ProductoTiendaUtilidades.randomNumber(0,150));
-		productoTienda1.agregarTalla("M", ProductoTiendaUtilidades.randomNumber(0,150));
-		productoTienda1.agregarTalla("L", ProductoTiendaUtilidades.randomNumber(0,150));
-		productoTienda1.agregarTalla("XL", ProductoTiendaUtilidades.randomNumber(0,150));
+		productoTienda1.agregarTalla("XS",ProductoTiendaUtilidades.randomNumber(1,50));
+		productoTienda1.agregarTalla("S", ProductoTiendaUtilidades.randomNumber(1,50));
+		productoTienda1.agregarTalla("M", ProductoTiendaUtilidades.randomNumber(1,50));
+		productoTienda1.agregarTalla("L", ProductoTiendaUtilidades.randomNumber(1,50));
+		productoTienda1.agregarTalla("XL", ProductoTiendaUtilidades.randomNumber(1,50));
 		productoTiendaRepositorio.save(productoTienda2);
 
 		ProductoTienda productoTienda3 = new ProductoTienda("Blusa Blanca", 50000, "Blusa blanca de ribb de algodón",List.of("https://live.staticflickr.com/65535/52943937034_c6e221c620_z.jpg","https://live.staticflickr.com/65535/52943937039_233c0f81c0_z.jpg"),ProductoTiendaCategoriaGenero.MUJER,"BlUSA", true);
-		productoTienda1.agregarTalla("XS",ProductoTiendaUtilidades.randomNumber(0,150));
-		productoTienda1.agregarTalla("S", ProductoTiendaUtilidades.randomNumber(0,150));
-		productoTienda1.agregarTalla("M", ProductoTiendaUtilidades.randomNumber(0,150));
-		productoTienda1.agregarTalla("XL", ProductoTiendaUtilidades.randomNumber(0,150));
+		productoTienda1.agregarTalla("XS",ProductoTiendaUtilidades.randomNumber(1,50));
+		productoTienda1.agregarTalla("S", ProductoTiendaUtilidades.randomNumber(1,50));
+		productoTienda1.agregarTalla("M", ProductoTiendaUtilidades.randomNumber(1,50));
+		productoTienda1.agregarTalla("XL", ProductoTiendaUtilidades.randomNumber(1,50));
 		productoTiendaRepositorio.save(productoTienda3);
 
 		ProductoTienda productoTienda4 = new ProductoTienda("Bolso Negro", 40000, "Un bolso hecho con el mas fino cuero", List.of("https://live.staticflickr.com/65535/52943190962_7cc5a9dc6c_b.jpg","https://live.staticflickr.com/65535/52944252948_4f7ce08553_b.jpg"),ProductoTiendaCategoriaGenero.MUJER, "ACCESORIOS", true);
