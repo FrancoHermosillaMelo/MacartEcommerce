@@ -22,7 +22,7 @@ createApp({
 			clienteId: '',
 			token: '',
 			verificado: false,
-			
+
 		};
 	},
 	created() {
@@ -55,15 +55,15 @@ createApp({
 				.then(response => {
 					this.datos = response.data;
 					this.clienteIngresado = response.data;
-
 					console.log(this.clienteIngresado);
 					this.clienteId = response.data.id;
-					sessionStorage.setItem('clienteId', this.clienteId); // Almacena el identificador único del cliente en el sessionStorage
+					sessionStorage.setItem('clienteId', this.clienteId);  
 					if (!this.carritos[this.clienteId]) {
-						this.carritos[this.clienteId] = []; // Crea un carrito vacío para el cliente si no existe
+						this.carritos[this.clienteId] = []; 
 					}
-					this.carrito = this.carritos[this.clienteId]; // Asigna el carrito correspondiente al cliente actual
+					this.carrito = this.carritos[this.clienteId];
 					this.verificado = response.data.verificado === true;
+					console.log(this.verificado)
 				})
 				.catch(error => console.log(error));
 		},
@@ -78,7 +78,11 @@ createApp({
 				});
 		},
 		abrirCarrito() {
-			this.isCarritoInactivo = !this.isCarritoInactivo;
+			if (this.clienteIngresado.verificado == false) {
+				Swal.fire('Debes verificar tu cuenta para añadir los productos al carrito de compra ')
+			} else {
+				this.isCarritoInactivo = !this.isCarritoInactivo;
+			}
 		},
 		agregarAlCarrito(item) {
 			if (this.verificado) {
@@ -93,12 +97,8 @@ createApp({
 				} else {
 					item.contadorBoton++;
 				}
-			} else {
-				toastr.warning('Debe verificar su cuenta antes de agregar productos al carrito.', '', { timeOut: 5000 });
 			}
 		},
-
-
 		productosRepetidos(productoId) {
 			return this.carrito.some(item => item.id === productoId);
 		},
@@ -134,21 +134,18 @@ createApp({
 				);
 		},
 		verificarCuenta() {
-			// Realizar la petición HTTP para verificar la cuenta
 			axios.post('/api/clientes/autenticar', 'token=' + this.token)
 				.then(response => {
 					this.verificado = true;
-					// La cuenta se ha verificado exitosamente
 					Swal.fire({
 						icon: 'success',
 						text: 'La cuenta se ha verificado exitosamente',
 						confirmButtonColor: '#7c601893',
 					}).then(() => {
-						location.reload(); // Actualizar la página
+						location.reload();
 					});
 				})
 				.catch(error => {
-					// Error al verificar la cuenta
 					Swal.fire({
 						icon: 'error',
 						text: 'Error al verificar la cuenta: ' + error.response.data,
@@ -238,15 +235,5 @@ createApp({
 }).mount('#app');
 
 
-function mostrarNotificacion() {
-	var notification = document.getElementById('notification');
-	var message = document.getElementById('notification-message');
 
-	message.textContent = 'Debe verificar su cuenta antes de agregar productos al carrito.';
-	notification.classList.remove('hidden');
-
-	setTimeout(function () {
-		notification.classList.add('hidden');
-	}, 5000);
-}
 
