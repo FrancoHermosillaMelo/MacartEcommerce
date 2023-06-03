@@ -654,13 +654,30 @@ ul {
 };
 
 
-
 @media only screen and (max-width: 576px) {
 	.modal-dialog{
 		width:90% !important;
 	}
 
 }
+
+#imagenGrande{
+	border-radius: 2%; 
+	width: 100%; 
+	height: 100%; 
+	object-fit: contain;
+}
+
+#imagenPequena{
+	max-height: 100%; 
+	width: 100%;
+	 border-radius: 5%; 
+	 object-fit: cover;
+	 cursor: pointer;
+}
+
+
+
 /* 
 @media (max-width: 1199px) {
 	.d-flex.gap-4 {
