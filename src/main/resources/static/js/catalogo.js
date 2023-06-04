@@ -91,7 +91,11 @@ createApp({
 				});
 		},
 		abrirCarrito() {
-			this.isCarritoInactivo = !this.isCarritoInactivo;
+			if (this.clienteIngresado.verificado == false) {
+				Swal.fire('Debes verificar tu cuenta para entrar al carrito de compra.');
+			} else {
+				this.isCarritoInactivo = !this.isCarritoInactivo;
+			}
 		},
 		agregarAlCarrito(item) {
 			if (this.rol === 'VISITANTE') {

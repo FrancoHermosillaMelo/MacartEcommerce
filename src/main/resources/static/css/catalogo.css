@@ -651,7 +651,13 @@ ul {
 	}
 }
 /* Fin loader */
-
+.ranger {
+	background: var(--color-negro);
+}
+.ranger::-webkit-slider-thumb {
+	-webkit-appearance: none !important;
+	background: var(--color-negro) !important;
+}
 /* FIN DEL MAIN */
 
 @media only screen and (min-width: 320px) and (max-width: 1000px) {
