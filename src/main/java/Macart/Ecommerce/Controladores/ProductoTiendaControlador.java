@@ -2,7 +2,6 @@ package Macart.Ecommerce.Controladores;
 
 import Macart.Ecommerce.DTO.ProductoTiendaDTO;
 import Macart.Ecommerce.Modelos.ProductoTienda;
-import Macart.Ecommerce.Modelos.ProductoTiendaCategoriaGenero;
 
 import Macart.Ecommerce.Servicios.ClienteServicio;
 import Macart.Ecommerce.Servicios.ProductoTiendaServicio;
@@ -12,8 +11,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.List;
+
+import java.util.Map;
 import java.util.regex.Pattern;
 
 
@@ -60,31 +59,26 @@ public class ProductoTiendaControlador {
             return new ResponseEntity<>("El nombre solo puede contener letras", HttpStatus.FORBIDDEN);
         }
 
-        if(productoTienda.getStock() < 1 ){
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("El stock no puede ser negativo u cero");
-        }
-
         if(productoTienda.getPrecio() < 0){
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body("El precio no puede estar en negativo");
         }
         if(productoTienda.getSubCategoria().isBlank()){
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body("La subcategoria no puede estar en blanco");
         }
-        for(String talla : productoTienda.getTallaSuperior()){
-            if (!talla.equalsIgnoreCase("XS") && !talla.equalsIgnoreCase("S") && !talla.equalsIgnoreCase("M") &&
-                    !talla.equalsIgnoreCase("L") && !talla.equalsIgnoreCase("XL")) {
-                return new ResponseEntity<>("Las tallas superiores disponibles son : 'XS','S','M','L','XL'", HttpStatus.FORBIDDEN);
-            }
-        }
-
-        for(String talla : productoTienda.getTallaInferior()){
-            if (!talla.equalsIgnoreCase("S") && !talla.equalsIgnoreCase("M") &&
-                    !talla.equalsIgnoreCase("L") && !talla.equalsIgnoreCase("XL")) {
-                return new ResponseEntity<>("Las tallas superiores disponibles son : 'S','M','L'", HttpStatus.FORBIDDEN);
-            }
-        }
 
         ProductoTienda nuevoProductoTienda = new ProductoTienda(productoTienda.getNombre());
+
+        Map<String, Integer> tallas = productoTienda.getTallas();
+        for (Map.Entry<String, Integer> entry : tallas.entrySet()) {
+            if (!entry.getKey().equalsIgnoreCase("XS") && !entry.getKey().equalsIgnoreCase("S") && !entry.getKey().equalsIgnoreCase("M") &&
+                    !entry.getKey().equalsIgnoreCase("L") && !entry.getKey().equalsIgnoreCase("XL")) {
+                return new ResponseEntity<>("Las tallas superiores disponibles son : 'XS','S','M','L','XL'", HttpStatus.FORBIDDEN);
+            }
+            if((entry.getValue() < 0)){
+                return new ResponseEntity<>("La cantidad de stock no puede ser negativa", HttpStatus.FORBIDDEN);
+            }
+            nuevoProductoTienda.agregarTalla(entry.getKey(), entry.getValue());
+        }
 
         for(String imagen : productoTienda.getImagenesUrl()){
             if(imagen.isEmpty()){
@@ -105,9 +99,6 @@ public class ProductoTiendaControlador {
         nuevoProductoTienda.setDescripcion(productoTienda.getDescripcion());
         nuevoProductoTienda.setSubCategoria(productoTienda.getSubCategoria());
         nuevoProductoTienda.setCategoriaGenero(productoTienda.getCategoriaGenero());
-        nuevoProductoTienda.setTallaSuperior(productoTienda.getTallaSuperior());
-        nuevoProductoTienda.setTallaInferior(productoTienda.getTallaInferior());
-        nuevoProductoTienda.setStock(productoTienda.getStock());
         nuevoProductoTienda.setActivo(true);
 
         productoTiendaServicio.guardarProducto(nuevoProductoTienda);
@@ -117,90 +108,63 @@ public class ProductoTiendaControlador {
 
     @PutMapping("/api/productoTienda")
     public ResponseEntity<Object> modificarProductoTienda(
-            @RequestParam long id,
-            @RequestParam String nombre,
-            @RequestParam double precio,
-            @RequestParam String descripcion,
-            @RequestParam(required = false) List<String> tallaSuperior,
-            @RequestParam(required = false) List<String> tallaInferior,
-            @RequestParam(required = false) List<String> imagenesUrl,
-            @RequestParam String categoriaGenero,
-            @RequestParam String subCategoria,
-            @RequestParam int stock
+            @RequestBody(required = false) ProductoTienda productoTienda
     ) {
-        ProductoTienda productoTiendaExistente = productoTiendaServicio.obtenerProductoPorId(id);
+        ProductoTienda productoTiendaExistente = productoTiendaServicio.obtenerProductoPorId(productoTienda.getId());
 
         if (productoTiendaExistente != null) {
-            if (nombre.isBlank()) {
+            if (productoTienda.getNombre().isBlank()) {
                 return new ResponseEntity<>("El nombre esta vacio", HttpStatus.FORBIDDEN);
             }
-            if (!Pattern.matches("^[a-z A-Z]+$", nombre)) {
+            if (!Pattern.matches("^[a-z A-Z]+$", productoTienda.getNombre())) {
                 return new ResponseEntity<>("El nombre solo puede contener letras", HttpStatus.FORBIDDEN);
             }
-            if (precio < 0) {
+            if (productoTienda.getPrecio() < 0) {
                 return new ResponseEntity<>("El precio no puede ser negativo", HttpStatus.FORBIDDEN);
             }
-            if (stock < 1) {
-                return ResponseEntity.status(HttpStatus.FORBIDDEN).body("El stock no puede ser negativo u cero");
-            }
-            if (subCategoria.isBlank()) {
+            if (productoTienda.getSubCategoria().isBlank()) {
                 return ResponseEntity.status(HttpStatus.FORBIDDEN).body("La subcategoria no puede estar en blanco");
             }
-
-            for (String talla : tallaSuperior) {
-                if (!talla.equalsIgnoreCase("XS") && !talla.equalsIgnoreCase("S") && !talla.equalsIgnoreCase("M") &&
-                        !talla.equalsIgnoreCase("L") && !talla.equalsIgnoreCase("XL")) {
+            Map<String, Integer> tallas = productoTienda.getTallas();
+            for (Map.Entry<String, Integer> entry : tallas.entrySet()) {
+                if (!entry.getKey().equalsIgnoreCase("XS") && !entry.getKey().equalsIgnoreCase("S") && !entry.getKey().equalsIgnoreCase("M") &&
+                        !entry.getKey().equalsIgnoreCase("L") && !entry.getKey().equalsIgnoreCase("XL")) {
                     return new ResponseEntity<>("Las tallas superiores disponibles son : 'XS','S','M','L','XL'", HttpStatus.FORBIDDEN);
                 }
-            }
-            for (String talla : tallaInferior) {
-                if (!talla.equalsIgnoreCase("S") && !talla.equalsIgnoreCase("M") &&
-                        !talla.equalsIgnoreCase("L") && !talla.equalsIgnoreCase("XL")) {
-                    return new ResponseEntity<>("Las tallas superiores disponibles son : 'S','M','L'", HttpStatus.FORBIDDEN);
+                if((entry.getValue() < 0)){
+                    return new ResponseEntity<>("La cantidad de stock no puede ser negativa", HttpStatus.FORBIDDEN);
                 }
-                productoTiendaExistente.setNombre(nombre);
-                productoTiendaExistente.setPrecio(precio);
-                productoTiendaExistente.setDescripcion(descripcion);
-                productoTiendaExistente.setTallaInferior(tallaInferior);
-                productoTiendaExistente.setTallaSuperior(tallaSuperior);
-                productoTiendaExistente.setStock(stock);
-
-                List<String> imagenes = new ArrayList<>();
-                for (String imagen : imagenesUrl) {
-                    if (imagen.isEmpty()) {
-
-                        return new ResponseEntity<>("El archivo está vacio", HttpStatus.FORBIDDEN);
-                    }
-                    if (imagen.endsWith(".png") &&
-                            imagen.endsWith(".jpeg") &&
-                            imagen.endsWith(".png")) {
-
-                        return new ResponseEntity<>("Tipo de archivo no permitido", HttpStatus.FORBIDDEN);
-                    }
-                    imagenes.add(imagen);
+                if (productoTiendaExistente.getTallas().containsKey(entry.getKey())) {
+                    tallas.put(entry.getKey(), entry.getValue());
                 }
-                productoTiendaExistente.setImagenesUrl(imagenes);
-                productoTiendaExistente.setCategoriaGenero(ProductoTiendaCategoriaGenero.valueOf(categoriaGenero));
-                productoTiendaExistente.setSubCategoria(subCategoria);
-
-                productoTiendaServicio.guardarProducto(productoTiendaExistente);
-
-                return ResponseEntity.status(HttpStatus.CREATED).body("Se modificó el producto con el nombre de: " + nombre);
+                productoTiendaExistente.agregarTalla(entry.getKey(), entry.getValue());
             }
+
+            for (String imagen : productoTienda.getImagenesUrl()) {
+                if (imagen.isEmpty()) {
+
+                    return new ResponseEntity<>("El archivo está vacio", HttpStatus.FORBIDDEN);
+                }
+                if (imagen.endsWith(".png") &&
+                        imagen.endsWith(".jpeg") &&
+                        imagen.endsWith(".png")) {
+
+                    return new ResponseEntity<>("Tipo de archivo no permitido", HttpStatus.FORBIDDEN);
+                }
+
+            }
+            productoTiendaExistente.setNombre(productoTienda.getNombre());
+            productoTiendaExistente.setPrecio(productoTienda.getPrecio());
+            productoTiendaExistente.setDescripcion(productoTienda.getDescripcion());
+            productoTiendaExistente.setImagenesUrl(productoTienda.getImagenesUrl());
+            productoTiendaExistente.setCategoriaGenero(productoTienda.getCategoriaGenero());
+            productoTiendaExistente.setSubCategoria(productoTienda.getSubCategoria());
+
+            productoTiendaServicio.guardarProducto(productoTiendaExistente);
+            return ResponseEntity.status(HttpStatus.OK).body("Se modificó el producto con exito");
         }
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("El producto con el nombre " + nombre + " no fue encontrado");
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("El producto con el nombre " + productoTienda.getNombre() + " no fue encontrado");
     }
-
-//    private <T extends Enum<T>> T toEnum(Class<T> enumClass, String value) {
-//        if (value != null) {
-//            try {
-//                return Enum.valueOf(enumClass, value.toUpperCase());
-//            } catch (IllegalArgumentException e) {
-//                // Manejar el error si el valor proporcionado no coincide con ninguna constante del enumerado
-//            }
-//        }
-//        return null;
-//    }
 
     @PatchMapping("/api/productoTienda/{id}")
     public ResponseEntity<Object> eliminarProductoTienda(@PathVariable long id) {

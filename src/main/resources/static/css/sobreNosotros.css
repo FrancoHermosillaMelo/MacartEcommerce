@@ -324,6 +324,26 @@ footer .wave#wave4 {
 }
 /*FIN FOOTER*/
 
+/*WHATSAPP*/
+.whatsapp-logo {
+	position: fixed;
+	bottom: 20px;
+	right: 20px;
+	z-index: 9999;
+	font-size: 40px;
+	background-color: #25d366;
+	width: 50px;
+	height: 50px;
+	border-radius: 50%;
+}
+.whatsapp-logo > a {
+	color: var(--color-blanco) !important;
+	position: absolute;
+	font-size: 30px;
+	bottom: 5%;
+	left: 20%;
+}
+
 /*NAVBAR*/
 .swal2-confirm {
 	margin-right: 10px !important;
@@ -614,4 +634,9 @@ margin: 10px 10px 10px 0;
 	.containerUs .cardUs .contentUs p {
 		text-align: center;
 	}
+	
+}
+.foto-verificada{
+	height: 1.4rem;
+	width: 1.4rem;
 }

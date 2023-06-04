@@ -6,19 +6,40 @@ createApp({
 			rol: '',
 			clienteIngresado: '',
 			productos: [],
-			nombre: '',
-			precio: '',
-			descripcion: '',
-			checkedTallaSuperior: [],
-			checkedTallaInferior: [],
-			imagenes: [],
-			genero: '',
-			categoriaSub: '',
-			productos: '',
 			productosFiltro: '',
 			busqueda: '',
 			productosActivos: '',
-			cantidadStock : "",
+			checkTallaCrear: [],
+			checkTallaModificar: [],
+			stockXSCrear : "",
+			stockSCrear :"",
+			stockMCrear : "",
+			stockLCrear :"",
+			stockXLCrear : "",
+			productoCrear: {
+				nombre: "",
+				precio: "",
+				descripcion: "",
+				tallas: {},
+				imagenesUrl: [],
+				categoriaGenero: "",
+				subCategoria: "",
+			},
+			stockXSModificar : "",
+			stockSModificar : "",
+			stockMModificar : "",
+			stockLModificar : "",
+			stockXLModificar : "",
+			productoModificar: {
+				id: "",
+				nombre: "",
+				precio: "",
+				descripcion: "",
+				tallas: {},
+				imagenesUrl: [],
+				categoriaGenero: "",
+				subCategoria: "",
+			}
 
 		};
 	},
@@ -40,6 +61,57 @@ createApp({
 	mounted() {
 		this.roles();
 		console.log(this.$refs)
+	},
+	computed: {
+		añadirObject() {
+			this.checkTallaCrear.map(talla => {
+				if (talla === 'XS') {
+					this.productoCrear.tallas[talla] = this.stockXSCrear
+				}
+				if(talla === 'S'){
+					this.productoCrear.tallas[talla] = this.stockSCrear
+				}
+				if(talla === 'M'){
+					this.productoCrear.tallas[talla] = this.stockMCrear
+				}
+				if(talla === 'L'){
+					this.productoCrear.tallas[talla] = this.stockLCrear
+				}talla === 'XL'
+				if(talla === 'XL'){
+					this.productoCrear.tallas[talla] = this.stockXLCrear
+				}
+			})
+
+			this.checkTallaModificar.map(talla => {
+				if (talla === 'XS') {
+					this.productoModificar.tallas[talla] = this.stockXSModificar
+				}
+				if(talla === 'S'){
+					this.productoModificar.tallas[talla] = this.stockSModificar
+				}
+				if(talla === 'M'){
+					this.productoModificar.tallas[talla] = this.stockMModificar
+				}
+				if(talla === 'L'){
+					this.productoModificar.tallas[talla] = this.stockLModificar
+				}
+				if(talla === 'XL'){
+					this.productoModificar.tallas[talla] = this.stockXLModificar
+				}
+			})
+		},
+		updateObject() {
+			for (const key in this.productoCrear.tallas) {
+				if (!this.checkTallaCrear.includes(key)) {
+					delete this.productoCrear.tallas[key]
+				}
+			}
+			for (const key in this.productoCrear.tallas) {
+				if (!this.checkTallaModificar.includes(key)) {
+					delete this.productoModificar.tallas[key]
+				}
+			}
+		}
 	},
 	methods: {
 		data() {
@@ -85,21 +157,10 @@ createApp({
 		},
 
 		añadirProducto() {
-			console.log(this.imagenes)
 			axios
 				.post(
 					'/api/productoTienda',
-					{
-						nombre: this.nombre,
-						precio: this.precio,
-						descripcion: this.descripcion,
-						tallaSuperior: this.tallaSuperior,
-						tallaInferior: this.tallaInferior,
-						imagenesUrl: this.imagenes,
-						categoriaGenero: this.genero,
-						subCategoria: this.categoriaSub,
-						stock: this.cantidadStock,
-					},
+					this.productoCrear,
 				)
 				.then(response => {
 					Swal.fire({
@@ -114,13 +175,19 @@ createApp({
 		abrirWidget() {
 			const widget = window.cloudinary.createUploadWidget(
 				{ cloud_name: "dtis6pqyq", upload_preset: "upload-test" }, (error, response) => {
-					if(!error && response && response.event === 'success'){
+					if (!error && response && response.event === 'success') {
 						console.log("Subida correctamente", response.info)
-						this.imagenes.push(response.info.url)
-						console.log(this.imagenes)	
+						this.productoCrear.imagenesUrl.push(response.info.url)
+						console.log(this.productoCrear.imagenesUrl)
 					}
 				})
 			widget.open()
+		},
+		eliminarImagenSubida(imagenUrl){
+			console.log(imagenUrl)
+			this.productoCrear.imagenesUrl = this.productoCrear.imagenesUrl.filter(imagen =>{
+				!imagen.includes('imagenUrl') 
+			})
 		},
 		desactivarProducto(id) {
 			Swal.fire({
@@ -178,6 +245,84 @@ createApp({
 							});
 						});
 				}
+			});
+		},
+		cargarProductoModificar(id) {
+			axios.get(`/api/productoTienda/${id}`)
+				.then(response => {
+					// VACIAMOS LAS PROPIEDADES PARA QUE NO QUEDEN DATOS DE OTROS PRODUCTOS
+					this.checkTallaModificar = []
+					this.stockXSModificar = ""
+					this.stockSModificar = ""
+					this.stockMModificar = ""
+					this.stockLModificar = ""
+					this.stockXLModificar = ""
+					this.productoModificar = response.data
+					//PROCEDIMIENTO PARA QUE CUANDO TRAIGA EL PRODUCTO, CARGUE LOS CHECKS QUE CONTIENE Y SI CIERRA EL MODAL, VUELVE A SUS VALORES PREDETERMINADOS CUANDO LO ABRA 
+					for (const key in this.productoModificar.tallas) {
+						if (!this.checkTallaModificar.includes(key)) {
+							if(key === 'XS'){
+								this.checkTallaModificar.push(key)
+								this.stockXSModificar = this.productoModificar.tallas[key]
+							}
+							if(key === 'S'){
+								this.checkTallaModificar.push(key)
+								this.stockSModificar = this.productoModificar.tallas[key]
+							}
+							if(key === 'M'){
+								this.checkTallaModificar.push(key)
+								this.stockMModificar = this.productoModificar.tallas[key]
+							}
+							if(key === 'L'){
+								this.checkTallaModificar.push(key)
+								this.stockLModificar = this.productoModificar.tallas[key]
+							}
+							if(key === 'XL'){
+								this.checkTallaModificar.push(key)
+								this.stockXLModificar = this.productoModificar.tallas[key]
+							}
+						}
+					}
+					
+				})
+				.catch(error =>
+					Swal.fire({
+						icon: 'error',
+						text: error.response.data,
+						confirmButtonColor: '#7c601893',
+					})
+				);
+		},
+		modificarProducto() {
+			Swal.fire({
+				title: '¿Estas seguro que quieres modificar este producto?',
+				inputAttributes: {
+					autocapitalize: 'off',
+				},
+				showCancelButton: true,
+				cancelButtonText: 'Cancelar',
+				confirmButtonText: 'Confirmar',
+				showLoaderOnConfirm: true,
+				preConfirm: login => {
+					return axios
+						.put('/api/productoTienda', this.productoModificar)
+						.then(response => {
+							Swal.fire({
+								icon: 'success',
+								text: 'Se modifico correctamente',
+								showConfirmButton: false,
+								timer: 2000,
+							}).then(() => (window.location.href = '/manager.html'));
+						})
+						.catch(error =>
+							Swal.fire({
+								icon: 'error',
+								text: error.response.data,
+								confirmButtonColor: '#7c601893',
+							})
+						);
+				},
+				allowOutsideClick: () => !Swal.isLoading(),
 			});
 		},
 

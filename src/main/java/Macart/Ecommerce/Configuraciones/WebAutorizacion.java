@@ -21,7 +21,7 @@ public class WebAutorizacion {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
-        http.authorizeRequests()
+        http.cors().and().authorizeRequests()
                 .antMatchers(HttpMethod.POST,"/api/login", "/api/logout" ).permitAll()
 
                 .antMatchers("/**","/h2-console/**","/api/productoTienda", "/api/clientes/actual/rol").permitAll()
@@ -39,14 +39,19 @@ public class WebAutorizacion {
                         "/api/comprobantes/fechas",
                         "/api/clientes/comprobantes/fechas",
                         "/api/clientes/comprobantes",
-                        "/api/comprobantes").hasAnyAuthority("CLIENTE", "ADMIN")
+                        "/api/comprobantes",
+                        "/api/clientes/autenticar",
+                        "/api/pedidos/carrito").hasAnyAuthority("CLIENTE", "ADMIN")
 
                 .antMatchers(HttpMethod.POST,
                         "/api/clientes",
                         "/api/direcciones",
                         "/api/pedidos",
                         "/api/productoTienda",
-                        "/api/comprobantes/pdf").hasAnyAuthority("CLIENTE", "ADMIN")
+                        "/api/comprobantes/pdf",
+                        "/api/clientes/{id}",
+                        "/api/clientes/autenticar",
+                        "/api/pedidos/carrito").hasAnyAuthority("CLIENTE", "ADMIN")
 
                 .antMatchers(HttpMethod.PUT,
                         "/api/direcciones",

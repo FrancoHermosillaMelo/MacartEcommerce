@@ -65,9 +65,7 @@ public class DireccionControlador {
         if (cliente == null) {
             return new ResponseEntity<>("No puedes agregar una nueva dirección ya que no eres cliente.", HttpStatus.NOT_FOUND);
         }
-        if (cliente.getDirecciones().size() >= 2) {
-            return new ResponseEntity<>("Ya has alcanzado el límite de direcciones permitidas.", HttpStatus.FORBIDDEN);
-        }
+
         if (calle.isBlank()) {
             return new ResponseEntity<>("La calle no puede estar en blanco.", HttpStatus.FORBIDDEN);
         }
@@ -91,7 +89,7 @@ public class DireccionControlador {
         }
 
 
-        Direccion nuevaDireccion = new Direccion(calle, numeroDomicilio, barrio, departamento, ciudad , codigoPostal);
+        Direccion nuevaDireccion = new Direccion(calle, numeroDomicilio, barrio, ciudad, departamento, codigoPostal);
         cliente.agregarDirecciones(nuevaDireccion);
         direccionServicio.guardarDireccion(nuevaDireccion);
 

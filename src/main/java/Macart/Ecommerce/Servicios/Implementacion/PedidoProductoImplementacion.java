@@ -38,4 +38,8 @@ public class PedidoProductoImplementacion implements PedidoProductoServicio {
     @Override
     public PedidoProducto ObtenerPedidoProductoPorId(long id) { return pedidoProductoRepositorio.findById(id).orElse(null);}
 
+    @Override
+    public void guardarPedidoProducto(PedidoProducto pedidoProducto) {pedidoProductoRepositorio.save(pedidoProducto);
+    }
+
 }

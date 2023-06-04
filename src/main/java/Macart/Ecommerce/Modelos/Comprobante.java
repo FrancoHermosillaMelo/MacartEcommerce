@@ -16,6 +16,8 @@ public class Comprobante {
     private String tipoDeEnvio;
     private LocalDateTime fechaDeComprobante;
     private double montoTotal;
+    private CardColor coloTarjeta;
+    private CardType tipoTarjeta;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "clienteId")
@@ -26,11 +28,13 @@ public class Comprobante {
     public Comprobante() {
     }
 
-    public Comprobante(PedidoMetodoDePago metodoDePago, String tipoDeEnvio, LocalDateTime fechaDeComprobante, double montoTotal) {
+    public Comprobante(PedidoMetodoDePago metodoDePago, String tipoDeEnvio, LocalDateTime fechaDeComprobante, double montoTotal,CardType tipoTarjeta, CardColor colorTarjeta ) {
         this.metodoDePago = metodoDePago;
         this.tipoDeEnvio = tipoDeEnvio;
         this.fechaDeComprobante = fechaDeComprobante;
         this.montoTotal = montoTotal;
+        this.coloTarjeta = colorTarjeta;
+        this.tipoTarjeta = tipoTarjeta;
     }
 
     public long getId() {
@@ -75,5 +79,21 @@ public class Comprobante {
 
     public void setCliente(Cliente cliente) {
         this.cliente = cliente;
+    }
+
+    public CardColor getColoTarjeta() {
+        return coloTarjeta;
+    }
+
+    public void setColoTarjeta(CardColor coloTarjeta) {
+        this.coloTarjeta = coloTarjeta;
+    }
+
+    public CardType getTipoTarjeta() {
+        return tipoTarjeta;
+    }
+
+    public void setTipoTarjeta(CardType tipoTarjeta) {
+        this.tipoTarjeta = tipoTarjeta;
     }
 }

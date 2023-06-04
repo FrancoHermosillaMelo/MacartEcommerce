@@ -3,9 +3,15 @@ const { createApp } = Vue;
 createApp({
 	data() {
 		return {
+			sexo: '',
+			categoriaTipo: '',
+			check: [],
+			checkCategoria: [],
+			checkCatalogo: new URLSearchParams(location.search).get('check'),
+			productosFiltrados: {},
 			rol: '',
 			clienteIngresado: '',
-			productos: '',
+			productos: [],
 			isCarritoInactivo: true,
 			carrito: [],
 			carritos: {},
@@ -19,8 +25,6 @@ createApp({
 			segundoApellido: '',
 			telefono: '',
 			clienteId: '',
-			productoPorId: "",
-			imgProductoPorId: "",
 			token: "",
 			verificado: false,
 		};
@@ -29,16 +33,16 @@ createApp({
 		// this.roles();
 		this.data();
 		this.totalProductos();
-		this.clienteId = sessionStorage.getItem('clienteId');
-		this.carritos = JSON.parse(localStorage.getItem('carritos')) || {};
+		this.clienteId = sessionStorage.getItem('clienteId'); // Obtén el identificador único del cliente desde el sessionStorage
+		this.carritos = JSON.parse(localStorage.getItem('carritos')) || {}; // Obtiene los carritos almacenados en el localStorage
 		if (!this.carritos[this.clienteId]) {
-			this.carritos[this.clienteId] = [];
+			this.carritos[this.clienteId] = []; // Crea un carrito vacío para el cliente si no existe
 		}
-		this.carrito = this.carritos[this.clienteId];
-
+		this.carrito = this.carritos[this.clienteId]; // Asi
 	},
 	mounted() {
 		this.roles();
+		this.check.push(this.checkCatalogo);
 	},
 	methods: {
 		totalProductos() {
@@ -46,9 +50,16 @@ createApp({
 				.get('/api/productoTienda')
 				.then(response => {
 					this.productos = response.data;
+					console.log(this.productos);
+					this.productosFiltrados = this.productos;
+					this.sexo = Array.from(new Set(this.productos.map(sexo => sexo.categoriaGenero)));
+					console.log(this.sexo);
+					this.categoriaTipo = Array.from(new Set(this.productos.map(tipo => tipo.subCategoria)));
+					console.log(this.categoriaTipo);
 				})
 				.catch(error => console.log(error));
 		},
+
 		data() {
 			axios
 				.get('/api/clientes/actual')
@@ -56,11 +67,11 @@ createApp({
 					this.datos = response.data;
 					this.clienteIngresado = response.data;
 					this.clienteId = response.data.id;
-					sessionStorage.setItem('clienteId', this.clienteId);
+					sessionStorage.setItem('clienteId', this.clienteId); // Almacena el identificador único del cliente en el sessionStorage
 					if (!this.carritos[this.clienteId]) {
-						this.carritos[this.clienteId] = [];
+						this.carritos[this.clienteId] = []; // Crea un carrito vacío para el cliente si no existe
 					}
-					this.carrito = this.carritos[this.clienteId];
+					this.carrito = this.carritos[this.clienteId]; // Asigna el carrito correspondiente al cliente actual
 					this.verificado = response.data.verificado === true;
 				})
 				.catch(error => console.log(error));
@@ -77,7 +88,7 @@ createApp({
 		},
 		abrirCarrito() {
 			if (this.clienteIngresado.verificado == false) {
-				Swal.fire('Debes verificar tu cuenta para entrar al carrito de compra.')
+				Swal.fire('Debes verificar tu cuenta para entrar al carrito de compra, dirigete al inicio para verificarte.')
 			} else {
 				this.isCarritoInactivo = !this.isCarritoInactivo;
 			}
@@ -86,9 +97,9 @@ createApp({
 			if (this.rol === 'VISITANTE') {
 				Swal.fire('Debes registrarte para poder agregar productos al carrito de compra. Dirígete al inicio para registrarte.');
 			} else if (this.clienteIngresado.verificado === false) {
-				Swal.fire('Debes verificar tu cuenta para añadir los productos al carrito de compra.');
+				Swal.fire('Debes verificar tu cuenta para añadir los productos al carrito de compra. Dirígete al inicio para verificar tu cuenta.');
 			} else {
-				if (this.verificado === true && (this.rol === 'CLIENTE' || this.rol === 'ADMIN')) {
+				if (this.verificado === true && (this.clienteIngresado.rol === 'CLIENTE' || this.clienteIngresado.rol === 'ADMIN')) {
 					if (!this.productosRepetidos(item.id)) {
 						this.carrito.push({
 							nombre: item.nombre,
@@ -130,16 +141,16 @@ createApp({
 						timer: 2000,
 					}).then(() => {
 						if (this.correo == 'admin@gmail.com') {
-							window.location.replace('/index.html');
+							window.location.replace('/html/catalogo.html');
 						} else {
-							window.location.replace('/index.html');
+							window.location.replace('/html/catalogo.html');
 						}
 					});
 				})
 				.catch(error =>
 					Swal.fire({
 						icon: 'error',
-						text: "Tu contraseña y correo son incorrectos",
+						text: error.response.data,
 						confirmButtonColor: '#7c601893',
 					})
 				);
@@ -164,17 +175,9 @@ createApp({
 					this.contraseñaRegistro
 				)
 				.then(response => {
-					Swal.fire({
-						icon: 'success',
-						text: 'Se envio a tu correo la validacion',
-						showConfirmButton: false,
-						timer: 2000,
-					}).then(() => {
-						this.correo = this.correoRegistro;
-						this.contraseña = this.contraseñaRegistro;
-						window.location.replace('/index.html');
-						// this.ingresar();
-					});
+					this.correo = this.correoRegistro;
+					this.contraseña = this.contraseñaRegistro;
+					this.ingresar();
 				})
 				.catch(error =>
 					Swal.fire({
@@ -184,34 +187,7 @@ createApp({
 					})
 				);
 		},
-		obtenerIdProducto(id) {
-			axios.get('/api/productoTienda/' + id)
-				.then(response => {
-					this.productoPorId = response.data
-					this.imgProductoPorId = this.productoPorId.imagenesUrl
-				})
-				.catch(error => console.log(error))
-		},
-		verificarCuenta() {
-			axios.post('/api/clientes/autenticar', 'token=' + this.token)
-				.then(response => {
-					this.verificado = true;
-					Swal.fire({
-						icon: 'success',
-						text: 'La cuenta se ha verificado exitosamente',
-						confirmButtonColor: '#7c601893',
-					}).then(() => {
-						location.reload();
-					});
-				})
-				.catch(error => {
-					Swal.fire({
-						icon: 'error',
-						text: 'Error al verificar la cuenta: ' + error.response.data,
-						confirmButtonColor: '#7c601893',
-					});
-				});
-		},
+
 		salir() {
 			Swal.fire({
 				title: '¿Estas seguro que quieres salir de tu cuenta?',
@@ -219,7 +195,8 @@ createApp({
 					autocapitalize: 'off',
 				},
 				showCancelButton: true,
-				confirmButtonText: 'Sure',
+				cancelButtonText: 'Cancelar',
+				confirmButtonText: 'Salir',
 				showLoaderOnConfirm: true,
 				preConfirm: login => {
 					return axios
@@ -256,23 +233,19 @@ createApp({
 				return acc;
 			}, 0);
 		},
+		filtroCruzados() {
+			this.productosFiltrados = this.productos.filter(producto => {
+				return (
+					producto.nombre.toLowerCase() &&
+					((this.check.includes(producto.categoriaGenero) && (this.checkCategoria.includes(producto.subCategoria) || this.checkCategoria == 0)) ||
+						this.check == 0)
+				);
+			});
+		},
+		filtrosCategoria() {
+			this.productosFiltrados = this.productos.filter(producto => {
+				return producto.nombre.toLowerCase() && (this.checkCategoria.includes(producto.subCategoria) || this.checkCategoria == 0);
+			});
+		},
 	},
 }).mount('#app');
-// Obtén las referencias a las imágenes pequeña y grande
-var imagenPequena = document.getElementById('imagenPequena');
-var imagenGrande = document.getElementById('imagenGrande');
-
-// Manejador de eventos para hacer clic en la imagen pequeña
-imagenPequena.addEventListener('click', function () {
-	// Obtén las URLs de las imágenes pequeña y grande
-	var urlImagenPequena = imagenPequena.src;
-	var urlImagenGrande = imagenGrande.src;
-
-	// Intercambia las URLs de las imágenes
-	imagenPequena.src = urlImagenGrande;
-	imagenGrande.src = urlImagenPequena;
-})
-
-
-
-
