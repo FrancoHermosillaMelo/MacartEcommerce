@@ -3,16 +3,20 @@ package Macart.Ecommerce.DTO;
 import Macart.Ecommerce.Modelos.PedidoProducto;
 import Macart.Ecommerce.Modelos.ProductoTienda;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class PedidoProductoDTO {
     private long id;
     private Long productoTiendaId;
     private ProductoTiendaDTO productoTienda;
-    private int cantidad;
+    private Map<String, Integer> tallas =  new HashMap<>();
+
 
     public PedidoProductoDTO(PedidoProducto pedidoProducto) {
         this.id = pedidoProducto.getId();
         this.productoTiendaId = pedidoProducto.getProductoTienda().getId();
-        this.cantidad = pedidoProducto.getCantidad();
+        this.tallas = pedidoProducto.getTallas();
         this.productoTienda = new ProductoTiendaDTO(pedidoProducto.getProductoTienda()) ;
     }
 
@@ -20,8 +24,9 @@ public class PedidoProductoDTO {
         return id;
     }
 
-    public int getCantidad() {
-        return cantidad;
+
+    public Map<String, Integer> getTallas() {
+        return tallas;
     }
 
     public Long getProductoTiendaId() {

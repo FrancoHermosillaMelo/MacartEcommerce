@@ -663,4 +663,9 @@ footer .wave#wave4 {
 	.containerUs .cardUs .contentUs p {
 		text-align: center;
 	}
+	
+}
+.foto-verificada{
+	height: 1.4rem;
+	width: 1.4rem;
 }

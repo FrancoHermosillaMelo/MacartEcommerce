@@ -10,7 +10,6 @@ public interface ProductoTiendaServicio {
     List<ProductoTiendaDTO> obtenerTodosLosProductos();
     ProductoTienda obtenerProductoPorId(long id);
     ProductoTienda obtenerProductoPorNombre(String nombre);
-
     void guardarProducto(ProductoTienda productoTienda);
     void desactivarProducto(ProductoTienda productoTienda);
     void activarProducto(ProductoTienda productoTienda);

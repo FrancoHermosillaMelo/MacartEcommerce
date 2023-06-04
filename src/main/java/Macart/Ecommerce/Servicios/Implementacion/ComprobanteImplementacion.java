@@ -40,4 +40,7 @@ public class ComprobanteImplementacion implements ComprobanteServicio {
 
     @Override
     public Comprobante obtenerComprobantesId(long id) {return comprobanteRepositorio.findById(id).orElse(null);}
+
+    @Override
+    public void guardarComprobante(Comprobante comprobante) {comprobanteRepositorio.save(comprobante);}
 }
