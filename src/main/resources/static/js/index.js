@@ -6,6 +6,7 @@ createApp({
 			rol: '',
 			clienteIngresado: '',
 			productos: '',
+			talleSeleccionado: {},
 			isCarritoInactivo: true,
 			carrito: [],
 			carritos: {},
@@ -19,8 +20,8 @@ createApp({
 			segundoApellido: '',
 			telefono: '',
 			clienteId: '',
-			productoPorId:"", 
-			imgProductoPorId:""
+			productoPorId: '',
+			imgProductoPorId: '',
 		};
 	},
 	created() {
@@ -43,6 +44,7 @@ createApp({
 				.get('/api/productoTienda')
 				.then(response => {
 					this.productos = response.data;
+					console.log(this.productos);
 				})
 				.catch(error => console.log(error));
 		},
@@ -75,30 +77,52 @@ createApp({
 			this.isCarritoInactivo = !this.isCarritoInactivo;
 		},
 		agregarAlCarrito(item) {
+			console.log(this.talleSeleccionado);
+
+			for (const key in this.talleSeleccionado) {
+				if (!key.includes(item.id + key.slice(1))) {
+					delete this.talleSeleccionado[key];
+				}
+			}
+			console.log(this.talleSeleccionado);
+
+			let talles = Object.keys(this.talleSeleccionado);
+			talles.map(talle => {
+				let nuevoTalle = talle.slice(1);
+				delete this.talleSeleccionado[talle];
+				this.talleSeleccionado[nuevoTalle] = 1;
+			});
+			console.log(this.talleSeleccionado);
+
 			if (!this.productosRepetidos(item.id)) {
 				this.carrito.push({
 					nombre: item.nombre,
 					id: item.id,
-					contadorBoton: 1,
+					tallas: this.talleSeleccionado,
+					stockTallas: item.tallas,
 					imagen: item.imagenesUrl[0],
 					precio: item.precio,
 				});
 			} else {
 				item.contadorBoton + 1;
 			}
+			this.talleSeleccionado = {};
 		},
 		productosRepetidos(productoId) {
 			return this.carrito.some(item => item.id === productoId);
 		},
-		agregarCantidadProducto(producto) {
-			if (producto.contadorBoton <= 19) {
-				producto.contadorBoton += 1;
+		agregarCantidadProducto(producto, key) {
+			if (producto.tallas[key] < producto.stockTallas[key]) {
+				producto.tallas[key] += 1;
 			}
 		},
-		disminuirCantidadProducto(producto) {
-			if (producto.contadorBoton > 1) {
-				producto.contadorBoton -= 1;
+		disminuirCantidadProducto(producto, key) {
+			if (producto.tallas[key] <= producto.stockTallas[key] && producto.tallas[key] > 1) {
+				producto.tallas[key] -= 1;
 			}
+		},
+		eliminarTalle(producto, key) {
+			delete producto.tallas[key];
 		},
 		elimarDelCarrito(producto) {
 			this.carrito = this.carrito.filter(item => !(item.id === producto.id));
@@ -123,7 +147,7 @@ createApp({
 				.catch(error =>
 					Swal.fire({
 						icon: 'error',
-						text: error.response.data,
+						text: 'Tu contraseña o correo son incorrecta',
 						confirmButtonColor: '#7c601893',
 					})
 				);
@@ -168,12 +192,14 @@ createApp({
 					})
 				);
 		},
-		obtenerIdProducto(id){
-			axios.get('/api/productoTienda/' + id)
-			.then(response => {this.productoPorId = response.data
-				this.imgProductoPorId = this.productoPorId.imagenesUrl
-			})
-			.catch(error => console.log (error))
+		obtenerIdProducto(id) {
+			axios
+				.get('/api/productoTienda/' + id)
+				.then(response => {
+					this.productoPorId = response.data;
+					this.imgProductoPorId = this.productoPorId.imagenesUrl;
+				})
+				.catch(error => console.log(error));
 		},
 
 		salir() {
@@ -215,26 +241,35 @@ createApp({
 			localStorage.setItem('carritos', JSON.stringify(this.carritos));
 		},
 		totalDelCarrito() {
-			return this.carrito.reduce((acc, currentValue) => {
-				acc += currentValue.precio * currentValue.contadorBoton;
+			// return this.carrito.reduce((acc, currentValue) => {
+			// 	acc += currentValue.precio * currentValue.contadorBoton;
+			// 	// return acc;
+			// }, 0);
+			let talles = Object.keys(this.talleSeleccionado);
+			return this.carrito.reduce((acc, productoActual) => {
+				acc += talles.reduce((acc, talle) => {
+					acc += productoActual.tallas[talle];
+					console.log(acc);
+					console.log(productoActual.tallas[talle]);
+					return acc;
+				}, 0);
 				return acc;
 			}, 0);
 		},
 	},
 }).mount('#app');
 
-
 // Obtén las referencias a las imágenes pequeña y grande
 var imagenPequena = document.getElementById('imagenPequena');
 var imagenGrande = document.getElementById('imagenGrande');
 
 // Manejador de eventos para hacer clic en la imagen pequeña
-imagenPequena.addEventListener('click', function() {
-  // Obtén las URLs de las imágenes pequeña y grande
-  var urlImagenPequena = imagenPequena.src;
-  var urlImagenGrande = imagenGrande.src;
-  
-  // Intercambia las URLs de las imágenes
-  imagenPequena.src = urlImagenGrande;
-  imagenGrande.src = urlImagenPequena;
+imagenPequena.addEventListener('click', function () {
+	// Obtén las URLs de las imágenes pequeña y grande
+	var urlImagenPequena = imagenPequena.src;
+	var urlImagenGrande = imagenGrande.src;
+
+	// Intercambia las URLs de las imágenes
+	imagenPequena.src = urlImagenGrande;
+	imagenGrande.src = urlImagenPequena;
 });

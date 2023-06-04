@@ -41,7 +41,7 @@
 								<a class="nav-link activo texto-nav hover-a text-center" aria-current="page" href="./index.html">Inicio</a>
 								<a class="nav-link texto-nav hover-a text-center" href="./html/catalogo.html">Catálogo</a>
 								<a class="nav-link texto-nav hover-a text-center" href="./html/sobreNosotros.html">Sobre Nosotros</a>
-								<a class="nav-link texto-nav hover-a text-center" href="#">Preguntas Frecuentes</a>
+								<a class="nav-link texto-nav hover-a text-center" href="./html/preguntasFrecuentes.html">Preguntas Frecuentes</a>
 								<template v-if="rol === 'ADMIN'">
 									<a class="nav-link texto-nav hover-a text-center" href="./manager.html">Administrador</a>
 								</template>
@@ -148,11 +148,39 @@
 								<div class="div-2">
 									<img :src="producto.imagenesUrl[1]" class="card-img-top" />
 								</div>
-								<div class="card-body">
-									<h5 class="card-title">{{producto.nombre}}</h5>
-									<p class="card-text">COP$ {{producto.precio.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}}</p>
-									<a href="#" class="ov-btn-grow-box me-2" @click.prevent="agregarAlCarrito(producto)">CARRITO</a>
-									<a href="#" class="ov-btn-grow-box" @click="agregarAlCarrito(producto)">INFO <i class="bi bi-search-heart"></i></a>
+								<div class="card-body d-flex flex-column justify-content-between">
+									<div>
+										<h5 class="card-title">{{producto.nombre}}</h5>
+										<p class="card-text">COP$ {{producto.precio.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}}</p>
+										<template v-if="Object.keys(producto.tallas).length !== 0">
+											<div class="d-flex justify-content-center mb-2">
+												<template v-for="(value, key) in producto.tallas">
+													<div class="form-check form-check-inline form-check-size mb-1">
+														<input
+															class="form-check-input"
+															:id="producto.id + key"
+															v-model="talleSeleccionado[producto.id + key]"
+															:value="key"
+															type="checkbox"
+														/>
+														<label class="form-check-label" :for="producto.id + key"> {{key}} </label>
+													</div>
+												</template>
+											</div>
+										</template>
+									</div>
+
+									<div class="d-flex justify-content-center">
+										<a href="#" class="ov-btn-grow-box me-2" @click.prevent="agregarAlCarrito(producto)">CARRITO</a>
+										<a
+											href="#"
+											class="ov-btn-grow-box"
+											@click="obtenerIdProducto(producto.id)"
+											data-bs-toggle="modal"
+											data-bs-target="#exampleProduct-xl"
+											>INFO <i class="bi bi-search-heart"></i
+										></a>
+									</div>
 								</div>
 							</div>
 						</template>
@@ -166,7 +194,7 @@
 						autoplay-delay="2500"
 						autoplay-disable-on-interaction="false"
 					>
-						<template v-for="producto of productos">
+						<template v-for="producto of productos.slice(0, 5)">
 							<swiper-slide>
 								<div class="card div-1 m-auto" style="width: 20rem">
 									<img :src="producto.imagenesUrl[0]" class="card-img-top" />
@@ -174,10 +202,37 @@
 										<img :src="producto.imagenesUrl[1]" class="card-img-top" />
 									</div>
 									<div class="card-body">
-										<h5 class="card-title">{{producto.nombre}}</h5>
-										<p class="card-text">COP$ {{producto.precio.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}}</p>
-										<a href="#" class="ov-btn-grow-box me-2" @click.prevent="agregarAlCarrito(producto)">CARRITO</a>
-										<a href="#" class="ov-btn-grow-box" @click="agregarAlCarrito(producto)">INFO <i class="bi bi-search-heart"></i></a>
+										<div>
+											<h5 class="card-title">{{producto.nombre}}</h5>
+											<p class="card-text">COP$ {{producto.precio.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}}</p>
+											<template v-if="Object.keys(producto.tallas).length !== 0">
+												<div class="d-flex justify-content-center mb-2">
+													<template v-for="(value, key) in producto.tallas">
+														<div class="form-check form-check-inline form-check-size mb-1">
+															<input
+																class="form-check-input"
+																:id="producto.id + key"
+																v-model="talleSeleccionado[producto.id + key]"
+																:value="key"
+																type="checkbox"
+															/>
+															<label class="form-check-label" :for="producto.id + key"> {{key}} </label>
+														</div>
+													</template>
+												</div>
+											</template>
+										</div>
+										<div class="d-flex justify-content-center">
+											<a href="#" class="ov-btn-grow-box me-2" @click.prevent="agregarAlCarrito(producto)">CARRITO</a>
+											<a
+												href="#"
+												class="ov-btn-grow-box"
+												@click="obtenerIdProducto(producto.id)"
+												data-bs-toggle="modal"
+												data-bs-target="#exampleProduct-xl"
+												>INFO <i class="bi bi-search-heart"></i
+											></a>
+										</div>
 									</div>
 								</div>
 							</swiper-slide>
@@ -199,10 +254,16 @@
 										<h4>{{producto.nombre}}</h4>
 										<p>COP$ {{producto.precio.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}}</p>
 										<div class="div-value d-flex align-items-center justify-content-evenly">
-											<div class="div-sumar-restar d-flex align-items-center">
-												<i class="pe-2 bi bi-dash-circle" @click="disminuirCantidadProducto(producto)"></i>
-												<span>{{producto.contadorBoton}}</span>
-												<i class="ps-2 bi bi-plus-circle" @click="agregarCantidadProducto(producto)"></i>
+											<div class="d-flex flex-column">
+												<template v-for="(value, key) in producto.tallas">
+													<div class="div-sumar-restar d-flex align-items-center justify-content-center">
+														<span class="me-2">{{key}}</span>
+														<i class="pe-2 bi bi-dash-circle" @click="disminuirCantidadProducto(producto, key)"></i>
+														<span>{{value}}</span>
+														<i class="ps-2 bi bi-plus-circle" @click="agregarCantidadProducto(producto, key)"></i>
+														<i class="bi bi-trash3 ms-2" @click="eliminarTalle(producto, key)"></i>
+													</div>
+												</template>
 											</div>
 											<a @click="elimarDelCarrito(producto)" class="fs-xs ms-auto" href="#"> <i class="bi bi-trash3"></i> Eliminar </a>
 										</div>
@@ -214,7 +275,7 @@
 
 					<div class="pagototal d-flex align-items-center justify-content-around">
 						<h4>TOTAL</h4>
-						<span class="fs-5">COP$ {{totalDelCarrito.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}}</span>
+						<span class="fs-5">COP$ {{totalDelCarrito}}</span>
 					</div>
 
 					<div class="boton-pago">
@@ -237,7 +298,7 @@
 				</div>
 				<ul class="footer-menu-container">
 					<li class="menu-item"><a class="aFotter" href="./html/sobreNosotros.html">Sobre Nosotros</a></li>
-					<li class="menu-item">Preguntas Frecuentes</li>
+					<li class="menu-item"><a class="aFotter" href="./html/preguntasFrecuentes.html">Preguntas Frecuentes</a></li>
 					<li class="menu-item" data-bs-toggle="modal" data-bs-target="#exampleModal2">Política de privacidad</li>
 					<li class="menu-item" data-bs-toggle="modal" data-bs-target="#exampleModal">Términos de uso</li>
 				</ul>
@@ -394,6 +455,65 @@
 						</div>
 						<div class="modal-footer">
 							<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!-- MODAL INFO -->
+			<div class="modal fade" id="exampleProduct-xl" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+				<div class="modal-dialog modal-xl modal-dialog-centered justify-content-center align-items-center" role="document">
+					<div class="modal-content" id="modalProducto">
+						<div class="modal-body d-flex flex-column flex-lg-row gap-2">
+							<div>
+								<div class="d-flex flex-column mt-3 me-1 gap-3 align-items-center">
+									<div class="justify-content-center align-items-center" id="contenedorImagenes">
+										<div class="d-flex justify-content-center align-items-center">
+											<div class="justify-content-center" id="contenedorImagenGrande">
+												<img id="imagenGrande" :src="imgProductoPorId[0]" class="img-fluid" />
+											</div>
+										</div>
+
+										<div class="d-flex justify-content-start align-items-start mt-2">
+											<div id="contenedorImagenPequena">
+												<img id="imagenPequena" :src="imgProductoPorId[1]" />
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+
+							<div class="mt-3 mx-2">
+								<h5 class="text-muted fs-2">{{productoPorId.subCategoria}}</h5>
+								<h5 class="fs-2">{{productoPorId.nombre}}</h5>
+								<p class="text-muted fs-2 mt-2">
+									${{ productoPorId.precio ? productoPorId.precio.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '' }}
+								</p>
+								<div class="mt-3 gap-2 fs-2 mb-4 px-2 text-justify">{{productoPorId.descripcion}}</div>
+								<div class="d-flex flex-wrap align-items-start gap-3">
+									<div>
+										<div class="gap-1 fs-2" :class="{ 'talle-disponible': productoPorId.tallaSuperior !== null }">
+											<template v-if="productoPorId.tallaSuperior">
+												<h6 class="text-muted mt-2 fs-2">Talle Superior Disponible:</h6>
+												<div class="ov-btn-grow-box">{{ productoPorId.tallaSuperior }}</div>
+											</template>
+											<template v-else> </template>
+										</div>
+									</div>
+									<div>
+										<div class="gap-1 fs-2" :class="{ 'talle-disponible': productoPorId.tallaInferior !== null }">
+											<template v-if="productoPorId.tallaInferior">
+												<h6 class="text-muted mt-2 fs-2">Talle Inferior Disponible:</h6>
+												<div class="ov-btn-grow-box">{{ productoPorId.tallaInferior }}</div>
+											</template>
+											<template v-else> </template>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="modal-footer gap-1 container-fluid" id="contenedorButtons">
+							<button type="button" class="ov-btn-grow-box" data-bs-dismiss="modal">CERRAR</button>
 						</div>
 					</div>
 				</div>
