@@ -31,6 +31,8 @@ createApp({
 			checkTallas : [],
 			token: "",
 			verificado: false,
+			precioDesde: 0,
+			precioHasta: 300000 
 		};
 	},
 	created() {
@@ -322,9 +324,14 @@ createApp({
 				return this.checkCategoria.includes(producto.subCategoria) || this.checkCategoria == 0
 			})
 
-			let filtroPorPrecio = filtroProductoSubCategoriaYGenero.filter(producto =>)
+			let filtroPorPrecio = filtroProductoSubCategoriaYGenero.filter(producto => {
+				if(parseInt(this.precioDesde) === 0 && parseInt(this.precioHasta)){
+					return true;
+				}
+				return producto.precio >= parseInt(this.precioDesde) && producto.precio <= parseInt(this.precioHasta) 
+			})
 			
-			this.productosFiltrados = filtroProductoSubCategoriaYGenero;
+			this.productosFiltrados = filtroPorPrecio
 		},
 		// tallasOrdenadas(){
 		// 	const tallasDisponibles = ['XS','S','M','L','XL']
