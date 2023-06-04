@@ -327,9 +327,6 @@ createApp({
 			},0)
 			return acc;
 		}, 0);
-		
-
-
 	},
 },
 }).mount('#app');

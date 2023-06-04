@@ -12,6 +12,7 @@ createApp({
 			rol: '',
 			clienteIngresado: '',
 			productos: [],
+			talleSeleccionado: {},
 			isCarritoInactivo: true,
 			carrito: [],
 			carritos: {},
@@ -25,7 +26,11 @@ createApp({
 			segundoApellido: '',
 			telefono: '',
 			clienteId: '',
+			productoPorId: "",
+			imgProductoPorId: "",
 			checkTallas : [],
+			token: "",
+			verificado: false,
 		};
 	},
 	created() {
@@ -71,6 +76,7 @@ createApp({
 						this.carritos[this.clienteId] = []; // Crea un carrito vacío para el cliente si no existe
 					}
 					this.carrito = this.carritos[this.clienteId]; // Asigna el carrito correspondiente al cliente actual
+					this.verificado = response.data.verificado === true;
 				})
 				.catch(error => console.log(error));
 		},
@@ -88,32 +94,109 @@ createApp({
 			this.isCarritoInactivo = !this.isCarritoInactivo;
 		},
 		agregarAlCarrito(item) {
-			if (!this.productosRepetidos(item.id)) {
-				this.carrito.push({
-					nombre: item.nombre,
-					id: item.id,
-					contadorBoton: 1,
-					imagen: item.imagenesUrl[0],
-					precio: item.precio,
-				});
+			if (this.rol === 'VISITANTE') {
+				Swal.fire('Debes registrarte para poder agregar productos al carrito de compra. Dirígete al inicio para registrarte.');
+			} else if (this.clienteIngresado.verificado === false) {
+				Swal.fire('Debes verificar tu cuenta para añadir los productos al carrito de compra.');
 			} else {
-				item.contadorBoton + 1;
+				if (this.verificado === true && (this.rol === 'CLIENTE' || this.rol === 'ADMIN')) {
+					for (const key in this.talleSeleccionado) {
+						if (!key.includes(item.id + key.slice(1))) {
+							delete this.talleSeleccionado[key];
+						}
+					}
+					let talles = Object.keys(this.talleSeleccionado);
+					talles.map(talle => {
+						let nuevoTalle = talle.slice(1);
+						delete this.talleSeleccionado[talle];
+						this.talleSeleccionado[nuevoTalle] = 1;
+					});
+
+					if (!this.productosRepetidos(item.id)) {
+						if(!Object.keys(this.talleSeleccionado).length == 0 || item.subCategoria.includes("ACCESORIOS")){
+							Toastify({
+								text: `${item.nombre} se agrego al carrito`,
+								className: "info",
+								duration:3000,
+								offset: {
+									x: '5em', // horizontal axis - can be a number or a string indicating unity. eg: '2em'
+									y: '42em' // vertical axis - can be a number or a string indicating unity. eg: '2em'
+								  },
+								style: {
+									background: "#212529",
+								}
+							  }).showToast();
+							this.carrito.push({
+								nombre: item.nombre,
+								id: item.id,
+								tallas: this.talleSeleccionado,
+								stockTallas: item.tallas,
+								imagen: item.imagenesUrl[0],
+								precio: item.precio,
+							});
+						}else{
+							Toastify({
+								text: `Por favor, seleccione un talle`,
+								className: "info",
+								duration:3000,
+								offset: {
+									x: '5em', // horizontal axis - can be a number or a string indicating unity. eg: '2em'
+									y: '42em' // vertical axis - can be a number or a string indicating unity. eg: '2em'
+								  },
+								style: {
+									background: "#212529",
+								}
+							  }).showToast();
+						}
+						
+					}else{
+						Toastify({
+							text: `${item.nombre} ya está en el carrito`,
+							className: "info",
+							duration:3000,
+							offset: {
+								x: '5em', // horizontal axis - can be a number or a string indicating unity. eg: '2em'
+								y: '42em' // vertical axis - can be a number or a string indicating unity. eg: '2em'
+							  },
+							style: {
+								background: "#212529",
+							}
+						  }).showToast();
+					}
+					this.talleSeleccionado = {};
+				}
 			}
+
 		},
 		productosRepetidos(productoId) {
 			return this.carrito.some(item => item.id === productoId);
 		},
-		agregarCantidadProducto(producto) {
-			if (producto.contadorBoton <= 19) {
-				producto.contadorBoton += 1;
+		agregarCantidadProducto(producto, key) {
+			if (producto.tallas[key] < producto.stockTallas[key]) {
+				producto.tallas[key] += 1;
 			}
 		},
-		disminuirCantidadProducto(producto) {
-			if (producto.contadorBoton > 1) {
-				producto.contadorBoton -= 1;
+		disminuirCantidadProducto(producto, key) {
+			if (producto.tallas[key] <= producto.stockTallas[key] && producto.tallas[key] > 1) {
+				producto.tallas[key] -= 1;
 			}
+		},
+		eliminarTalle(producto, key) {
+			delete producto.tallas[key];
 		},
 		elimarDelCarrito(producto) {
+			Toastify({
+				text: `${producto.nombre} se elimino del carrito`,
+				className: "info",
+				duration:3000,
+				offset: {
+					x: '5em', // horizontal axis - can be a number or a string indicating unity. eg: '2em'
+					y: '42em' // vertical axis - can be a number or a string indicating unity. eg: '2em'
+				  },
+				style: {
+					background: "#212529",
+				}
+			  }).showToast();
 			this.carrito = this.carrito.filter(item => !(item.id === producto.id));
 		},
 		ingresar() {
@@ -207,8 +290,12 @@ createApp({
 			localStorage.setItem('carritos', JSON.stringify(this.carritos));
 		},
 		totalDelCarrito() {
-			return this.carrito.reduce((acc, currentValue) => {
-				acc += currentValue.precio * currentValue.contadorBoton;
+			return this.carrito.reduce((acc, productoActual) => {
+				let talles = Object.keys(productoActual.tallas)
+				acc += talles.reduce((acc, talle) =>{
+					acc += productoActual.tallas[talle] * productoActual.precio
+					return acc 
+				},0)
 				return acc;
 			}, 0);
 		},
