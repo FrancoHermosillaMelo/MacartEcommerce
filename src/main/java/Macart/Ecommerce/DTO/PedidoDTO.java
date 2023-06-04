@@ -12,7 +12,6 @@ public class PedidoDTO {
     private boolean pagado;
     private double montoTotal;
     private String metodoDeEnvio;
-    private PedidoMetodoDePago metodoDePago;
     private Set<PedidoProductoDTO> pedidoProductos;
 
 
@@ -23,7 +22,6 @@ public class PedidoDTO {
         this.pagado = pedido.isPagado();
         this.montoTotal = pedido.getMontoTotal() ;
         this.metodoDeEnvio = pedido.getMetodoDeEnvio();
-        this.metodoDePago = pedido.getMetodoDePago();
         this.pedidoProductos = pedido.getPedidoProductos().stream().map(pedidoProducto -> new PedidoProductoDTO(pedidoProducto)).collect(Collectors.toSet());
     }
 
@@ -45,10 +43,6 @@ public class PedidoDTO {
 
     public String getMetodoDeEnvio() {
         return metodoDeEnvio;
-    }
-
-    public PedidoMetodoDePago getMetodoDePago() {
-        return metodoDePago;
     }
 
     public Set<PedidoProductoDTO> getPedidoProductos() {

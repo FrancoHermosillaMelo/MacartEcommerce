@@ -40,9 +40,9 @@ public class PedidoControlador {
     }
 
 
-    @GetMapping("/api/clientes/{id}/pedidos")
-    public List<PedidoDTO> obtenerPedidoCliente(Authentication authentication,@PathVariable long id) {
-    Cliente cliente = clienteServicio.obtenerClientePorId(id);
+    @GetMapping("/api/clientes/pedidos")
+    public List<PedidoDTO> obtenerPedidoCliente(Authentication authentication) {
+    Cliente cliente = clienteServicio.obtenerClienteAutenticado(authentication);
 
     List<Pedido> pedidos = pedidoServicio.findByCliente(cliente);
 
@@ -56,15 +56,15 @@ public class PedidoControlador {
     @PostMapping("/api/pedidos")
     public ResponseEntity<Object> crearPedidos(
             @RequestParam Long clienteId,
-            @RequestParam String metodoDeEnvio,
-            @RequestParam String metodoDePago) {
+            @RequestParam String metodoDeEnvio)
+             {
 
         Cliente cliente = clienteServicio.obtenerClientePorId(clienteId);
         if( !cliente.getPedidos().stream().filter(pedidos -> !pedidos.isPagado()).collect(toList()).isEmpty()  ){
             return new ResponseEntity<>("Ya tienes un pedido en curso", HttpStatus.OK);
         }
 
-        Pedido nuevoPedido = new Pedido(LocalDateTime.now(),false , 0,metodoDeEnvio,PedidoMetodoDePago.valueOf(metodoDePago));
+        Pedido nuevoPedido = new Pedido(LocalDateTime.now(),false , 0,metodoDeEnvio);
         cliente.agregarPedido(nuevoPedido);
         pedidoServicio.guardarPedido(nuevoPedido);
 
@@ -84,6 +84,7 @@ public class PedidoControlador {
         pedido.agregarPedidoProducto(pedidoProducto);
 
         Map<String, Integer> tallasProducto = pedidoProducto.getTallas();
+        int cantidad = 0;
 
         for (Map.Entry<String, Integer> entry : tallas.entrySet()) {
             if (!entry.getKey().equalsIgnoreCase("XS") && !entry.getKey().equalsIgnoreCase("S") && !entry.getKey().equalsIgnoreCase("M") &&
@@ -95,8 +96,14 @@ public class PedidoControlador {
             }
 
             tallasProducto.put(entry.getKey(), entry.getValue());
+            cantidad = entry.getValue();
             pedidoProductoServicio.guardarPedidoProducto(pedidoProducto);
+            pedido.setMontoTotal(pedido.getMontoTotal() + pedidoProducto.getProductoTienda().getPrecio()*cantidad);
+            pedidoServicio.guardarPedido(pedido);
         }
+
+
+
 
         return ResponseEntity.status(HttpStatus.CREATED).body("Producto tienda");
     }

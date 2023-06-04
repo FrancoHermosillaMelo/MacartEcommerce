@@ -30,7 +30,7 @@ public class WebAutorizacion {
                         "/api/clientes/actual",
                         "/api/clientes/direcciones",
                         "/api/pedidos",
-                        "/api/clientes/{id}/pedidos",
+                        "/api/clientes/pedidos",
                         "/api/pedidoProducto",
                         "/api/pedidoProducto/{id}",
                         "/api/productoTienda",

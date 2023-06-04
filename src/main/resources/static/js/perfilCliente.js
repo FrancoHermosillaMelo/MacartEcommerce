@@ -5,8 +5,9 @@ createApp({
 		return {
 			rol: '',
 			clienteIngresado: '',
+      pedidos:'',
       /* Agregar dirección */
-      clienteIngresadoId:undefined,
+      clienteIngresadoId:'',
       direcciones:'',
       calle:'',
       numeroDomicilio:'',
@@ -14,7 +15,6 @@ createApp({
       departamento:'',
       ciudad:'',
       codigoPostal: '',
-      telefono: '',
       /* Editar */
       direccionIp: '',
       calleE:'',
@@ -23,17 +23,10 @@ createApp({
       departamentoE:'',
       ciudadE:'',
       codigoPostalE: '',
-      calle2:'',
-      numeroDomicilio2:'',
-      barrio2:'',
-      departamento2:'',
-      ciudad2:'',
-      codigoPostal2: '',
       telefonoE: '',
 		};
 	},
 	created() {
-
 		this.roles();
 		this.data();
 	},
@@ -45,6 +38,7 @@ createApp({
 					this.clienteIngresado = response.data;
           this.telefonoE = this.clienteIngresado.telefono;
           this.clienteIngresadoId = this.clienteIngresado.id
+          this.pedidos = this.clienteIngresado.pedidos.sort((x, y) => y.id - x.id);
           this.direcciones = this.clienteIngresado.direcciones.sort((x, y) => x.id - y.id);
 				})
 				.catch(error => console.log(error));
@@ -68,7 +62,7 @@ createApp({
     },
         agregarDireccion(){
             Swal.fire({
-                title: "De verdad quieres agregar esta nueva dirección?",
+                title: "¿De verdad quieres agregar esta nueva dirección?",
                 text: "Podrás editarla o eliminarla cuando desees",
                 icon: "info",
                 showCancelButton: true,
@@ -95,7 +89,7 @@ createApp({
         },
         editarDireccion(){
           Swal.fire({
-            title: "De verdad quieres editar esta dirección?",
+            title: "¿De verdad quieres editar esta dirección?",
             text: "Podrás editarla nuevamente o eliminarla cuando desees",
             icon: "info",
             showCancelButton: true,
@@ -107,7 +101,7 @@ createApp({
             .then((result) => {
               if (result.isConfirmed) {
                 axios
-                  .put('/api/direcciones',`id=${this.direccionIp.id}&calle=${this.calle2}&numeroDomicilio=${this.numeroDomicilio2}&barrio=${this.barrio2}&ciudad=${this.ciudad2}&departamento=${this.departamento2}&codigoPostal=${this.codigoPostal2}`)
+                  .put('/api/direcciones',`id=${this.direccionIp.id}&calle=${this.calleE}&numeroDomicilio=${this.numeroDomicilioE}&barrio=${this.barrioE}&ciudad=${this.ciudadE}&departamento=${this.departamentoE}&codigoPostal=${this.codigoPostalE}`)
                   .then((response) => (window.location.href = "/html/perfilCliente.html"))
                   .catch((error) => {
                     Swal.fire({
@@ -122,7 +116,7 @@ createApp({
         },
         borrarDireccion(id){
             Swal.fire({
-                title: "De verdad deseas borrar esta dirección?",
+                title: "¿De verdad deseas borrar esta dirección?",
                 text: "Tendrás que volverla a agregar para usarla de nuevo",
                 icon: "info",
                 showCancelButton: true,
@@ -149,7 +143,7 @@ createApp({
         },
         editarNumero(){
           Swal.fire({
-            title: "De verdad quieres edite número?",
+            title: "¿De verdad quieres editar tu número?",
             text: "Podrás editarlo nuevamente cuando desees",
             icon: "info",
             showCancelButton: true,
@@ -161,7 +155,7 @@ createApp({
             .then((result) => {
               if (result.isConfirmed) {
                 axios
-                  .patch('/api/numero',`telefono=${this.telefono}`)
+                  .patch('/api/numero',`telefono=${this.telefonoE}`)
                   .then((response) => (window.location.href = "/html/perfilCliente.html"))
                   .catch((error) => {
                     Swal.fire({
@@ -175,15 +169,15 @@ createApp({
             .catch((error) => console.log(error));
         },
         mostrarInfo(){
-            opcPerfilC.classList.remove('show');
-            opcPerfilC.classList.remove('showP');
+          todoPerfil.classList.remove('show');
+          todoPerfil.classList.remove('showP');
         },
         mostrarDirecciones(){
-            opcPerfilC.classList.add('show');
-            opcPerfilC.classList.remove('showP');
+          todoPerfil.classList.add('show');
+          todoPerfil.classList.remove('showP');
         },
         mostrarPedidos(){
-            opcPerfilC.classList.add('showP');
+          todoPerfil.classList.add('showP');
         },
 		salir() {
 			Swal.fire({
@@ -215,4 +209,13 @@ createApp({
 	computed: {
 	},
 }).mount('#app');
-const opcPerfilC = document.querySelector('.opcPerfilC');
+const todoPerfil = document.querySelector('.todoPerfil');
+window.addEventListener("load", () => {
+	const loader = document.querySelector('.loader');
+
+	loader.classList.add('loader-hidden');
+
+	loader.addEventListener('transitioned', () => {
+		document.body.removeChild('loader')
+	})
+  })
