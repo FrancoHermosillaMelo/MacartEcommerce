@@ -304,7 +304,7 @@ createApp({
 			localStorage.setItem('carritos', JSON.stringify(this.carritos));
 		},
 		totalDelCarrito() {
-			return this.carrito.reduce((acc, productoActual) => {
+			let total = this.carrito.reduce((acc, productoActual) => {
 				let talles = Object.keys(productoActual.tallas)
 				acc += talles.reduce((acc, talle) =>{
 					acc += productoActual.tallas[talle] * productoActual.precio
@@ -312,6 +312,7 @@ createApp({
 				},0)
 				return acc;
 			}, 0);
+			return total.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")
 		},
 		filtroCruzados() {
 			let filtroProductoGenero = this.productos.filter(producto =>{
@@ -320,8 +321,37 @@ createApp({
 			let filtroProductoSubCategoriaYGenero = filtroProductoGenero.filter(producto =>{
 				return this.checkCategoria.includes(producto.subCategoria) || this.checkCategoria == 0
 			})
+
+			let filtroPorPrecio = filtroProductoSubCategoriaYGenero.filter(producto =>)
 			
 			this.productosFiltrados = filtroProductoSubCategoriaYGenero;
 		},
+		// tallasOrdenadas(){
+		// 	const tallasDisponibles = ['XS','S','M','L','XL']
+		// 	// const tallasOrdenadas = tallasDisponibles.filter(talla => this.carrito.map(producto => {
+		// 	// 	producto.tallas.hasOwnProperty(talla)
+		// 	// }))
+
+		// 	this.carrito = this.carrito.map(producto =>{
+		// 		let tallasOrdenadas = tallasDisponibles.filter(talla => producto.tallas.hasOwnProperty(talla))
+		// 		tallasOrdenadas.sort((a,b) => tallasDisponibles.indexOf(a) - tallasDisponibles.indexOf(b))
+
+		// 		let tallasObjetoOrdenado = {}
+		// 		tallasOrdenadas.forEach(talla =>{
+		// 			tallasObjetoOrdenado[talla] = producto.tallas[talla]
+		// 		})
+		// 		producto.tallas = tallasObjetoOrdenado
+		// 		console.log(producto.tallas)
+		// 	})
+
+
+		// 	// tallasOrdenadas.sort((a,b) => tallasDisponibles.indexOf(a) - tallasDisponibles.indexOf(b))
+
+		// 	// const tallasObjetoOrdenado = {};
+		// 	// tallasOrdenadas.forEach(talla => {
+		// 	// 	tallasObjetoOrdenado[talla] = this.carrito[0].tallas[talla]
+		// 	// })
+		// 	// return tallasObjetoOrdenado
+		// }
 	},
 }).mount('#app');

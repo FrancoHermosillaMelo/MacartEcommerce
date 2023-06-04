@@ -59,7 +59,6 @@ public CommandLineRunner initData(ClienteRepositorio clienteRepositorio, Direcci
 		productoTienda1.agregarTalla("M", ProductoTiendaUtilidades.randomNumber(1,50));
 		productoTienda1.agregarTalla("L", ProductoTiendaUtilidades.randomNumber(1,50));
 		productoTienda1.agregarTalla("XL", ProductoTiendaUtilidades.randomNumber(1,50));
-		productoTienda1.agregarTalla("XL", ProductoTiendaUtilidades.randomNumber(1,50));
 		productoTiendaRepositorio.save(productoTienda1);
 
 		ProductoTienda productoTienda2 = new ProductoTienda("Blusa Negra", 70000.00 , "Blusa negra de ribb de algodon", List.of("https://live.staticflickr.com/65535/52944252988_fb0e51c815_z.jpg","https://live.staticflickr.com/65535/52944177705_dfe76ea968_z.jpg"), ProductoTiendaCategoriaGenero.MUJER, "BLUSA", true);

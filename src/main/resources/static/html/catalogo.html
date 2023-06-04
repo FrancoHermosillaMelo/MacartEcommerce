@@ -80,7 +80,6 @@
 				</nav>
 			</header>
 			<main>
-				{{primeraMayuscula}} {{filtroCruzados}}
 				<div class="fondo-contenedor d-flex justify-content-center align-items-center">
 					<div class="row">
 						<div class="col-12">
@@ -300,6 +299,7 @@
 					</div>
 				</section>
 				{{guardarDatos}}
+				{{primeraMayuscula}} {{filtroCruzados}}
 				<aside id="carrito" :class="{inactivo : isCarritoInactivo}">
 					<div class="div-carrito pt-4 d-flex justify-content-center align-items-center">
 						<h4 class="text-center">Carrito ({{carrito.length}})</h4>
@@ -335,7 +335,7 @@
 
 					<div class="pagototal d-flex align-items-center justify-content-around">
 						<h4>TOTAL</h4>
-						<span class="fs-5">COP$ {{totalDelCarrito.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}}</span>
+						<span class="fs-5">COP$ {{totalDelCarrito}}</span>
 					</div>
 
 					<div class="boton-pago">

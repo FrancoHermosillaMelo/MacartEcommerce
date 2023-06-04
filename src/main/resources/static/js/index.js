@@ -319,7 +319,7 @@ createApp({
 		localStorage.setItem('carritos', JSON.stringify(this.carritos));
 	},
 	totalDelCarrito() {
-		return this.carrito.reduce((acc, productoActual) => {
+		let total = this.carrito.reduce((acc, productoActual) => {
 			let talles = Object.keys(productoActual.tallas)
 			acc += talles.reduce((acc, talle) =>{
 				acc += productoActual.tallas[talle] * productoActual.precio
@@ -327,6 +327,7 @@ createApp({
 			},0)
 			return acc;
 		}, 0);
+		return total.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",") 
 	},
 },
 }).mount('#app');

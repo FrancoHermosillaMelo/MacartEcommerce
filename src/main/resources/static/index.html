@@ -19,8 +19,6 @@
 	</head>
 	<body>
 		<div id="app">
-			{{dataSegunRol}}
-
 			<header class="header-nav">
 				<nav class="navbar navbar-expand-lg">
 					<div class="container-fluid">
@@ -83,7 +81,6 @@
 				</nav>
 			</header>
 			<main class="pb-5 main-index">
-				{{primeraMayuscula}}
 				<div class="fondo-contenedor d-flex justify-content-center align-items-center">
 					<div class="row">
 						<div class="col-12">
@@ -254,6 +251,7 @@
 					</swiper-container>
 				</div>
 				{{guardarDatos}}
+				{{primeraMayuscula}}
 				<aside id="carrito" :class="{inactivo : isCarritoInactivo}">
 					<div class="div-carrito pt-4 d-flex justify-content-center align-items-center">
 						<h4 class="text-center">Carrito ({{carrito.length}})</h4>
@@ -289,7 +287,7 @@
 
 					<div class="pagototal d-flex align-items-center justify-content-around">
 						<h4>TOTAL</h4>
-						<span class="fs-5">COP$ {{totalDelCarrito.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}}</span>
+						<span class="fs-5">COP$ {{totalDelCarrito}}</span>
 					</div>
 
 					<div class="boton-pago">
