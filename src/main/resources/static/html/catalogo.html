@@ -65,7 +65,7 @@
 				</nav>
 			</header>
 			<main>
-				{{primeraMayuscula}} {{filtroCruzados}} {{filtrosCategoria}}
+				{{primeraMayuscula}} {{filtroCruzados}}
 				<div class="fondo-contenedor d-flex justify-content-center align-items-center">
 					<div class="row">
 						<div class="col-12">
@@ -176,23 +176,23 @@
 											<div class="accordion-body">
 												<div>
 													<div class="form-check form-check-inline form-check-size mb-2">
-														<input class="form-check-input" id="talleUno" value="XS" type="checkbox" />
+														<input class="form-check-input" id="talleUno" value="XS" type="checkbox" v-model="checkTallas"/>
 														<label class="form-check-label" for="talleUno"> XS </label>
 													</div>
 													<div class="form-check form-check-inline form-check-size mb-2">
-														<input class="form-check-input" id="talleDos" value="S" type="checkbox" />
+														<input class="form-check-input" id="talleDos" value="S" type="checkbox" v-model="checkTallas"/>
 														<label class="form-check-label" for="talleDos"> S </label>
 													</div>
 													<div class="form-check form-check-inline form-check-size mb-2">
-														<input class="form-check-input" id="talleTres" value="M" type="checkbox" />
+														<input class="form-check-input" id="talleTres" value="M" type="checkbox" v-model="checkTallas"/>
 														<label class="form-check-label" for="talleTres"> M </label>
 													</div>
 													<div class="form-check form-check-inline form-check-size mb-2">
-														<input class="form-check-input" id="talleCuatro" value="L" type="checkbox" />
+														<input class="form-check-input" id="talleCuatro" value="L" type="checkbox" v-model="checkTallas"/>
 														<label class="form-check-label" for="talleCuatro"> L </label>
 													</div>
 													<div class="form-check form-check-inline form-check-size mb-2">
-														<input class="form-check-input" id="talleCinco" value="XL" type="checkbox" />
+														<input class="form-check-input" id="talleCinco" value="XL" type="checkbox" v-model="checkTallas" />
 														<label class="form-check-label" for="talleCinco"> XL </label>
 													</div>
 												</div>

@@ -25,6 +25,7 @@ createApp({
 			segundoApellido: '',
 			telefono: '',
 			clienteId: '',
+			checkTallas : [],
 		};
 	},
 	created() {
@@ -212,18 +213,14 @@ createApp({
 			}, 0);
 		},
 		filtroCruzados() {
-			this.productosFiltrados = this.productos.filter(producto => {
-				return (
-					producto.nombre.toLowerCase() &&
-					((this.check.includes(producto.categoriaGenero) && (this.checkCategoria.includes(producto.subCategoria) || this.checkCategoria == 0)) ||
-						this.check == 0)
-				);
-			});
-		},
-		filtrosCategoria() {
-			this.productosFiltrados = this.productos.filter(producto => {
-				return producto.nombre.toLowerCase() && (this.checkCategoria.includes(producto.subCategoria) || this.checkCategoria == 0);
-			});
+			let filtroProductoGenero = this.productos.filter(producto =>{
+				return this.check.includes(producto.categoriaGenero) || this.check == 0
+			})
+			let filtroProductoSubCategoriaYGenero = filtroProductoGenero.filter(producto =>{
+				return this.checkCategoria.includes(producto.subCategoria) || this.checkCategoria == 0
+			})
+			
+			this.productosFiltrados = filtroProductoSubCategoriaYGenero;
 		},
 	},
 }).mount('#app');

@@ -1,11 +1,12 @@
-const {createApp} = Vue;
+const { createApp } = Vue;
 
 createApp({
 	data() {
 		return {
 			rol: '',
 			clienteIngresado: '',
-			productos: '',
+			productos: [],
+			talleSeleccionado: {},
 			isCarritoInactivo: true,
 			carrito: [],
 			carritos: {},
@@ -19,14 +20,13 @@ createApp({
 			segundoApellido: '',
 			telefono: '',
 			clienteId: '',
-			productoPorId:"", 
-			imgProductoPorId:"",
+			productoPorId: "",
+			imgProductoPorId: "",
 			token: "",
 			verificado: false,
 		};
 	},
 	created() {
-		// this.roles();
 		this.data();
 		this.totalProductos();
 		this.clienteId = sessionStorage.getItem('clienteId'); // Obtén el identificador único del cliente desde el sessionStorage
@@ -83,34 +83,49 @@ createApp({
 		agregarAlCarrito(item) {
 			if (this.clienteIngresado.verificado === false) {
 				Swal.fire('Debes verificar tu cuenta para añadir los productos al carrito de compra');
-			}else{
-			if (this.verificado) {
-				if (!this.productosRepetidos(item.id)) {
-					this.carrito.push({
-						nombre: item.nombre,
-						id: item.id,
-						contadorBoton: 1,
-						imagen: item.imagenesUrl[0],
-						precio: item.precio,
+			} else {
+				if (this.verificado) {
+					for (const key in this.talleSeleccionado) {
+						if (!key.includes(item.id + key.slice(1))) {
+							delete this.talleSeleccionado[key];
+						}
+					}
+					let talles = Object.keys(this.talleSeleccionado);
+					talles.map(talle => {
+						let nuevoTalle = talle.slice(1);
+						delete this.talleSeleccionado[talle];
+						this.talleSeleccionado[nuevoTalle] = 1;
 					});
-				} else {
-					item.contadorBoton++;
+
+					if (!this.productosRepetidos(item.id)) {
+						this.carrito.push({
+							nombre: item.nombre,
+							id: item.id,
+							tallas: this.talleSeleccionado,
+							stockTallas: item.tallas,
+							imagen: item.imagenesUrl[0],
+							precio: item.precio,
+						});
+					}
+					this.talleSeleccionado = {};
 				}
 			}
-		}
 		},
 		productosRepetidos(productoId) {
 			return this.carrito.some(item => item.id === productoId);
 		},
 		agregarCantidadProducto(producto) {
-			if (producto.contadorBoton <= 19) {
-				producto.contadorBoton += 1;
+			if (producto.tallas[key] < producto.stockTallas[key]) {
+				producto.tallas[key] += 1;
 			}
 		},
 		disminuirCantidadProducto(producto) {
-			if (producto.contadorBoton > 1) {
-				producto.contadorBoton -= 1;
+			if (producto.tallas[key] <= producto.stockTallas[key] && producto.tallas[key] > 1) {
+				producto.tallas[key] -= 1;
 			}
+		},
+		eliminarTalle(producto, key) {
+			delete producto.tallas[key];
 		},
 		elimarDelCarrito(producto) {
 			this.carrito = this.carrito.filter(item => !(item.id === producto.id));
@@ -145,19 +160,19 @@ createApp({
 				.post(
 					'/api/clientes',
 					'primerNombre=' +
-						this.primerNombre +
-						'&segundoNombre=' +
-						this.segundoNombre +
-						'&primerApellido=' +
-						this.primerApellido +
-						'&segundoApellido=' +
-						this.segundoApellido +
-						'&telefono=' +
-						this.telefono +
-						'&correo=' +
-						this.correoRegistro +
-						'&contraseña=' +
-						this.contraseñaRegistro
+					this.primerNombre +
+					'&segundoNombre=' +
+					this.segundoNombre +
+					'&primerApellido=' +
+					this.primerApellido +
+					'&segundoApellido=' +
+					this.segundoApellido +
+					'&telefono=' +
+					this.telefono +
+					'&correo=' +
+					this.correoRegistro +
+					'&contraseña=' +
+					this.contraseñaRegistro
 				)
 				.then(response => {
 					Swal.fire({
@@ -180,12 +195,13 @@ createApp({
 					})
 				);
 		},
-		obtenerIdProducto(id){
+		obtenerIdProducto(id) {
 			axios.get('/api/productoTienda/' + id)
-			.then(response => {this.productoPorId = response.data
-				this.imgProductoPorId = this.productoPorId.imagenesUrl
-			})
-			.catch(error => console.log (error))
+				.then(response => {
+					this.productoPorId = response.data
+					this.imgProductoPorId = this.productoPorId.imagenesUrl
+				})
+				.catch(error => console.log(error))
 		},
 		verificarCuenta() {
 			axios.post('/api/clientes/autenticar', 'token=' + this.token)
@@ -246,8 +262,14 @@ createApp({
 			localStorage.setItem('carritos', JSON.stringify(this.carritos));
 		},
 		totalDelCarrito() {
-			return this.carrito.reduce((acc, currentValue) => {
-				acc += currentValue.precio * currentValue.contadorBoton;
+			let talles = Object.keys(this.talleSeleccionado);
+			return this.carrito.reduce((acc, productoActual) => {
+				acc += talles.reduce((acc, talle) => {
+					acc += productoActual.tallas[talle];
+					console.log(acc);
+					console.log(productoActual.tallas[talle]);
+					return acc;
+				}, 0);
 				return acc;
 			}, 0);
 		},
@@ -260,12 +282,12 @@ var imagenPequena = document.getElementById('imagenPequena');
 var imagenGrande = document.getElementById('imagenGrande');
 
 // Manejador de eventos para hacer clic en la imagen pequeña
-imagenPequena.addEventListener('click', function() {
-  // Obtén las URLs de las imágenes pequeña y grande
-  var urlImagenPequena = imagenPequena.src;
-  var urlImagenGrande = imagenGrande.src;
-  
-  // Intercambia las URLs de las imágenes
-  imagenPequena.src = urlImagenGrande;
-  imagenGrande.src = urlImagenPequena;
+imagenPequena.addEventListener('click', function () {
+	// Obtén las URLs de las imágenes pequeña y grande
+	var urlImagenPequena = imagenPequena.src;
+	var urlImagenGrande = imagenGrande.src;
+
+	// Intercambia las URLs de las imágenes
+	imagenPequena.src = urlImagenGrande;
+	imagenGrande.src = urlImagenPequena;
 });
