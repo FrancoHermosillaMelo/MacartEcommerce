@@ -30,7 +30,7 @@ public class WebAutorizacion {
                         "/api/clientes/actual",
                         "/api/clientes/direcciones",
                         "/api/pedidos",
-                        "/api/clientes/{id}/pedidos",
+                        "/api/clientes/pedidos",
                         "/api/pedidoProducto",
                         "/api/pedidoProducto/{id}",
                         "/api/productoTienda",
@@ -40,7 +40,8 @@ public class WebAutorizacion {
                         "/api/clientes/comprobantes/fechas",
                         "/api/clientes/comprobantes",
                         "/api/comprobantes",
-                        "/api/clientes/autenticar").hasAnyAuthority("CLIENTE", "ADMIN")
+                        "/api/clientes/autenticar",
+                        "/api/pedidos/carrito").hasAnyAuthority("CLIENTE", "ADMIN")
 
                 .antMatchers(HttpMethod.POST,
                         "/api/clientes",
@@ -49,7 +50,8 @@ public class WebAutorizacion {
                         "/api/productoTienda",
                         "/api/comprobantes/pdf",
                         "/api/clientes/{id}",
-                        "/api/clientes/autenticar").hasAnyAuthority("CLIENTE", "ADMIN")
+                        "/api/clientes/autenticar",
+                        "/api/pedidos/carrito").hasAnyAuthority("CLIENTE", "ADMIN")
 
                 .antMatchers(HttpMethod.PUT,
                         "/api/direcciones",
