@@ -18,6 +18,8 @@ public class Cliente {
     private String correo;
     private String telefono;
     private String contraseña;
+    private boolean verificado;
+    private String tokenAutenticacion;
     @OneToMany(mappedBy="cliente", fetch= FetchType.EAGER)
     private Set<Pedido> pedidos = new HashSet<>();
     @OneToMany(mappedBy="cliente", fetch= FetchType.EAGER)
@@ -28,7 +30,7 @@ public class Cliente {
     public Cliente() {
     }
 
-    public Cliente(String primerNombre, String segundoNombre, String primerApellido, String segundoApellido, String correo, String telefono, String contraseña) {
+    public Cliente(String primerNombre, String segundoNombre, String primerApellido, String segundoApellido, String correo, String telefono, String contraseña,boolean verificado,String tokenAutenticacion) {
         this.primerNombre = primerNombre;
         this.segundoNombre = segundoNombre;
         this.primerApellido = primerApellido;
@@ -36,6 +38,8 @@ public class Cliente {
         this.correo = correo;
         this.telefono = telefono;
         this.contraseña = contraseña;
+        this.verificado = verificado;
+        this.tokenAutenticacion = tokenAutenticacion;
     }
     public void agregarPedido(Pedido pedido) {
         pedido.setCliente(this);
@@ -133,5 +137,21 @@ public class Cliente {
 
     public void setComprobantes(Set<Comprobante> comprobantes) {
         this.comprobantes = comprobantes;
+    }
+
+    public boolean isVerificado() {
+        return verificado;
+    }
+
+    public void setVerificado(boolean verificado) {
+        this.verificado = verificado;
+    }
+
+    public String getTokenAutenticacion() {
+        return tokenAutenticacion;
+    }
+
+    public void setTokenAutenticacion(String tokenAutenticacion) {
+        this.tokenAutenticacion = tokenAutenticacion;
     }
 }

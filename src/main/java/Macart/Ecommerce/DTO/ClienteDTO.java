@@ -15,6 +15,8 @@ public class ClienteDTO {
     private String segundoApellido;
     private String correo;
     private String telefono;
+    private boolean verificado ;
+    private String tokenAutenticacion;
     private Set<PedidoDTO> pedidos;
     private Set<DireccionDTO> direcciones;
     private Set<ComprobanteDTO> comprobantes;
@@ -27,6 +29,8 @@ public class ClienteDTO {
         this.segundoApellido = cliente.getSegundoApellido();
         this.correo = cliente.getCorreo();
         this.telefono = cliente.getTelefono();
+        this.verificado = cliente.isVerificado();
+        this.tokenAutenticacion = cliente.getTokenAutenticacion();
         this.pedidos = cliente.getPedidos().stream().map(pedido -> new PedidoDTO(pedido)).collect(Collectors.toSet());
         this.direcciones = cliente.getDirecciones().stream().map(direccion -> new DireccionDTO(direccion)).collect(Collectors.toSet());
         this.comprobantes = cliente.getComprobantes().stream().map(comprobante -> new ComprobanteDTO(comprobante)).collect(Collectors.toSet());
@@ -70,5 +74,13 @@ public class ClienteDTO {
 
     public Set<ComprobanteDTO> getComprobantes() {
         return comprobantes;
+    }
+
+    public boolean isVerificado() {
+        return verificado;
+    }
+
+    public String getTokenAutenticacion() {
+        return tokenAutenticacion;
     }
 }

@@ -32,13 +32,14 @@ public class MacartApplication {
 @Bean
 public CommandLineRunner initData(ClienteRepositorio clienteRepositorio, DireccionRepositorio direccionRepositorio, PedidoRepositorio pedidoRepositorio, ComprobanteRepositorio comprobanteRepositorio , PedidoProductoRepositorio pedidoProductoRepositorio, ProductoTiendaRepositorio productoTiendaRepositorio) {
 	return (args) -> {
-		// guardarclientes
+		// guardarcliente
 
 		//	cliente1
-		Cliente cliente1 = new Cliente("Carlos","Andrés","Ruiz","Hinestroza","carlos@gmail.com","322-567-8909",passwordEncoder.encode("123"));
+
+		Cliente cliente1 = new Cliente("Carlos","Andrés","Ruiz","Hinestroza","carlos@gmail.com","322-567-8909",passwordEncoder.encode("123"),true,"D3BA09");
 		clienteRepositorio.save(cliente1);
 
-		Cliente admin = new Cliente("admin", null, "admin", null, "admin@admin.com", "322-567-8909", passwordEncoder.encode("123"));
+		Cliente admin = new Cliente("admin", null, "admin", null, "admin@admin.com", "322-567-8909", passwordEncoder.encode("123"),true,"D4BE10");
 		clienteRepositorio.save(admin);
 
 		Direccion direccion1 = new Direccion("Calle-47a","50-05","Barrio obrero","Copacabana","Antioquia","12345");
@@ -49,10 +50,7 @@ public CommandLineRunner initData(ClienteRepositorio clienteRepositorio, Direcci
 		cliente1.agregarPedido(pedido1);
 		pedidoRepositorio.save(pedido1);
 
-		Comprobante comprobante1 = new Comprobante(PedidoMetodoDePago.TRANSFERENCIA,"Transportadora",LocalDateTime.now(),150000.00);
-		cliente1.agregarComprobantes(comprobante1);
-		comprobanteRepositorio.save(comprobante1);
-		clienteRepositorio.save(cliente1);
+
 
 		// PRODUCTOS
 
@@ -79,12 +77,12 @@ public CommandLineRunner initData(ClienteRepositorio clienteRepositorio, Direcci
 		productoTienda3.agregarTalla("XL", ProductoTiendaUtilidades.randomNumber(1,50));
 		productoTiendaRepositorio.save(productoTienda3);
 
-		ProductoTienda productoTienda4 = new ProductoTienda("Bolso Negro", 40000, "Un bolso hecho con el mas fino cuero", List.of("https://live.staticflickr.com/65535/52943190962_7cc5a9dc6c_b.jpg","https://live.staticflickr.com/65535/52944252948_4f7ce08553_b.jpg"),ProductoTiendaCategoriaGenero.MUJER, "ACCESORIOS", true);
+//		ProductoTienda productoTienda4 = new ProductoTienda("Bolso Negro", 40000, "Un bolso hecho con el mas fino cuero", List.of("https://live.staticflickr.com/65535/52943190962_7cc5a9dc6c_b.jpg","https://live.staticflickr.com/65535/52944252948_4f7ce08553_b.jpg"),ProductoTiendaCategoriaGenero.MUJER, "ACCESORIOS", true);
+//
+//		productoTiendaRepositorio.save(productoTienda4);
 
-		productoTiendaRepositorio.save(productoTienda4);
-
-		ProductoTienda productoTienda5 = new ProductoTienda("Cartera Negra",45000,"Una cartera hecha con el mas fino cuero",List.of("https://live.staticflickr.com/65535/52943791561_d03c42a9ec_b.jpg","https://live.staticflickr.com/65535/52944177635_05fff2935d_b.jpg"), ProductoTiendaCategoriaGenero.MUJER, "ACCESORIOS", true);
-		productoTiendaRepositorio.save(productoTienda5);
+//		ProductoTienda productoTienda5 = new ProductoTienda("Cartera Negra",45000,"Una cartera hecha con el mas fino cuero",List.of("https://live.staticflickr.com/65535/52943791561_d03c42a9ec_b.jpg","https://live.staticflickr.com/65535/52944177635_05fff2935d_b.jpg"), ProductoTiendaCategoriaGenero.MUJER, "ACCESORIOS", true);
+//		productoTiendaRepositorio.save(productoTienda5);
 
 		ProductoTienda productoTienda6 = new ProductoTienda("Pantalon Verde", 60000, "Pantalon color verde, muy suave y ligero",List.of("https://live.staticflickr.com/65535/52943936929_fe078f999e_b.jpg","https://live.staticflickr.com/65535/52943936934_d00575a15d_b.jpg"), ProductoTiendaCategoriaGenero.HOMBRE, "PANTALON", true);
 		productoTienda6.agregarTalla("S", ProductoTiendaUtilidades.randomNumber(1,50));
@@ -114,8 +112,8 @@ public CommandLineRunner initData(ClienteRepositorio clienteRepositorio, Direcci
 		productoTienda9.agregarTalla("XL", ProductoTiendaUtilidades.randomNumber(1,50));
 		productoTiendaRepositorio.save(productoTienda9);
 
-		ProductoTienda productoTienda10 = new ProductoTienda("Riñonera Marqet", 20000, "Riñonera espaciosa, comoda al uso, excelente calidad",List.of("https://live.staticflickr.com/65535/52944611207_fc61dd7180_b.jpg", "https://live.staticflickr.com/65535/52944611232_b87e4401f5_b.jpg"), ProductoTiendaCategoriaGenero.MUJER, "ACCESORIOS", true);
-		productoTiendaRepositorio.save(productoTienda10);
+//		ProductoTienda productoTienda10 = new ProductoTienda("Riñonera Marqet", 20000, "Riñonera espaciosa, comoda al uso, excelente calidad",List.of("https://live.staticflickr.com/65535/52944611207_fc61dd7180_b.jpg", "https://live.staticflickr.com/65535/52944611232_b87e4401f5_b.jpg"), ProductoTiendaCategoriaGenero.MUJER, "ACCESORIOS", true);
+//		productoTiendaRepositorio.save(productoTienda10);
 
 		ProductoTienda productoTienda11 = new ProductoTienda("Pantalon Queen", 65000, "Pantalon color negro, muy suave y ligero", List.of("https://live.staticflickr.com/65535/52945672068_39d0333d8f_b.jpg", "https://live.staticflickr.com/65535/52945351814_4b9d83f934_b.jpg"), ProductoTiendaCategoriaGenero.MUJER, "PANTALON", true);
 		productoTienda11.agregarTalla("S", ProductoTiendaUtilidades.randomNumber(1,50));
@@ -147,11 +145,11 @@ public CommandLineRunner initData(ClienteRepositorio clienteRepositorio, Direcci
 		productoTienda15.agregarTalla("L", ProductoTiendaUtilidades.randomNumber(1,50));
 		productoTiendaRepositorio.save(productoTienda15);
 
-		ProductoTienda productoTienda16 = new ProductoTienda("Gorron Yey", 20000, "Gorron color azul, ligero y comodo",List.of("https://live.staticflickr.com/65535/52945672208_0e1978f327_b.jpg", "https://live.staticflickr.com/65535/52945352024_8292d993ea_b.jpg"), ProductoTiendaCategoriaGenero.HOMBRE, "ACCESORIOS", true);
-		productoTiendaRepositorio.save(productoTienda16);
-
-		ProductoTienda productoTienda17 = new ProductoTienda("Gorra El Rey", 18000, "Gorra color azul, ligera y comoda",List.of("https://live.staticflickr.com/65535/52945597075_f4d0ce2751_b.jpg", "https://live.staticflickr.com/65535/52945672248_870483194f_b.jpg"), ProductoTiendaCategoriaGenero.HOMBRE, "ACCESORIOS", true);
-		productoTiendaRepositorio.save(productoTienda17);
+//		ProductoTienda productoTienda16 = new ProductoTienda("Gorron Yey", 20000, "Gorron color azul, ligero y comodo",List.of("https://live.staticflickr.com/65535/52945672208_0e1978f327_b.jpg", "https://live.staticflickr.com/65535/52945352024_8292d993ea_b.jpg"), ProductoTiendaCategoriaGenero.HOMBRE, "ACCESORIOS", true);
+//		productoTiendaRepositorio.save(productoTienda16);
+//
+//		ProductoTienda productoTienda17 = new ProductoTienda("Gorra El Rey", 18000, "Gorra color azul, ligera y comoda",List.of("https://live.staticflickr.com/65535/52945597075_f4d0ce2751_b.jpg", "https://live.staticflickr.com/65535/52945672248_870483194f_b.jpg"), ProductoTiendaCategoriaGenero.HOMBRE, "ACCESORIOS", true);
+//		productoTiendaRepositorio.save(productoTienda17);
 
 		ProductoTienda productoTienda18 = new ProductoTienda("Falda Queen", 40000, "Falda color rojo, Excelente calidad, muy comoda",List.of("https://live.staticflickr.com/65535/52945597125_245069dc47_b.jpg", "https://live.staticflickr.com/65535/52945672243_4b74d4c0e3_b.jpg"), ProductoTiendaCategoriaGenero.MUJER, "FALDA", true);
 		productoTienda18.agregarTalla("S", ProductoTiendaUtilidades.randomNumber(1,50));
@@ -171,11 +169,11 @@ public CommandLineRunner initData(ClienteRepositorio clienteRepositorio, Direcci
 		productoTienda20.agregarTalla("L", ProductoTiendaUtilidades.randomNumber(1,50));
 		productoTiendaRepositorio.save(productoTienda20);
 
-		ProductoTienda productoTienda21 = new ProductoTienda("Cinturon Cuero", 25000, "Cinturon excelente calidad de cuero",List.of("https://live.staticflickr.com/65535/52945672318_2b4d3b2851_b.jpg", "https://live.staticflickr.com/65535/52945672393_e5651207cd_b.jpg"), ProductoTiendaCategoriaGenero.HOMBRE, "ACCESORIOS", true);
-		productoTiendaRepositorio.save(productoTienda21);
-
-		ProductoTienda productoTienda22 = new ProductoTienda("Cinturon Tachuelas", 20000, "Cinturon excelente calidad de cuero y con tachuelas",List.of("https://live.staticflickr.com/65535/52945672313_ce64173815_b.jpg", "https://live.staticflickr.com/65535/52944611487_201cd8ec72_b.jpg"), ProductoTiendaCategoriaGenero.HOMBRE, "ACCESORIOS", true);
-		productoTiendaRepositorio.save(productoTienda22);
+//		ProductoTienda productoTienda21 = new ProductoTienda("Cinturon Cuero", 25000, "Cinturon excelente calidad de cuero",List.of("https://live.staticflickr.com/65535/52945672318_2b4d3b2851_b.jpg", "https://live.staticflickr.com/65535/52945672393_e5651207cd_b.jpg"), ProductoTiendaCategoriaGenero.HOMBRE, "ACCESORIOS", true);
+//		productoTiendaRepositorio.save(productoTienda21);
+//
+//		ProductoTienda productoTienda22 = new ProductoTienda("Cinturon Tachuelas", 20000, "Cinturon excelente calidad de cuero y con tachuelas",List.of("https://live.staticflickr.com/65535/52945672313_ce64173815_b.jpg", "https://live.staticflickr.com/65535/52944611487_201cd8ec72_b.jpg"), ProductoTiendaCategoriaGenero.HOMBRE, "ACCESORIOS", true);
+//		productoTiendaRepositorio.save(productoTienda22);
 
 		ProductoTienda productoTienda23 = new ProductoTienda("Chaqueta Lok", 90000, "Chaqueta negra de excelente calidad",List.of("https://live.staticflickr.com/65535/52944611507_b02d9d7748_b.jpg", "https://live.staticflickr.com/65535/52945597395_1e70ba14bf_b.jpg"), ProductoTiendaCategoriaGenero.MUJER, "CHAQUETA", true);
 		productoTienda23.agregarTalla("XS",ProductoTiendaUtilidades.randomNumber(1,50));
@@ -265,8 +263,8 @@ public CommandLineRunner initData(ClienteRepositorio clienteRepositorio, Direcci
 		productoTienda33.agregarTalla("XL", ProductoTiendaUtilidades.randomNumber(1,50));
 		productoTiendaRepositorio.save(productoTienda33);
 
-		ProductoTienda productoTienda34 = new ProductoTienda("Bufanda Queen", 34000, "Bufanda de excelente calidad",List.of("https://live.staticflickr.com/65535/52945208046_ee55676ab6_b.jpg", "https://live.staticflickr.com/65535/52945672708_429d08d34c_b.jpg"), ProductoTiendaCategoriaGenero.MUJER, "ACCESORIOS", true);
-		productoTiendaRepositorio.save(productoTienda34);
+//		ProductoTienda productoTienda34 = new ProductoTienda("Bufanda Queen", 34000, "Bufanda de excelente calidad",List.of("https://live.staticflickr.com/65535/52945208046_ee55676ab6_b.jpg", "https://live.staticflickr.com/65535/52945672708_429d08d34c_b.jpg"), ProductoTiendaCategoriaGenero.MUJER, "ACCESORIOS", true);
+//		productoTiendaRepositorio.save(productoTienda34);
 
 		ProductoTienda productoTienda35 = new ProductoTienda("Blusa Blur", 40000 , "Blusa azul de algodon, excelente calidad", List.of("https://live.staticflickr.com/65535/52945208041_b75326228c_b.jpg", "https://live.staticflickr.com/65535/52945208071_21be2bb245_b.jpg"), ProductoTiendaCategoriaGenero.MUJER, "BLUSA", true);
 		productoTienda35.agregarTalla("XS",ProductoTiendaUtilidades.randomNumber(1,50));
@@ -278,17 +276,17 @@ public CommandLineRunner initData(ClienteRepositorio clienteRepositorio, Direcci
 
 		// PEDIDOS PRODUCTOS
 
-		PedidoProducto pedidoProducto1 = new PedidoProducto(8, productoTienda1 );
-		pedido1.agregarPedidoProducto(pedidoProducto1);
-		pedidoProductoRepositorio.save(pedidoProducto1);
-
-		PedidoProducto pedidoProducto2 = new PedidoProducto(2, productoTienda2 );
-		pedido1.agregarPedidoProducto(pedidoProducto2);
-		pedidoProductoRepositorio.save(pedidoProducto2);
+//		PedidoProducto pedidoProducto1 = new PedidoProducto(8, productoTienda1 );
+//		pedido1.agregarPedidoProducto(pedidoProducto1);
+//		pedidoProductoRepositorio.save(pedidoProducto1);
+//
+//		PedidoProducto pedidoProducto2 = new PedidoProducto(2, productoTienda2 );
+//		pedido1.agregarPedidoProducto(pedidoProducto2);
+//		pedidoProductoRepositorio.save(pedidoProducto2);
 
 
 //		cliente2
-		Cliente cliente2 =new Cliente("Ivan","Ezequiel","Miguel","Hernandez","Ivan@gmail.com","355-567-5555",passwordEncoder.encode("321"));
+		Cliente cliente2 =new Cliente("Ivan","Ezequiel","Miguel","Hernandez","Ivan@gmail.com","355-567-5555",passwordEncoder.encode("321"),false,"D4BO11");
 		clienteRepositorio.save(cliente2);
 
 		Direccion direccion2 = new Direccion("Calle-100Z","100-05","mar de plata","Boca","buenos aires","54321");

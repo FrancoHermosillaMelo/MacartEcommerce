@@ -1,17 +1,17 @@
 package Macart.Ecommerce.Servicios.Implementacion;
 
+import Macart.Ecommerce.Modelos.Cliente;
 import Macart.Ecommerce.Repositorio.ComprobanteRepositorio;
 import Macart.Ecommerce.Servicios.ComprobanteServicio;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
-import org.springframework.core.io.FileSystemResource;
-import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
+import java.util.UUID;
 
 @Service
 public class EnviarCorreoImplementacion {
@@ -39,16 +39,20 @@ public class EnviarCorreoImplementacion {
     }
 
 
+    public void enviarCorreoAutenticacion(String destinatario, String nombreCliente, String token) throws MessagingException {
+        MimeMessage message = emailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(message, true);
 
-//    public void enviarCorreo(String toEmail, String subject, String body) {
-//        SimpleMailMessage message = new SimpleMailMessage();
-//        message.setFrom("carlosandresgoo@gmail.com");
-//        message.setTo(toEmail);
-//        message.setText(body);
-//        message.setSubject(subject);
-//
-//        emailSender.send(message);
-//        System.out.println("Correo enviado");
-//    }
+        helper.setTo(destinatario);
+        helper.setSubject("Autenticación de cuenta");
+        String mensaje = "Estimado " + nombreCliente + ",\n\n";
+        mensaje += "Por favor  copia este código y pegalo en la página para autenticar tu cuenta , gracias :):\n";
+        mensaje += "token=" + token + "\n\n";
+        // Reemplaza [Enlace de autenticación] con el enlace real que permita al cliente autenticar su cuenta.
+
+        helper.setText(mensaje);
+        emailSender.send(message);
+    }
+
 
 }
