@@ -174,11 +174,25 @@ createApp({
 		agregarCantidadProducto(producto, key) {
 			if (producto.tallas[key] < producto.stockTallas[key]) {
 				producto.tallas[key] += 1;
+			}else{
+				Toastify({
+					text: `Sin stock`,
+					className: "info",
+					duration:3000,
+					offset: {
+						x: '5em', // horizontal axis - can be a number or a string indicating unity. eg: '2em'
+						y: '42em' // vertical axis - can be a number or a string indicating unity. eg: '2em'
+					  },
+					style: {
+						background: "#212529",
+					}
+				  }).showToast();
 			}
 		},
 		disminuirCantidadProducto(producto, key) {
 			if (producto.tallas[key] <= producto.stockTallas[key] && producto.tallas[key] > 1) {
 				producto.tallas[key] -= 1;
+			}else{
 			}
 		},
 		eliminarTalle(producto, key) {
