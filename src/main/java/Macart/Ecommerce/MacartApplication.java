@@ -70,7 +70,7 @@ public CommandLineRunner initData(ClienteRepositorio clienteRepositorio, Direcci
 		productoTienda2.agregarTalla("XL", ProductoTiendaUtilidades.randomNumber(1,50));
 		productoTiendaRepositorio.save(productoTienda2);
 
-		ProductoTienda productoTienda3 = new ProductoTienda("Blusa Blanca", 50000, "Blusa blanca de ribb de algodón",List.of("https://live.staticflickr.com/65535/52943937034_c6e221c620_z.jpg","https://live.staticflickr.com/65535/52943937039_233c0f81c0_z.jpg"),ProductoTiendaCategoriaGenero.MUJER,"BlUSA", true);
+		ProductoTienda productoTienda3 = new ProductoTienda("Blusa Blanca", 50000, "Blusa blanca de ribb de algodón",List.of("https://live.staticflickr.com/65535/52943937034_c6e221c620_z.jpg","https://live.staticflickr.com/65535/52943937039_233c0f81c0_z.jpg"),ProductoTiendaCategoriaGenero.MUJER,"BLUSA", true);
 		productoTienda3.agregarTalla("XS",ProductoTiendaUtilidades.randomNumber(1,50));
 		productoTienda3.agregarTalla("S", ProductoTiendaUtilidades.randomNumber(1,50));
 		productoTienda3.agregarTalla("M", ProductoTiendaUtilidades.randomNumber(1,50));
