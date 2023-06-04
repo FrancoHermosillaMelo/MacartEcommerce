@@ -62,7 +62,7 @@ createApp({
     },
         agregarDireccion(){
             Swal.fire({
-                title: "De verdad quieres agregar esta nueva dirección?",
+                title: "¿De verdad quieres agregar esta nueva dirección?",
                 text: "Podrás editarla o eliminarla cuando desees",
                 icon: "info",
                 showCancelButton: true,
@@ -89,7 +89,7 @@ createApp({
         },
         editarDireccion(){
           Swal.fire({
-            title: "De verdad quieres editar esta dirección?",
+            title: "¿De verdad quieres editar esta dirección?",
             text: "Podrás editarla nuevamente o eliminarla cuando desees",
             icon: "info",
             showCancelButton: true,
@@ -116,7 +116,7 @@ createApp({
         },
         borrarDireccion(id){
             Swal.fire({
-                title: "De verdad deseas borrar esta dirección?",
+                title: "¿De verdad deseas borrar esta dirección?",
                 text: "Tendrás que volverla a agregar para usarla de nuevo",
                 icon: "info",
                 showCancelButton: true,
@@ -143,7 +143,7 @@ createApp({
         },
         editarNumero(){
           Swal.fire({
-            title: "De verdad quieres edite número?",
+            title: "¿De verdad quieres editar tu número?",
             text: "Podrás editarlo nuevamente cuando desees",
             icon: "info",
             showCancelButton: true,
@@ -210,3 +210,12 @@ createApp({
 	},
 }).mount('#app');
 const todoPerfil = document.querySelector('.todoPerfil');
+window.addEventListener("load", () => {
+	const loader = document.querySelector('.loader');
+
+	loader.classList.add('loader-hidden');
+
+	loader.addEventListener('transitioned', () => {
+		document.body.removeChild('loader')
+	})
+  })
