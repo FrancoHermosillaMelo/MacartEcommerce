@@ -17,7 +17,7 @@ public class Pedido {
     private boolean pagado;
     private double montoTotal;
     private String metodoDeEnvio;
-    private PedidoMetodoDePago metodoDePago;
+
     @OneToMany(mappedBy="pedido", fetch= FetchType.EAGER)
     private Set<PedidoProducto> pedidoProductos = new HashSet<>();
     @ManyToOne(fetch = FetchType.EAGER)
@@ -27,12 +27,12 @@ public class Pedido {
     public Pedido() {
     }
 
-    public Pedido(LocalDateTime fechaDePedido, boolean pagado, double montoTotal, String metodoDeEnvio, PedidoMetodoDePago metodoDePago) {
+    public Pedido(LocalDateTime fechaDePedido, boolean pagado, double montoTotal, String metodoDeEnvio) {
         this.fechaDePedido = fechaDePedido;
         this.pagado = pagado;
         this.montoTotal = montoTotal;
         this.metodoDeEnvio = metodoDeEnvio;
-        this.metodoDePago = metodoDePago;
+
     }
 
     public void agregarPedidoProducto(PedidoProducto pedidoproducto) {
@@ -92,12 +92,6 @@ public class Pedido {
         this.metodoDeEnvio = metodoDeEnvio;
     }
 
-    public PedidoMetodoDePago getMetodoDePago() {
-        return metodoDePago;
-    }
 
-    public void setMetodoDePago(PedidoMetodoDePago metodoDePago) {
-        this.metodoDePago = metodoDePago;
-    }
 
 }

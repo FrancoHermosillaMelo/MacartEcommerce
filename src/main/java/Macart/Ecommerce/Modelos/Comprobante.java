@@ -12,7 +12,6 @@ public class Comprobante {
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
     @GenericGenerator(name = "native", strategy = "native")
     private long id;
-    private PedidoMetodoDePago metodoDePago;
     private String tipoDeEnvio;
     private LocalDateTime fechaDeComprobante;
     private double montoTotal;
@@ -28,8 +27,7 @@ public class Comprobante {
     public Comprobante() {
     }
 
-    public Comprobante(PedidoMetodoDePago metodoDePago, String tipoDeEnvio, LocalDateTime fechaDeComprobante, double montoTotal,CardType tipoTarjeta, CardColor colorTarjeta ) {
-        this.metodoDePago = metodoDePago;
+    public Comprobante( String tipoDeEnvio, LocalDateTime fechaDeComprobante, double montoTotal,CardType tipoTarjeta, CardColor colorTarjeta ) {
         this.tipoDeEnvio = tipoDeEnvio;
         this.fechaDeComprobante = fechaDeComprobante;
         this.montoTotal = montoTotal;
@@ -39,14 +37,6 @@ public class Comprobante {
 
     public long getId() {
         return id;
-    }
-
-    public PedidoMetodoDePago getMetodoDePago() {
-        return metodoDePago;
-    }
-
-    public void setMetodoDePago(PedidoMetodoDePago metodoDePago) {
-        this.metodoDePago = metodoDePago;
     }
 
     public String getTipoDeEnvio() {

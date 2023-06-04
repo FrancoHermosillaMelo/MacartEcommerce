@@ -33,12 +33,12 @@ createApp({
 		// this.roles();
 		this.data();
 		this.totalProductos();
-		this.clienteId = sessionStorage.getItem('clienteId'); // Obtén el identificador único del cliente desde el sessionStorage
-		this.carritos = JSON.parse(localStorage.getItem('carritos')) || {}; // Obtiene los carritos almacenados en el localStorage
+		this.clienteId = sessionStorage.getItem('clienteId'); 
+		this.carritos = JSON.parse(localStorage.getItem('carritos')) || {}; 
 		if (!this.carritos[this.clienteId]) {
-			this.carritos[this.clienteId] = []; // Crea un carrito vacío para el cliente si no existe
+			this.carritos[this.clienteId] = []; 
 		}
-		this.carrito = this.carritos[this.clienteId]; // Asi
+		this.carrito = this.carritos[this.clienteId]; 
 	},
 	mounted() {
 		this.roles();
@@ -67,11 +67,11 @@ createApp({
 					this.datos = response.data;
 					this.clienteIngresado = response.data;
 					this.clienteId = response.data.id;
-					sessionStorage.setItem('clienteId', this.clienteId); // Almacena el identificador único del cliente en el sessionStorage
+					sessionStorage.setItem('clienteId', this.clienteId); 
 					if (!this.carritos[this.clienteId]) {
-						this.carritos[this.clienteId] = []; // Crea un carrito vacío para el cliente si no existe
+						this.carritos[this.clienteId] = [];
 					}
-					this.carrito = this.carritos[this.clienteId]; // Asigna el carrito correspondiente al cliente actual
+					this.carrito = this.carritos[this.clienteId]; 
 					this.verificado = response.data.verificado === true;
 				})
 				.catch(error => console.log(error));
@@ -97,9 +97,9 @@ createApp({
 			if (this.rol === 'VISITANTE') {
 				Swal.fire('Debes registrarte para poder agregar productos al carrito de compra. Dirígete al inicio para registrarte.');
 			} else if (this.clienteIngresado.verificado === false) {
-				Swal.fire('Debes verificar tu cuenta para añadir los productos al carrito de compra. Dirígete al inicio para verificar tu cuenta.');
+				Swal.fire('Debes verificar tu cuenta para añadir los productos al carrito de compra.');
 			} else {
-				if (this.verificado === true && (this.clienteIngresado.rol === 'CLIENTE' || this.clienteIngresado.rol === 'ADMIN')) {
+				if (this.verificado === true && (this.rol === 'CLIENTE' || this.rol === 'ADMIN')) {
 					if (!this.productosRepetidos(item.id)) {
 						this.carrito.push({
 							nombre: item.nombre,

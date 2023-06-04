@@ -111,54 +111,6 @@ public class ComprobanteControlador {
 
         return new ResponseEntity<>(comprobantesTodos, HttpStatus.ACCEPTED);
     }
-//    @Transactional
-//    @PostMapping("/api/comprobantes/pdf")
-//    public ResponseEntity<Object> crearComprobantePDF(@RequestParam long idComprobante, @RequestParam long idPedido) throws IOException, DocumentException, MessagingException {
-//        Comprobante comprobanteSolicitado = comprobanteServicio.obtenerComprobantesId(idComprobante);
-//        Pedido pedidoSolicitado = pedidoServicio.ObtenerPedidoPorId(idPedido);
-//
-//        if (comprobanteSolicitado == null) {
-//            return new ResponseEntity<>("El comprobante no existe", HttpStatus.NOT_FOUND);
-//        }
-//        if (pedidoSolicitado == null) {
-//            return new ResponseEntity<>("El pedido no existe", HttpStatus.NOT_FOUND);
-//        }
-//        Cliente clienteDelPedido = pedidoSolicitado.getCliente();
-//
-//        // Generar el PDF del comprobante
-//        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-//        Document document = new Document();
-//        PdfWriter.getInstance(document, outputStream);
-//        document.open();
-//
-//
-//        Image logo = Image.getInstance("C:\\Tareas mind hub\\Tercera parte del mind hub\\MacartEcommerce\\src\\main\\resources\\static\\img\\Black_Logo.png");
-//        logo.scaleToFit(120, 120);
-//        document.add(logo);
-//
-//        Font fontTitle = new Font(Font.FontFamily.HELVETICA, 25, Font.BOLD);
-//        Paragraph title = new Paragraph("Señor/a: " + clienteDelPedido.getPrimerNombre() + " " +
-//                clienteDelPedido.getSegundoNombre() + " " +
-//                clienteDelPedido.getPrimerApellido() + " " +
-//                clienteDelPedido.getSegundoApellido());
-//        title.setAlignment(Paragraph.ALIGN_CENTER);
-//        title.setSpacingBefore(20);
-//        title.setSpacingAfter(20);
-//        document.add(title);
-//        document.close();
-//
-//        // Enviar el PDF por correo electrónico al cliente y al administrador
-//        String subject = "Comprobante de compra";
-//        String body = "Adjunto encontrarás el comprobante de tu compra.";
-//
-//        String clienteEmail = clienteDelPedido.getCorreo();
-//        String adminEmail = "carlosandresgoo@gmail.com"; // Reemplaza con el correo del administrador
-//
-//        enviarCorreoImplementacion.enviarCorreoConPDF(clienteEmail, subject, body, outputStream.toByteArray());
-//        enviarCorreoImplementacion.enviarCorreoConPDF(adminEmail, subject, body, outputStream.toByteArray());
-//
-//        return new ResponseEntity<>("Pdf Creado correctamente y enviado por correo electrónico", HttpStatus.CREATED);
-//    }
 
     @Transactional
     @PostMapping("/api/comprobantes/pdf")
@@ -193,6 +145,12 @@ public class ComprobanteControlador {
 
                 pedido.setPagado(true);
 
+                Comprobante comprobante = new Comprobante(pedido.getMetodoDeEnvio(),LocalDateTime.now(),pedido.getMontoTotal(),pagarConTarjetaDTO.getType(),pagarConTarjetaDTO.getColor());
+                comprobanteServicio.guardarComprobante(comprobante);
+                clienteDelPedido.agregarComprobantes(comprobante);
+                clienteServicio.guardarCliente(clienteDelPedido);
+
+
                 for (PedidoProducto productosPagos : pedidoProductos) {
                     Map<String, Integer> tallasTienda = productosPagos.getProductoTienda().getTallas();
                     Map<String, Integer> tallas = productosPagos.getTallas();
@@ -207,8 +165,6 @@ public class ComprobanteControlador {
                     }
                     productoTiendaServicio.guardarProducto(productosPagos.getProductoTienda());
                 }
-
-
 
 
                     // Generar el PDF del comprobante
@@ -244,7 +200,9 @@ public class ComprobanteControlador {
                     enviarCorreoImplementacion.enviarCorreoConPDF(adminEmail, subject, body, outputStream.toByteArray());
 
 
+
                     return new ResponseEntity<>("Pago aceptado", HttpStatus.CREATED);
+
 
                 } else {
                     connection.getInputStream().close();
@@ -252,6 +210,7 @@ public class ComprobanteControlador {
 
                     return new ResponseEntity<>("Pago rechazado", HttpStatus.FORBIDDEN);
                 }
+
         } catch (Exception err) {
             err.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al realizar el pago");
