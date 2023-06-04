@@ -200,7 +200,7 @@ a {
 
 /*ENVIOS SEGURIDAD ETC*/
 .icono {
-	font-size: 28px !important;
+	font-size: 30px !important;
 	color: var(--color-rosado);
 }
 .titulo {
@@ -373,6 +373,7 @@ swiper-slide img {
 	padding: 1rem !important;
 }
 .div-sumar-restar > span {
+	width: 1em;
 	font-size: 18px;
 }
 .div-sumar-restar > i {

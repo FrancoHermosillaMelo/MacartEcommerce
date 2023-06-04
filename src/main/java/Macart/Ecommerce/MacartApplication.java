@@ -46,9 +46,9 @@ public CommandLineRunner initData(ClienteRepositorio clienteRepositorio, Direcci
 		cliente1.agregarDirecciones(direccion1);
 		direccionRepositorio.save(direccion1);
 
-		Pedido pedido1 = new Pedido(LocalDateTime.now(),false,150000.00,"Transportadora", PedidoMetodoDePago.TRANSFERENCIA);
-		cliente1.agregarPedido(pedido1);
-		pedidoRepositorio.save(pedido1);
+//		Pedido pedido1 = new Pedido(LocalDateTime.now(),false,150000.00,"Transportadora", PedidoMetodoDePago.TRANSFERENCIA);
+//		cliente1.agregarPedido(pedido1);
+//		pedidoRepositorio.save(pedido1);
 
 
 
@@ -292,9 +292,9 @@ public CommandLineRunner initData(ClienteRepositorio clienteRepositorio, Direcci
 		cliente2.agregarDirecciones(direccion2);
 		direccionRepositorio.save(direccion2);
 
-		Pedido pedido2 = new Pedido(LocalDateTime.now(),false,320000.00,"domicilio", PedidoMetodoDePago.EFECTIVO);
-		cliente2.agregarPedido(pedido2);
-		pedidoRepositorio.save(pedido2);
+//		Pedido pedido2 = new Pedido(LocalDateTime.now(),false,320000.00,"domicilio", PedidoMetodoDePago.EFECTIVO);
+//		cliente2.agregarPedido(pedido2);
+//		pedidoRepositorio.save(pedido2);
 
 	};
 	}

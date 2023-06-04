@@ -250,6 +250,32 @@ createApp({
 					})
 				);
 		},
+		continuarPago() {
+			Swal.fire({
+				icon: 'info',
+				title: '¿Deseas continuar con tu pedido?',
+				text: 'Si confirmas se te redireccionara al pago',
+				cancelButtonText: 'Cancelar',
+				showCancelButton: true,
+				confirmButtonText: 'Confirmar',
+				showLoaderOnConfirm: true,
+				preConfirm: login => {
+					return axios
+						.post('/api/logout')
+						.then(response => {
+							window.location.href = '/index.html';
+						})
+						.catch(error =>
+							Swal.fire({
+								icon: 'error',
+								text: error.response.data,
+								confirmButtonColor: '#7c601893',
+							})
+						);
+				},
+				allowOutsideClick: () => !Swal.isLoading(),
+			});
+		},
 		obtenerIdProducto(id) {
 			axios
 				.get('/api/productoTienda/' + id)
@@ -280,6 +306,7 @@ createApp({
 					});
 				});
 		},
+
 		salir() {
 			Swal.fire({
 				title: '¿Estas seguro que quieres salir de tu cuenta?',

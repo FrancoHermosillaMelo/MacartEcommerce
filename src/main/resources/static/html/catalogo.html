@@ -227,12 +227,20 @@
 											<div class="accordion-body">
 												<div class="d-flex justify-content-center align-items-center">
 													<div class="form-group">
-														<input type="range" class="ranger" id="formControlRange" />
-														<label for="formControlRange">Desde</label>
+														<input
+															type="range"
+															class="form-control-range"
+															min="0"
+															max="300000"
+															step="10000"
+															id="formControlRange"
+															v-model="precioDesde"
+														/>
+														<label for="formControlRange">Desde:${{precioDesde}}</label>
 													</div>
-													<div class="form-group">
-														<input type="range" class="ranger" id="formControlRange" />
-														<label for="formControlRange">Hasta</label>
+													<div class="form-group ms-3">
+														<input type="range" class="form-control-range" max="300000" step="10000" id="formControlRange" v-model="precioHasta" />
+														<label for="formControlRange">Hasta:${{precioHasta}}</label>
 													</div>
 												</div>
 												<!-- <div class="form-check mb-3">
@@ -325,7 +333,7 @@
 														<span class="me-2">{{key}}</span>
 														<i class="pe-2 bi bi-dash-circle" @click="disminuirCantidadProducto(producto, key)"></i>
 														<span>{{value}}</span>
-														<i class="ps-2 bi bi-plus-circle" @click="agregarCantidadProducto(producto, key)"></i>
+														<i class="bi bi-plus-circle" @click="agregarCantidadProducto(producto, key)"></i>
 														<i class="bi bi-trash3 ms-2" @click="eliminarTalle(producto, key)"></i>
 													</div>
 												</template>
@@ -344,7 +352,7 @@
 					</div>
 
 					<div class="boton-pago">
-						<a class="btn w-100 btn-dark" href="#">Continuar con la compra</a>
+						<a class="btn w-100 btn-dark" href="./pago.html">Continuar con la compra</a>
 					</div>
 				</aside>
 			</main>

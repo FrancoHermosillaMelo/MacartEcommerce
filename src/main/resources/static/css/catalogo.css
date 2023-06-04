@@ -486,6 +486,7 @@ ul {
 	padding: 1rem !important;
 }
 .div-sumar-restar > span {
+	width: 1em;
 	font-size: 18px;
 }
 .div-sumar-restar > i {
