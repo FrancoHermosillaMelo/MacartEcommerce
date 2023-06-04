@@ -30,6 +30,7 @@ createApp({
                 .then(respuesta => {
                     this.pedidos = respuesta.data
                     console.log(this.pedidos[0]);
+                    this.verificado = response.data.verificado === true;
                 })
                 .catch(error => console.log(error))
         },
@@ -59,7 +60,7 @@ createApp({
                             "color": this.colorCard,
                             "number": this.cardNumber,
                             "cvv": this.cvv,
-                            "email": this.cliente.email,
+                            "email": this.cliente.correo,
                             "amount": this.pedidos[0].montoTotal
 
                         })
@@ -69,7 +70,7 @@ createApp({
                                 text: 'Pago realizado',
                                 showConfirmButton: false,
                                 timer: 3000,
-                            }).then(() => window.location.href = "/web/paginas/pedidos.html")
+                            }).then(() => window.location.href = "/html/perfilCliente.html")
                         })
                         .catch(error => {
                             Swal.fire({
