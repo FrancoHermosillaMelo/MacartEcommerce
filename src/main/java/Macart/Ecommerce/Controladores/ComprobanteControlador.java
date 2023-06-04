@@ -167,49 +167,49 @@ public class ComprobanteControlador {
                 }
 
 
-                    // Generar el PDF del comprobante
-                    ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-                    Document document = new Document();
-                    PdfWriter.getInstance(document, outputStream);
-                    document.open();
+                // Generar el PDF del comprobante
+                ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+                Document document = new Document();
+                PdfWriter.getInstance(document, outputStream);
+                document.open();
 
 
-                    Image logo = Image.getInstance("https://res.cloudinary.com/dtis6pqyq/image/upload/v1685839439/Black_Logo_bowo2z.png");
-                    logo.scaleToFit(120, 120);
-                    document.add(logo);
+                Image logo = Image.getInstance("https://res.cloudinary.com/dtis6pqyq/image/upload/v1685839439/Black_Logo_bowo2z.png");
+                logo.scaleToFit(120, 120);
+                document.add(logo);
 
-                    Font fontTitle = new Font(Font.FontFamily.HELVETICA, 25, Font.BOLD);
-                    Paragraph title = new Paragraph("Señor/a: " + clienteDelPedido.getPrimerNombre() + " " +
-                            clienteDelPedido.getSegundoNombre() + " " +
-                            clienteDelPedido.getPrimerApellido() + " " +
-                            clienteDelPedido.getSegundoApellido());
-                    title.setAlignment(Paragraph.ALIGN_CENTER);
-                    title.setSpacingBefore(20);
-                    title.setSpacingAfter(20);
-                    document.add(title);
-                    document.close();
+                Font fontTitle = new Font(Font.FontFamily.HELVETICA, 25, Font.BOLD);
+                Paragraph title = new Paragraph("Señor/a: " + clienteDelPedido.getPrimerNombre() + " " +
+                        clienteDelPedido.getSegundoNombre() + " " +
+                        clienteDelPedido.getPrimerApellido() + " " +
+                        clienteDelPedido.getSegundoApellido());
+                title.setAlignment(Paragraph.ALIGN_CENTER);
+                title.setSpacingBefore(20);
+                title.setSpacingAfter(20);
+                document.add(title);
+                document.close();
 
-                    // Enviar el PDF por correo electrónico al cliente y al administrador
-                    String subject = "Comprobante de compra";
-                    String body = "Adjunto encontrarás el comprobante de tu compra.";
+                // Enviar el PDF por correo electrónico al cliente y al administrador
+                String subject = "Comprobante de compra";
+                String body = "Adjunto encontrarás el comprobante de tu compra.";
 
-                    String clienteEmail = clienteDelPedido.getCorreo();
-                    String adminEmail = "carlosandresgoo@gmail.com"; // Reemplaza con el correo del administrador
+                String clienteEmail = clienteDelPedido.getCorreo();
+                String adminEmail = "carlosandresgoo@gmail.com"; // Reemplaza con el correo del administrador
 
-                    enviarCorreoImplementacion.enviarCorreoConPDF(clienteEmail, subject, body, outputStream.toByteArray());
-                    enviarCorreoImplementacion.enviarCorreoConPDF(adminEmail, subject, body, outputStream.toByteArray());
-
-
-
-                    return new ResponseEntity<>("Pago aceptado", HttpStatus.CREATED);
+                enviarCorreoImplementacion.enviarCorreoConPDF(clienteEmail, subject, body, outputStream.toByteArray());
+                enviarCorreoImplementacion.enviarCorreoConPDF(adminEmail, subject, body, outputStream.toByteArray());
 
 
-                } else {
-                    connection.getInputStream().close();
-                    connection.disconnect();
 
-                    return new ResponseEntity<>("Pago rechazado", HttpStatus.FORBIDDEN);
-                }
+                return new ResponseEntity<>("Pago aceptado", HttpStatus.CREATED);
+
+
+            } else {
+                connection.getInputStream().close();
+                connection.disconnect();
+
+                return new ResponseEntity<>("Pago rechazado", HttpStatus.FORBIDDEN);
+            }
 
         } catch (Exception err) {
             err.printStackTrace();

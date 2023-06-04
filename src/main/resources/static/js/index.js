@@ -258,20 +258,45 @@ createApp({
 		},
 	},
 }).mount('#app');
-// Obtén las referencias a las imágenes pequeña y grande
-var imagenPequena = document.getElementById('imagenPequena');
-var imagenGrande = document.getElementById('imagenGrande');
+/* Contraseña */
+const pwShowHide = document.querySelectorAll(".pw-hide");
+pwShowHide.forEach((icon) => {
+	icon.addEventListener("click", () => {
+	  let getPwInput = icon.parentElement.querySelector("input");
+	  if (getPwInput.type === "password") {
+		getPwInput.type = "text";
+		icon.classList.replace("fa-eye-slash", "fa-eye");
+	  } else {
+		getPwInput.type = "password";
+		icon.classList.replace("fa-eye", "fa-eye-slash");
+	  }
+	});
+  });
+/* Loader */
+window.addEventListener("load", () => {
+	const loader = document.querySelector('.loader');
+
+	loader.classList.add('loader-hidden');
+
+	loader.addEventListener('transitioned', () => {
+		document.body.removeChild('loader')
+	})
+  })
+
+/* // Obtén las referencias a las imágenes pequeña y grande
+let imagenPequena = document.getElementById('#imagenPequena');
+let imagenGrande = document.getElementById('#imagenGrande');
 
 // Manejador de eventos para hacer clic en la imagen pequeña
-imagenPequena.addEventListener('click', function () {
+imagenPequena.addEventListener('click',  () => {
 	// Obtén las URLs de las imágenes pequeña y grande
-	var urlImagenPequena = imagenPequena.src;
-	var urlImagenGrande = imagenGrande.src;
+	let urlImagenPequena = imagenPequena.src;
+	let urlImagenGrande = imagenGrande.src;
 
 	// Intercambia las URLs de las imágenes
 	imagenPequena.src = urlImagenGrande;
 	imagenGrande.src = urlImagenPequena;
-})
+}) */
 
 
 

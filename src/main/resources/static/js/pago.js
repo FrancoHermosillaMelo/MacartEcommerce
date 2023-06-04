@@ -59,7 +59,7 @@ createApp({
                             "color": this.colorCard,
                             "number": this.cardNumber,
                             "cvv": this.cvv,
-                            "email": this.cliente.email,
+                            "email": this.cliente.correo,
                             "amount": this.pedidos[0].montoTotal
 
                         })
@@ -69,7 +69,7 @@ createApp({
                                 text: 'Pago realizado',
                                 showConfirmButton: false,
                                 timer: 3000,
-                            }).then(() => window.location.href = "/web/paginas/pedidos.html")
+                            }).then(() => window.location.href = "/html/perfilCliente.html")
                         })
                         .catch(error => {
                             Swal.fire({
@@ -82,6 +82,32 @@ createApp({
                 },
                 allowOutsideClick: () => !Swal.isLoading()
             })
-        }
+        },
+        salir() {
+			Swal.fire({
+				title: '¿Estas seguro que quieres salir de tu cuenta?',
+				inputAttributes: {
+					autocapitalize: 'off',
+				},
+				showCancelButton: true,
+				confirmButtonText: 'Sure',
+				showLoaderOnConfirm: true,
+				preConfirm: login => {
+					return axios
+						.post('/api/logout')
+						.then(response => {
+							window.location.href = '/index.html';
+						})
+						.catch(error =>
+							Swal.fire({
+								icon: 'error',
+								text: error.response.data,
+								confirmButtonColor: '#7c601893',
+							})
+						);
+				},
+				allowOutsideClick: () => !Swal.isLoading(),
+			});
+		},
     },
 }).mount("#app");

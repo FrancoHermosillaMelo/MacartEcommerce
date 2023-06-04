@@ -46,11 +46,9 @@ public CommandLineRunner initData(ClienteRepositorio clienteRepositorio, Direcci
 		cliente1.agregarDirecciones(direccion1);
 		direccionRepositorio.save(direccion1);
 
-//		Pedido pedido1 = new Pedido(LocalDateTime.now(),false,150000.00,"Transportadora", PedidoMetodoDePago.TRANSFERENCIA);
+//		Pedido pedido1 = new Pedido(LocalDateTime.now(),true,150000.00,"Transportadora");
 //		cliente1.agregarPedido(pedido1);
 //		pedidoRepositorio.save(pedido1);
-
-
 
 		// PRODUCTOS
 
@@ -275,15 +273,15 @@ public CommandLineRunner initData(ClienteRepositorio clienteRepositorio, Direcci
 
 
 		// PEDIDOS PRODUCTOS
-//
-//		PedidoProducto pedidoProducto1 = new PedidoProducto(8, productoTienda1 );
-//		pedido1.agregarPedidoProducto(pedidoProducto1);
-//		pedidoProductoRepositorio.save(pedidoProducto1);
-//
-//		PedidoProducto pedidoProducto2 = new PedidoProducto(2, productoTienda2 );
-//		pedido1.agregarPedidoProducto(pedidoProducto2);
-//		pedidoProductoRepositorio.save(pedidoProducto2);
 
+
+/*		PedidoProducto pedidoProducto1 = new PedidoProducto(8, productoTienda1 );
+		pedido1.agregarPedidoProducto(pedidoProducto1);
+		pedidoProductoRepositorio.save(pedidoProducto1);
+
+		PedidoProducto pedidoProducto2 = new PedidoProducto(2, productoTienda2 );
+		pedido1.agregarPedidoProducto(pedidoProducto2);
+		pedidoProductoRepositorio.save(pedidoProducto2);*/
 
 //		cliente2
 		Cliente cliente2 =new Cliente("Ivan","Ezequiel","Miguel","Hernandez","Ivan@gmail.com","355-567-5555",passwordEncoder.encode("321"),false,"D4BO11");
@@ -293,7 +291,7 @@ public CommandLineRunner initData(ClienteRepositorio clienteRepositorio, Direcci
 		cliente2.agregarDirecciones(direccion2);
 		direccionRepositorio.save(direccion2);
 
-//		Pedido pedido2 = new Pedido(LocalDateTime.now(),false,320000.00,"domicilio", PedidoMetodoDePago.EFECTIVO);
+//		Pedido pedido2 = new Pedido(LocalDateTime.now(),false,320000.00,"domicilio");
 //		cliente2.agregarPedido(pedido2);
 //		pedidoRepositorio.save(pedido2);
 

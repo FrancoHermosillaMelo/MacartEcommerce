@@ -48,7 +48,7 @@
 							<a class="nav-link texto-nav hover-a text-center" href="../index.html">Inicio</a>
 							<a class="nav-link texto-nav hover-a text-center" href="./catalogo.html">Catálogo</a>
 							<a class="nav-link texto-nav hover-a text-center" href="./sobreNosotros.html">Sobre Nosotros</a>
-							<a class="nav-link texto-nav hover-a text-center" href="#">Preguntas Frecuentes</a>
+							<a class="nav-link texto-nav hover-a text-center" href="./preguntasFrecuentes.html">Preguntas Frecuentes</a>
 						</div>
 					</div>
 					<div class="collapse navbar-collapse justify-content-end" id="navbarNavAltMarkup">
@@ -95,7 +95,7 @@
                 <label for="primerNombre">Primer Nombre</label>
                 <input class="form-control formPerfil" type="text" id="primerNombre" :value="clienteIngresado.primerNombre" disabled>
                 <label for="segundoNombre">Segundo Nombre</label>
-                <input class="form-control formPerfil" type="text" id="segundoNombre" :value="clienteIngresado.segundoNombre == '' ? 'Dato no ingresado' : clienteIngresado.segundoNombre" disabled>
+                <input class="form-control formPerfil" type="text" id="segundoNombre" :value="clienteIngresado.segundoNombre == '' || clienteIngresado.segundoNombre == null ? 'Dato no ingresado' : clienteIngresado.segundoNombre" disabled>
                 <label for="correo">Correo Electrónico</label>
                 <input class="form-control formPerfil" type="text" id="correo" :value="clienteIngresado.correo" disabled>
             </div>
@@ -103,7 +103,7 @@
                 <label for="primerApellido">Primer Apellido</label>
                 <input class="form-control formPerfil" type="text" id="primerApellido" :value="clienteIngresado.primerApellido" disabled>
                 <label for="segundoApellido">Segundo Apellido</label>
-                <input class="form-control formPerfil" type="text" id="segundoApellido" :value="clienteIngresado.segundoApellido == '' ? 'Dato no ingresado' : clienteIngresado.segundoApellido" disabled>
+                <input class="form-control formPerfil" type="text" id="segundoApellido" :value="clienteIngresado.segundoApellido == '' || clienteIngresado.segundoApellido == null ? 'Dato no ingresado' : clienteIngresado.segundoApellido" disabled>
                 <label for="telefono">Número de contacto <i data-bs-toggle="modal" data-bs-target="#modalEditarNumero" class="bi bi-pencil btnDireccionI"></i></label>
                 <input class="form-control formPerfil" type="text" id="telefono" :value="clienteIngresado.telefono" disabled>
             </div>
@@ -133,26 +133,50 @@
         </div>
     </section>
     <section class="infoPedidos d-flex flex-column align-items-center justify-content-center">
-            <h2 class="text-center">Tus pedidos</h2>
         <div class="pedidos d-flex justify-content-center flex-column align-items-center">
-            <div class="pedido" v-if="pedidos.length > 0" v-for="pedido of pedidos">
+			<h2 class="text-center">Pedido pendiente</h2>
+            <div class="pedido" v-if="noPagado.length > 0" v-for="pedido of noPagado">
 				<div class="pedidoHeader">
 					<p><span>Fecha</span><br>{{pedido.fechaDePedido.slice(0,10)}} a las {{pedido.fechaDePedido.slice(11,16)}}</p>
 					<p><span>Método de Envio</span><br>{{pedido.metodoDeEnvio}}</p>
-					<p><span>Método de Pago</span><br>{{pedido.metodoDePago.slice(0,1)}}{{pedido.metodoDePago.slice(1).toLowerCase()}}</p>
+					<p><span>Pagado: </span>{{pedido.pagado == false ? 'No pagado' : 'Pagado'}}</p>
 				   </div>
 				<div class="pedidoProducto">
 				<div class="pedidoProducto1 d-flex flex-column justify-content-evenly">
-					<p v-for="producto of pedido.pedidoProductos"><span><i class="bi bi-circle-fill" style="font-size: 0.3rem;"></i> Cantidad: x{{producto.cantidad}}</span> {{producto.productoTienda.nombre}} | <span>Precio por unidad: </span>COP$ {{producto.productoTienda.precio.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}} | <span>Por cantidad: </span>COP$ {{(producto.productoTienda.precio * producto.cantidad).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}}</p>
-					<p><span><i class="bi bi-circle-fill" style="font-size: 0.3rem;"></i> Monto Total: </span>COP$ {{pedido.montoTotal.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}} | Pagado: </span>{{pedido.pagado == false ? 'No pagado' : 'Pagado'}}</p>
+					<template v-for="producto of pedido.pedidoProductos">
+					<p v-for="(value, key) in producto.tallas"><span><i class="bi bi-circle-fill" style="font-size: 0.3rem;"></i> Cantidad: </span>{{value}} | <span>Talla: </span> {{key}} | {{producto.productoTienda.nombre}} | <span>Por Unidad: COP$</span> {{producto.productoTienda.precio.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}} | <span>Por cantidad: COP$</span> {{(producto.productoTienda.precio * value).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}}</p>
+				</template>
+					<p><span><i class="bi bi-circle-fill" style="font-size: 0.3rem;"></i> Monto Total: </span>COP$ {{pedido.montoTotal.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}}</p>
 					<div class="pedidoProducto2 d-flex align-items-center justify-content-center flex-wrap">
-						<img v-for="producto of pedido.pedidoProductos" :src="'.'+ producto.productoTienda.imagenesUrl[0]" alt="">
+						<img v-for="producto of pedido.pedidoProductos" :src="producto.productoTienda.imagenesUrl[0]" alt="">
 					</div>
+				  </div>
+			     </div>
+				 <a href="./pago.html" class="btnDireccion text-center"> Pagar</a>
 				</div>
-
-			</div>
+				<div class="mt-5 mb-5" v-else>
+					<h3>No tienes ningún pedido en proceso.</h3>
 				</div>
-				<div class="mt-3 mb-3" v-else>
+				<h2 class="text-center">Pedidos pagados</h2>
+				<div class="pedido" v-if="pagado.length > 0" v-for="pedido of pagado">
+					<div class="pedidoHeader">
+						<p><span>Fecha</span><br>{{pedido.fechaDePedido.slice(0,10)}} a las {{pedido.fechaDePedido.slice(11,16)}}</p>
+						<p><span>Método de Envio</span><br>{{pedido.metodoDeEnvio}}</p>
+						<p><span>Pagado: </span>{{pedido.pagado == false ? 'No pagado' : 'Pagado'}}</p>
+					   </div>
+					<div class="pedidoProducto">
+					<div class="pedidoProducto1 d-flex flex-column justify-content-evenly">
+						<template v-for="producto of pedido.pedidoProductos">
+						<p v-for="(value, key) in producto.tallas"><span><i class="bi bi-circle-fill" style="font-size: 0.3rem;"></i> Cantidad: </span>{{value}} | <span>Talla: </span> {{key}} | {{producto.productoTienda.nombre}} | <span>Por Unidad: COP$</span> {{producto.productoTienda.precio.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}} | <span>Por cantidad: COP$</span> {{(producto.productoTienda.precio * value).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}}</p>
+					</template>
+						<p><span><i class="bi bi-circle-fill" style="font-size: 0.3rem;"></i> Monto Total: </span>COP$ {{pedido.montoTotal.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}}</p>
+						<div class="pedidoProducto2 d-flex align-items-center justify-content-center flex-wrap">
+							<img v-for="producto of pedido.pedidoProductos" :src="producto.productoTienda.imagenesUrl[0]" alt="">
+						</div>
+					  </div>
+					 </div>
+					</div>
+				<div class="mt-5 mb-5" v-else>
 					<h3>No has pedido nada por el momento.</h3>
 				</div>
 				</div>

@@ -4,8 +4,10 @@ createApp({
 	data() {
 		return {
 			rol: '',
-			clienteIngresado: '',
-      pedidos:'',
+			clienteIngresado: [],
+      pedidos: [],
+      pagado: [],
+      noPagado: [],
       /* Agregar dirección */
       clienteIngresadoId:'',
       direcciones:'',
@@ -39,6 +41,8 @@ createApp({
           this.telefonoE = this.clienteIngresado.telefono;
           this.clienteIngresadoId = this.clienteIngresado.id
           this.pedidos = this.clienteIngresado.pedidos.sort((x, y) => y.id - x.id);
+          this.pagado = this.pedidos.filter(pedido => pedido.pagado == true);
+          this.noPagado = this.pedidos.filter(pedido => pedido.pagado == false);
           this.direcciones = this.clienteIngresado.direcciones.sort((x, y) => x.id - y.id);
 				})
 				.catch(error => console.log(error));
