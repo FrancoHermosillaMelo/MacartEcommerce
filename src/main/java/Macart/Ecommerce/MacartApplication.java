@@ -55,7 +55,7 @@ public CommandLineRunner initData(ClienteRepositorio clienteRepositorio, Direcci
 		// PRODUCTOS
 
 		ProductoTienda productoTienda1 = new ProductoTienda("Camisa Blanca", 50000.00 , "Camisa blanca de algodon",List.of("https://live.staticflickr.com/65535/52943190902_f77c1e8be1_b.jpg","https://live.staticflickr.com/65535/52943190892_f386c30847_b.jpg"), ProductoTiendaCategoriaGenero.HOMBRE, "CAMISETA",true);
-		productoTienda1.agregarTalla("XS", ProductoTiendaUtilidades.randomNumber(1,50));
+		productoTienda1.agregarTalla("XS", 30);
 		productoTienda1.agregarTalla("M", ProductoTiendaUtilidades.randomNumber(1,50));
 		productoTienda1.agregarTalla("L", ProductoTiendaUtilidades.randomNumber(1,50));
 		productoTienda1.agregarTalla("XL", ProductoTiendaUtilidades.randomNumber(1,50));
@@ -275,14 +275,14 @@ public CommandLineRunner initData(ClienteRepositorio clienteRepositorio, Direcci
 
 
 		// PEDIDOS PRODUCTOS
-
-		PedidoProducto pedidoProducto1 = new PedidoProducto(8, productoTienda1 );
-		pedido1.agregarPedidoProducto(pedidoProducto1);
-		pedidoProductoRepositorio.save(pedidoProducto1);
-
-		PedidoProducto pedidoProducto2 = new PedidoProducto(2, productoTienda2 );
-		pedido1.agregarPedidoProducto(pedidoProducto2);
-		pedidoProductoRepositorio.save(pedidoProducto2);
+//
+//		PedidoProducto pedidoProducto1 = new PedidoProducto(8, productoTienda1 );
+//		pedido1.agregarPedidoProducto(pedidoProducto1);
+//		pedidoProductoRepositorio.save(pedidoProducto1);
+//
+//		PedidoProducto pedidoProducto2 = new PedidoProducto(2, productoTienda2 );
+//		pedido1.agregarPedidoProducto(pedidoProducto2);
+//		pedidoProductoRepositorio.save(pedidoProducto2);
 
 
 //		cliente2

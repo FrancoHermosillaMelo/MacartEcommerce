@@ -5,6 +5,7 @@ import Macart.Ecommerce.DTO.PagarConTarjetaDTO;
 import Macart.Ecommerce.Modelos.Cliente;
 import Macart.Ecommerce.Modelos.Comprobante;
 import Macart.Ecommerce.Modelos.Pedido;
+import Macart.Ecommerce.Modelos.PedidoProducto;
 import Macart.Ecommerce.Repositorio.ClienteRepositorio;
 import Macart.Ecommerce.Repositorio.ComprobanteRepositorio;
 import Macart.Ecommerce.Repositorio.PedidoRepositorio;
@@ -12,15 +13,17 @@ import Macart.Ecommerce.Servicios.ClienteServicio;
 import Macart.Ecommerce.Servicios.ComprobanteServicio;
 import Macart.Ecommerce.Servicios.Implementacion.EnviarCorreoImplementacion;
 import Macart.Ecommerce.Servicios.PedidoServicio;
+import Macart.Ecommerce.Servicios.ProductoTiendaServicio;
 import Macart.Ecommerce.Utilidades.ComprobanteUtilidades;
 import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.PdfWriter;
-import org.apache.tomcat.util.net.openssl.ciphers.Authentication;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.neo4j.Neo4jProperties;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.security.core.Authentication;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
@@ -31,10 +34,12 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.text.ParseException;
 import java.time.LocalDateTime;
-import java.util.Arrays;
-import java.util.Date;
+import java.util.*;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static java.util.stream.Collectors.toList;
+
 @CrossOrigin(origins = {"*"})
 @RestController
 public class ComprobanteControlador {
@@ -46,6 +51,8 @@ public class ComprobanteControlador {
     private PedidoServicio pedidoServicio;
     @Autowired
     private EnviarCorreoImplementacion enviarCorreoImplementacion;
+    @Autowired
+    private ProductoTiendaServicio productoTiendaServicio;
 
 
     @GetMapping("/api/comprobantes")
@@ -155,8 +162,10 @@ public class ComprobanteControlador {
 
     @Transactional
     @PostMapping("/api/comprobantes/pdf")
-    public ResponseEntity<Object> crearComprobantePDF( @RequestBody PagarConTarjetaDTO pagarConTarjetaDTO) throws IOException, DocumentException, MessagingException {
-
+    public ResponseEntity<Object> crearComprobantePDF(@RequestBody PagarConTarjetaDTO pagarConTarjetaDTO, Authentication authentication) throws IOException, DocumentException, MessagingException {
+        Cliente clienteDelPedido = clienteServicio.obtenerClienteAutenticado(authentication);
+        Pedido pedido = clienteDelPedido.getPedidos().stream().filter(pedidos -> !pedidos.isPagado()).collect(toList()).get(0);
+        Set<PedidoProducto> pedidoProductos = pedido.getPedidoProductos();
 
         try {
             URL url = new URL("https://mindhubbankcowboy.up.railway.app/api/clients/current/cards/postnet");
@@ -182,56 +191,74 @@ public class ComprobanteControlador {
                 connection.getInputStream().close();
                 connection.disconnect();
 
-//                Cliente clienteDelPedido = pedidoSolicitado.getCliente();
-//
-//                // Generar el PDF del comprobante
-//                ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-//                Document document = new Document();
-//                PdfWriter.getInstance(document, outputStream);
-//                document.open();
-//
-//
-//                Image logo = Image.getInstance("C:\\Tareas mind hub\\Tercera parte del mind hub\\MacartEcommerce\\src\\main\\resources\\static\\img\\Black_Logo.png");
-//                logo.scaleToFit(120, 120);
-//                document.add(logo);
-//
-//                Font fontTitle = new Font(Font.FontFamily.HELVETICA, 25, Font.BOLD);
-//                Paragraph title = new Paragraph("Señor/a: " + clienteDelPedido.getPrimerNombre() + " " +
-//                        clienteDelPedido.getSegundoNombre() + " " +
-//                        clienteDelPedido.getPrimerApellido() + " " +
-//                        clienteDelPedido.getSegundoApellido());
-//                title.setAlignment(Paragraph.ALIGN_CENTER);
-//                title.setSpacingBefore(20);
-//                title.setSpacingAfter(20);
-//                document.add(title);
-//                document.close();
-//
-//                // Enviar el PDF por correo electrónico al cliente y al administrador
-//                String subject = "Comprobante de compra";
-//                String body = "Adjunto encontrarás el comprobante de tu compra.";
-//
-//                String clienteEmail = clienteDelPedido.getCorreo();
-//                String adminEmail = "carlosandresgoo@gmail.com"; // Reemplaza con el correo del administrador
-//
-//                enviarCorreoImplementacion.enviarCorreoConPDF(clienteEmail, subject, body, outputStream.toByteArray());
-//                enviarCorreoImplementacion.enviarCorreoConPDF(adminEmail, subject, body, outputStream.toByteArray());
-//
-//                return new ResponseEntity<>("Pdf Creado correctamente y enviado por correo electrónico", HttpStatus.CREATED);
+                pedido.setPagado(true);
+
+                for (PedidoProducto productosPagos : pedidoProductos) {
+                    Map<String, Integer> tallasTienda = productosPagos.getProductoTienda().getTallas();
+                    Map<String, Integer> tallas = productosPagos.getTallas();
+                    for (Map.Entry<String, Integer> entry : tallas.entrySet()) {
+                        String talla = entry.getKey();
+                        int cantidadComprada = entry.getValue();
+                        if (tallasTienda.containsKey(talla)) {
+                            int stockDisponible = tallasTienda.get(talla);
+                            int nuevoStock = stockDisponible - cantidadComprada;
+                            tallasTienda.put(talla, nuevoStock);
+                        }
+                    }
+                    productoTiendaServicio.guardarProducto(productosPagos.getProductoTienda());
+                }
 
 
-                return new ResponseEntity<>("Pago aceptado", HttpStatus.CREATED);
-            } else {
-                connection.getInputStream().close();
-                connection.disconnect();
 
-                return new ResponseEntity<>("Pago rechazado", HttpStatus.FORBIDDEN);
-            }
+
+                    // Generar el PDF del comprobante
+                    ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+                    Document document = new Document();
+                    PdfWriter.getInstance(document, outputStream);
+                    document.open();
+
+
+                    Image logo = Image.getInstance("https://res.cloudinary.com/dtis6pqyq/image/upload/v1685839439/Black_Logo_bowo2z.png");
+                    logo.scaleToFit(120, 120);
+                    document.add(logo);
+
+                    Font fontTitle = new Font(Font.FontFamily.HELVETICA, 25, Font.BOLD);
+                    Paragraph title = new Paragraph("Señor/a: " + clienteDelPedido.getPrimerNombre() + " " +
+                            clienteDelPedido.getSegundoNombre() + " " +
+                            clienteDelPedido.getPrimerApellido() + " " +
+                            clienteDelPedido.getSegundoApellido());
+                    title.setAlignment(Paragraph.ALIGN_CENTER);
+                    title.setSpacingBefore(20);
+                    title.setSpacingAfter(20);
+                    document.add(title);
+                    document.close();
+
+                    // Enviar el PDF por correo electrónico al cliente y al administrador
+                    String subject = "Comprobante de compra";
+                    String body = "Adjunto encontrarás el comprobante de tu compra.";
+
+                    String clienteEmail = clienteDelPedido.getCorreo();
+                    String adminEmail = "carlosandresgoo@gmail.com"; // Reemplaza con el correo del administrador
+
+                    enviarCorreoImplementacion.enviarCorreoConPDF(clienteEmail, subject, body, outputStream.toByteArray());
+                    enviarCorreoImplementacion.enviarCorreoConPDF(adminEmail, subject, body, outputStream.toByteArray());
+
+
+                    return new ResponseEntity<>("Pago aceptado", HttpStatus.CREATED);
+
+                } else {
+                    connection.getInputStream().close();
+                    connection.disconnect();
+
+                    return new ResponseEntity<>("Pago rechazado", HttpStatus.FORBIDDEN);
+                }
         } catch (Exception err) {
             err.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al realizar el pago");
         }
 
-        }
+    }
+
 }
 
 
