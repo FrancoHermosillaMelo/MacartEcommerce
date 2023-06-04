@@ -151,10 +151,10 @@
 														<input class="input-categoria me-2" type="checkbox" id="cbox7" v-model="checkCategoria" value="SHORT" />
 														<label for="cbox7">Shorts</label>
 													</div>
-													<div class="selectores">
+													<!-- <div class="selectores">
 														<input class="input-categoria me-2" type="checkbox" id="cbox8" v-model="checkCategoria" value="ACCESORIOS" />
 														<label for="cbox8">Accesorios</label>
-													</div>
+													</div> -->
 												</ul>
 											</div>
 										</div>
@@ -303,7 +303,7 @@
 
 					<div class="pagototal d-flex align-items-center justify-content-around">
 						<h4>TOTAL</h4>
-						<span class="fs-5">COP$ {{totalDelCarrito.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}}</span>
+						<span class="fs-5">COP$ {{totalDelCarrito}}</span>
 					</div>
 
 					<div class="boton-pago">
