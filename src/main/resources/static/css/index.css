@@ -18,10 +18,21 @@
 a {
 	text-decoration: none !important;
 }
-.blur:not(#carrito) {
-	transition: 0.1s filter;
-	filter: blur(2px);
+/* Contraseña */
+.inputBox {
+	position: relative;
+	width: 100%;
+	height: 40px;
 }
+.inputBox i.pw-hide {
+	right: 25px;
+	cursor: pointer;
+	position: absolute;
+	top: 93%;
+	transform: translateY(-93%);
+	font-size: 18px;
+}
+/* Fin Contraseña */
 .main-index {
 	min-height: 80vh;
 }
@@ -97,10 +108,10 @@ a {
 	color: var(--color-negro) !important;
 	padding: 5px;
 }
-.cuenta-verificado{
+.cuenta-verificado {
 	margin: 0 !important;
 }
-.btn-verificar{
+.btn-verificar {
 	position: relative;
 	padding: 6px 24px;
 	border: 2px solid var(--color-rosado);
@@ -113,14 +124,14 @@ a {
 	color: var(--color-rosado) !important;
 }
 
-.input-verificado{
+.input-verificado {
 	padding: 6px 24px;
 	border: 2px solid var(--color-rosado);
 	background: transparent;
 	border-radius: 5px;
 	transition: 0.3s ease;
 }
-.foto-verificada{
+.foto-verificada {
 	height: 1.4rem;
 	width: 1.4rem;
 }
@@ -310,7 +321,7 @@ swiper-slide img {
 	min-height: 20rem;
 	background-color: rgb(245, 245, 245);
 	box-shadow: -3px 3px 10px black;
-	z-index: 99999;
+	z-index: 100;
 }
 .div-scroll {
 	max-height: 30rem;
@@ -494,7 +505,7 @@ ul {
 .aFotter {
 	color: var(--color-blanco);
 }
-/* MODAL */
+/* MODAL INGRESO*/
 
 .container {
 	position: absolute;
@@ -575,7 +586,7 @@ ul {
 	text-decoration: underline;
 }
 
-/* FIN MODAL */
+/* FIN MODAL DE INGRESO */
 
 /* MODAL INFO */
 #imagenGrande {
@@ -612,6 +623,76 @@ ul {
 .swal2-confirm {
 	margin-right: 10px !important;
 }
+
+/* MODAL INFO */
+#imagenGrande {
+	border-radius: 2%;
+	width: 100%;
+	height: 100%;
+	object-fit: contain;
+}
+
+#imagenPequena {
+	max-height: 100%;
+	width: 100%;
+	border-radius: 5%;
+	object-fit: cover;
+	cursor: pointer;
+}
+
+#contenedorImagenes {
+	max-width: 40vh;
+}
+
+#contenedorImagenGrande {
+	max-width: 40vh;
+}
+
+#contenedorImagenPequena {
+	width: 20%;
+}
+
+#contenedorButtons {
+	max-height: 5%;
+}
+/* FIN DEL MODAL INFO */
+
+/* Loader */
+.loader {
+	position: fixed;
+	z-index: 99999;
+	top: 0;
+	left: 0;
+	width: 100vw;
+	height: 100vh;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	background-color: var(--color-blanco);
+	transition: opacity 0.75s, visibility 0.75s;
+}
+.loader-hidden {
+	opacity: 0;
+	visibility: hidden;
+}
+.loader::after {
+	content: '';
+	width: 75px;
+	height: 75px;
+	border: 15px solid #dddd;
+	border-top-color: var(--color-grisOscuro);
+	border-radius: 50%;
+	animation: loading 0.75s ease infinite;
+}
+@keyframes loading {
+	from {
+		transform: rotate(0turn);
+	}
+	to {
+		transform: rotate(1turn);
+	}
+}
+/* Fin loader */
 @keyframes animateWave {
 	0% {
 		background-position-x: 1000px;
@@ -630,6 +711,10 @@ ul {
 }
 
 @media only screen and (min-width: 320px) and (max-width: 1000px) {
+	.swal2-container {
+		width: 100vw !important;
+		overflow: hidden !important;
+	}
 	body {
 		overflow-x: hidden !important;
 	}
@@ -641,6 +726,7 @@ ul {
 		flex-direction: row !important;
 		justify-content: space-evenly !important;
 	}
+
 	ul {
 		padding: 0 !important;
 	}
@@ -758,19 +844,3 @@ ul {
 	object-fit: cover;
 	cursor: pointer;
 }
-
-/* 
-@media (max-width: 1199px) {
-	.d-flex.gap-4 {
-	  height: 60% !important;
-	}
-  } */
-
-/*modal product*/
-
-/* @media only screen and (min-width: 320px) and (max-width: 900px) {
-	.my-custom-class #modalProducto {
-		align-items: center !important;
-		width: 10% !important;
-	}
-} */

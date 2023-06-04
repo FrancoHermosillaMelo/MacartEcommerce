@@ -14,6 +14,8 @@
 		/>
 		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" />
 		<link rel="shortcut icon" href="../img/favicon.jpg" type="image/x-icon" />
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+		<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
 	</head>
 
 	<body>
@@ -21,7 +23,7 @@
 			<header class="header-nav">
 				<nav class="navbar navbar-expand-lg">
 					<div class="container-fluid">
-						<a class="navbar-brand texto-logo" href="./index.html">Ma<span>cart.</span></a>
+						<a class="navbar-brand texto-logo" href="../index.html">Ma<span>cart.</span></a>
 						<button
 							class="navbar-toggler"
 							type="button"
@@ -38,7 +40,7 @@
 								<a class="nav-link texto-nav hover-a text-center" aria-current="page" href="../index.html">Inicio</a>
 								<a class="nav-link texto-nav hover-a text-center" href="./catalogo.html">Catálogo</a>
 								<a class="nav-link texto-nav hover-a text-center" href="./sobreNosotros.html">Sobre Nosotros</a>
-								<a class="nav-link texto-nav hover-a text-center" href="#">Preguntas Frecuentes</a>
+								<a class="nav-link activo texto-nav hover-a text-center" href="#">Preguntas Frecuentes</a>
 								<template v-if="rol === 'ADMIN'">
 									<a class="nav-link texto-nav hover-a text-center" href="../manager.html">Administrador</a>
 								</template>
@@ -46,6 +48,21 @@
 						</div>
 						<div class="collapse navbar-collapse justify-content-end" id="navbarNavAltMarkup">
 							<div class="div-iconos navbar-nav gap-3">
+								<template v-if="rol !== 'VISITANTE'">
+									<template v-if="clienteIngresado.verificado === false">
+										<div class="d-flex justify-content-center align-items-center">
+											<input class="mx-2 p-1 input-verificado" type="text" v-model="token" placeholder="Ingrese el código aquí" />
+											<button class="p-1 btn-verificar" @click.prevent="verificarCuenta">Verificar</button>
+										</div>
+									</template>
+									<template v-else>
+										<div class="d-flex justify-content-center align-items-center">
+											<p class="cuenta-verificado">
+												<img class="foto-verificada" src="../img/icons8-cuenta-verificada-48.png" alt="cuenta-verificada" title="cuenta-verificada" />
+											</p>
+										</div>
+									</template>
+								</template>
 								<template v-if="rol === 'VISITANTE'">
 									<button type="button" class="boton-nav" data-bs-toggle="modal" data-bs-target="#ModalForm">Ingresar</button>
 								</template>
@@ -71,7 +88,7 @@
 
 				<section id="faq" class="container mt-2">
 					<h2 class="text-center mb-4">Preguntas Frecuentes</h2>
-					<div class="accordion" id="faqAccordion">
+					<div data-aos="zoom-in" class="accordion" id="faqAccordion">
 						<div class="accordion-item">
 							<h3 class="accordion-header" id="headingThree">
 								<button
@@ -264,7 +281,10 @@
 									<header>Ingresar</header>
 									<form @submit.prevent="ingresar">
 										<input type="email" placeholder="Introduce tu correo electrónico" v-model="correo" />
-										<input type="password" placeholder="Ingresa tu contraseña" v-model="contraseña" />
+										<div class="inputBox">
+											<input type="password" placeholder="Ingresa tu contraseña" v-model="contraseña" name="contraseña" />
+											<i class="fa-regular fa-eye-slash pw-hide"></i>
+										</div>
 										<a href="#">¿Has olvidado tu contraseña?</a>
 										<input type="submit" class="button" value="Acceder" />
 									</form>
@@ -289,7 +309,10 @@
 										</div>
 										<input type="tel" placeholder="Introduce tu numero de contacto" required v-model="telefono" />
 										<input type="text" placeholder="Introduce tu correo electrónico" required v-model="correoRegistro" />
-										<input type="password" placeholder="Crear una contraseña" required v-model="contraseñaRegistro" />
+										<div class="inputBox">
+											<input type="password" placeholder="Crear una contraseña" required v-model="contraseñaRegistro" name="contraseña" />
+											<i class="fa-regular fa-eye-slash pw-hide"></i>
+										</div>
 										<input type="submit" class="button" value="Registrate" />
 									</form>
 									<div class="signup">
@@ -396,11 +419,18 @@
 				</div>
 			</div>
 		</div>
+		<div class="loader"></div>
 		<script
 			src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"
 			integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe"
 			crossorigin="anonymous"
 		></script>
+		<script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+		<script>
+			AOS.init({
+				once: true,
+			});
+		</script>
 		<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 		<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 		<script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>

@@ -26,10 +26,10 @@ createApp({
 			segundoApellido: '',
 			telefono: '',
 			clienteId: '',
-			productoPorId: "",
-			imgProductoPorId: "",
-			checkTallas : [],
-			token: "",
+			productoPorId: '',
+			imgProductoPorId: '',
+			checkTallas: [],
+			token: '',
 			verificado: false,
 		};
 	},
@@ -113,19 +113,19 @@ createApp({
 					});
 
 					if (!this.productosRepetidos(item.id)) {
-						if(!Object.keys(this.talleSeleccionado).length == 0 || item.subCategoria.includes("ACCESORIOS")){
+						if (!Object.keys(this.talleSeleccionado).length == 0 || item.subCategoria.includes('ACCESORIOS')) {
 							Toastify({
 								text: `${item.nombre} se agrego al carrito`,
-								className: "info",
-								duration:3000,
+								className: 'info',
+								duration: 3000,
 								offset: {
 									x: '5em', // horizontal axis - can be a number or a string indicating unity. eg: '2em'
-									y: '42em' // vertical axis - can be a number or a string indicating unity. eg: '2em'
-								  },
+									y: '42em', // vertical axis - can be a number or a string indicating unity. eg: '2em'
+								},
 								style: {
-									background: "#212529",
-								}
-							  }).showToast();
+									background: '#212529',
+								},
+							}).showToast();
 							this.carrito.push({
 								nombre: item.nombre,
 								id: item.id,
@@ -134,39 +134,37 @@ createApp({
 								imagen: item.imagenesUrl[0],
 								precio: item.precio,
 							});
-						}else{
+						} else {
 							Toastify({
 								text: `Por favor, seleccione un talle`,
-								className: "info",
-								duration:3000,
+								className: 'info',
+								duration: 3000,
 								offset: {
 									x: '5em', // horizontal axis - can be a number or a string indicating unity. eg: '2em'
-									y: '42em' // vertical axis - can be a number or a string indicating unity. eg: '2em'
-								  },
+									y: '42em', // vertical axis - can be a number or a string indicating unity. eg: '2em'
+								},
 								style: {
-									background: "#212529",
-								}
-							  }).showToast();
+									background: '#212529',
+								},
+							}).showToast();
 						}
-						
-					}else{
+					} else {
 						Toastify({
 							text: `${item.nombre} ya está en el carrito`,
-							className: "info",
-							duration:3000,
+							className: 'info',
+							duration: 3000,
 							offset: {
 								x: '5em', // horizontal axis - can be a number or a string indicating unity. eg: '2em'
-								y: '42em' // vertical axis - can be a number or a string indicating unity. eg: '2em'
-							  },
+								y: '42em', // vertical axis - can be a number or a string indicating unity. eg: '2em'
+							},
 							style: {
-								background: "#212529",
-							}
-						  }).showToast();
+								background: '#212529',
+							},
+						}).showToast();
 					}
 					this.talleSeleccionado = {};
 				}
 			}
-
 		},
 		productosRepetidos(productoId) {
 			return this.carrito.some(item => item.id === productoId);
@@ -174,25 +172,25 @@ createApp({
 		agregarCantidadProducto(producto, key) {
 			if (producto.tallas[key] < producto.stockTallas[key]) {
 				producto.tallas[key] += 1;
-			}else{
+			} else {
 				Toastify({
 					text: `Sin stock`,
-					className: "info",
-					duration:3000,
+					className: 'info',
+					duration: 3000,
 					offset: {
 						x: '5em', // horizontal axis - can be a number or a string indicating unity. eg: '2em'
-						y: '42em' // vertical axis - can be a number or a string indicating unity. eg: '2em'
-					  },
+						y: '42em', // vertical axis - can be a number or a string indicating unity. eg: '2em'
+					},
 					style: {
-						background: "#212529",
-					}
-				  }).showToast();
+						background: '#212529',
+					},
+				}).showToast();
 			}
 		},
 		disminuirCantidadProducto(producto, key) {
 			if (producto.tallas[key] <= producto.stockTallas[key] && producto.tallas[key] > 1) {
 				producto.tallas[key] -= 1;
-			}else{
+			} else {
 			}
 		},
 		eliminarTalle(producto, key) {
@@ -201,16 +199,16 @@ createApp({
 		elimarDelCarrito(producto) {
 			Toastify({
 				text: `${producto.nombre} se elimino del carrito`,
-				className: "info",
-				duration:3000,
+				className: 'info',
+				duration: 3000,
 				offset: {
 					x: '5em', // horizontal axis - can be a number or a string indicating unity. eg: '2em'
-					y: '42em' // vertical axis - can be a number or a string indicating unity. eg: '2em'
-				  },
+					y: '42em', // vertical axis - can be a number or a string indicating unity. eg: '2em'
+				},
 				style: {
-					background: "#212529",
-				}
-			  }).showToast();
+					background: '#212529',
+				},
+			}).showToast();
 			this.carrito = this.carrito.filter(item => !(item.id === producto.id));
 		},
 		ingresar() {
@@ -263,6 +261,15 @@ createApp({
 					})
 				);
 		},
+		obtenerIdProducto(id) {
+			axios
+				.get('/api/productoTienda/' + id)
+				.then(response => {
+					this.productoPorId = response.data;
+					this.imgProductoPorId = this.productoPorId.imagenesUrl;
+				})
+				.catch(error => console.log(error));
+		},
 
 		salir() {
 			Swal.fire({
@@ -304,24 +311,50 @@ createApp({
 			localStorage.setItem('carritos', JSON.stringify(this.carritos));
 		},
 		totalDelCarrito() {
-			return this.carrito.reduce((acc, productoActual) => {
-				let talles = Object.keys(productoActual.tallas)
-				acc += talles.reduce((acc, talle) =>{
-					acc += productoActual.tallas[talle] * productoActual.precio
-					return acc 
-				},0)
+			let total = this.carrito.reduce((acc, productoActual) => {
+				let talles = Object.keys(productoActual.tallas);
+				acc += talles.reduce((acc, talle) => {
+					acc += productoActual.tallas[talle] * productoActual.precio;
+					return acc;
+				}, 0);
 				return acc;
 			}, 0);
+			return total.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 		},
 		filtroCruzados() {
-			let filtroProductoGenero = this.productos.filter(producto =>{
-				return this.check.includes(producto.categoriaGenero) || this.check == 0
-			})
-			let filtroProductoSubCategoriaYGenero = filtroProductoGenero.filter(producto =>{
-				return this.checkCategoria.includes(producto.subCategoria) || this.checkCategoria == 0
-			})
-			
+			let filtroProductoGenero = this.productos.filter(producto => {
+				return this.check.includes(producto.categoriaGenero) || this.check == 0;
+			});
+			let filtroProductoSubCategoriaYGenero = filtroProductoGenero.filter(producto => {
+				return this.checkCategoria.includes(producto.subCategoria) || this.checkCategoria == 0;
+			});
+
 			this.productosFiltrados = filtroProductoSubCategoriaYGenero;
 		},
 	},
 }).mount('#app');
+
+window.addEventListener('load', () => {
+	const loader = document.querySelector('.loader');
+
+	loader.classList.add('loader-hidden');
+
+	loader.addEventListener('transitioned', () => {
+		document.body.removeChild('loader');
+	});
+});
+
+/* Contraseña */
+const pwShowHide = document.querySelectorAll('.pw-hide');
+pwShowHide.forEach(icon => {
+	icon.addEventListener('click', () => {
+		let getPwInput = icon.parentElement.querySelector('input');
+		if (getPwInput.type === 'password') {
+			getPwInput.type = 'text';
+			icon.classList.replace('fa-eye-slash', 'fa-eye');
+		} else {
+			getPwInput.type = 'password';
+			icon.classList.replace('fa-eye', 'fa-eye-slash');
+		}
+	});
+});
