@@ -24,12 +24,12 @@ public class ProductoTiendaControlador {
     @Autowired
     private ClienteServicio clienteServicio;
 
-    @GetMapping("/api/productoTienda")
+    @GetMapping("/api/productoTienda")  /* CHECK */
     public ResponseEntity<Object> obtenerPedidoProductoTienda() {
         return new ResponseEntity<>(productoTiendaServicio.obtenerTodosLosProductos(),HttpStatus.ACCEPTED);
     }
 
-    @GetMapping("/api/productoTienda/{id}")
+    @GetMapping("/api/productoTienda/{id}")  /* CHECK */
     public ResponseEntity<Object> obtenerProductoTiendaPorId(@PathVariable Long id) {
         ProductoTienda productoTienda = productoTiendaServicio.obtenerProductoPorId(id);
 
@@ -42,7 +42,7 @@ public class ProductoTiendaControlador {
     }
 
 
-    @PostMapping("/api/productoTienda")
+    @PostMapping("/api/productoTienda") /* CHECK */
     public ResponseEntity<Object> crearNuevoProductoTienda(
             @RequestBody(required = false) ProductoTienda productoTienda,
             Authentication authentication) throws Exception {
@@ -106,7 +106,7 @@ public class ProductoTiendaControlador {
         return ResponseEntity.status(HttpStatus.CREATED).body("Se creó el nuevo producto.");
     }
 
-    @PutMapping("/api/productoTienda")
+    @PutMapping("/api/productoTienda") /* CHECK */
     public ResponseEntity<Object> modificarProductoTienda(
             @RequestBody(required = false) ProductoTienda productoTienda
     ) {
@@ -166,7 +166,7 @@ public class ProductoTiendaControlador {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("El producto con el nombre " + productoTienda.getNombre() + " no fue encontrado");
     }
 
-    @PatchMapping("/api/productoTienda/{id}")
+    @PatchMapping("/api/productoTienda/{id}")  /* CHECK */
     public ResponseEntity<Object> eliminarProductoTienda(@PathVariable long id) {
         ProductoTienda productoTiendaExistente = productoTiendaServicio.obtenerProductoPorId(id);
 

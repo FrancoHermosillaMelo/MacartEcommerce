@@ -55,18 +55,18 @@ public class ComprobanteControlador {
     private ProductoTiendaServicio productoTiendaServicio;
 
 
-    @GetMapping("/api/comprobantes")
+    @GetMapping("/api/comprobantes") /* CHECK */
     public ResponseEntity<Object> obtenerComprobantes(){
         return (new ResponseEntity<>(comprobanteServicio.obtenerTodosLosComprobantes(), HttpStatus.ACCEPTED));
     }
-    @GetMapping("/api/clientes/comprobantes")
+    @GetMapping("/api/clientes/comprobantes") /* CHECK */
     public List<ComprobanteDTO> obtenerComprobantesCliente(@RequestParam long idCliente){
         return clienteServicio.obtenerClientePorId(idCliente).getComprobantes()
                 .stream()
                 .map(comprobante -> new ComprobanteDTO(comprobante))
                 .collect(Collectors.toList());
     }
-    @GetMapping("/api/clientes/comprobantes/fechas")
+    @GetMapping("/api/clientes/comprobantes/fechas") /* CHECK */
     public ResponseEntity<Object> obtenerComprobantesClientePorFecha(@RequestParam String inicioFecha, @RequestParam String finFecha, @RequestParam long idCliente) throws ParseException {
         Cliente cliente = clienteServicio.obtenerClientePorId(idCliente);
 
@@ -113,7 +113,7 @@ public class ComprobanteControlador {
     }
 
     @Transactional
-    @PostMapping("/api/comprobantes/pdf")
+    @PostMapping("/api/comprobantes/pdf") /* CHECK */
     public ResponseEntity<Object> crearComprobantePDF(@RequestBody PagarConTarjetaDTO pagarConTarjetaDTO, Authentication authentication) throws IOException, DocumentException, MessagingException {
         Cliente clienteDelPedido = clienteServicio.obtenerClienteAutenticado(authentication);
         Pedido pedidoSolicitado = pedidoServicio.ObtenerPedidoPorId(pagarConTarjetaDTO.getPedidoId());

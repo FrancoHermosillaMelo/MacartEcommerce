@@ -36,11 +36,11 @@ public class PedidoControlador {
     private PedidoProductoServicio pedidoProductoServicio;
 
 
-    @GetMapping("/api/pedidos")
+    @GetMapping("/api/pedidos") /* CHECK */
     public ResponseEntity<Object> obtenerPedidos() {
         return (new ResponseEntity<>(pedidoServicio.obtenerPedidos(), HttpStatus.ACCEPTED));
     }
-    @GetMapping("/api/pedidos/{id}")
+    @GetMapping("/api/pedidos/{id}") /* CHECK */
     public ResponseEntity<Object> obtenerPedidoPorId(@PathVariable long id, Authentication authentication){
         Pedido pedidoSolicitado = pedidoServicio.ObtenerPedidoPorId(id);
         Cliente cliente = clienteServicio.obtenerClienteAutenticado(authentication);
@@ -60,7 +60,7 @@ public class PedidoControlador {
     }
 
 
-    @GetMapping("/api/clientes/pedidos")
+    @GetMapping("/api/clientes/pedidos") /* CHECK */
     public List<PedidoDTO> obtenerPedidoCliente(Authentication authentication) {
     Cliente cliente = clienteServicio.obtenerClienteAutenticado(authentication);
 
@@ -73,7 +73,7 @@ public class PedidoControlador {
     return  pedidosDTO;
     }
 
-    @GetMapping("/api/clientes/pedidosActivados")
+    @GetMapping("/api/clientes/pedidosActivados") /* CHECK */
     public ResponseEntity<Object> obtenerPedidosActivados(Authentication authentication){
         Cliente cliente = clienteServicio.obtenerClienteAutenticado(authentication);
         Set<Pedido> pedidosCliente = cliente.getPedidos();
@@ -83,7 +83,7 @@ public class PedidoControlador {
         return new ResponseEntity<>(pedidoClienteDTOS, HttpStatus.ACCEPTED);
     }
 
-    @PutMapping("/api/pedidos")
+    @PutMapping("/api/pedidos") /* CHECK */
     public ResponseEntity<Object> eliminarPedido(Authentication authentication, @RequestParam long idPedido){
         Pedido pedidoEliminar = pedidoServicio.ObtenerPedidoPorId(idPedido);
         Cliente cliente = clienteServicio.obtenerClienteAutenticado(authentication);
@@ -105,7 +105,7 @@ public class PedidoControlador {
 
         return new ResponseEntity<>("Eliminado correctamente", HttpStatus.ACCEPTED);
     }
-    @PostMapping("/api/pedidos")
+    @PostMapping("/api/pedidos") /* CHECK */
     public ResponseEntity<Object> crearPedidos(
             Authentication authentication)
     {
@@ -118,7 +118,7 @@ public class PedidoControlador {
 
         return ResponseEntity.status(HttpStatus.CREATED).body(nuevoPedido.getId());
     }
-    @PostMapping("/api/pedidos/carrito")
+    @PostMapping("/api/pedidos/carrito") /* CHECK */
     public  ResponseEntity<Object> añadirCarrito(Authentication authentication, @RequestBody CarritoDTO carritoDTO){
 
         Cliente cliente = clienteServicio.obtenerClienteAutenticado(authentication);

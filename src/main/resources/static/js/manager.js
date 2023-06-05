@@ -59,7 +59,6 @@ createApp({
 	},
 	mounted() {
 		this.roles();
-		console.log(this.$refs);
 	},
 	computed: {
 		añadirObject() {
@@ -120,13 +119,7 @@ createApp({
 				.then(response => {
 					this.datos = response.data;
 					this.clienteIngresado = response.data;
-					console.log(this.clienteIngresado);
 					this.clienteId = response.data.id;
-					sessionStorage.setItem('clienteId', this.clienteId); // Almacena el identificador único del cliente en el sessionStorage
-					if (!this.carritos[this.clienteId]) {
-						this.carritos[this.clienteId] = []; // Crea un carrito vacío para el cliente si no existe
-					}
-					this.carrito = this.carritos[this.clienteId]; // Asigna el carrito correspondiente al cliente actual
 				})
 				.catch(error => console.log(error));
 		},
@@ -136,7 +129,6 @@ createApp({
 				.then(response => {
 					this.productos = response.data;
 					this.productosFiltro = this.productos;
-					console.log(this.productos);
 				})
 				.catch(error => console.log(error));
 		},
@@ -157,14 +149,21 @@ createApp({
 		},
 
 		añadirProducto() {
-			axios.post('/api/productoTienda', this.productoCrear).then(response => {
+			axios.post('/api/productoTienda', this.productoCrear)
+			.then(response => {
 				Swal.fire({
 					icon: 'success',
 					text: 'Añadiste el producto con exito',
 					showConfirmButton: false,
 					timer: 2000,
 				});
-				console.log(response);
+			})
+			.catch(error =>{
+				Swal.fire({
+					icon: 'error',
+					text: "Hubo un error",
+					confirmButtonColor: '#7c601893',
+				});
 			});
 		},
 		abrirWidget() {

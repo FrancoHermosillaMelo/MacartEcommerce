@@ -25,11 +25,11 @@ public class DireccionControlador {
 
 
 
-    @GetMapping("/api/clientes/direcciones")
+    @GetMapping("/api/clientes/direcciones") /* CHECK */
     public ResponseEntity<Object> obtenerDireccionesClientes() {
             return (new ResponseEntity<>(direccionServicio.obtenerDireccionesClientes(), HttpStatus.ACCEPTED));
     }
-    @GetMapping("/api/clientes/{id}/direccion")
+    @GetMapping("/api/clientes/{id}/direccion") /* CHECK */
     public ResponseEntity<DireccionDTO> obtenerDireccionClienteId(@PathVariable Long id, Authentication authentication) {
         String authenticatedUsername = authentication.getName();
         Cliente cliente = clienteServicio.obtenerClientePorEmail(authenticatedUsername);
@@ -50,7 +50,7 @@ public class DireccionControlador {
     }
 
 
-    @PostMapping("/api/direcciones")
+    @PostMapping("/api/direcciones") /* CHECK */
     public ResponseEntity<Object> crearDirecciones(Authentication authentication,
             @RequestParam Long clienteId,
             @RequestParam String calle,
@@ -97,7 +97,7 @@ public class DireccionControlador {
         return ResponseEntity.status(HttpStatus.CREATED).body("Dirección guardada correctamente");
     }
 
-    @PutMapping("/api/direcciones")
+    @PutMapping("/api/direcciones") /* CHECK */
     public ResponseEntity<Object> modificarDirecciones(Authentication authentication,
             @RequestParam Long id,
             @RequestParam String calle,
@@ -151,7 +151,7 @@ public class DireccionControlador {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("La direccion con ID" + id + "no fue encontrada");
         }
     }
-    @DeleteMapping("/api/direcciones/{id}")
+    @DeleteMapping("/api/direcciones/{id}") /* CHECK */
     public ResponseEntity<String> deleteDireccion(@PathVariable Long id, Authentication authentication) {
         String authenticatedUsername = authentication.getName();
         Cliente cliente = clienteServicio.obtenerClientePorEmail(authenticatedUsername);

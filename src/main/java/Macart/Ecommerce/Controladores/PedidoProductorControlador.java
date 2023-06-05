@@ -4,6 +4,7 @@ package Macart.Ecommerce.Controladores;
 import Macart.Ecommerce.DTO.PedidoProductoDTO;
 import Macart.Ecommerce.DTO.ProductoTiendaDTO;
 import Macart.Ecommerce.Modelos.PedidoProducto;
+import Macart.Ecommerce.Servicios.ClienteServicio;
 import Macart.Ecommerce.Servicios.PedidoProductoServicio;
 import Macart.Ecommerce.Servicios.PedidoServicio;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,16 +21,17 @@ public class PedidoProductorControlador {
     private PedidoServicio pedidoServicio;
     @Autowired
     private PedidoProductoServicio pedidoProductoServicio;
+    @Autowired
+    private ClienteServicio clienteServicio;
 
 
-    @GetMapping("/api/pedidoProducto")
+    @GetMapping("/api/pedidoProducto") /* CHECK */
     public ResponseEntity<Object> obtenerPedidoProducto() {
         return (new ResponseEntity<>(pedidoProductoServicio.obtenerPedidoProducto(), HttpStatus.ACCEPTED));
     }
-    @GetMapping("/api/pedidoProducto/{id}")
+    @GetMapping("/api/pedidoProducto/{id}") /* CHECK */
     public ResponseEntity<PedidoProductoDTO> obtenerPedidoProductoPorId(Authentication authentication,@PathVariable Long id) {
         PedidoProducto pedidoProducto = pedidoProductoServicio.ObtenerPedidoProductoPorId(id);
-
         if (pedidoProducto != null) {
             PedidoProductoDTO pedidoProductoDTO = new PedidoProductoDTO(pedidoProducto);
             return ResponseEntity.ok(pedidoProductoDTO);

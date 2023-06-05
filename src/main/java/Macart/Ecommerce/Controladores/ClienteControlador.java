@@ -30,23 +30,23 @@ public class ClienteControlador {
     @Autowired
     private EnviarCorreoImplementacion enviarCorreoImplementacion;
 
-    @GetMapping("/api/clientes")
+    @GetMapping("/api/clientes") /* CHECK*/
     public ResponseEntity<Object> obtenerClientes(){
         return new ResponseEntity<>(clienteServicio.obtenerTodosLosClientes(),HttpStatus.ACCEPTED);
     }
-    @GetMapping("/api/clientes/actual/rol")
+    @GetMapping("/api/clientes/actual/rol") /* CHECK*/
     public String getClientRol(Authentication authentication){
         if(authentication != null){
             return clienteServicio.obtenerRolCliente(authentication).toString();
         }
         return "VISITANTE";
     }
-    @GetMapping("/api/clientes/actual")
+    @GetMapping("/api/clientes/actual") /* CHECK*/
     public  ResponseEntity<Object> obtenerClienteActual(Authentication authentication){
         Cliente clienteAutenticado = clienteServicio.obtenerClientePorEmail(authentication.getName());
         return new ResponseEntity<>(new ClienteDTO(clienteAutenticado), HttpStatus.ACCEPTED);
     }
-    @GetMapping("/api/clientes/id")
+    @GetMapping("/api/clientes/id") /* CHECK*/
     public ResponseEntity<Object> obtenerClientePorId(Authentication authentication, @RequestParam long id){
         Cliente clientePedido = clienteServicio.obtenerClientePorId(id);
         Cliente clienteAutenticado = clienteServicio.obtenerClienteAutenticado(authentication);
@@ -64,7 +64,7 @@ public class ClienteControlador {
         }
     }
 
-    @PostMapping("/api/clientes")
+    @PostMapping("/api/clientes") /* CHECK*/
     public ResponseEntity<Object> registrarCliente(
             @RequestParam String primerNombre,
             @RequestParam(required = false) String segundoNombre,
@@ -78,7 +78,7 @@ public class ClienteControlador {
         if (primerNombre.isBlank()) {
             return new ResponseEntity<>("El primer nombre no puede estar en blanco.", HttpStatus.FORBIDDEN);
         }
-        if (!Pattern.matches("^[a-zA-Z]+$", primerNombre)) {
+        if (!Pattern.matches("^[a-z A-Z]+$", primerNombre)) {
             return new ResponseEntity<>("El primer nombre solo puede contener letras.", HttpStatus.FORBIDDEN);
         }
 
@@ -86,17 +86,17 @@ public class ClienteControlador {
         if (primerApellido.isBlank()) {
             return new ResponseEntity<>("El primer apellido no puede estar en blanco.", HttpStatus.FORBIDDEN);
         }
-        if (!Pattern.matches("^[a-zA-Z]+$", primerApellido)) {
+        if (!Pattern.matches("^[a-z A-Z]+$", primerApellido)) {
             return new ResponseEntity<>("El primer apellido solo puede contener letras.", HttpStatus.FORBIDDEN);
         }
 
         // Validar segundo nombre
-        if (!segundoNombre.isBlank() && !Pattern.matches("^[a-zA-Z]+$", segundoNombre)) {
+        if (!segundoNombre.isBlank() && !Pattern.matches("^[a-z A-Z]+$", segundoNombre)) {
             return new ResponseEntity<>("El segundo nombre solo puede contener letras.", HttpStatus.FORBIDDEN);
         }
 
         // Validar segundo apellido
-        if (!segundoApellido.isBlank() && !Pattern.matches("^[a-zA-Z]+$", segundoApellido)) {
+        if (!segundoApellido.isBlank() && !Pattern.matches("^[a-z A-Z]+$", segundoApellido)) {
             return new ResponseEntity<>("El segundo apellido solo puede contener letras.", HttpStatus.FORBIDDEN);
         }
 
@@ -139,7 +139,7 @@ public class ClienteControlador {
         return new ResponseEntity<>("Se ha registrado exitosamente. Se ha enviado un correo de verificación.", HttpStatus.CREATED);
     }
 
-    @PostMapping("/api/clientes/autenticar")
+    @PostMapping("/api/clientes/autenticar") /* CHECK*/
     public ResponseEntity<Object> autenticarCliente(@RequestParam String token) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Cliente cliente = clienteServicio.obtenerClientePorEmail(authentication.getName());
@@ -154,7 +154,7 @@ public class ClienteControlador {
         return new ResponseEntity<>("Se ha verificado la cuenta exitosamente.", HttpStatus.OK);
     }
 
-    @PutMapping("/api/clientes/{id}")
+    @PutMapping("/api/clientes/{id}") /* CHECK*/
     public ResponseEntity<Object> editarCliente(
             @PathVariable("id") Long id,
             @RequestParam String contraseña,
@@ -182,6 +182,23 @@ public class ClienteControlador {
         clienteServicio.guardarCliente(cliente);
 
         return new ResponseEntity<>("Los datos del cliente se han actualizado exitosamente.", HttpStatus.OK);
+    }
+    @PatchMapping("/api/numero") /* CHECK*/
+    public ResponseEntity<Object> editarNumero(Authentication authentication, @RequestParam String telefono){
+        Cliente clienteAutenticado = clienteServicio.obtenerClientePorEmail(authentication.getName());
+        if (telefono.isBlank()) {
+            return new ResponseEntity<>("El teléfono no puede estar en blanco.", HttpStatus.FORBIDDEN);
+        } else if (!telefono.matches("\\d+")) {
+            return new ResponseEntity<>("El teléfono debe contener solo números.", HttpStatus.FORBIDDEN);
+        }
+        if (telefono.equals(clienteAutenticado.getTelefono())){
+            return new ResponseEntity<>("Si vas a editar tu número, ingresa uno diferente al actual", HttpStatus.FORBIDDEN);
+        }
+        clienteAutenticado.setTelefono(telefono);
+        clienteServicio.guardarCliente(clienteAutenticado);
+        return new ResponseEntity<>("Se ha cambiado el número de contacto exitosamente.",HttpStatus.CREATED);
+
+
     }
 
     private String generarTokenAutenticacion() {

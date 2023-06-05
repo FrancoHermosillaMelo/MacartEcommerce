@@ -22,31 +22,25 @@ public class WebAutorizacion {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
         http.cors().and().authorizeRequests()
-                .antMatchers(HttpMethod.POST,"/api/login", "/api/logout" ).permitAll()
 
-                .antMatchers("/**","/h2-console/**","/api/productoTienda", "/api/clientes/actual/rol").permitAll()
+                .antMatchers(HttpMethod.POST,"/api/login", "/api/logout","/api/clientes").permitAll()
+                // HTML JS CSS PERMIT ALL
+                .antMatchers("/api/productoTienda",
+                        "/api/clientes/actual/rol",
+                        "/html/catalogo.html",
+                        "/html/preguntasFrecuentes.html",
+                        "/html/sobreNosotros.html",
+                        "/index.html",
+                        "/css/**",
+                        "/img/**",
+                        "/js/index.js",
+                        "/js/catalogo.js",
+                        "/js/eze.js",
+                        "/js/**",
+                        "/api/productoTienda/{id}").permitAll()
 
-                .antMatchers("/api/clientes",
-                        "/api/clientes/actual",
-                        "/api/clientes/direcciones",
-                        "/api/pedidos",
-                        "/api/clientes/pedidos",
-                        "/api/pedidoProducto",
-                        "/api/pedidoProducto/{id}",
-                        "/api/productoTienda",
-                        "/api/productoTienda/{id}",
-                        "/api/comprobantes/pdf",
-                        "/api/comprobantes/fechas",
-                        "/api/clientes/comprobantes/fechas",
-                        "/api/clientes/comprobantes",
-                        "/api/comprobantes",
-                        "/api/clientes/autenticar",
-                        "/api/pedidos/carrito",
-                        "/api/clientes/pedidosActivados",
-                        "/api/pedidos/{id}").hasAnyAuthority("CLIENTE", "ADMIN")
-
+                // CLIENTE ADMIN
                 .antMatchers(HttpMethod.POST,
-                        "/api/clientes",
                         "/api/direcciones",
                         "/api/pedidos",
                         "/api/productoTienda",
@@ -55,12 +49,51 @@ public class WebAutorizacion {
                         "/api/clientes/autenticar",
                         "/api/pedidos/carrito").hasAnyAuthority("CLIENTE", "ADMIN")
 
+                .antMatchers("/api/clientes/actual",
+                        "/api/clientes/pedidos",
+                        "/api/pedidoProducto",
+                        "/api/pedidoProducto/{id}",
+                        "/api/comprobantes/pdf",
+                        "/api/comprobantes/fechas",
+                        "/api/clientes/comprobantes/fechas",
+                        "/api/clientes/comprobantes",
+                        "/api/clientes/autenticar",
+                        "/api/clientes/pedidosActivados",
+                        "/api/pedidos/{id}",
+                        "/api/clientes/id",
+                        "/api/clientes/{id}/direccion",
+                        "/html/perfilCliente.html",
+                        "/js/perfilCliente.js").hasAnyAuthority("CLIENTE", "ADMIN")
+
                 .antMatchers(HttpMethod.PUT,
                         "/api/direcciones",
                         "/api/productoTienda",
-                        "/api/pedidos").hasAnyAuthority("CLIENTE", "ADMIN")
+                        "/api/pedidos",
+                        "/api/clientes/{id}").hasAnyAuthority("CLIENTE", "ADMIN")
+                .antMatchers(HttpMethod.DELETE, "/api/direcciones/{id}").hasAnyAuthority("CLIENTE", "ADMIN")
+                .antMatchers(HttpMethod.PATCH, "/api/numero").hasAnyAuthority("CLIENTE", "ADMIN")
 
-                .antMatchers(HttpMethod.DELETE,"/api/productoTienda").hasAnyAuthority("CLIENTE", "ADMIN");
+                // ENDPOINTS ADMIN
+                .antMatchers("/js/manager.js",
+                        "/manager.html",
+                        "/h2-console/**",
+                        "/api/clientes",
+                        "/api/comprobantes",
+                        "/api/clientes/direcciones",
+                        "/api/pedidos",
+                        "/api/pedidoProducto").hasAuthority("ADMIN")
+
+
+
+
+                .antMatchers(HttpMethod.POST, "/api/productoTienda").hasAuthority("ADMIN")
+
+                .antMatchers(HttpMethod.PUT, "/api/productoTienda").hasAuthority("ADMIN")
+
+                .antMatchers(HttpMethod.PATCH, "/api/productoTienda/{id}").hasAuthority("ADMIN");
+
+
+
 
 
 
