@@ -199,8 +199,8 @@
 								<div class="pedidoProducto1 d-flex flex-column justify-content-evenly">
 									<template v-for="producto of pedido.pedidoProductos">
 										<p v-for="(value, key) in producto.tallas">
-											<span><i class="bi bi-circle-fill" style="font-size: 0.3rem"></i> Cantidad: </span>{{value}} | <span>Talla: </span> {{key}} |
-											{{producto.productoTienda.nombre}} |
+											<span><i class="bi bi-circle-fill" style="font-size: 0.3rem"></i> Cantidad: </span>{{value}} | <span>Talla:  {{key}} |
+											<span>{{producto.productoTienda.nombre.toUpperCase()}}</span> |
 											<span>Por Unidad: COP$</span> {{producto.productoTienda.precio.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}} |
 											<span>Por cantidad: COP$</span> {{(producto.productoTienda.precio * value).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}}
 										</p>

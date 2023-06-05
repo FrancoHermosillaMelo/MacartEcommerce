@@ -517,6 +517,10 @@ ul {
 	cursor: pointer;
 }
 
+.div-info-madal {
+	height: 60vh;
+}
+
 #contenedorImagenes {
 	max-width: 40vh;
 }

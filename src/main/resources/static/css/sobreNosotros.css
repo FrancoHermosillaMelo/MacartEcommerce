@@ -68,6 +68,7 @@ a {
 }
 .cImgP p {
 	margin-bottom: 1rem;
+	font-size: 18px !important;
 }
 .circleImg {
 	width: 200px;
@@ -663,9 +664,8 @@ footer .wave#wave4 {
 	.containerUs .cardUs .contentUs p {
 		text-align: center;
 	}
-	
 }
-.foto-verificada{
+.foto-verificada {
 	height: 1.4rem;
 	width: 1.4rem;
 }

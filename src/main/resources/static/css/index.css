@@ -596,6 +596,9 @@ ul {
 	height: 100%;
 	object-fit: contain;
 }
+.div-info-madal {
+	height: 60vh;
+}
 
 #imagenPequena {
 	max-height: 100%;
