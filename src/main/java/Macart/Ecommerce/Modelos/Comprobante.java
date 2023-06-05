@@ -4,6 +4,7 @@ import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.Set;
 
 @Entity
 public class Comprobante {
@@ -11,44 +12,29 @@ public class Comprobante {
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
     @GenericGenerator(name = "native", strategy = "native")
     private long id;
-    private String metodoDePago;
-    private String tipoDeEnvio;
     private LocalDateTime fechaDeComprobante;
     private double montoTotal;
+    private CardColor coloTarjeta;
+    private CardType tipoTarjeta;
+
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "clienteId")
     private Cliente cliente;
-    @OneToOne(mappedBy = "comprobante")
-    private Pedido pedido;
+
+
 
     public Comprobante() {
     }
 
-    public Comprobante(String metodoDePago, String tipoDeEnvio, LocalDateTime fechaDeComprobante, double montoTotal) {
-        this.metodoDePago = metodoDePago;
-        this.tipoDeEnvio = tipoDeEnvio;
+    public Comprobante( LocalDateTime fechaDeComprobante, double montoTotal,CardType tipoTarjeta, CardColor colorTarjeta ) {
         this.fechaDeComprobante = fechaDeComprobante;
         this.montoTotal = montoTotal;
+        this.coloTarjeta = colorTarjeta;
+        this.tipoTarjeta = tipoTarjeta;
     }
 
     public long getId() {
         return id;
-    }
-
-    public String getMetodoDePago() {
-        return metodoDePago;
-    }
-
-    public void setMetodoDePago(String metodoDePago) {
-        this.metodoDePago = metodoDePago;
-    }
-
-    public String getTipoDeEnvio() {
-        return tipoDeEnvio;
-    }
-
-    public void setTipoDeEnvio(String tipoDeEnvio) {
-        tipoDeEnvio = tipoDeEnvio;
     }
 
     public LocalDateTime getFechaDeComprobante() {
@@ -75,11 +61,19 @@ public class Comprobante {
         this.cliente = cliente;
     }
 
-    public Pedido getPedido() {
-        return pedido;
+    public CardColor getColoTarjeta() {
+        return coloTarjeta;
     }
 
-    public void setPedido(Pedido pedido) {
-        this.pedido = pedido;
+    public void setColoTarjeta(CardColor coloTarjeta) {
+        this.coloTarjeta = coloTarjeta;
+    }
+
+    public CardType getTipoTarjeta() {
+        return tipoTarjeta;
+    }
+
+    public void setTipoTarjeta(CardType tipoTarjeta) {
+        this.tipoTarjeta = tipoTarjeta;
     }
 }

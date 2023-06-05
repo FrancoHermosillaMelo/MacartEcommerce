@@ -3,6 +3,8 @@ package Macart.Ecommerce.Modelos;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import java.util.HashMap;
+import java.util.Map;
 
 @Entity
 public class PedidoProducto {
@@ -10,8 +12,9 @@ public class PedidoProducto {
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
     @GenericGenerator(name = "native", strategy = "native")
     private long id;
-    private String cantidad;
-    private String precioTotal;
+    @ElementCollection
+    private Map<String, Integer> tallas =  new HashMap<>();
+
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "productoTiendaId")
     private ProductoTienda productoTienda;
@@ -22,45 +25,23 @@ public class PedidoProducto {
     public PedidoProducto() {
     }
 
-    public PedidoProducto(String cantidad, String precioTotal) {
-        this.cantidad = cantidad;
-        this.precioTotal = precioTotal;
-    }
-
     public long getId() {
         return id;
     }
 
-
-    public String getCantidad() {
-        return cantidad;
-    }
-
-    public void setCantidad(String cantidad) {
-        this.cantidad = cantidad;
-    }
-
-    public String getPrecioTotal() {
-        return precioTotal;
-    }
-
-    public void setPrecioTotal(String precioTotal) {
-        this.precioTotal = precioTotal;
-    }
-
-    public Pedido getPedido() {
-        return pedido;
-    }
-
-    public void setPedido(Pedido pedido) {
-        this.pedido = pedido;
+    public Map<String, Integer> getTallas() {
+        return tallas;
     }
 
     public ProductoTienda getProductoTienda() {
         return productoTienda;
     }
 
-    public void setProductoTienda(ProductoTienda productoTienda) {
-        this.productoTienda = productoTienda;
+    public Pedido getPedido() {
+        return pedido;
     }
+
+    public void setTallas(Map<String, Integer> tallas) {this.tallas = tallas;}
+    public void setProductoTienda(ProductoTienda productoTienda) {this.productoTienda = productoTienda;}
+    public void setPedido(Pedido pedido) {this.pedido = pedido;}
 }

@@ -1,10 +1,11 @@
 package Macart.Ecommerce.Modelos;
 
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 public class ProductoTienda {
@@ -15,42 +16,68 @@ public class ProductoTienda {
     private String nombre;
     private double precio;
     private String descripcion;
-    private int cantidadStock;
-    private  ProductoTiendaTallaSuperior tallaSuperior;
-    private ProductoTiendaTallaInferior tallaInferior;
-    private String imagenUrl;
+    @ElementCollection
+    private Map<String, Integer> tallas =  new HashMap<>();
+    @ElementCollection
+    private List<String> imagenesUrl = new ArrayList<>();
     private ProductoTiendaCategoriaGenero categoriaGenero;
     private String subCategoria;
     @OneToMany(mappedBy="productoTienda", fetch= FetchType.EAGER)
     private Set<PedidoProducto> pedidoproductos = new HashSet<>();
-    @OneToMany(mappedBy="productoTienda", fetch= FetchType.EAGER)
-    private Set<Promocion> promociones = new HashSet<>();
+
+    private boolean activo;
 
     public ProductoTienda() {
     }
 
-    public ProductoTienda(String nombre, double precio, String descripcion, int cantidadStock, ProductoTiendaTallaSuperior tallaSuperior, ProductoTiendaTallaInferior tallaInferior, String imagenUrl, ProductoTiendaCategoriaGenero categoriaGenero, String subCategoria) {
+    public ProductoTienda(String nombre, double precio, String descripcion, List<String>imagenesUrl, ProductoTiendaCategoriaGenero categoriaGenero, String subCategoria, boolean activo) {
         this.nombre = nombre;
         this.precio = precio;
         this.descripcion = descripcion;
-        this.cantidadStock = cantidadStock;
-        this.tallaSuperior = tallaSuperior;
-        this.tallaInferior = tallaInferior;
-        this.imagenUrl = imagenUrl;
+        this.imagenesUrl = imagenesUrl;
         this.categoriaGenero = categoriaGenero;
         this.subCategoria = subCategoria;
+        this.activo = activo;
     }
+
+    public ProductoTienda(String nombre) {
+        this.nombre = nombre;
+    }
+
     public void agregarPedidoProducto(PedidoProducto pedidoproducto) {
         pedidoproducto.setProductoTienda(this);
         pedidoproductos.add(pedidoproducto);
     }
-    public void agregarPromocion(Promocion promocion) {
-        promocion.setProductoTienda(this);
-        promociones.add(promocion);
+    public void agregarTalla(String medida, int cantidad){
+        tallas.put(medida, cantidad);
     }
+//    public void actualizarCantidadTalla(String talla, int nuevaCantidad) {
+//        if (tallas.containsKey(talla)) {
+//            tallas.put(talla, nuevaCantidad);
+//        } else {
+//            System.out.println("La talla '" + talla + "' no existe para el producto '" + nombre + "'.");
+//        }
+//    }
 
     public long getId() {
         return id;
+    }
+
+    public Map<String, Integer> getTallas() {
+        return tallas;
+    }
+
+    public void setTallas(Map<String, Integer> medidas) {
+        this.tallas = medidas;
+    }
+
+
+    public List<String> getImagenesUrl() {
+        return imagenesUrl;
+    }
+
+    public void setImagenesUrl(List<String> imagenesUrl) {
+        this.imagenesUrl = imagenesUrl;
     }
 
     public String getNombre() {
@@ -77,38 +104,6 @@ public class ProductoTienda {
         this.descripcion = descripcion;
     }
 
-    public int getCantidadStock() {
-        return cantidadStock;
-    }
-
-    public void setCantidadStock(int cantidadStock) {
-        this.cantidadStock = cantidadStock;
-    }
-
-    public ProductoTiendaTallaSuperior getTallaSuperior() {
-        return tallaSuperior;
-    }
-
-    public void setTallaSuperior(ProductoTiendaTallaSuperior tallaSuperior) {
-        this.tallaSuperior = tallaSuperior;
-    }
-
-    public ProductoTiendaTallaInferior getTallaInferior() {
-        return tallaInferior;
-    }
-
-    public void setTallaInferior(ProductoTiendaTallaInferior tallaInferior) {
-        this.tallaInferior = tallaInferior;
-    }
-
-    public String getImagenUrl() {
-        return imagenUrl;
-    }
-
-    public void setImagenUrl(String imagenUrl) {
-        this.imagenUrl = imagenUrl;
-    }
-
     public ProductoTiendaCategoriaGenero getCategoriaGenero() {
         return categoriaGenero;
     }
@@ -125,14 +120,6 @@ public class ProductoTienda {
         this.subCategoria = subCategoria;
     }
 
-    public Set<Promocion> getPromociones() {
-        return promociones;
-    }
-
-    public void setPromociones(Set<Promocion> promociones) {
-        this.promociones = promociones;
-    }
-
     public Set<PedidoProducto> getPedidoproductos() {
         return pedidoproductos;
     }
@@ -141,4 +128,11 @@ public class ProductoTienda {
         this.pedidoproductos = pedidoproductos;
     }
 
+    public boolean isActivo() {
+        return activo;
+    }
+
+    public void setActivo(boolean activo) {
+        this.activo = activo;
+    }
 }

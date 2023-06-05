@@ -2,11 +2,7 @@ package Macart.Ecommerce.DTO;
 
 import Macart.Ecommerce.Modelos.Cliente;
 import Macart.Ecommerce.Modelos.Comprobante;
-import Macart.Ecommerce.Modelos.Direccion;
-import Macart.Ecommerce.Modelos.Pedido;
 
-import javax.persistence.FetchType;
-import javax.persistence.OneToMany;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -19,33 +15,25 @@ public class ClienteDTO {
     private String segundoApellido;
     private String correo;
     private String telefono;
-    private String celular;
+    private boolean verificado ;
+    private String tokenAutenticacion;
     private Set<PedidoDTO> pedidos;
-    private Set<ComprobanteDTO> comprobantes;
     private Set<DireccionDTO> direcciones;
+    private Set<ComprobanteDTO> comprobantes;
     public ClienteDTO(Cliente cliente) {
 
         this.id = cliente.getId();
-
         this.primerNombre = cliente.getPrimerNombre();
-
         this.segundoNombre = cliente.getSegundoNombre();
-
         this.primerApellido = cliente.getPrimerApellido();
-
         this.segundoApellido = cliente.getSegundoApellido();
-
         this.correo = cliente.getCorreo();
-
         this.telefono = cliente.getTelefono();
-
-        this.celular = cliente.getCelular();
-
+        this.verificado = cliente.isVerificado();
+        this.tokenAutenticacion = cliente.getTokenAutenticacion();
         this.pedidos = cliente.getPedidos().stream().map(pedido -> new PedidoDTO(pedido)).collect(Collectors.toSet());
-
-        this.comprobantes = cliente.getComprobantes().stream().map(comprobante -> new ComprobanteDTO(comprobante)).collect(Collectors.toSet());
-
         this.direcciones = cliente.getDirecciones().stream().map(direccion -> new DireccionDTO(direccion)).collect(Collectors.toSet());
+        this.comprobantes = cliente.getComprobantes().stream().map(comprobante -> new ComprobanteDTO(comprobante)).collect(Collectors.toSet());
     }
 
     public long getId() {
@@ -76,19 +64,23 @@ public class ClienteDTO {
         return telefono;
     }
 
-    public String getCelular() {
-        return celular;
-    }
-
     public Set<PedidoDTO> getPedidos() {
         return pedidos;
+    }
+
+    public Set<DireccionDTO> getDirecciones() {
+        return direcciones;
     }
 
     public Set<ComprobanteDTO> getComprobantes() {
         return comprobantes;
     }
 
-    public Set<DireccionDTO> getDirecciones() {
-        return direcciones;
+    public boolean isVerificado() {
+        return verificado;
+    }
+
+    public String getTokenAutenticacion() {
+        return tokenAutenticacion;
     }
 }

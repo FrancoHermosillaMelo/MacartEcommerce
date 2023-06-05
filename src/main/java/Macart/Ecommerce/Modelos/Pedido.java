@@ -16,27 +16,31 @@ public class Pedido {
     private LocalDateTime fechaDePedido;
     private boolean pagado;
     private double montoTotal;
+    private boolean eliminado = true;
+
     @OneToMany(mappedBy="pedido", fetch= FetchType.EAGER)
-    private Set<PedidoProducto> pedido_productos = new HashSet<>();
+    private Set<PedidoProducto> pedidoProductos = new HashSet<>();
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "clientId")
     private Cliente cliente;
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "comprobanteId", referencedColumnName = "id")
-    private Comprobante comprobante;
-
 
     public Pedido() {
     }
 
-    public Pedido(LocalDateTime fechaDePedido, Boolean pagado, Double montoTotal) {
+    public Pedido(LocalDateTime fechaDePedido, boolean pagado, double montoTotal, boolean eliminado) {
         this.fechaDePedido = fechaDePedido;
         this.pagado = pagado;
-        montoTotal = montoTotal;
+        this.montoTotal = montoTotal;
+        this.eliminado = eliminado;
     }
-    public void agregarPedido_Producto(PedidoProducto pedido_producto) {
-        pedido_producto.setPedido(this);
-        pedido_productos.add(pedido_producto);
+
+    public void agregarPedidoProducto(PedidoProducto pedidoproducto) {
+        pedidoproducto.setPedido(this);
+        pedidoProductos.add(pedidoproducto);
+    }
+
+    public void acumularMontoTotal(double monto){
+        this.montoTotal += monto;
     }
 
     public long getId() {
@@ -75,20 +79,18 @@ public class Pedido {
         this.cliente = cliente;
     }
 
-    public Comprobante getComprobante() {
-        return comprobante;
+    public Set<PedidoProducto> getPedidoProductos() {
+        return pedidoProductos;
     }
 
-    public void setComprobante(Comprobante comprobante) {
-        this.comprobante = comprobante;
+    public void setPedidoProductos(Set<PedidoProducto> pedidoProductos) {
+        this.pedidoProductos = pedidoProductos;
     }
 
-    public Set<PedidoProducto> getPedido_productos() {
-        return pedido_productos;
+    public boolean isEliminado() {
+        return eliminado;
     }
-
-    public void setPedido_productos(Set<PedidoProducto> pedido_productos) {
-        this.pedido_productos = pedido_productos;
+    public void setEliminado(boolean eliminado) {
+        this.eliminado = eliminado;
     }
-
 }
