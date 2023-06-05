@@ -116,8 +116,18 @@ public class ComprobanteControlador {
     @PostMapping("/api/comprobantes/pdf")
     public ResponseEntity<Object> crearComprobantePDF(@RequestBody PagarConTarjetaDTO pagarConTarjetaDTO, Authentication authentication) throws IOException, DocumentException, MessagingException {
         Cliente clienteDelPedido = clienteServicio.obtenerClienteAutenticado(authentication);
-        Pedido pedido = clienteDelPedido.getPedidos().stream().filter(pedidos -> !pedidos.isPagado()).collect(toList()).get(0);
-        Set<PedidoProducto> pedidoProductos = pedido.getPedidoProductos();
+        Pedido pedidoSolicitado = pedidoServicio.ObtenerPedidoPorId(pagarConTarjetaDTO.getPedidoId());
+        Set<PedidoProducto> pedidoProductos = pedidoSolicitado.getPedidoProductos();
+
+        if(clienteDelPedido.getPedidos().stream().noneMatch(pedido -> pedido.getId() == pedidoSolicitado.getId())){
+            return new ResponseEntity<>("Este pedido no le pertenece a su cuenta", HttpStatus.FORBIDDEN);
+        }
+        if(pedidoSolicitado.isPagado()){
+            return new ResponseEntity<>("Este pedido ya está pago", HttpStatus.FORBIDDEN);
+        }
+        if(pedidoSolicitado.isEliminado()){
+            return new ResponseEntity<>("Este pedido está eliminado", HttpStatus.FORBIDDEN);
+        }
 
         try {
             URL url = new URL("https://mindhubbankcowboy.up.railway.app/api/clients/current/cards/postnet");
@@ -143,9 +153,9 @@ public class ComprobanteControlador {
                 connection.getInputStream().close();
                 connection.disconnect();
 
-                pedido.setPagado(true);
+                pedidoSolicitado.setPagado(true);
 
-                Comprobante comprobante = new Comprobante(pedido.getMetodoDeEnvio(),LocalDateTime.now(),pedido.getMontoTotal(),pagarConTarjetaDTO.getType(),pagarConTarjetaDTO.getColor());
+                Comprobante comprobante = new Comprobante(pedidoSolicitado.getMetodoDeEnvio(),LocalDateTime.now(),pedidoSolicitado.getMontoTotal(),pagarConTarjetaDTO.getType(),pagarConTarjetaDTO.getColor());
                 comprobanteServicio.guardarComprobante(comprobante);
                 clienteDelPedido.agregarComprobantes(comprobante);
                 clienteServicio.guardarCliente(clienteDelPedido);

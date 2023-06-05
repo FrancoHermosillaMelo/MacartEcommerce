@@ -6,7 +6,7 @@ import Macart.Ecommerce.Modelos.CardType;
 import java.time.LocalDate;
 
 public class PagarConTarjetaDTO {
-
+        private long pedidoId;
         private CardType type;
         private CardColor color;
         private String number;
@@ -25,5 +25,5 @@ public class PagarConTarjetaDTO {
         public LocalDate getThruDate() {return thruDate;}
         public String getEmail() {return email;}
         public double getAmount() {return amount;}
-
+        public long getPedidoId() {return pedidoId;}
 }

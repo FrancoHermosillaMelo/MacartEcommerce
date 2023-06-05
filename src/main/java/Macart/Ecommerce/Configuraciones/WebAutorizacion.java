@@ -55,7 +55,8 @@ public class WebAutorizacion {
 
                 .antMatchers(HttpMethod.PUT,
                         "/api/direcciones",
-                        "/api/productoTienda").hasAnyAuthority("CLIENTE", "ADMIN")
+                        "/api/productoTienda",
+                        "/api/pedidos").hasAnyAuthority("CLIENTE", "ADMIN")
 
                 .antMatchers(HttpMethod.DELETE,"/api/productoTienda").hasAnyAuthority("CLIENTE", "ADMIN");
 
