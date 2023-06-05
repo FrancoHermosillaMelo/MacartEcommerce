@@ -18,94 +18,84 @@
 	box-sizing: border-box;
 	font-family: 'Jost', sans-serif;
 }
+/* Contraseña */
+.inputBox {
+	position: relative;
+	width: 100%;
+	height: 40px;
+}
+.inputBox i.pw-hide {
+	right: 25px;
+	cursor: pointer;
+	position: absolute;
+	top: 93%;
+	transform: translateY(-93%);
+	font-size: 18px;
+}
+/* Fin Contraseña */
 a {
 	text-decoration: none !important;
 }
-/* Sobre nosotros */
-.wrapperUs1 {
-	min-height: 60vh;
+.containerSN0 {
 	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	align-items: center;
-	width: 100%;
-	background-image: linear-gradient(rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0.45)), url(../img/FondoAbout1.png);
+	justify-content: space-evenly;
+	flex-direction: row;
+}
+.containerSN {
+	background: url(../img/fondoSN.jpg);
 	background-position: center;
 	background-repeat: no-repeat;
 	background-size: cover;
-}
-.wrapperUs2 {
-	min-height: 60vh;
+	width: 45%;
+	height: auto;
+	padding: 30px;
+	border: 1px solid var(--color-negro);
 	display: flex;
-	flex-direction: column;
-	justify-content: center;
 	align-items: center;
-	width: 100%;
-	background-image: linear-gradient(rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0.45)), url(../img/FondoAbout2.png);
-	background-position: center;
-	background-repeat: no-repeat;
-	background-size: cover;
-	box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.409);
-	margin-bottom: 3rem;
+	flex-wrap: wrap;
+	margin: 1rem 0 2rem 0;
+	box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
 }
-.testimonialUs {
-	padding: 30px 100px;
-}
-article {
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	align-items: center;
-}
-article h1 {
-	color: var(--color-blanco);
+.containerSN h3 {
+	color: var(--color-negro);
 	text-align: center;
 	line-height: 1.5;
-	font-size: 50px;
+	font-size: 30px;
 	font-weight: 800;
 	text-transform: uppercase;
 	letter-spacing: 1.5px;
+	margin: 0;
 }
-article h1:after {
-	content: '';
-	height: 5px;
-	width: 225px;
-	background-color: var(--color-blanco);
-	display: block;
-	margin: auto;
+.cImgP p {
+	margin-bottom: 1rem;
 }
-article img {
-	height: 200px;
+.circleImg {
 	width: 200px;
-	border: 2px solid var(--color-blanco);
+	height: 200px;
+	background: url(../img/favicon.jpg);
+	background-position: center;
+	background-repeat: no-repeat;
+	background-size: cover;
 	border-radius: 50%;
-	margin-top: 40px;
+	float: left;
+	shape-outside: circle();
+	margin: 20px 20px 20px 0;
+	filter: drop-shadow(-10px -5px 4px #0000003c);
 }
-blockquote {
-	color: var(--color-blanco);
-	text-align: justify;
-	line-height: 1.5;
-	letter-spacing: 1px;
-	font-family: sans-serif;
-	font-size: 20px;
-	margin-top: 30px;
+.circleImg2 {
+	width: 200px;
+	height: 200px;
+	background: url(../img/SobreCreadora.jpg);
+	background-position: center;
+	background-repeat: no-repeat;
+	background-size: cover;
+	border-radius: 50%;
+	float: left;
+	shape-outside: circle();
+	margin: 20px 20px 20px 0;
+	filter: drop-shadow(-10px -5px 4px #0000003c);
 }
-article h5 {
-	color: var(--color-blanco);
-	text-align: center;
-	line-height: 1.5;
-	text-transform: uppercase;
-	font-size: 28px;
-	margin-top: 30px;
-	letter-spacing: 1.5px;
-}
-article p {
-	color: var(--color-blanco);
-	text-align: center;
-	line-height: 1.5;
-	letter-spacing: 1px;
-	font-size: 17px;
-}
+
 /* Misión Visión */
 .containerUs {
 	position: relative;
@@ -113,7 +103,7 @@ article p {
 	display: flex;
 	justify-content: space-between;
 	flex-wrap: wrap;
-	margin: 20px;
+	margin: -20px 20px 20px 20px;
 	padding: 20px 0;
 }
 .containerUs .cardUs {
@@ -190,6 +180,7 @@ article p {
 	font-weight: 800;
 	text-transform: uppercase;
 	letter-spacing: 1.5px;
+	margin: 0;
 }
 .mapa h2:after,
 .mainNosotros h2:after {
@@ -347,26 +338,6 @@ footer .wave#wave4 {
 }
 /*FIN FOOTER*/
 
-/*WHATSAPP*/
-.whatsapp-logo {
-	position: fixed;
-	bottom: 20px;
-	right: 20px;
-	z-index: 9999;
-	font-size: 40px;
-	background-color: #25d366;
-	width: 50px;
-	height: 50px;
-	border-radius: 50%;
-}
-.whatsapp-logo > a {
-	color: var(--color-blanco) !important;
-	position: absolute;
-	font-size: 30px;
-	bottom: 5%;
-	left: 20%;
-}
-
 /*NAVBAR*/
 .swal2-confirm {
 	margin-right: 10px !important;
@@ -414,6 +385,33 @@ footer .wave#wave4 {
 .boton-nav:hover {
 	transform: scale(0.9, 0.9);
 }
+.cuenta-verificado {
+	margin: 0 !important;
+}
+.btn-verificar {
+	position: relative;
+	padding: 6px 24px;
+	border: 2px solid var(--color-rosado);
+	background: transparent;
+	border-radius: 5px;
+	transition: 0.3s ease;
+}
+.btn-verificar:hover {
+	transform: scale(1.1, 1.1) !important;
+	color: var(--color-rosado) !important;
+}
+
+.input-verificado {
+	padding: 6px 24px;
+	border: 2px solid var(--color-rosado);
+	background: transparent;
+	border-radius: 5px;
+	transition: 0.3s ease;
+}
+.foto-verificada {
+	height: 1.4rem;
+	width: 1.4rem;
+}
 /*FIN NAVBAR*/
 
 /*MODAL*/
@@ -425,7 +423,7 @@ footer .wave#wave4 {
 	transform: translate(-50%, -50%);
 	max-width: 430px;
 	width: 100%;
-	background: #fff;
+	background: #ffffff;
 	border-radius: 7px;
 	box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
 }
@@ -496,22 +494,69 @@ footer .wave#wave4 {
 .signup label:hover {
 	text-decoration: underline;
 }
+/* Contraseña */
+.inputBox {
+	position: relative;
+	width: 100%;
+	height: 40px;
+}
+.inputBox i.pw-hide {
+	right: 25px;
+	cursor: pointer;
+	position: absolute;
+	top: 93%;
+	transform: translateY(-93%);
+	font-size: 18px;
+}
+/* Fin Contraseña */
+/* Loader */
+.loader {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100vw;
+	height: 100vh;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	background-color: var(--color-blanco);
+	transition: opacity 0.75s, visibility 0.75s;
+}
+.loader-hidden {
+	opacity: 0;
+	visibility: hidden;
+}
+.loader::after {
+	content: '';
+	width: 75px;
+	height: 75px;
+	border: 15px solid #dddd;
+	border-top-color: var(--color-grisOscuro);
+	border-radius: 50%;
+	animation: loading 0.75s ease infinite;
+}
+@keyframes loading {
+	from {
+		transform: rotate(0turn);
+	}
+	to {
+		transform: rotate(1turn);
+	}
+}
+/* Fin loader */
 
 @media (min-width: 320px) and (max-width: 900px) {
 	/*NAV*/
+	body {
+		overflow-x: hidden !important;
+	}
 	.div-iconos {
 		flex-direction: row !important;
 		justify-content: space-evenly !important;
 	}
-}
-@media (min-width: 352px) and (max-width: 496px) {
-	.testimonialUs {
-		padding: 30px 28px;
-	}
-}
-@media (min-width: 320px) and (max-width: 352px) {
-	.testimonialUs {
-		padding: 20px 12px;
+	.swal2-container {
+		width: 100vw !important;
+		overflow: hidden !important;
 	}
 }
 /* Mapa */
@@ -547,6 +592,25 @@ footer .wave#wave4 {
 	.mainNosotros h2 {
 		font-size: 30px;
 		margin-bottom: 1;
+	}
+}
+/* Sobre nosotros */
+@media (max-width: 905px) {
+	.containerSN0 {
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+	}
+	.containerSN {
+		width: 90vw;
+	}
+}
+@media (max-width: 426px) {
+	.circleImg,
+	.circleImg2 {
+		width: 120px;
+		height: 120px;
+		margin: 10px 10px 10px 0;
 	}
 }
 /* Misión Visión */

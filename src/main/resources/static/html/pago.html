@@ -1,21 +1,23 @@
 <!DOCTYPE html>
 <html lang="es">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>MACART| Pagos</title>
+		<link
+			href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/css/bootstrap.min.css"
+			rel="stylesheet"
+			integrity="sha384-aFq/bzH65dt+w6FI2ooMVUpc+21e0SRygnTpmBvdBgSdnuTN7QbdgL+OapgHtvPp"
+			crossorigin="anonymous"
+		/>
+		<link rel="stylesheet" href="../css/pago.css" />
+		<link rel="shortcut icon" href="../img/favicon.jpg" type="image/x-icon" />
+	</head>
 
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title> MACART| Pagos</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-aFq/bzH65dt+w6FI2ooMVUpc+21e0SRygnTpmBvdBgSdnuTN7QbdgL+OapgHtvPp" crossorigin="anonymous">
-    <link rel="stylesheet" href="../css/pago.css">
-    <link rel="shortcut icon" href="../img/favicon.jpg" type="image/x-icon">
-</head>
-
-<body>
-    <div id="app">
-        <main>
-            <header class="header-nav">
+	<body>
+		<div id="app">
+			<header class="header-nav">
 				<nav class="navbar navbar-expand-lg">
 					<div class="container-fluid">
 						<a class="navbar-brand texto-logo" href="./index.html">Ma<span>cart.</span></a>
@@ -32,10 +34,10 @@
 						</button>
 						<div class="collapse navbar-collapse justify-content-end" id="navbarNavAltMarkup">
 							<div class="navbar-nav">
-								<a class="nav-link texto-nav hover-a text-center" aria-current="page" href="./index.html">Inicio</a>
-								<a class="nav-link texto-nav hover-a text-center" href="./html/catalogo.html">Catálogo</a>
-								<a class="nav-link texto-nav hover-a text-center" href="./html/sobreNosotros.html">Sobre Nosotros</a>
-								<a class="nav-link texto-nav hover-a text-center" href="#">Preguntas Frecuentes</a>
+								<a class="nav-link texto-nav hover-a text-center" aria-current="page" href="../index.html">Inicio</a>
+								<a class="nav-link texto-nav hover-a text-center" href="./catalogo.html">Catálogo</a>
+								<a class="nav-link texto-nav hover-a text-center" href="./sobreNosotros.html">Sobre Nosotros</a>
+								<a class="nav-link texto-nav hover-a text-center" href="./preguntasFrecuentes.html">Preguntas Frecuentes</a>
 								<template v-if="rol === 'ADMIN'">
 									<a class="nav-link texto-nav hover-a text-center" href="./manager.html">Administrador</a>
 								</template>
@@ -43,13 +45,19 @@
 						</div>
 						<div class="collapse navbar-collapse justify-content-end" id="navbarNavAltMarkup">
 							<div class="div-iconos navbar-nav gap-3">
+								<div class="d-flex justify-content-center align-items-center">
+									<template v-if="cliente.verificado == true">
+										<img class="foto-verificada" src="../img/icons8-cuenta-verificada-48.png" alt="cuenta-verificada" title="cuenta-verificada" />
+									</template>
+									<template v-else> </template>
+								</div>
 								<template v-if="rol === 'VISITANTE'">
 									<button type="button" class="boton-nav" data-bs-toggle="modal" data-bs-target="#ModalForm">Ingresar</button>
 								</template>
 								<template v-else>
-									<!-- <a class="nav-link texto-nav hover-iconos texto-iconos text-center" aria-current="page" href="#"
-										><i class="bi bi-person pe-1"></i>{{clienteIngresado.primerNombre}}</a
-									> -->
+									<a class="nav-link texto-nav hover-iconos texto-iconos text-center" aria-current="page" href="./perfilCliente.html"
+										><i class="bi bi-person pe-1"></i>{{cliente.primerNombre}}</a
+									>
 									<a class="nav-link texto-nav hover-iconos texto-iconos text-center" href="#"
 										><i @click="salir" class="bi bi-box-arrow-right"></i
 									></a>
@@ -59,123 +67,159 @@
 					</div>
 				</nav>
 			</header>
-            <div class="pt-5 cardContainer d-flex justify-content-center">
-                <div class="card1 mb-5">
-                    <div class="card-inner">
-                        <div :class="colorCard" class="card-front">
-                            <div class="card-bg"></div>
-                            <div class="card-glow"></div>
-                            <svg width="72" height="24" viewBox="0 0 72 24" fill="none"
-                                xmlns="http://www.w3.org/2000/svg" class="logo">
-                                <path fill-rule="evenodd" clip-rule="evenodd"
-                                    d="M52.3973 1.01093L51.5588 5.99054C49.0448 4.56717 43.3231 4.23041 43.3231 6.85138C43.3231 7.89285 44.6177 8.60913 46.178 9.47241C48.5444 10.7817 51.5221 12.4291 51.5221 16.062C51.5221 21.8665 45.4731 24 41.4645 24C37.4558 24 34.8325 22.6901 34.8325 22.6901L35.7065 17.4848C38.1115 19.4688 45.4001 20.032 45.4001 16.8863C45.4001 15.5645 43.9656 14.785 42.3019 13.8811C40.0061 12.6336 37.2742 11.1491 37.2742 7.67563C37.2742 1.30988 44.1978 0 47.1132 0C49.8102 0 52.3973 1.01093 52.3973 1.01093ZM66.6055 23.6006H72L67.2966 0.414276H62.5732C60.3923 0.414276 59.8612 2.14215 59.8612 2.14215L51.0996 23.6006H57.2234L58.4481 20.1566H65.9167L66.6055 23.6006ZM60.1406 15.399L63.2275 6.72235L64.9642 15.399H60.1406ZM14.7942 16.3622L20.3951 0.414917H26.7181L17.371 23.6012H11.2498L6.14551 3.45825C2.83215 1.41281 0 0.807495 0 0.807495L0.108643 0.414917H9.36816C11.9161 0.414917 12.1552 2.50314 12.1552 2.50314L14.1313 12.9281L14.132 12.9294L14.7942 16.3622ZM25.3376 23.6006H31.2126L34.8851 0.414917H29.0095L25.3376 23.6006Z"
-                                    fill="white" />
-                            </svg>
-                            <div class="card-contactless">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="46" height="56">
-                                    <path fill="none" stroke="#f9f9f9" stroke-width="6"
-                                        stroke-linecap="round" d="m35,3a50,50 0 0,1 0,50M24,8.5a39,39 0 0,1 0,39M13.5,13.55a28.2,28.5
-                        0 0,1 0,28.5M3,19a18,17 0 0,1 0,18" />
-                                </svg>
-                            </div>
-                            <div class="card-chip"></div>
-                            <div class="card-holder">{{nombre}}</div>
-                            <div class="card-number">{{cardNumber}}</div>
-                        </div>
-                        <div :class="colorCard" class="card-back">
-                            <div class="card-signature fs-5">{{nombre}}</div>
-                            <div class="card-seccode">{{cvv}}</div>
-                        </div>
-                    </div>                                  
-                </div>
-            </div>
-            <div class="d-flex justify-content-center align-items">
-                <div class="glassmorphism mt-3 mb-2 d-flex flex-column justify-content-center align-items-center">
-                    <h1 class="text-center text-white mt-3">Formato de pago</h1>
-                    <form class="d-flex flex-column justify-content-center align-items-center" @submit.prevent="payCard">
-                        <div class="mb-3 formRegister">
-                            <label for="nombre" class="form-label text-white fs-5">Nombre completo</label>
-                            <input type="text" class="form-control" id="nombre" v-model="nombre" required>
-                        </div>
-                        <div class="d-flex flex-column justify-content-center align-items-center mb-3">
-                            <label for="firstName" class="form-label text-white fs-5">Numero Tarjeta*</label>
-                            <div class="d-flex justify-content-center align-items-center">
-                                <input type="text" class="form-control number-form me-1" id="firstName" v-model="number1"
-                                maxlength="4" @input="createNumberCard" required>
-                                <label for="number2" class="fs-1"> </label>
-                                <input type="text" class="form-control number-form ms-1 me-1" id="number2" v-model="number2"
-                                maxlength="4" @input="createNumberCard" required>
-                                <label for="number3"> </label>
-                                <input type="text" class="form-control number-form ms-1 me-1" id="number3" v-model="number3"
-                                maxlength="4" @input="createNumberCard" required>
-                                <label for="number4"> </label>
-                                <input type="text" class="form-control number-form ms-1" id="number4" v-model="number4"
-                                maxlength="4" @input="createNumberCard" required>
-                            </div>
-                        </div>
-                        <div class="d-flex justify-content-center align-items-center gap-2">
-                            <div>
-                                <label for="" class="text-white fs-5">Color Tarjeta*</label>
-                                <select class="form-select mb-3" v-model="colorCard" required>
-                                    <option selected class="fs-6" value="">Abre este menú</option>
-                                    <option value="TITANIUM" class="fs-6">Titanium</option>
-                                    <option value="GOLD" class="fs-6">Gold</option>
-                                    <option value="SILVER" class="fs-6">Silver</option>
-                                </select>
-                            </div>
-                            <div>
-                                <label for="" class="text-white fs-5">Tipo Tarjeta*</label>
-                                <select class="form-select mb-3" v-model="typeCard" required>
-                                    <option selected class="fs-6" value="">Abre este menú</option>
-                                    <option value="DEBIT" class="fs-6">Debit</option>
-                                    <option value="CREDIT" class="fs-6">Credit</option>
-                                </select>
-                            </div>
-                        </div>    
-                        <div class="d-flex">
-                            <div class="mb-3">
-                                <label for="cvv" class="form-label text-white fs-5 mb-0">CVV*</label>
-                                <input type="text" class="form-control number-form" id="cvv" v-model="cvv" maxlength="3" required>
-                            </div>
-                        </div>                   
-                        <button type="submit" class="btn btnProductos mt-3 fs-4">Pagar</button>
-                    </form>
-                </div>
-            </div>
-        </main>
-        <footer class="footer pt-5">
-            <div class="waves">
-                <div class="wave" id="wave1"></div>
-                <div class="wave" id="wave2"></div>
-                <div class="wave" id="wave3"></div>
-                <div class="wave" id="wave4"></div>
-            </div>
-            <img class="logo-footer" src="../img/LogoMacart.png" alt="Logo de Macart" />
-            <div class="social-icon-container">
-                <a href="https://wa.me/message/UDEKP6X67HYRK1" class="social-icon" target="_blank"><i class="bi-whatsapp"></i></a>
-                <a href="https://www.instagram.com/macartcostume/" class="social-icon" target="_blank"><i class="bi-instagram"></i></a>
-                <a href="https://www.facebook.com/" class="social-icon" target="_blank"><i class="bi-facebook"></i></a>
-            </div>
-            <ul class="footer-menu-container">
-                <li class="menu-item"><a class="aFotter" href="./html/sobreNosotros.html">Sobre Nosotros</a></li>
-                <li class="menu-item"><a class="aFotter" href="#">Preguntas Frecuentes</a></li>
-                <li class="menu-item" data-bs-toggle="modal" data-bs-target="#exampleModal2">Política de privacidad</li>
-                <li class="menu-item" data-bs-toggle="modal" data-bs-target="#exampleModal">Términos de uso</li>
-            </ul>
-            <div class="pagos-icon-container">
-                <span>Métodos de pago</span>
-                <div class="img-pagos">
-                    <img src="../img/Mercado Pago.png" alt="Mercado Pago" />
-                    <img src="../img/Visa.png" alt="Visa" />
-                    <img src="../img/Mastercard.png" alt="Mastercard" />
-                    <img src="../img/American Express.png" alt="American Express" />
-                    <img src="../img/PSE.png" alt="PSE" />
-                    <img src="../img/Efecty.png" alt="Efecty" />
-                </div>
-            </div>
-            <span class="copyright">&copy;2023, Macart Costume. Todos los derechos reservados.</span>
-        </footer>
-        <!-- MODAL TERMINOS DE USO -->
+			<main>
+				<div class="pt-5 cardContainer d-flex justify-content-center">
+					<div class="card1 mb-5">
+						<div class="card-inner">
+							<div :class="colorCard" class="card-front">
+								<div class="card-bg"></div>
+								<div class="card-glow"></div>
+								<svg width="72" height="24" viewBox="0 0 72 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="logo">
+									<path
+										fill-rule="evenodd"
+										clip-rule="evenodd"
+										d="M52.3973 1.01093L51.5588 5.99054C49.0448 4.56717 43.3231 4.23041 43.3231 6.85138C43.3231 7.89285 44.6177 8.60913 46.178 9.47241C48.5444 10.7817 51.5221 12.4291 51.5221 16.062C51.5221 21.8665 45.4731 24 41.4645 24C37.4558 24 34.8325 22.6901 34.8325 22.6901L35.7065 17.4848C38.1115 19.4688 45.4001 20.032 45.4001 16.8863C45.4001 15.5645 43.9656 14.785 42.3019 13.8811C40.0061 12.6336 37.2742 11.1491 37.2742 7.67563C37.2742 1.30988 44.1978 0 47.1132 0C49.8102 0 52.3973 1.01093 52.3973 1.01093ZM66.6055 23.6006H72L67.2966 0.414276H62.5732C60.3923 0.414276 59.8612 2.14215 59.8612 2.14215L51.0996 23.6006H57.2234L58.4481 20.1566H65.9167L66.6055 23.6006ZM60.1406 15.399L63.2275 6.72235L64.9642 15.399H60.1406ZM14.7942 16.3622L20.3951 0.414917H26.7181L17.371 23.6012H11.2498L6.14551 3.45825C2.83215 1.41281 0 0.807495 0 0.807495L0.108643 0.414917H9.36816C11.9161 0.414917 12.1552 2.50314 12.1552 2.50314L14.1313 12.9281L14.132 12.9294L14.7942 16.3622ZM25.3376 23.6006H31.2126L34.8851 0.414917H29.0095L25.3376 23.6006Z"
+										fill="white"
+									/>
+								</svg>
+								<div class="card-contactless">
+									<svg xmlns="http://www.w3.org/2000/svg" width="46" height="56">
+										<path
+											fill="none"
+											stroke="#f9f9f9"
+											stroke-width="6"
+											stroke-linecap="round"
+											d="m35,3a50,50 0 0,1 0,50M24,8.5a39,39 0 0,1 0,39M13.5,13.55a28.2,28.5
+                        0 0,1 0,28.5M3,19a18,17 0 0,1 0,18"
+										/>
+									</svg>
+								</div>
+								<div class="card-chip"></div>
+								<div class="card-holder">{{nombre}}</div>
+								<div class="card-number">{{cardNumber}}</div>
+							</div>
+							<div :class="colorCard" class="card-back">
+								<div class="card-signature fs-5">{{nombre}}</div>
+								<div class="card-seccode">{{cvv}}</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="d-flex justify-content-center align-items">
+					<div class="glassmorphism mt-3 mb-2 d-flex flex-column justify-content-center align-items-center">
+						<h1 class="text-center text-white mt-3">Formato de pago</h1>
+						<form class="d-flex flex-column justify-content-center align-items-center" @submit.prevent="payCard">
+							<div class="mb-3 formRegister">
+								<label for="nombre" class="form-label text-white fs-5">Nombre completo</label>
+								<input type="text" class="form-control" id="nombre" v-model="nombre" required />
+							</div>
+							<div class="d-flex flex-column justify-content-center align-items-center mb-3">
+								<label for="firstName" class="form-label text-white fs-5">Numero Tarjeta*</label>
+								<div class="d-flex justify-content-center align-items-center">
+									<input
+										type="text"
+										class="form-control number-form me-1"
+										id="firstName"
+										v-model="number1"
+										maxlength="4"
+										@input="createNumberCard"
+										required
+									/>
+									<label for="number2" class="fs-1"> </label>
+									<input
+										type="text"
+										class="form-control number-form ms-1 me-1"
+										id="number2"
+										v-model="number2"
+										maxlength="4"
+										@input="createNumberCard"
+										required
+									/>
+									<label for="number3"> </label>
+									<input
+										type="text"
+										class="form-control number-form ms-1 me-1"
+										id="number3"
+										v-model="number3"
+										maxlength="4"
+										@input="createNumberCard"
+										required
+									/>
+									<label for="number4"> </label>
+									<input
+										type="text"
+										class="form-control number-form ms-1"
+										id="number4"
+										v-model="number4"
+										maxlength="4"
+										@input="createNumberCard"
+										required
+									/>
+								</div>
+							</div>
+							<div class="d-flex justify-content-center align-items-center gap-2">
+								<div>
+									<label for="" class="text-white fs-5">Color Tarjeta*</label>
+									<select class="form-select mb-3" v-model="colorCard" required>
+										<option selected class="fs-6" value="">Abre este menú</option>
+										<option value="TITANIUM" class="fs-6">Titanium</option>
+										<option value="GOLD" class="fs-6">Gold</option>
+										<option value="SILVER" class="fs-6">Silver</option>
+									</select>
+								</div>
+								<div>
+									<label for="" class="text-white fs-5">Tipo Tarjeta*</label>
+									<select class="form-select mb-3" v-model="typeCard" required>
+										<option selected class="fs-6" value="">Abre este menú</option>
+										<option value="DEBIT" class="fs-6">Debit</option>
+										<option value="CREDIT" class="fs-6">Credit</option>
+									</select>
+								</div>
+							</div>
+							<div class="d-flex">
+								<div class="mb-3">
+									<label for="cvv" class="form-label text-white fs-5 mb-0">CVV*</label>
+									<input type="text" class="form-control number-form" id="cvv" v-model="cvv" maxlength="3" required />
+								</div>
+							</div>
+							<button type="submit" class="btn btnProductos mt-3 fs-4">Pagar</button>
+						</form>
+					</div>
+				</div>
+			</main>
+			<footer class="footer pt-5">
+				<div class="waves">
+					<div class="wave" id="wave1"></div>
+					<div class="wave" id="wave2"></div>
+					<div class="wave" id="wave3"></div>
+					<div class="wave" id="wave4"></div>
+				</div>
+				<img class="logo-footer" src="../img/LogoMacart.png" alt="Logo de Macart" />
+				<div class="social-icon-container">
+					<a href="https://wa.me/message/UDEKP6X67HYRK1" class="social-icon" target="_blank"><i class="bi-whatsapp"></i></a>
+					<a href="https://www.instagram.com/macartcostume/" class="social-icon" target="_blank"><i class="bi-instagram"></i></a>
+					<a href="https://www.facebook.com/" class="social-icon" target="_blank"><i class="bi-facebook"></i></a>
+				</div>
+				<ul class="footer-menu-container">
+					<li class="menu-item"><a class="aFotter" href="./html/sobreNosotros.html">Sobre Nosotros</a></li>
+					<li class="menu-item"><a class="aFotter" href="#">Preguntas Frecuentes</a></li>
+					<li class="menu-item" data-bs-toggle="modal" data-bs-target="#exampleModal2">Política de privacidad</li>
+					<li class="menu-item" data-bs-toggle="modal" data-bs-target="#exampleModal">Términos de uso</li>
+				</ul>
+				<div class="pagos-icon-container">
+					<span>Métodos de pago</span>
+					<div class="img-pagos">
+						<img src="../img/Mercado Pago.png" alt="Mercado Pago" />
+						<img src="../img/Visa.png" alt="Visa" />
+						<img src="../img/Mastercard.png" alt="Mastercard" />
+						<img src="../img/American Express.png" alt="American Express" />
+						<img src="../img/PSE.png" alt="PSE" />
+						<img src="../img/Efecty.png" alt="Efecty" />
+					</div>
+				</div>
+				<span class="copyright">&copy;2023, Macart Costume. Todos los derechos reservados.</span>
+			</footer>
+			<!-- MODAL TERMINOS DE USO -->
 			<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
 				<div class="modal-dialog">
 					<div class="modal-content">
@@ -266,10 +310,10 @@
 					</div>
 				</div>
 			</div>
-    </div>
-
-    <!-- CDN bootstrap -->
-    <script
+		</div>
+		<div class="loader"></div>
+		<!-- CDN bootstrap -->
+		<script
 			src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"
 			integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe"
 			crossorigin="anonymous"
@@ -286,6 +330,5 @@
 		<script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
 		<script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-element-bundle.min.js"></script>
 		<script src="../js/pago.js"></script>
-</body>
-
+	</body>
 </html>

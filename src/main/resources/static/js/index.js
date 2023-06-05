@@ -1,4 +1,4 @@
-const { createApp } = Vue;
+const {createApp} = Vue;
 
 createApp({
 	data() {
@@ -20,9 +20,9 @@ createApp({
 			segundoApellido: '',
 			telefono: '',
 			clienteId: '',
-			productoPorId: "",
-			imgProductoPorId: "",
-			token: "",
+			productoPorId: '',
+			imgProductoPorId: '',
+			token: '',
 			verificado: false,
 		};
 	},
@@ -76,7 +76,7 @@ createApp({
 		},
 		abrirCarrito() {
 			if (this.clienteIngresado.verificado == false) {
-				Swal.fire('Debes verificar tu cuenta para entrar al carrito de compra.')
+				Swal.fire('Debes verificar tu cuenta para entrar al carrito de compra.');
 			} else {
 				this.isCarritoInactivo = !this.isCarritoInactivo;
 			}
@@ -101,19 +101,19 @@ createApp({
 					});
 
 					if (!this.productosRepetidos(item.id)) {
-						if(!Object.keys(this.talleSeleccionado).length == 0 || item.subCategoria.includes("ACCESORIOS")){
+						if (!Object.keys(this.talleSeleccionado).length == 0 || item.subCategoria.includes('ACCESORIOS')) {
 							Toastify({
 								text: `${item.nombre} se agrego al carrito`,
-								className: "info",
-								duration:3000,
+								className: 'info',
+								duration: 3000,
 								offset: {
 									x: '5em', // horizontal axis - can be a number or a string indicating unity. eg: '2em'
-									y: '42em' // vertical axis - can be a number or a string indicating unity. eg: '2em'
-								  },
+									y: '42em', // vertical axis - can be a number or a string indicating unity. eg: '2em'
+								},
 								style: {
-									background: "#212529",
-								}
-							  }).showToast();
+									background: '#212529',
+								},
+							}).showToast();
 							this.carrito.push({
 								nombre: item.nombre,
 								id: item.id,
@@ -122,228 +122,264 @@ createApp({
 								imagen: item.imagenesUrl[0],
 								precio: item.precio,
 							});
-						}else{
+						} else {
 							Toastify({
 								text: `Por favor, seleccione un talle`,
-								className: "info",
-								duration:3000,
+								className: 'info',
+								duration: 3000,
 								offset: {
 									x: '5em', // horizontal axis - can be a number or a string indicating unity. eg: '2em'
-									y: '42em' // vertical axis - can be a number or a string indicating unity. eg: '2em'
-								  },
+									y: '42em', // vertical axis - can be a number or a string indicating unity. eg: '2em'
+								},
 								style: {
-									background: "#212529",
-								}
-							  }).showToast();
+									background: '#212529',
+								},
+							}).showToast();
 						}
-						
-					}else{
+					} else {
 						Toastify({
 							text: `${item.nombre} ya está en el carrito`,
-							className: "info",
-							duration:3000,
+							className: 'info',
+							duration: 3000,
 							offset: {
 								x: '5em', // horizontal axis - can be a number or a string indicating unity. eg: '2em'
-								y: '42em' // vertical axis - can be a number or a string indicating unity. eg: '2em'
-							  },
+								y: '42em', // vertical axis - can be a number or a string indicating unity. eg: '2em'
+							},
 							style: {
-								background: "#212529",
-							}
-						  }).showToast();
+								background: '#212529',
+							},
+						}).showToast();
 					}
 					this.talleSeleccionado = {};
 				}
 			}
-
 		},
-	productosRepetidos(productoId) {
-		return this.carrito.some(item => item.id === productoId);
-	},
-	agregarCantidadProducto(producto, key) {
-		if (producto.tallas[key] < producto.stockTallas[key]) {
-			producto.tallas[key] += 1;
-		}
-	},
-	disminuirCantidadProducto(producto, key) {
-		if (producto.tallas[key] <= producto.stockTallas[key] && producto.tallas[key] > 1) {
-			producto.tallas[key] -= 1;
-		}
-	},
-	eliminarTalle(producto, key) {
-		delete producto.tallas[key];
-	},
-	elimarDelCarrito(producto) {
-		Toastify({
-			text: `${producto.nombre} se elimino del carrito`,
-			className: "info",
-			duration:3000,
-			offset: {
-				x: '5em', // horizontal axis - can be a number or a string indicating unity. eg: '2em'
-				y: '42em' // vertical axis - can be a number or a string indicating unity. eg: '2em'
-			  },
-			style: {
-				background: "#212529",
+		productosRepetidos(productoId) {
+			return this.carrito.some(item => item.id === productoId);
+		},
+		agregarCantidadProducto(producto, key) {
+			if (producto.tallas[key] < producto.stockTallas[key]) {
+				producto.tallas[key] += 1;
 			}
-		  }).showToast();
-		this.carrito = this.carrito.filter(item => !(item.id === producto.id));
-	},
-	ingresar() {
-		axios
-			.post('/api/login', 'correo=' + this.correo + '&contraseña=' + this.contraseña)
-			.then(response => {
-				Swal.fire({
-					icon: 'success',
-					text: 'Ingreso Exitoso',
-					showConfirmButton: false,
-					timer: 2000,
-				}).then(() => {
-					if (this.correo == 'admin@gmail.com') {
-						window.location.replace('/index.html');
-					} else {
-						window.location.replace('/index.html');
-					}
-				});
-			})
-			.catch(error =>
-				Swal.fire({
-					icon: 'error',
-					text: error.response.data,
-					confirmButtonColor: '#7c601893',
+		},
+		disminuirCantidadProducto(producto, key) {
+			if (producto.tallas[key] <= producto.stockTallas[key] && producto.tallas[key] > 1) {
+				producto.tallas[key] -= 1;
+			}
+		},
+		eliminarTalle(producto, key) {
+			delete producto.tallas[key];
+		},
+		elimarDelCarrito(producto) {
+			Toastify({
+				text: `${producto.nombre} se elimino del carrito`,
+				className: 'info',
+				duration: 3000,
+				offset: {
+					x: '5em', // horizontal axis - can be a number or a string indicating unity. eg: '2em'
+					y: '42em', // vertical axis - can be a number or a string indicating unity. eg: '2em'
+				},
+				style: {
+					background: '#212529',
+				},
+			}).showToast();
+			this.carrito = this.carrito.filter(item => !(item.id === producto.id));
+		},
+		ingresar() {
+			axios
+				.post('/api/login', 'correo=' + this.correo + '&contraseña=' + this.contraseña)
+				.then(response => {
+					Swal.fire({
+						icon: 'success',
+						text: 'Ingreso Exitoso',
+						showConfirmButton: false,
+						timer: 2000,
+					}).then(() => {
+						if (this.correo == 'admin@gmail.com') {
+							window.location.replace('/index.html');
+						} else {
+							window.location.replace('/index.html');
+						}
+					});
 				})
-			);
-	},
-	register() {
-		axios
-			.post(
-				'/api/clientes',
-				'primerNombre=' +
-				this.primerNombre +
-				'&segundoNombre=' +
-				this.segundoNombre +
-				'&primerApellido=' +
-				this.primerApellido +
-				'&segundoApellido=' +
-				this.segundoApellido +
-				'&telefono=' +
-				this.telefono +
-				'&correo=' +
-				this.correoRegistro +
-				'&contraseña=' +
-				this.contraseñaRegistro
-			)
-			.then(response => {
-				Swal.fire({
-					icon: 'success',
-					text: 'Se envio a tu correo la validacion',
-					showConfirmButton: false,
-					timer: 2000,
-				}).then(() => {
-					this.correo = this.correoRegistro;
-					this.contraseña = this.contraseñaRegistro;
-					window.location.replace('/index.html');
-					// this.ingresar();
-				});
-			})
-			.catch(error =>
-				Swal.fire({
-					icon: 'error',
-					text: error.response.data,
-					confirmButtonColor: '#7c601893',
-				})
-			);
-	},
-	obtenerIdProducto(id) {
-		axios.get('/api/productoTienda/' + id)
-			.then(response => {
-				this.productoPorId = response.data
-				this.imgProductoPorId = this.productoPorId.imagenesUrl
-			})
-			.catch(error => console.log(error))
-	},
-	verificarCuenta() {
-		axios.post('/api/clientes/autenticar', 'token=' + this.token)
-			.then(response => {
-				this.verificado = true;
-				Swal.fire({
-					icon: 'success',
-					text: 'La cuenta se ha verificado exitosamente',
-					confirmButtonColor: '#7c601893',
-				}).then(() => {
-					location.reload();
-				});
-			})
-			.catch(error => {
-				Swal.fire({
-					icon: 'error',
-					text: 'Error al verificar la cuenta: ' + error.response.data,
-					confirmButtonColor: '#7c601893',
-				});
-			});
-	},
-	salir() {
-		Swal.fire({
-			title: '¿Estas seguro que quieres salir de tu cuenta?',
-			inputAttributes: {
-				autocapitalize: 'off',
-			},
-			showCancelButton: true,
-			confirmButtonText: 'Sure',
-			showLoaderOnConfirm: true,
-			preConfirm: login => {
-				return axios
-					.post('/api/logout')
-					.then(response => {
-						window.location.href = '/index.html';
+				.catch(error =>
+					Swal.fire({
+						icon: 'error',
+						text: error.response.data,
+						confirmButtonColor: '#7c601893',
 					})
-					.catch(error =>
-						Swal.fire({
-							icon: 'error',
-							text: error.response.data,
-							confirmButtonColor: '#7c601893',
+				);
+		},
+		register() {
+			axios
+				.post(
+					'/api/clientes',
+					'primerNombre=' +
+						this.primerNombre +
+						'&segundoNombre=' +
+						this.segundoNombre +
+						'&primerApellido=' +
+						this.primerApellido +
+						'&segundoApellido=' +
+						this.segundoApellido +
+						'&telefono=' +
+						this.telefono +
+						'&correo=' +
+						this.correoRegistro +
+						'&contraseña=' +
+						this.contraseñaRegistro
+				)
+				.then(response => {
+					Swal.fire({
+						icon: 'success',
+						text: 'Se envio a tu correo la validacion',
+						showConfirmButton: false,
+						timer: 2000,
+					}).then(() => {
+						this.correo = this.correoRegistro;
+						this.contraseña = this.contraseñaRegistro;
+						window.location.replace('/index.html');
+						// this.ingresar();
+					});
+				})
+				.catch(error =>
+					Swal.fire({
+						icon: 'error',
+						text: error.response.data,
+						confirmButtonColor: '#7c601893',
+					})
+				);
+		},
+		continuarPago() {
+			Swal.fire({
+				icon: 'info',
+				title: '¿Deseas continuar con tu pedido?',
+				text: 'Si confirmas se te redireccionara al pago',
+				cancelButtonText: 'Cancelar',
+				showCancelButton: true,
+				confirmButtonText: 'Confirmar',
+				showLoaderOnConfirm: true,
+				preConfirm: login => {
+					return axios
+						.post('/api/logout')
+						.then(response => {
+							window.location.href = '/index.html';
 						})
-					);
-			},
-			allowOutsideClick: () => !Swal.isLoading(),
-		});
+						.catch(error =>
+							Swal.fire({
+								icon: 'error',
+								text: error.response.data,
+								confirmButtonColor: '#7c601893',
+							})
+						);
+				},
+				allowOutsideClick: () => !Swal.isLoading(),
+			});
+		},
+		obtenerIdProducto(id) {
+			axios
+				.get('/api/productoTienda/' + id)
+				.then(response => {
+					this.productoPorId = response.data;
+					this.imgProductoPorId = this.productoPorId.imagenesUrl;
+				})
+				.catch(error => console.log(error));
+		},
+		verificarCuenta() {
+			axios
+				.post('/api/clientes/autenticar', 'token=' + this.token)
+				.then(response => {
+					this.verificado = true;
+					Swal.fire({
+						icon: 'success',
+						text: 'La cuenta se ha verificado exitosamente',
+						confirmButtonColor: '#7c601893',
+					}).then(() => {
+						location.reload();
+					});
+				})
+				.catch(error => {
+					Swal.fire({
+						icon: 'error',
+						text: 'Error al verificar la cuenta: ' + error.response.data,
+						confirmButtonColor: '#7c601893',
+					});
+				});
+		},
+
+		salir() {
+			Swal.fire({
+				title: '¿Estas seguro que quieres salir de tu cuenta?',
+				inputAttributes: {
+					autocapitalize: 'off',
+				},
+				showCancelButton: true,
+				confirmButtonText: 'Sure',
+				showLoaderOnConfirm: true,
+				preConfirm: login => {
+					return axios
+						.post('/api/logout')
+						.then(response => {
+							window.location.href = '/index.html';
+						})
+						.catch(error =>
+							Swal.fire({
+								icon: 'error',
+								text: error.response.data,
+								confirmButtonColor: '#7c601893',
+							})
+						);
+				},
+				allowOutsideClick: () => !Swal.isLoading(),
+			});
+		},
 	},
-},
 	computed: {
-	primeraMayuscula() {
-		this.primerNombre = this.primerNombre.charAt(0).toUpperCase() + this.primerNombre.slice(1);
-		this.segundoNombre = this.segundoNombre.charAt(0).toUpperCase() + this.segundoNombre.slice(1);
-		this.primerApellido = this.primerApellido.charAt(0).toUpperCase() + this.primerApellido.slice(1);
-		this.segundoApellido = this.segundoApellido.charAt(0).toUpperCase() + this.segundoApellido.slice(1);
+		primeraMayuscula() {
+			this.primerNombre = this.primerNombre.charAt(0).toUpperCase() + this.primerNombre.slice(1);
+			this.segundoNombre = this.segundoNombre.charAt(0).toUpperCase() + this.segundoNombre.slice(1);
+			this.primerApellido = this.primerApellido.charAt(0).toUpperCase() + this.primerApellido.slice(1);
+			this.segundoApellido = this.segundoApellido.charAt(0).toUpperCase() + this.segundoApellido.slice(1);
+		},
+		guardarDatos() {
+			this.carritos[this.clienteId] = this.carrito;
+			localStorage.setItem('carritos', JSON.stringify(this.carritos));
+		},
+		totalDelCarrito() {
+			let total = this.carrito.reduce((acc, productoActual) => {
+				let talles = Object.keys(productoActual.tallas);
+				acc += talles.reduce((acc, talle) => {
+					acc += productoActual.tallas[talle] * productoActual.precio;
+					return acc;
+				}, 0);
+				return acc;
+			}, 0);
+			return total.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+		},
 	},
-	guardarDatos() {
-		this.carritos[this.clienteId] = this.carrito;
-		localStorage.setItem('carritos', JSON.stringify(this.carritos));
-	},
-	totalDelCarrito() {
-		let total = this.carrito.reduce((acc, productoActual) => {
-			let talles = Object.keys(productoActual.tallas)
-			acc += talles.reduce((acc, talle) =>{
-				acc += productoActual.tallas[talle] * productoActual.precio
-				return acc 
-			},0)
-			return acc;
-		}, 0);
-		return total.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",") 
-	},
-},
 }).mount('#app');
 
+window.addEventListener('load', () => {
+	const loader = document.querySelector('.loader');
 
-// Obtén las referencias a las imágenes pequeña y grande
-// var imagenPequena = document.getElementById('imagenPequena');
-// var imagenGrande = document.getElementById('imagenGrande');
+	loader.classList.add('loader-hidden');
 
-// // Manejador de eventos para hacer clic en la imagen pequeña
-// imagenPequena.addEventListener('click', function () {
-// 	// Obtén las URLs de las imágenes pequeña y grande
-// 	var urlImagenPequena = imagenPequena.src;
-// 	var urlImagenGrande = imagenGrande.src;
+	loader.addEventListener('transitioned', () => {
+		document.body.removeChild('loader');
+	});
+});
 
-// 	// Intercambia las URLs de las imágenes
-// 	imagenPequena.src = urlImagenGrande;
-// 	imagenGrande.src = urlImagenPequena;
-// });
+/* Contraseña */
+const pwShowHide = document.querySelectorAll('.pw-hide');
+pwShowHide.forEach(icon => {
+	icon.addEventListener('click', () => {
+		let getPwInput = icon.parentElement.querySelector('input');
+		if (getPwInput.type === 'password') {
+			getPwInput.type = 'text';
+			icon.classList.replace('fa-eye-slash', 'fa-eye');
+		} else {
+			getPwInput.type = 'password';
+			icon.classList.replace('fa-eye', 'fa-eye-slash');
+		}
+	});
+});
