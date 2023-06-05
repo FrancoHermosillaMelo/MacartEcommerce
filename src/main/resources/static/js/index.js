@@ -76,21 +76,30 @@ createApp({
 			} else if (this.clienteIngresado.verificado === false) {
 				Swal.fire('Debes verificar tu cuenta para añadir los productos al carrito de compra.');
 			} else {
-				if (this.verificado === true && (this.rol === 'CLIENTE')) {
+				if (this.verificado === true && (this.rol === 'CLIENTE' || this.rol === 'ADMIN')) {
 					for (const key in this.talleSeleccionado) {
-						if (!key.includes(item.id + key.slice(1))) {
+						if (!key.includes(item.id + key.slice(1)) && item.id.toString().length === 1) {
 							delete this.talleSeleccionado[key];
+						 } else if(!key.includes(item.id + key.slice(1)) && item.id.toString().length === 2){
+						 	delete this.talleSeleccionado[key];
 						}
 					}
 					let talles = Object.keys(this.talleSeleccionado);
 					talles.map(talle => {
-						let nuevoTalle = talle.slice(1);
-						delete this.talleSeleccionado[talle];
-						this.talleSeleccionado[nuevoTalle] = 1;
+						if(item.id.toString().length === 1){
+							let nuevoTalle = talle.slice(1);
+							delete this.talleSeleccionado[talle];
+							this.talleSeleccionado[nuevoTalle] = 1;
+						}
+						else{
+							let nuevoTalle = talle.slice(2);
+							delete this.talleSeleccionado[talle];
+							this.talleSeleccionado[nuevoTalle] = 1;
+						}
+						
 					});
-
 					if (!this.productosRepetidos(item.id)) {
-						if (!Object.keys(this.talleSeleccionado).length == 0 || item.subCategoria.includes('ACCESORIOS')) {
+						if (!Object.keys(this.talleSeleccionado).length == 0) {
 							Toastify({
 								text: `${item.nombre} se agrego al carrito`,
 								className: 'info',
@@ -194,7 +203,7 @@ createApp({
 				.catch(error =>
 					Swal.fire({
 						icon: 'error',
-						text: error.response.data,
+						text: "El correo o la contraseña son incorrectas",
 						confirmButtonColor: '#7c601893',
 					})
 				);

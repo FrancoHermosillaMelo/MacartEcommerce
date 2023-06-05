@@ -51,7 +51,7 @@ createApp({
 			axios
 				.get('/api/clientes/actual/rol')
 				.then(response => {
-					this.rol = response.data.authority;
+					this.rol = response.data;
 				})
 				.catch(error => console.log(error));
 		},

@@ -51,12 +51,9 @@ createApp({
 				.get('/api/productoTienda')
 				.then(response => {
 					this.productos = response.data;
-					console.log(this.productos);
 					this.productosFiltrados = this.productos;
 					this.sexo = Array.from(new Set(this.productos.map(sexo => sexo.categoriaGenero)));
-					console.log(this.sexo);
 					this.categoriaTipo = Array.from(new Set(this.productos.map(tipo => tipo.subCategoria)));
-					console.log(this.categoriaTipo);
 				})
 				.catch(error => console.log(error));
 		},
@@ -96,19 +93,29 @@ createApp({
 			} else {
 				if (this.verificado === true && (this.rol === 'CLIENTE' || this.rol === 'ADMIN')) {
 					for (const key in this.talleSeleccionado) {
-						if (!key.includes(item.id + key.slice(1))) {
+						if (!key.includes(item.id + key.slice(1)) && item.id.toString().length === 1) {
 							delete this.talleSeleccionado[key];
+						 } else if(!key.includes(item.id + key.slice(2)) && item.id.toString().length === 2){
+						 	delete this.talleSeleccionado[key];
 						}
 					}
 					let talles = Object.keys(this.talleSeleccionado);
 					talles.map(talle => {
-						let nuevoTalle = talle.slice(1);
-						delete this.talleSeleccionado[talle];
-						this.talleSeleccionado[nuevoTalle] = 1;
-					});
+						if(item.id.toString().length === 1){
+							let nuevoTalle = talle.slice(1);
+							delete this.talleSeleccionado[talle];
+							this.talleSeleccionado[nuevoTalle] = 1;
+						}
+						else if(item.id.toString().length === 2){
+							let nuevoTalle = talle.slice(2);
+							delete this.talleSeleccionado[talle];
+							this.talleSeleccionado[nuevoTalle] = 1;
+						}
 
+						
+					});
 					if (!this.productosRepetidos(item.id)) {
-						if (!Object.keys(this.talleSeleccionado).length == 0 || item.subCategoria.includes('ACCESORIOS')) {
+						if (!Object.keys(this.talleSeleccionado).length == 0) {
 							Toastify({
 								text: `${item.nombre} se agrego al carrito`,
 								className: 'info',
@@ -209,14 +216,23 @@ createApp({
 			axios
 				.post('/api/login', 'correo=' + this.correo + '&contraseña=' + this.contraseña)
 				.then(response => {
-					
-					window.location.replace('/index.html');
-					
+					Swal.fire({
+						icon: 'success',
+						text: 'Ingreso Exitoso',
+						showConfirmButton: false,
+						timer: 2000,
+					}).then(() => {
+						if (this.correo == 'admin@gmail.com') {
+							window.location.replace('/index.html');
+						} else {
+							window.location.replace('/index.html');
+						}
+					});
 				})
 				.catch(error =>
 					Swal.fire({
 						icon: 'error',
-						text: error.response.data,
+						text: "El correo o la contraseña son incorrectas",
 						confirmButtonColor: '#7c601893',
 					})
 				);

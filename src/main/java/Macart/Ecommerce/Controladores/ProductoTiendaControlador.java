@@ -59,8 +59,8 @@ public class ProductoTiendaControlador {
             return new ResponseEntity<>("El nombre solo puede contener letras", HttpStatus.FORBIDDEN);
         }
 
-        if(productoTienda.getPrecio() < 0){
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("El precio no puede estar en negativo");
+        if(productoTienda.getPrecio() <= 0){
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("El precio no puede estar en negativo o cero");
         }
         if(productoTienda.getSubCategoria().isBlank()){
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body("La subcategoria no puede estar en blanco");
@@ -119,8 +119,8 @@ public class ProductoTiendaControlador {
             if (!Pattern.matches("^[a-z A-Z]+$", productoTienda.getNombre())) {
                 return new ResponseEntity<>("El nombre solo puede contener letras", HttpStatus.FORBIDDEN);
             }
-            if (productoTienda.getPrecio() < 0) {
-                return new ResponseEntity<>("El precio no puede ser negativo", HttpStatus.FORBIDDEN);
+            if (productoTienda.getPrecio() <= 0) {
+                return new ResponseEntity<>("El precio no puede ser negativo o cero", HttpStatus.FORBIDDEN);
             }
             if (productoTienda.getSubCategoria().isBlank()) {
                 return ResponseEntity.status(HttpStatus.FORBIDDEN).body("La subcategoria no puede estar en blanco");
