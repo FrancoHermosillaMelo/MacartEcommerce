@@ -172,6 +172,33 @@ createApp({
             })
             .catch((error) => console.log(error));
         },
+        borrarPedido(id){
+          Swal.fire({
+              title: "¿De verdad deseas borrar este pedido?",
+              text: "Podrás volver a pedir desde el carrito",
+              icon: "info",
+              showCancelButton: true,
+              confirmButtonColor: "#3085d6",
+              cancelButtonColor: "#d33",
+              confirmButtonText: "Sí!",
+              cancelButtonText: "No!"
+            })
+              .then((result) => {
+                if (result.isConfirmed) {
+                  axios
+                    .put('/api/pedidos', `idPedido=${id}`)
+                    .then((response) => (window.location.href = "/html/perfilCliente.html"))
+                    .catch((error) => {
+                      Swal.fire({
+                        icon: "error",
+                        title: "Oops...",
+                        text: error.response.data,
+                      });
+                    });
+                }
+              })
+              .catch((error) => console.log(error));
+      },
         mostrarInfo(){
           todoPerfil.classList.remove('show');
           todoPerfil.classList.remove('showP');

@@ -44,6 +44,8 @@ public class PedidoDTO {
         return metodoDeEnvio;
     }
 
+    public boolean isEliminado() {return eliminado;}
+
     public Set<PedidoProductoDTO> getPedidoProductos() {
         return pedidoProductos;
     }

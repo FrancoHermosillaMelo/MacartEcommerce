@@ -31,7 +31,7 @@ public class ClienteDTO {
         this.telefono = cliente.getTelefono();
         this.verificado = cliente.isVerificado();
         this.tokenAutenticacion = cliente.getTokenAutenticacion();
-        this.pedidos = cliente.getPedidos().stream().map(pedido -> new PedidoDTO(pedido)).collect(Collectors.toSet());
+        this.pedidos = cliente.getPedidos().stream().filter(pedido -> !pedido.isEliminado()).map(pedido -> new PedidoDTO(pedido)).collect(Collectors.toSet());
         this.direcciones = cliente.getDirecciones().stream().map(direccion -> new DireccionDTO(direccion)).collect(Collectors.toSet());
         this.comprobantes = cliente.getComprobantes().stream().map(comprobante -> new ComprobanteDTO(comprobante)).collect(Collectors.toSet());
     }
