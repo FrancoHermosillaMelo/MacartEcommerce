@@ -39,7 +39,7 @@ public CommandLineRunner initData(ClienteRepositorio clienteRepositorio, Direcci
 		Cliente cliente1 = new Cliente("Carlos","Andrés","Ruiz","Hinestroza","carlos@gmail.com","322-567-8909",passwordEncoder.encode("123"),true,"D3BA09");
 		clienteRepositorio.save(cliente1);
 
-		Cliente admin = new Cliente("admin", null, "admin", null, "carlosandresgoo@gmail.com", "322-567-8909", passwordEncoder.encode("123"),true,"D4BE10");
+		Cliente admin = new Cliente("admin", null, "admin", null, "admin@admin.com", "322-567-8909", passwordEncoder.encode("123"),true,"D4BE10");
 		clienteRepositorio.save(admin);
 
 		Direccion direccion1 = new Direccion("Calle-47a","50-05","Barrio obrero","Copacabana","Antioquia","12345");
@@ -55,10 +55,9 @@ public CommandLineRunner initData(ClienteRepositorio clienteRepositorio, Direcci
 		// PRODUCTOS
 
 		ProductoTienda productoTienda1 = new ProductoTienda("Camisa Blanca", 50000.00 , "Camisa blanca de algodon",List.of("https://live.staticflickr.com/65535/52943190902_f77c1e8be1_b.jpg","https://live.staticflickr.com/65535/52943190892_f386c30847_b.jpg"), ProductoTiendaCategoriaGenero.HOMBRE, "CAMISETA",true);
-		productoTienda1.agregarTalla("XS", ProductoTiendaUtilidades.randomNumber(1,50));
+		productoTienda1.agregarTalla("XS", 10);
 		productoTienda1.agregarTalla("M", ProductoTiendaUtilidades.randomNumber(1,50));
 		productoTienda1.agregarTalla("L", ProductoTiendaUtilidades.randomNumber(1,50));
-		productoTienda1.agregarTalla("XL", ProductoTiendaUtilidades.randomNumber(1,50));
 		productoTienda1.agregarTalla("XL", ProductoTiendaUtilidades.randomNumber(1,50));
 		productoTiendaRepositorio.save(productoTienda1);
 

@@ -66,19 +66,15 @@ public class PedidoControlador {
 
     @PostMapping("/api/pedidos")
     public ResponseEntity<Object> crearPedidos(
-            @RequestParam Long clienteId,
+            Authentication authentication,
             @RequestParam String metodoDeEnvio)
              {
 
-        Cliente cliente = clienteServicio.obtenerClientePorId(clienteId);
-        if( !cliente.getPedidos().stream().filter(pedidos -> !pedidos.isPagado()).collect(toList()).isEmpty()  ){
-            return new ResponseEntity<>("Ya tienes un pedido en curso", HttpStatus.OK);
-        }
+        Cliente cliente = clienteServicio.obtenerClienteAutenticado(authentication);
 
         Pedido nuevoPedido = new Pedido(LocalDateTime.now(),false , 0,metodoDeEnvio, false);
         cliente.agregarPedido(nuevoPedido);
         pedidoServicio.guardarPedido(nuevoPedido);
-
 
         return ResponseEntity.status(HttpStatus.CREATED).body("Pedido creado");
     }
@@ -102,7 +98,7 @@ public class PedidoControlador {
         return new ResponseEntity<>("Eliminado correctamente", HttpStatus.ACCEPTED);
     }
     @PostMapping("/api/pedidos/carrito")
-    public  ResponseEntity<Object> añardirCarrito(Authentication authentication, @RequestBody CarritoDTO pedidoProductoDTO){
+    public  ResponseEntity<Object> añadirCarrito(Authentication authentication, @RequestBody CarritoDTO pedidoProductoDTO){
 
         Cliente cliente = clienteServicio.obtenerClienteAutenticado(authentication);
         Pedido pedido = cliente.getPedidos().stream().filter(pedidos -> !pedidos.isPagado()).collect(toList()).get(0);
