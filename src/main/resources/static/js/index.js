@@ -9,7 +9,6 @@ createApp({
 			talleSeleccionado: {},
 			isCarritoInactivo: true,
 			carrito: [],
-			carritos: {},
 			correo: '',
 			correoRegistro: '',
 			contraseña: '',
@@ -19,7 +18,6 @@ createApp({
 			primerApellido: '',
 			segundoApellido: '',
 			telefono: '',
-			clienteId: '',
 			productoPorId: '',
 			imgProductoPorId: '',
 			token: '',
@@ -29,12 +27,7 @@ createApp({
 	created() {
 		this.data();
 		this.totalProductos();
-		this.clienteId = sessionStorage.getItem('clienteId'); // Obtén el identificador único del cliente desde el sessionStorage
-		this.carritos = JSON.parse(localStorage.getItem('carritos')) || {}; // Obtiene los carritos almacenados en el localStorage
-		if (!this.carritos[this.clienteId]) {
-			this.carritos[this.clienteId] = []; // Crea un carrito vacío para el cliente si no existe
-		}
-		this.carrito = this.carritos[this.clienteId]; // Asi
+		this.carrito=JSON.parse(localStorage.getItem("carrito")) || []
 	},
 	mounted() {
 		this.roles();
@@ -54,12 +47,6 @@ createApp({
 				.then(response => {
 					this.datos = response.data;
 					this.clienteIngresado = response.data;
-					this.clienteId = response.data.id;
-					sessionStorage.setItem('clienteId', this.clienteId); // Almacena el identificador único del cliente en el sessionStorage
-					if (!this.carritos[this.clienteId]) {
-						this.carritos[this.clienteId] = []; // Crea un carrito vacío para el cliente si no existe
-					}
-					this.carrito = this.carritos[this.clienteId]; // Asigna el carrito correspondiente al cliente actual
 					this.verificado = response.data.verificado === true;
 				})
 				.catch(error => console.log(error));
@@ -87,7 +74,7 @@ createApp({
 			} else if (this.clienteIngresado.verificado === false) {
 				Swal.fire('Debes verificar tu cuenta para añadir los productos al carrito de compra.');
 			} else {
-				if (this.verificado === true && (this.rol === 'CLIENTE' || this.rol === 'ADMIN')) {
+				if (this.verificado === true && (this.rol === 'CLIENTE')) {
 					for (const key in this.talleSeleccionado) {
 						if (!key.includes(item.id + key.slice(1))) {
 							delete this.talleSeleccionado[key];
@@ -320,6 +307,7 @@ createApp({
 					return axios
 						.post('/api/logout')
 						.then(response => {
+							this.carrito = []
 							window.location.href = '/index.html';
 						})
 						.catch(error =>
@@ -341,10 +329,6 @@ createApp({
 			this.primerApellido = this.primerApellido.charAt(0).toUpperCase() + this.primerApellido.slice(1);
 			this.segundoApellido = this.segundoApellido.charAt(0).toUpperCase() + this.segundoApellido.slice(1);
 		},
-		guardarDatos() {
-			this.carritos[this.clienteId] = this.carrito;
-			localStorage.setItem('carritos', JSON.stringify(this.carritos));
-		},
 		totalDelCarrito() {
 			let total = this.carrito.reduce((acc, productoActual) => {
 				let talles = Object.keys(productoActual.tallas);
@@ -356,6 +340,9 @@ createApp({
 			}, 0);
 			return total.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 		},
+		localStorageCarrito(){
+            localStorage.setItem("carrito", JSON.stringify(this.carrito))
+        },
 	},
 }).mount('#app');
 

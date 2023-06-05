@@ -15,7 +15,6 @@ createApp({
 			talleSeleccionado: {},
 			isCarritoInactivo: true,
 			carrito: [],
-			carritos: {},
 			correo: '',
 			correoRegistro: '',
 			contraseña: '',
@@ -25,7 +24,6 @@ createApp({
 			primerApellido: '',
 			segundoApellido: '',
 			telefono: '',
-			clienteId: '',
 			productoPorId: '',
 			imgProductoPorId: '',
 			checkTallas: [],
@@ -39,12 +37,7 @@ createApp({
 		// this.roles();
 		this.data();
 		this.totalProductos();
-		this.clienteId = sessionStorage.getItem('clienteId'); // Obtén el identificador único del cliente desde el sessionStorage
-		this.carritos = JSON.parse(localStorage.getItem('carritos')) || {}; // Obtiene los carritos almacenados en el localStorage
-		if (!this.carritos[this.clienteId]) {
-			this.carritos[this.clienteId] = []; // Crea un carrito vacío para el cliente si no existe
-		}
-		this.carrito = this.carritos[this.clienteId]; // Asi
+		this.carrito=JSON.parse(localStorage.getItem("carrito")) || []
 	},
 	mounted() {
 		this.roles();
@@ -72,12 +65,6 @@ createApp({
 				.then(response => {
 					this.datos = response.data;
 					this.clienteIngresado = response.data;
-					this.clienteId = response.data.id;
-					sessionStorage.setItem('clienteId', this.clienteId); // Almacena el identificador único del cliente en el sessionStorage
-					if (!this.carritos[this.clienteId]) {
-						this.carritos[this.clienteId] = []; // Crea un carrito vacío para el cliente si no existe
-					}
-					this.carrito = this.carritos[this.clienteId]; // Asigna el carrito correspondiente al cliente actual
 					this.verificado = response.data.verificado === true;
 				})
 				.catch(error => console.log(error));
@@ -196,7 +183,6 @@ createApp({
 		disminuirCantidadProducto(producto, key) {
 			if (producto.tallas[key] <= producto.stockTallas[key] && producto.tallas[key] > 1) {
 				producto.tallas[key] -= 1;
-			} else {
 			}
 		},
 		eliminarTalle(producto, key) {
@@ -221,11 +207,9 @@ createApp({
 			axios
 				.post('/api/login', 'correo=' + this.correo + '&contraseña=' + this.contraseña)
 				.then(response => {
-					if (this.correo == 'admin@gmail.com') {
-						window.location.replace('/index.html');
-					} else {
-						window.location.replace('/index.html');
-					}
+					
+					window.location.replace('/index.html');
+					
 				})
 				.catch(error =>
 					Swal.fire({
@@ -291,6 +275,7 @@ createApp({
 					return axios
 						.post('/api/logout')
 						.then(response => {
+							this.carrito = []
 							window.location.href = '/index.html';
 						})
 						.catch(error =>
@@ -311,10 +296,6 @@ createApp({
 			this.segundoNombre = this.segundoNombre.charAt(0).toUpperCase() + this.segundoNombre.slice(1);
 			this.primerApellido = this.primerApellido.charAt(0).toUpperCase() + this.primerApellido.slice(1);
 			this.segundoApellido = this.segundoApellido.charAt(0).toUpperCase() + this.segundoApellido.slice(1);
-		},
-		guardarDatos() {
-			this.carritos[this.clienteId] = this.carrito;
-			localStorage.setItem('carritos', JSON.stringify(this.carritos));
 		},
 		totalDelCarrito() {
 			let total = this.carrito.reduce((acc, productoActual) => {
@@ -344,6 +325,9 @@ createApp({
 
 			this.productosFiltrados = filtroPorPrecio;
 		},
+		localStorageCarrito(){
+            localStorage.setItem("carrito", JSON.stringify(this.carrito))
+        },
 	},
 }).mount('#app');
 

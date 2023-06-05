@@ -83,7 +83,7 @@
 				</nav>
 			</header>
 			<main>
-				{{primeraMayuscula}} {{filtroCruzados}}
+				{{primeraMayuscula}} {{filtroCruzados}} {{localStorageCarrito}}
 				<div class="fondo-contenedor d-flex justify-content-center align-items-center">
 					<div class="row">
 						<div class="col-12">
@@ -312,7 +312,6 @@
 						</div>
 					</div>
 				</section>
-				{{guardarDatos}}
 				<aside id="carrito" :class="{inactivo : isCarritoInactivo}">
 					<div class="div-carrito pt-4 d-flex justify-content-center align-items-center">
 						<h4 class="text-center">Carrito ({{carrito.length}})</h4>
@@ -322,7 +321,7 @@
 						<template v-for="producto of carrito">
 							<div class="div-info-carrito">
 								<div class="d-flex align-items-center">
-									<img class="p-3" :src="producto.imagen" />
+									<img class="p-3" :src="producto.imagen"/>
 									<div class="col-8 info">
 										<h4>{{producto.nombre}}</h4>
 										<p>COP$ {{producto.precio.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}}</p>
@@ -613,7 +612,7 @@
 		<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 		<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
 		<script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
-		<script src="../js/catalogo.js"></script>
 		<script src="../js/eze.js"></script>
+		<script src="../js/catalogo.js"></script>
 	</body>
 </html>

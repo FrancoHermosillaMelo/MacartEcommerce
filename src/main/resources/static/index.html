@@ -252,7 +252,6 @@
 						</template>
 					</swiper-container>
 				</div>
-				{{guardarDatos}}
 				<aside id="carrito" :class="{inactivo : isCarritoInactivo}">
 					<div class="div-carrito pt-4 d-flex justify-content-center align-items-center">
 						<h4 class="text-center">Carrito ({{carrito.length}})</h4>
@@ -297,6 +296,7 @@
 				</aside>
 			</main>
 			{{primeraMayuscula}}
+			{{localStorageCarrito}}
 			<footer class="footer pt-5">
 				<div class="waves">
 					<div class="wave" id="wave1"></div>

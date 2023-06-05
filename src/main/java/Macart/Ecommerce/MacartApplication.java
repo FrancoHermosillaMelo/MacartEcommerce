@@ -39,9 +39,10 @@ public CommandLineRunner initData(ClienteRepositorio clienteRepositorio, Direcci
 		Cliente cliente1 = new Cliente("Carlos","Andrés","Ruiz","Hinestroza","carlos@gmail.com","322-567-8909",passwordEncoder.encode("123"),true,"D3BA09");
 		clienteRepositorio.save(cliente1);
 
-		Cliente admin = new Cliente("admin", null, "admin", null, "admin@admin.com", "322-567-8909", passwordEncoder.encode("123"),true,"D4BE10");
-		clienteRepositorio.save(admin);
-
+//		Cliente admin = new Cliente("admin", null, "admin", null, "admin@admin.com", "322-567-8909", passwordEncoder.encode("123"),true,"D4BE10");
+//		clienteRepositorio.save(admin);
+		Cliente cliente3 = new Cliente("admin", null, "admin", null, "admin@admin.com", "322-567-8909", passwordEncoder.encode("123"),true,"D4BE10");
+		clienteRepositorio.save(cliente3);
 		Direccion direccion1 = new Direccion("Calle-47a","50-05","Barrio obrero","Copacabana","Antioquia","12345");
 		cliente1.agregarDirecciones(direccion1);
 		direccionRepositorio.save(direccion1);
