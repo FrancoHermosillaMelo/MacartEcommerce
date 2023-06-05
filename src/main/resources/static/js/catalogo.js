@@ -359,7 +359,7 @@ createApp({
 			this.segundoApellido = this.segundoApellido.charAt(0).toUpperCase() + this.segundoApellido.slice(1);
 		},
 		totalDelCarrito() {
-			let total = this.carrito.reduce((acc, productoActual) => {
+			this.montoTotalPedido = this.carrito.reduce((acc, productoActual) => {
 				let talles = Object.keys(productoActual.tallas);
 				acc += talles.reduce((acc, talle) => {
 					acc += productoActual.tallas[talle] * productoActual.precio;
@@ -367,7 +367,7 @@ createApp({
 				}, 0);
 				return acc;
 			}, 0);
-			return total.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+			return this.montoTotalPedido.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 		},
 		filtroCruzados() {
 			let filtroProductoGenero = this.productos.filter(producto => {
