@@ -190,6 +190,7 @@
 								<p><span>Fecha</span><br />{{pedido.fechaDePedido.slice(0,10)}} a las {{pedido.fechaDePedido.slice(11,16)}}</p>
 								<p><span>Método de Envio</span><br />{{pedido.metodoDeEnvio}}</p>
 								<p><span>Pagado: </span>{{pedido.pagado == false ? 'No pagado' : 'Pagado'}}</p>
+								<button type="button" @click.prevent="borrarPedido(pedido.id)" class="bi bi-trash btnDireccionI"></button>
 							</div>
 							<div class="pedidoProducto">
 								<div class="pedidoProducto1 d-flex flex-column justify-content-evenly">
