@@ -293,10 +293,9 @@ public CommandLineRunner initData(ClienteRepositorio clienteRepositorio, Direcci
 		cliente2.agregarDirecciones(direccion2);
 		direccionRepositorio.save(direccion2);
 
-		Pedido pedido2 = new Pedido(LocalDateTime.now(),false,320000.00,"domicilio");
-		cliente2.agregarPedido(pedido2);
-		pedidoRepositorio.save(pedido2);
-
+//		Pedido pedido2 = new Pedido(LocalDateTime.now(),false,320000.00,"domicilio");
+//		cliente2.agregarPedido(pedido2);
+//		pedidoRepositorio.save(pedido2);
 	};
 	}
 

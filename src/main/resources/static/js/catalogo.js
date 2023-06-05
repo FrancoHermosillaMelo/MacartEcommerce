@@ -325,7 +325,7 @@ createApp({
 			})
 
 			let filtroPorPrecio = filtroProductoSubCategoriaYGenero.filter(producto => {
-				if(parseInt(this.precioDesde) === 0 && parseInt(this.precioHasta)){
+				if(parseInt(this.precioDesde) > 0 && parseInt(this.precioHasta)){
 					return true;
 				}
 				return producto.precio >= parseInt(this.precioDesde) && producto.precio <= parseInt(this.precioHasta) 
