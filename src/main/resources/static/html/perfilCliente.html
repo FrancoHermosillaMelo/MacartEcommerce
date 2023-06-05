@@ -191,7 +191,7 @@
 						<div class="pedido" v-if="noPagado.length > 0" v-for="pedido of noPagado">
 							<div class="pedidoHeader">
 								<p><span>Fecha</span><br />{{pedido.fechaDePedido.slice(0,10)}} a las {{pedido.fechaDePedido.slice(11,16)}}</p>
-								<p><span>Método de Envio</span><br />{{pedido.metodoDeEnvio}}</p>
+								<p><span>Método de Envio</span><br />TRANSPORTADORA</p>
 								<p><span>Pagado: </span>{{pedido.pagado == false ? 'No pagado' : 'Pagado'}}</p>
 								<button type="button" @click.prevent="borrarPedido(pedido.id)" class="bi bi-trash btnDireccionI"></button>
 							</div>
@@ -223,7 +223,7 @@
 						<div class="pedido" v-if="pagado.length > 0" v-for="pedido of pagado">
 							<div class="pedidoHeader">
 								<p><span>Fecha</span><br />{{pedido.fechaDePedido.slice(0,10)}} a las {{pedido.fechaDePedido.slice(11,16)}}</p>
-								<p><span>Método de Envio</span><br />{{pedido.metodoDeEnvio}}</p>
+								<p><span>Método de Envio</span><br />TRANSPORTADORA</p>
 								<p><span>Pagado: </span>{{pedido.pagado == false ? 'No pagado' : 'Pagado'}}</p>
 							</div>
 							<div class="pedidoProducto">
