@@ -17,6 +17,7 @@ public class Pedido {
     private boolean pagado;
     private double montoTotal;
     private String metodoDeEnvio;
+    private boolean eliminado = true;
 
     @OneToMany(mappedBy="pedido", fetch= FetchType.EAGER)
     private Set<PedidoProducto> pedidoProductos = new HashSet<>();
@@ -27,12 +28,12 @@ public class Pedido {
     public Pedido() {
     }
 
-    public Pedido(LocalDateTime fechaDePedido, boolean pagado, double montoTotal, String metodoDeEnvio) {
+    public Pedido(LocalDateTime fechaDePedido, boolean pagado, double montoTotal, String metodoDeEnvio, boolean eliminado) {
         this.fechaDePedido = fechaDePedido;
         this.pagado = pagado;
         this.montoTotal = montoTotal;
         this.metodoDeEnvio = metodoDeEnvio;
-
+        this.eliminado = eliminado;
     }
 
     public void agregarPedidoProducto(PedidoProducto pedidoproducto) {
@@ -92,6 +93,10 @@ public class Pedido {
         this.metodoDeEnvio = metodoDeEnvio;
     }
 
-
-
+    public boolean isEliminado() {
+        return eliminado;
+    }
+    public void setEliminado(boolean eliminado) {
+        this.eliminado = eliminado;
+    }
 }

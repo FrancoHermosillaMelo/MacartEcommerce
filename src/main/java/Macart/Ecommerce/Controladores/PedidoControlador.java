@@ -17,9 +17,11 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.toList;
+import static java.util.stream.Collectors.toSet;
 
 
 @RestController
@@ -53,6 +55,15 @@ public class PedidoControlador {
     return  pedidosDTO;
     }
 
+    @GetMapping("/api/clientes/pedidosActivados")
+    public ResponseEntity<Object> obtenerPedidosActivados(Authentication authentication){
+        Cliente cliente = clienteServicio.obtenerClienteAutenticado(authentication);
+        Set<Pedido> pedidosCliente = cliente.getPedidos();
+        Set<PedidoDTO> pedidoClienteDTOS = pedidosCliente.stream().map(pedido -> new PedidoDTO(pedido)).collect(toSet());
+
+        return new ResponseEntity<>(pedidoClienteDTOS, HttpStatus.ACCEPTED);
+    }
+
     @PostMapping("/api/pedidos")
     public ResponseEntity<Object> crearPedidos(
             @RequestParam Long clienteId,
@@ -64,12 +75,31 @@ public class PedidoControlador {
             return new ResponseEntity<>("Ya tienes un pedido en curso", HttpStatus.OK);
         }
 
-        Pedido nuevoPedido = new Pedido(LocalDateTime.now(),false , 0,metodoDeEnvio);
+        Pedido nuevoPedido = new Pedido(LocalDateTime.now(),false , 0,metodoDeEnvio, false);
         cliente.agregarPedido(nuevoPedido);
         pedidoServicio.guardarPedido(nuevoPedido);
 
 
         return ResponseEntity.status(HttpStatus.CREATED).body("Pedido creado");
+    }
+    @PutMapping("/api/pedidos")
+    public ResponseEntity<Object> eliminarPedido(Authentication authentication, @RequestParam long idPedido){
+        Pedido pedidoEliminar = pedidoServicio.ObtenerPedidoPorId(idPedido);
+        Cliente cliente = clienteServicio.obtenerClienteAutenticado(authentication);
+
+        if(pedidoEliminar == null){
+            return new ResponseEntity<>("El pedido a eliminar no existe", HttpStatus.FORBIDDEN);
+        }
+        if(cliente == null){
+            return new ResponseEntity<>("El cliente no existe", HttpStatus.FORBIDDEN);
+        }
+        if(cliente.getPedidos().stream().noneMatch(pedido -> pedido.getId() == pedido.getId())){
+            return new ResponseEntity<>("El pedido a eliminar no es tuyo", HttpStatus.FORBIDDEN);
+        }
+        pedidoEliminar.setEliminado(true);
+        pedidoServicio.guardarPedido(pedidoEliminar);
+
+        return new ResponseEntity<>("Eliminado correctamente", HttpStatus.ACCEPTED);
     }
     @PostMapping("/api/pedidos/carrito")
     public  ResponseEntity<Object> añardirCarrito(Authentication authentication, @RequestBody CarritoDTO pedidoProductoDTO){

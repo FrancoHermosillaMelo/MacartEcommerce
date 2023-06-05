@@ -6,6 +6,7 @@ import Macart.Ecommerce.Modelos.Pedido;
 import org.springframework.security.core.Authentication;
 
 import java.util.List;
+import java.util.Set;
 
 public interface PedidoServicio {
     List<PedidoDTO> obtenerPedidos();
@@ -13,4 +14,5 @@ public interface PedidoServicio {
     void guardarPedido(Pedido pedido);
     List<Pedido> findByCliente(Cliente cliente);
     Pedido ObtenerPedidoPorId (long id);
+    Set<Pedido> obtenerPedidosActivadosCliente(Authentication authentication);
 }

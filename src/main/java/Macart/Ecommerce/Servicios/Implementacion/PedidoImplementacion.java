@@ -11,6 +11,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Set;
 
 import static java.util.stream.Collectors.toList;
 
@@ -45,4 +46,10 @@ public class PedidoImplementacion implements PedidoServicio {
 
     @Override
     public Pedido ObtenerPedidoPorId(long id) {return pedidoRepositorio.findById(id).orElse(null);}
+
+    @Override
+    public Set<Pedido> obtenerPedidosActivadosCliente(Authentication authentication) {
+        Cliente cliente = clienteServicio.obtenerClienteAutenticado(authentication);
+        return cliente.getPedidos();
+    }
 }

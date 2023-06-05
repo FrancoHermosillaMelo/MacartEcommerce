@@ -247,6 +247,30 @@ a {
 	padding-top: 10px;
 }
 
+.form-check {
+	padding-left: 0 !important;
+}
+.form-check > input {
+	display: none !important;
+}
+.form-check-label {
+	padding: 8px;
+	color: var(--color-negro);
+	border: 1px solid var(--color-negro);
+	cursor: pointer;
+}
+.form-check-size > .form-check-label {
+	min-width: 3rem;
+	padding: 0.5rem;
+	text-align: center;
+	transition: all 0.1s ease-in-out;
+}
+.form-check > .form-check-input:checked + .form-check-label {
+	color: var(--color-blanco);
+	background-color: var(--color-negro);
+	border: 1px solid var(--color-negro);
+}
+
 swiper-slide {
 	text-align: start;
 	font-size: 18px;
@@ -602,6 +626,39 @@ animation: loading 0.75s ease infinite;
 }
 
 /* FIN MODAL */
+
+/* MODAL INFO */
+#imagenGrande {
+	border-radius: 2%;
+	width: 100%;
+	height: 100%;
+	object-fit: contain;
+}
+
+#imagenPequena {
+	max-height: 100%;
+	width: 100%;
+	border-radius: 5%;
+	object-fit: cover;
+	cursor: pointer;
+}
+
+#contenedorImagenes {
+	max-width: 40vh;
+}
+
+#contenedorImagenGrande {
+	max-width: 40vh;
+}
+
+#contenedorImagenPequena {
+	width: 20%;
+}
+
+#contenedorButtons {
+	max-height: 5%;
+}
+/* FINAL MODAL INFO */
 .swal2-confirm {
 	margin-right: 10px !important;
 }
@@ -729,32 +786,28 @@ animation: loading 0.75s ease infinite;
 	.info {
 		width: auto !important;
 	}
-};
-
-
-@media only screen and (max-width: 576px) {
-	.modal-dialog{
-		width:90% !important;
-	}
-
 }
 
-#imagenGrande{
-	border-radius: 2%; 
-	width: 100%; 
-	height: 100%; 
+@media only screen and (max-width: 576px) {
+	.modal-dialog {
+		width: 90% !important;
+	}
+}
+
+#imagenGrande {
+	border-radius: 2%;
+	width: 100%;
+	height: 100%;
 	object-fit: contain;
 }
 
-#imagenPequena{
-	max-height: 100%; 
+#imagenPequena {
+	max-height: 100%;
 	width: 100%;
-	 border-radius: 5%; 
-	 object-fit: cover;
-	 cursor: pointer;
+	border-radius: 5%;
+	object-fit: cover;
+	cursor: pointer;
 }
-
-
 
 /* 
 @media (max-width: 1199px) {
@@ -771,8 +824,3 @@ animation: loading 0.75s ease infinite;
 		width: 10% !important;
 	}
 } */
-
-
-  
-
-
