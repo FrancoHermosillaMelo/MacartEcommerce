@@ -11,7 +11,6 @@ public class PedidoDTO {
     private LocalDateTime fechaDePedido;
     private boolean pagado;
     private double montoTotal;
-    private String metodoDeEnvio;
     private Set<PedidoProductoDTO> pedidoProductos;
     private boolean eliminado;
     public PedidoDTO(Pedido pedido) {
@@ -19,7 +18,6 @@ public class PedidoDTO {
         this.fechaDePedido = pedido.getFechaDePedido();
         this.pagado = pedido.isPagado();
         this.montoTotal = pedido.getMontoTotal() ;
-        this.metodoDeEnvio = pedido.getMetodoDeEnvio();
         this.pedidoProductos = pedido.getPedidoProductos().stream().map(pedidoProducto -> new PedidoProductoDTO(pedidoProducto)).collect(Collectors.toSet());
         this.eliminado = pedido.isEliminado();
     }
@@ -40,13 +38,11 @@ public class PedidoDTO {
         return montoTotal;
     }
 
-    public String getMetodoDeEnvio() {
-        return metodoDeEnvio;
-    }
-
     public Set<PedidoProductoDTO> getPedidoProductos() {
         return pedidoProductos;
     }
 
-
+    public boolean isEliminado() {
+        return eliminado;
+    }
 }

@@ -31,6 +31,8 @@ createApp({
 			verificado: false,
 			precioDesde: 0,
 			precioHasta: 300000,
+			pedidoId: "", // ID DEL PEDIDO UNA VEZ CREADO
+			montoTotalPedido: 0, // MONTO TOTAL DEL PEDIDO
 		};
 	},
 	created() {
@@ -251,6 +253,65 @@ createApp({
 					})
 				);
 		},
+		confirmarPedido() {
+			if(this.carrito.length == 0){
+				Toastify({
+					text: `El carrito está vacio`,
+					className: 'info',
+					duration: 3000,
+					offset: {
+						x: '5em', // horizontal axis - can be a number or a string indicating unity. eg: '2em'
+						y: '42em', // vertical axis - can be a number or a string indicating unity. eg: '2em'
+					},
+					style: {
+						background: '#212529',
+					},
+				}).showToast();
+			}else{
+				Swal.fire({
+					icon: 'info',
+					title: '¿Deseas crear este pedido?',
+					text: 'Si confirmas, se te redireccionara a tus pedidos para poder pagarlo desde ahi',
+					cancelButtonText: 'Cancelar',
+					showCancelButton: true,
+					confirmButtonText: 'Confirmar',
+					showLoaderOnConfirm: true,
+					preConfirm: login => {
+						return axios
+							.post('/api/pedidos')
+							.then((response) => {
+								this.pedidoId = response.data
+								this.carrito.map(producto =>{
+									axios
+									.post('/api/pedidos/carrito',{
+										idPedido: this.pedidoId,
+										idProducto: producto.id,
+										tallas: producto.tallas,
+										montoTotal : this.montoTotalPedido
+									})
+								})
+								Swal.fire({
+									icon: 'success',
+									text: 'Pedido creado con exito',
+									showConfirmButton: false,
+									timer: 3000,
+								}).then(() => {
+									this.carrito = []
+									window.location.href = '/html/perfilCliente.html';
+								})
+							})
+							.catch(error =>
+								Swal.fire({
+									icon: 'error',
+									text: error.response.data,
+									confirmButtonColor: '#7c601893',
+								})
+							);
+					},
+					allowOutsideClick: () => !Swal.isLoading(),
+				});
+			}
+		},
 		obtenerIdProducto(id) {
 			axios
 				.get('/api/productoTienda/' + id)
@@ -317,7 +378,7 @@ createApp({
 			});
 
 			let filtroPorPrecio = filtroProductoSubCategoriaYGenero.filter(producto => {
-				if (parseInt(this.precioDesde) > 0 && parseInt(this.precioHasta)) {
+				if (parseInt(this.precioDesde) > 0 && parseInt(this.precioHasta) == 300000) {
 					return true;
 				}
 				return producto.precio >= parseInt(this.precioDesde) && producto.precio <= parseInt(this.precioHasta);

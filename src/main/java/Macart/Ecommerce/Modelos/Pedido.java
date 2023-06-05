@@ -16,7 +16,6 @@ public class Pedido {
     private LocalDateTime fechaDePedido;
     private boolean pagado;
     private double montoTotal;
-    private String metodoDeEnvio;
     private boolean eliminado = true;
 
     @OneToMany(mappedBy="pedido", fetch= FetchType.EAGER)
@@ -28,17 +27,20 @@ public class Pedido {
     public Pedido() {
     }
 
-    public Pedido(LocalDateTime fechaDePedido, boolean pagado, double montoTotal, String metodoDeEnvio, boolean eliminado) {
+    public Pedido(LocalDateTime fechaDePedido, boolean pagado, double montoTotal, boolean eliminado) {
         this.fechaDePedido = fechaDePedido;
         this.pagado = pagado;
         this.montoTotal = montoTotal;
-        this.metodoDeEnvio = metodoDeEnvio;
         this.eliminado = eliminado;
     }
 
     public void agregarPedidoProducto(PedidoProducto pedidoproducto) {
         pedidoproducto.setPedido(this);
         pedidoProductos.add(pedidoproducto);
+    }
+
+    public void acumularMontoTotal(double monto){
+        this.montoTotal += monto;
     }
 
     public long getId() {
@@ -83,14 +85,6 @@ public class Pedido {
 
     public void setPedidoProductos(Set<PedidoProducto> pedidoProductos) {
         this.pedidoProductos = pedidoProductos;
-    }
-
-    public String getMetodoDeEnvio() {
-        return metodoDeEnvio;
-    }
-
-    public void setMetodoDeEnvio(String metodoDeEnvio) {
-        this.metodoDeEnvio = metodoDeEnvio;
     }
 
     public boolean isEliminado() {

@@ -36,11 +36,11 @@ public CommandLineRunner initData(ClienteRepositorio clienteRepositorio, Direcci
 
 		//	cliente1
 
-		Cliente cliente1 = new Cliente("Carlos","Andrés","Ruiz","Hinestroza","carlos@gmail.com","322-567-8909",passwordEncoder.encode("123"),true,"D3BA09");
+		Cliente cliente1 = new Cliente("Carlos","Andrés","Ruiz","Hinestroza","carlosandresgoo@gmail.com","322-567-8909",passwordEncoder.encode("123"),true,"D3BA09");
 		clienteRepositorio.save(cliente1);
 
-//		Cliente admin = new Cliente("admin", null, "admin", null, "admin@admin.com", "322-567-8909", passwordEncoder.encode("123"),true,"D4BE10");
-//		clienteRepositorio.save(admin);
+		Cliente admin = new Cliente("ivan", null, "sm", null, "ezequielivan2@gmail.com", "322-567-8909", passwordEncoder.encode("123"),true,"D4BE10");
+		clienteRepositorio.save(admin);
 		Cliente cliente3 = new Cliente("admin", null, "admin", null, "admin@admin.com", "322-567-8909", passwordEncoder.encode("123"),true,"D4BE10");
 		clienteRepositorio.save(cliente3);
 		Direccion direccion1 = new Direccion("Calle-47a","50-05","Barrio obrero","Copacabana","Antioquia","12345");
@@ -63,7 +63,7 @@ public CommandLineRunner initData(ClienteRepositorio clienteRepositorio, Direcci
 		productoTiendaRepositorio.save(productoTienda1);
 
 		ProductoTienda productoTienda2 = new ProductoTienda("Blusa Negra", 70000.00 , "Blusa negra de ribb de algodon", List.of("https://live.staticflickr.com/65535/52944252988_fb0e51c815_z.jpg","https://live.staticflickr.com/65535/52944177705_dfe76ea968_z.jpg"), ProductoTiendaCategoriaGenero.MUJER, "BLUSA", true);
-		productoTienda2.agregarTalla("XS",ProductoTiendaUtilidades.randomNumber(1,50));
+		productoTienda2.agregarTalla("XS",10);
 		productoTienda2.agregarTalla("S", ProductoTiendaUtilidades.randomNumber(1,50));
 		productoTienda2.agregarTalla("M", ProductoTiendaUtilidades.randomNumber(1,50));
 		productoTienda2.agregarTalla("L", ProductoTiendaUtilidades.randomNumber(1,50));

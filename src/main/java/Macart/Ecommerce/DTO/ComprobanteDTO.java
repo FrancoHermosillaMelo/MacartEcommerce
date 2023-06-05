@@ -10,7 +10,6 @@ import java.time.LocalDateTime;
 
 public class ComprobanteDTO {
     private long id;
-    private String tipoDeEnvio;
     private LocalDateTime fechaDeComprobante;
     private double montoTotal;
     private CardColor colorTarjeta;
@@ -20,7 +19,6 @@ public class ComprobanteDTO {
     public ComprobanteDTO(Comprobante comprobante) {
 
         this.id = comprobante.getId();
-        this.tipoDeEnvio = comprobante.getTipoDeEnvio();
         this.fechaDeComprobante = comprobante.getFechaDeComprobante();
         this.montoTotal = comprobante.getMontoTotal();
         this.tipoTarjeta = comprobante.getTipoTarjeta();
@@ -29,10 +27,6 @@ public class ComprobanteDTO {
 
     public long getId() {
         return id;
-    }
-
-    public String getTipoDeEnvio() {
-        return tipoDeEnvio;
     }
 
     public LocalDateTime getFechaDeComprobante() {

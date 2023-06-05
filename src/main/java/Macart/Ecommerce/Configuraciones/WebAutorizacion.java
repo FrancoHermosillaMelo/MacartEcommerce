@@ -41,7 +41,9 @@ public class WebAutorizacion {
                         "/api/clientes/comprobantes",
                         "/api/comprobantes",
                         "/api/clientes/autenticar",
-                        "/api/pedidos/carrito").hasAnyAuthority("CLIENTE", "ADMIN")
+                        "/api/pedidos/carrito",
+                        "/api/clientes/pedidosActivados",
+                        "/api/pedidos/{id}").hasAnyAuthority("CLIENTE", "ADMIN")
 
                 .antMatchers(HttpMethod.POST,
                         "/api/clientes",

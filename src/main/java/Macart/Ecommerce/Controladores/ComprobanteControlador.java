@@ -123,7 +123,7 @@ public class ComprobanteControlador {
             return new ResponseEntity<>("Este pedido no le pertenece a su cuenta", HttpStatus.FORBIDDEN);
         }
         if(pedidoSolicitado.isPagado()){
-            return new ResponseEntity<>("Este pedido ya está pago", HttpStatus.FORBIDDEN);
+            return new ResponseEntity<>("No se puede pagar un pedido ya pago", HttpStatus.FORBIDDEN);
         }
         if(pedidoSolicitado.isEliminado()){
             return new ResponseEntity<>("Este pedido está eliminado", HttpStatus.FORBIDDEN);
@@ -155,7 +155,7 @@ public class ComprobanteControlador {
 
                 pedidoSolicitado.setPagado(true);
 
-                Comprobante comprobante = new Comprobante(pedidoSolicitado.getMetodoDeEnvio(),LocalDateTime.now(),pedidoSolicitado.getMontoTotal(),pagarConTarjetaDTO.getType(),pagarConTarjetaDTO.getColor());
+                Comprobante comprobante = new Comprobante(LocalDateTime.now(),pedidoSolicitado.getMontoTotal(),pagarConTarjetaDTO.getType(),pagarConTarjetaDTO.getColor());
                 comprobanteServicio.guardarComprobante(comprobante);
                 clienteDelPedido.agregarComprobantes(comprobante);
                 clienteServicio.guardarCliente(clienteDelPedido);

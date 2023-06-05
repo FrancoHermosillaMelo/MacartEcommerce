@@ -14,11 +14,18 @@ createApp({
 			number4: '',
 			emailClient: '',
 			cliente: '',
+			id: '', //id del pedido
+			pedidoPagar : '', // Pedido que se va a pagar
+			params: '', // Parametros del URLSearchParams
 		};
 	},
 	created() {
+		this.params = new URLSearchParams(location.search)
+        this.id = this.params.get("id")
 		this.cargarDatos();
 		this.cargarCliente();
+		this.cargarPedido();
+		
 	},
 	methods: {
 		createNumberCard() {
@@ -30,10 +37,16 @@ createApp({
 				.get('/api/clientes/pedidos')
 				.then(respuesta => {
 					this.pedidos = respuesta.data;
-					console.log(this.pedidos[0]);
 					this.verificado = response.data.verificado === true;
 				})
 				.catch(error => console.log(error));
+		},
+		cargarPedido(){
+			axios
+				.get(`/api/pedidos/${this.id}`)
+				.then(respuesta =>{
+					this.pedidoPagar = respuesta.data
+				})
 		},
 		cargarCliente() {
 			axios
@@ -55,15 +68,15 @@ createApp({
 				showCancelButton: true,
 				confirmButtonText: 'Confirmar',
 				preConfirm: () => {
-					console.log(this.pedidos[0].montoTotal);
 					return axios
 						.post('/api/comprobantes/pdf', {
+							pedidoId: this.id,
 							type: this.typeCard,
 							color: this.colorCard,
 							number: this.cardNumber,
 							cvv: this.cvv,
 							email: this.cliente.correo,
-							amount: this.pedidos[0].montoTotal,
+							amount: this.pedidoPagar.montoTotal,
 						})
 						.then(response => {
 							Swal.fire({

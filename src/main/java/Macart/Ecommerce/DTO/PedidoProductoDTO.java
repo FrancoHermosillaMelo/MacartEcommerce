@@ -8,6 +8,7 @@ import java.util.Map;
 
 public class PedidoProductoDTO {
     private long id;
+    private long idPedido;
     private Long productoTiendaId;
     private ProductoTiendaDTO productoTienda;
     private Map<String, Integer> tallas =  new HashMap<>();
@@ -24,7 +25,7 @@ public class PedidoProductoDTO {
         return id;
     }
 
-
+    public long getIdPedido() {return idPedido;}
     public Map<String, Integer> getTallas() {
         return tallas;
     }

@@ -42,7 +42,7 @@ createApp({
 					this.clienteIngresadoId = this.clienteIngresado.id;
 					this.pedidos = this.clienteIngresado.pedidos.sort((x, y) => y.id - x.id);
 					this.pagado = this.pedidos.filter(pedido => pedido.pagado == true);
-					this.noPagado = this.pedidos.filter(pedido => pedido.pagado == false);
+					this.noPagado = this.pedidos.filter(pedido => pedido.pagado == false && pedido.eliminado == false);
 					this.direcciones = this.clienteIngresado.direcciones.sort((x, y) => x.id - y.id);
 				})
 				.catch(error => console.log(error));

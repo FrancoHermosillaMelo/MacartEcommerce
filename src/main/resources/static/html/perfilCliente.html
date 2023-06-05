@@ -211,7 +211,7 @@
 									</div>
 								</div>
 							</div>
-							<a href="./pago.html" class="btnDireccion text-center"> Pagar</a>
+							<a :href="'./pago.html?id='+pedido.id" class="btnDireccion text-center"> Pagar</a>
 						</div>
 						<div class="mt-5 mb-5" v-else>
 							<h3>No tienes ningún pedido en proceso.</h3>

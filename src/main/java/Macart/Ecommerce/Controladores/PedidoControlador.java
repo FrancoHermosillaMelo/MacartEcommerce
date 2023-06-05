@@ -40,6 +40,24 @@ public class PedidoControlador {
     public ResponseEntity<Object> obtenerPedidos() {
         return (new ResponseEntity<>(pedidoServicio.obtenerPedidos(), HttpStatus.ACCEPTED));
     }
+    @GetMapping("/api/pedidos/{id}")
+    public ResponseEntity<Object> obtenerPedidoPorId(@PathVariable long id, Authentication authentication){
+        Pedido pedidoSolicitado = pedidoServicio.ObtenerPedidoPorId(id);
+        Cliente cliente = clienteServicio.obtenerClienteAutenticado(authentication);
+        if(!clienteServicio.isAdmin(authentication)){
+            if(pedidoSolicitado == null){
+                return new ResponseEntity<>("El pedido no existe", HttpStatus.FORBIDDEN);
+            }
+            if(pedidoSolicitado.isEliminado()){
+                return new ResponseEntity<>("El pedido está eliminado", HttpStatus.FORBIDDEN);
+            }
+            if(cliente.getPedidos().stream().noneMatch(pedido -> pedido.getId() == pedidoSolicitado.getId())){
+                return new ResponseEntity<>("Este pedido no te pertenece", HttpStatus.FORBIDDEN);
+            }
+            return new ResponseEntity<>(new PedidoDTO(pedidoSolicitado), HttpStatus.ACCEPTED);
+        }
+        return new ResponseEntity<>(new PedidoDTO(pedidoSolicitado), HttpStatus.ACCEPTED);
+    }
 
 
     @GetMapping("/api/clientes/pedidos")
@@ -59,25 +77,12 @@ public class PedidoControlador {
     public ResponseEntity<Object> obtenerPedidosActivados(Authentication authentication){
         Cliente cliente = clienteServicio.obtenerClienteAutenticado(authentication);
         Set<Pedido> pedidosCliente = cliente.getPedidos();
-        Set<PedidoDTO> pedidoClienteDTOS = pedidosCliente.stream().map(pedido -> new PedidoDTO(pedido)).collect(toSet());
+        Set<Pedido> pedidosActivados = cliente.getPedidos().stream().filter(pedido -> !pedido.isEliminado()).collect(toSet());
+        Set<PedidoDTO> pedidoClienteDTOS = pedidosActivados.stream().map(pedido -> new PedidoDTO(pedido)).collect(toSet());
 
         return new ResponseEntity<>(pedidoClienteDTOS, HttpStatus.ACCEPTED);
     }
 
-    @PostMapping("/api/pedidos")
-    public ResponseEntity<Object> crearPedidos(
-            Authentication authentication,
-            @RequestParam String metodoDeEnvio)
-             {
-
-        Cliente cliente = clienteServicio.obtenerClienteAutenticado(authentication);
-
-        Pedido nuevoPedido = new Pedido(LocalDateTime.now(),false , 0,metodoDeEnvio, false);
-        cliente.agregarPedido(nuevoPedido);
-        pedidoServicio.guardarPedido(nuevoPedido);
-
-        return ResponseEntity.status(HttpStatus.CREATED).body("Pedido creado");
-    }
     @PutMapping("/api/pedidos")
     public ResponseEntity<Object> eliminarPedido(Authentication authentication, @RequestParam long idPedido){
         Pedido pedidoEliminar = pedidoServicio.ObtenerPedidoPorId(idPedido);
@@ -85,6 +90,9 @@ public class PedidoControlador {
 
         if(pedidoEliminar == null){
             return new ResponseEntity<>("El pedido a eliminar no existe", HttpStatus.FORBIDDEN);
+        }
+        if(pedidoEliminar.isPagado()){
+            return new ResponseEntity<>("No se puede eliminar un pedido pago", HttpStatus.FORBIDDEN);
         }
         if(cliente == null){
             return new ResponseEntity<>("El cliente no existe", HttpStatus.FORBIDDEN);
@@ -97,41 +105,61 @@ public class PedidoControlador {
 
         return new ResponseEntity<>("Eliminado correctamente", HttpStatus.ACCEPTED);
     }
-    @PostMapping("/api/pedidos/carrito")
-    public  ResponseEntity<Object> añadirCarrito(Authentication authentication, @RequestBody CarritoDTO pedidoProductoDTO){
+    @PostMapping("/api/pedidos")
+    public ResponseEntity<Object> crearPedidos(
+            Authentication authentication)
+    {
 
         Cliente cliente = clienteServicio.obtenerClienteAutenticado(authentication);
-        Pedido pedido = cliente.getPedidos().stream().filter(pedidos -> !pedidos.isPagado()).collect(toList()).get(0);
-        ProductoTienda producto = productoTiendaServicio.obtenerProductoPorId(pedidoProductoDTO.getId());
-        Map<String, Integer> tallas = pedidoProductoDTO.getTallas();
+
+        Pedido nuevoPedido = new Pedido(LocalDateTime.now(),false , 0, false);
+        cliente.agregarPedido(nuevoPedido);
+        pedidoServicio.guardarPedido(nuevoPedido);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(nuevoPedido.getId());
+    }
+    @PostMapping("/api/pedidos/carrito")
+    public  ResponseEntity<Object> añadirCarrito(Authentication authentication, @RequestBody CarritoDTO carritoDTO){
+
+        Cliente cliente = clienteServicio.obtenerClienteAutenticado(authentication);
+        Pedido pedido = pedidoServicio.ObtenerPedidoPorId(carritoDTO.getIdPedido());
+        ProductoTienda producto = productoTiendaServicio.obtenerProductoPorId(carritoDTO.getIdProducto());
+        Map<String, Integer> tallas = carritoDTO.getTallas();
 
         PedidoProducto pedidoProducto = new PedidoProducto();
         producto.agregarPedidoProducto(pedidoProducto);
         pedido.agregarPedidoProducto(pedidoProducto);
 
         Map<String, Integer> tallasProducto = pedidoProducto.getTallas();
-        int cantidad = 0;
+        if(!producto.isActivo()){
+            return new ResponseEntity<>("Este producto no está disponible", HttpStatus.FORBIDDEN);
+        }
+        if(pedido.isEliminado()){
+            return new ResponseEntity<>("El pedido está eliminado", HttpStatus.FORBIDDEN);
+        }
+        if(pedido.isPagado()){
+            return new ResponseEntity<>("El pedido está pago", HttpStatus.FORBIDDEN);
+        }
+        if(tallas.isEmpty()){
+            return new ResponseEntity<>("Las tallas no pueden estar vacias", HttpStatus.FORBIDDEN);
+        }
 
         for (Map.Entry<String, Integer> entry : tallas.entrySet()) {
             if (!entry.getKey().equalsIgnoreCase("XS") && !entry.getKey().equalsIgnoreCase("S") && !entry.getKey().equalsIgnoreCase("M") &&
                     !entry.getKey().equalsIgnoreCase("L") && !entry.getKey().equalsIgnoreCase("XL")) {
                 return new ResponseEntity<>("Las tallas superiores disponibles son : 'XS','S','M','L','XL'", HttpStatus.FORBIDDEN);
             }
-            if((entry.getValue() < 0)){
+            if((entry.getValue() <= 0)){
                 return new ResponseEntity<>("La cantidad de stock no puede ser negativa", HttpStatus.FORBIDDEN);
             }
-
             tallasProducto.put(entry.getKey(), entry.getValue());
-            cantidad = entry.getValue();
-            pedidoProductoServicio.guardarPedidoProducto(pedidoProducto);
-            pedido.setMontoTotal(pedido.getMontoTotal() + pedidoProducto.getProductoTienda().getPrecio()*cantidad);
-            pedidoServicio.guardarPedido(pedido);
+            productoTiendaServicio.guardarProducto(producto);
         }
+        pedido.setMontoTotal(carritoDTO.getMontoTotal());
+        pedidoServicio.guardarPedido(pedido);
+        pedidoProductoServicio.guardarPedidoProducto(pedidoProducto);
 
-
-
-
-        return ResponseEntity.status(HttpStatus.CREATED).body("Producto tienda");
+        return ResponseEntity.status(HttpStatus.CREATED).body("Se añadieron correctamente los productos al pedido");
     }
 
 
