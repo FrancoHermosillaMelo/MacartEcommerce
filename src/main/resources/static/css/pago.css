@@ -127,18 +127,14 @@ a {
 }
 
 /*FIN NAVBAR*/
-main {
-	background-image: url(../img/fondoPerfil.jpg);
-	min-height: 160vh;
-	background-position: center;
-	background-repeat: no-repeat;
-	background-size: cover;
-}
 
 /*Cards*/
 .cardContainer {
-	width: 100%;
-	height: 16rem;
+	width: 25%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
 }
 
 .bodyCards {
@@ -418,18 +414,43 @@ main {
 }
 
 /*glassmorphism*/
-.glassmorphism {
-	background: rgb(41 40 40 / 67%);
-	box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
-	backdrop-filter: blur(1.5px);
-	-webkit-backdrop-filter: blur(1.5px);
-	border-radius: 10px;
-	border: 1px solid rgba(255, 255, 255, 0.18);
-	height: 90vh;
-	width: 50vw;
-	margin-bottom: 5rem;
-}
 
+main {
+	min-width: 98vw;
+	min-height: 80vh;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+}
+main h1 {
+	margin-top: 1rem;
+	color: var(--color-negro);
+	text-align: center;
+	line-height: 1.5;
+	font-size: 50px;
+	font-weight: 800;
+	text-transform: uppercase;
+	letter-spacing: 1.5px;
+}
+.glassmorphism {
+	background: url(../img/fondoSN.jpg);
+	opacity: 0.8;
+	background-position: center;
+	background-repeat: no-repeat;
+	background-size: cover;
+	box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+	border-radius: 10px;
+	border: 1px solid rgba(0, 0, 0, 0.18);
+	height: 70vh;
+	width: 30vw;
+}
+.imgPago img {
+	width: 230px;
+	height: 280px;
+	margin-top: -1rem;
+	border-bottom: var(--color-gris) 1px solid;
+	filter: drop-shadow(8px 5px 4px #0000003c);
+}
 form {
 	width: 90%;
 }
@@ -441,7 +462,14 @@ form {
 .formRegister {
 	width: 90%;
 }
-
+form label {
+	text-align: center;
+	color: var(--color-negro);
+}
+.formPago {
+	width: 21.5rem !important;
+	background: var(--color-blanco) !important;
+}
 .btn-register {
 	background-color: #b5844347;
 	border: 1px solid white;
@@ -466,13 +494,6 @@ form {
 	border: 1px solid snow;
 }
 
-@media only screen and (max-width: 800px) {
-	.glassmorphism {
-		width: 95vw;
-		height: 100vh;
-	}
-}
-
 /*FOOTER*/
 ul {
 	padding: 0;
@@ -490,6 +511,7 @@ ul {
 	justify-content: center;
 	align-items: center;
 	flex-direction: column;
+	margin-top: 8rem;
 }
 
 .logo-footer {
@@ -611,107 +633,6 @@ ul {
 	color: var(--color-blanco);
 }
 
-/* MODAL */
-
-.container {
-	position: absolute;
-	top: 50%;
-	left: 50%;
-	transform: translate(-50%, -50%);
-	max-width: 430px;
-	width: 100%;
-	background: #ffffff;
-	border-radius: 7px;
-	box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
-}
-
-.container .registration {
-	display: none;
-}
-
-#check:checked ~ .registration {
-	display: block;
-}
-
-#check:checked ~ .login {
-	display: none;
-}
-
-#check {
-	display: none;
-}
-
-.container .form {
-	padding: 2rem;
-}
-
-.form header {
-	font-size: 2rem;
-	font-weight: 500;
-	text-align: center;
-	margin-bottom: 1.5rem;
-}
-
-.form input {
-	height: 60px;
-	width: 100%;
-	padding: 0 15px;
-	font-size: 17px;
-	margin-bottom: 1.3rem;
-	border: 1px solid #ddd;
-	border-radius: 6px;
-	outline: none;
-}
-
-.form input:focus {
-	box-shadow: 0 1px 0 rgba(0, 0, 0, 0.2);
-}
-
-.form a {
-	font-size: 16px;
-	color: var(--color-grisOscuro);
-	text-decoration: none;
-}
-
-.form a:hover {
-	text-decoration: underline;
-}
-
-.form input.button {
-	color: #fff;
-	background: var(--color-negro);
-	font-size: 1.2rem;
-	font-weight: 500;
-	letter-spacing: 1px;
-	margin-top: 1.7rem;
-	cursor: pointer;
-	transition: 0.4s;
-}
-
-.form input.button:hover {
-	background: var(--color-negro);
-	transform: scale(0.9, 0.9);
-}
-
-.signup {
-	font-size: 17px;
-	text-align: center;
-}
-
-.signup label {
-	color: var(--color-negro);
-	cursor: pointer;
-}
-
-.signup label:hover {
-	text-decoration: underline;
-}
-
-/* FIN MODAL */
-.swal2-confirm {
-	margin-right: 10px !important;
-}
-
 @keyframes animateWave {
 	0% {
 		background-position-x: 1000px;
@@ -754,112 +675,54 @@ ul {
 	.hover-a {
 		margin: auto !important;
 	}
+}
 
-	/*NAV*/
-
-	/*GENERO*/
-	.div-genero {
-		flex-direction: column !important;
+@media only screen and (max-width: 1235px) {
+	.glassmorphism {
+		width: 50vw;
 	}
-
-	.div-mujer {
-		width: auto;
-		position: relative;
+	.imgPago img {
+		width: 200px;
+		height: 240px;
 	}
+}
 
-	.div-hombre {
-		width: auto;
-		position: relative;
+@media only screen and (max-width: 880px) {
+	.glassmorphism {
+		width: 60vw;
+		height: 85vh;
 	}
-
-	.tienda-mujer {
-		position: absolute;
-		bottom: 0;
-		right: 30%;
-		padding: 0 !important;
+	.imgPago img {
+		display: none;
 	}
-
-	.tienda-hombre {
-		position: absolute;
-		bottom: 0;
-		right: 30%;
-		padding: 0 !important;
-	}
-
-	.texto-genero {
-		text-align: center !important;
-	}
-
-	/*GENERO*/
-
-	/* CARRUSEL */
-	swiper-container {
-		width: 100%;
-		height: 100%;
-	}
-
-	swiper-slide {
-		text-align: center;
-		font-size: 18px;
-		background: #fff;
-		display: flex;
+	.pagoContainer {
+		flex-direction: column;
 		justify-content: center;
 		align-items: center;
 	}
-
-	swiper-slide img {
-		display: block;
-		width: 100%;
-		height: 100%;
-		object-fit: cover;
+	.cardContainer {
+		padding: 0 !important;
 	}
-
-	.swiper-button-next,
-	.swiper-button-prev {
-		color: black, black !important;
+}
+@media only screen and (max-width: 650px) {
+	.glassmorphism {
+		width: 90vw;
 	}
-
-	/*INFO*/
-	.div-info {
-		padding-left: 65px !important;
+	main h1 {
+		font-size: 35px;
 	}
+}
 
-	.div-info > div {
-		padding-bottom: 20px;
+@media only screen and (max-width: 405px) {
+	.glassmorphism {
+		width: 90vw;
 	}
-
-	.elementos {
-		max-height: 20em;
+	.formPago {
+		width: 18rem !important;
 	}
-
-	.elementos > img {
-		width: 300px !important;
-	}
-
-	.descripcion {
-		width: 60vw !important;
-	}
-
-	.div-ropa {
-		padding-bottom: 50px !important;
-	}
-
-	/* CARRITO */
-	#carrito {
-		min-width: 22rem !important;
-	}
-
-	.div-value {
-		flex-direction: column !important;
-		justify-content: start !important;
-		align-content: start !important;
-	}
-
-	.div-value > a {
-		margin: 0 !important;
-	}
-
-	.info {
-		width: auto !important;
+}
+@media only screen and (max-width: 350px) {
+	.formPago {
+		width: 15rem !important;
 	}
 }

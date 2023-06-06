@@ -264,7 +264,7 @@
 								<div class="row">
 									<div>
 										<div class="div-card d-flex justify-content-evenly flex-wrap">
-											<template v-for="producto of productosFiltrados">
+											<template v-if="productosFiltrados.length > 0" v-for="producto of productosFiltrados">
 												<div class="card div-1">
 													<img :src="producto.imagenesUrl[0]" class="card-img-top" />
 													<div class="div-2">
@@ -304,6 +304,9 @@
 														</div>
 													</div>
 												</div>
+											</template>
+											<template v-else>
+												<h2 class="text-center">No se ha encontrado ningún producto.</h2>
 											</template>
 										</div>
 									</div>
@@ -469,7 +472,7 @@
 								</div>
 							</div>
 
-							<div class="div-info-madal d-flex flex-column justify-content-between mt-3 mx-2">
+							<div class="div-info-madal d-flex flex-column gap-5 mt-3 mx-2">
 								<div>
 									<h5 class="text-muted fs-2">{{productoPorId.subCategoria}}</h5>
 									<h5 class="fs-2">{{productoPorId.nombre}}</h5>

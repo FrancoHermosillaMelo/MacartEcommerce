@@ -813,7 +813,7 @@ ul {
 	}
 	/* CARRITO */
 	#carrito {
-		min-width: 22rem !important;
+		min-width: 20rem !important;
 	}
 	.div-value {
 		flex-direction: column !important;

@@ -478,5 +478,8 @@ footer .wave#wave4 {
 	.hover-a {
 		margin: auto !important;
 	}
+	.boton-nav {
+		margin-top: 10px;
+	}
 	/*NAV*/
 }

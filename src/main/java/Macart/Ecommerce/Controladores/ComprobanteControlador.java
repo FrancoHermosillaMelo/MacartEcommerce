@@ -16,6 +16,8 @@ import Macart.Ecommerce.Servicios.PedidoServicio;
 import Macart.Ecommerce.Servicios.ProductoTiendaServicio;
 import Macart.Ecommerce.Utilidades.ComprobanteUtilidades;
 import com.itextpdf.text.*;
+import com.itextpdf.text.pdf.PdfPCell;
+import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.neo4j.Neo4jProperties;
@@ -32,8 +34,11 @@ import javax.mail.internet.MimeMessage;
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.text.ParseException;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -118,14 +123,16 @@ public class ComprobanteControlador {
         Cliente clienteDelPedido = clienteServicio.obtenerClienteAutenticado(authentication);
         Pedido pedidoSolicitado = pedidoServicio.ObtenerPedidoPorId(pagarConTarjetaDTO.getPedidoId());
         Set<PedidoProducto> pedidoProductos = pedidoSolicitado.getPedidoProductos();
+        List<Pedido> pedidosPagados = clienteDelPedido.getPedidos().stream().filter(pedidoPagada -> !pedidoPagada.isPagado()).collect(toList());
+        Pedido pedido = pedidosPagados.get(0);
 
-        if(clienteDelPedido.getPedidos().stream().noneMatch(pedido -> pedido.getId() == pedidoSolicitado.getId())){
+        if (clienteDelPedido.getPedidos().stream().noneMatch(pedidos -> pedido.getId() == pedidoSolicitado.getId())) {
             return new ResponseEntity<>("Este pedido no le pertenece a su cuenta", HttpStatus.FORBIDDEN);
         }
-        if(pedidoSolicitado.isPagado()){
+        if (pedidoSolicitado.isPagado()) {
             return new ResponseEntity<>("No se puede pagar un pedido ya pago", HttpStatus.FORBIDDEN);
         }
-        if(pedidoSolicitado.isEliminado()){
+        if (pedidoSolicitado.isEliminado()) {
             return new ResponseEntity<>("Este pedido está eliminado", HttpStatus.FORBIDDEN);
         }
 
@@ -155,7 +162,7 @@ public class ComprobanteControlador {
 
                 pedidoSolicitado.setPagado(true);
 
-                Comprobante comprobante = new Comprobante(LocalDateTime.now(),pedidoSolicitado.getMontoTotal(),pagarConTarjetaDTO.getType(),pagarConTarjetaDTO.getColor());
+                Comprobante comprobante = new Comprobante(LocalDateTime.now(), pedidoSolicitado.getMontoTotal(), pagarConTarjetaDTO.getType(), pagarConTarjetaDTO.getColor());
                 comprobanteServicio.guardarComprobante(comprobante);
                 clienteDelPedido.agregarComprobantes(comprobante);
                 clienteServicio.guardarCliente(clienteDelPedido);
@@ -177,57 +184,172 @@ public class ComprobanteControlador {
                 }
 
 
-                    // Generar el PDF del comprobante
-                    ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-                    Document document = new Document();
-                    PdfWriter.getInstance(document, outputStream);
-                    document.open();
+                // Generar el PDF del comprobante
+                ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+                Document document = new Document();
+                PdfWriter.getInstance(document, outputStream);
+                document.open();
 
 
-                    Image logo = Image.getInstance("https://res.cloudinary.com/dtis6pqyq/image/upload/v1685839439/Black_Logo_bowo2z.png");
-                    logo.scaleToFit(120, 120);
-                    document.add(logo);
+                Image logo = Image.getInstance("https://res.cloudinary.com/dtis6pqyq/image/upload/v1685839439/Black_Logo_bowo2z.png");
+                logo.scaleToFit(120, 120);
+                document.add(logo);
 
-                    Font fontTitle = new Font(Font.FontFamily.HELVETICA, 25, Font.BOLD);
-                    Paragraph title = new Paragraph("Señor/a: " + clienteDelPedido.getPrimerNombre() + " " +
-                            clienteDelPedido.getSegundoNombre() + " " +
-                            clienteDelPedido.getPrimerApellido() + " " +
-                            clienteDelPedido.getSegundoApellido());
-                    title.setAlignment(Paragraph.ALIGN_CENTER);
-                    title.setSpacingBefore(20);
-                    title.setSpacingAfter(20);
-                    document.add(title);
-                    document.close();
+                Font fontTitle = new Font(Font.FontFamily.HELVETICA, 25, Font.BOLD);
 
-                    // Enviar el PDF por correo electrónico al cliente y al administrador
-                    String subject = "Comprobante de compra";
-                    String body = "Adjunto encontrarás el comprobante de tu compra.";
+                String nombreCompleto = clienteDelPedido.getPrimerNombre() + " " +
+                        (clienteDelPedido.getSegundoNombre() != null ? clienteDelPedido.getSegundoNombre() + " " : "") +
+                        clienteDelPedido.getPrimerApellido() + " " +
+                        (clienteDelPedido.getSegundoApellido() != null ? clienteDelPedido.getSegundoApellido() : "");
+                Paragraph title = new Paragraph("Señor/a: " + nombreCompleto);
+                title.setAlignment(Paragraph.ALIGN_CENTER);
+                title.setSpacingBefore(20);
+                title.setSpacingAfter(40);
+                document.add(title);
 
-                    String clienteEmail = clienteDelPedido.getCorreo();
-                    String adminEmail = "carlosandresgoo@gmail.com"; // Reemplaza con el correo del administrador
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+                String fechaActual = LocalDateTime.now().format(formatter);
 
-                    enviarCorreoImplementacion.enviarCorreoConPDF(clienteEmail, subject, body, outputStream.toByteArray());
-                    enviarCorreoImplementacion.enviarCorreoConPDF(adminEmail, subject, body, outputStream.toByteArray());
+                Paragraph mensaje = new Paragraph("\n" + "¡Aquí tienes tus productos seleccionados!   " + fechaActual);
+                mensaje.setAlignment(Element.ALIGN_CENTER);
+                mensaje.setSpacingAfter(20f);
+                document.add(mensaje);
 
+                Paragraph espacio = new Paragraph(" ");
+                espacio.setSpacingAfter(40f);
+                document.add(espacio);
 
+                PdfPTable tablaPedidos = new PdfPTable(3);
+                tablaPedidos.setWidthPercentage(100);
+                tablaPedidos.setHorizontalAlignment(Element.ALIGN_CENTER);
+                tablaPedidos.getDefaultCell().setBorder(Rectangle.NO_BORDER);
 
-                    return new ResponseEntity<>("Pago aceptado", HttpStatus.CREATED);
+                Font fontNegrita = new Font(Font.FontFamily.HELVETICA, 12, Font.BOLD);
 
+                PdfPCell celdaProducto = new PdfPCell(new Phrase("Producto", fontNegrita));
+                celdaProducto.setBorder(Rectangle.BOX);
+                celdaProducto.setHorizontalAlignment(Element.ALIGN_CENTER);
+                celdaProducto.setVerticalAlignment(Element.ALIGN_MIDDLE);
+                celdaProducto.setFixedHeight(60);
+                tablaPedidos.addCell(celdaProducto);
 
-                } else {
-                    connection.getInputStream().close();
-                    connection.disconnect();
+                PdfPCell celdaCantidad = new PdfPCell(new Phrase("Cantidad", fontNegrita));
+                celdaCantidad.setBorder(Rectangle.BOX);
+                celdaCantidad.setHorizontalAlignment(Element.ALIGN_CENTER);
+                celdaCantidad.setVerticalAlignment(Element.ALIGN_MIDDLE);
+                celdaCantidad.setFixedHeight(60);
+                tablaPedidos.addCell(celdaCantidad);
 
-                    return new ResponseEntity<>("Pago rechazado", HttpStatus.FORBIDDEN);
+                PdfPCell celdaSubtotal = new PdfPCell(new Phrase("PrecioTotal", fontNegrita));
+                celdaSubtotal.setBorder(Rectangle.BOX);
+                celdaSubtotal.setHorizontalAlignment(Element.ALIGN_CENTER);
+                celdaSubtotal.setVerticalAlignment(Element.ALIGN_MIDDLE);
+                celdaSubtotal.setFixedHeight(60);
+                tablaPedidos.addCell(celdaSubtotal);
+
+                tablaPedidos.setHeaderRows(1);
+
+                for (PedidoProducto pedidoProducto : pedido.getPedidoProductos()) {
+                    PdfPCell cellProducto = new PdfPCell(new Paragraph(pedidoProducto.getProductoTienda().getNombre()));
+                    cellProducto.setHorizontalAlignment(Element.ALIGN_CENTER);
+                    cellProducto.setVerticalAlignment(Element.ALIGN_MIDDLE);
+                    cellProducto.setFixedHeight(50);
+                    cellProducto.setBorder(Rectangle.BOX);
+                    tablaPedidos.addCell(cellProducto);
+
+                    Map<String, Integer> tallas = pedidoProducto.getTallas();
+                    PdfPCell cellCantidad = new PdfPCell();
+                    cellCantidad.setHorizontalAlignment(Element.ALIGN_CENTER);
+                    cellCantidad.setVerticalAlignment(Element.ALIGN_MIDDLE);
+                    cellCantidad.setFixedHeight(50);
+                    cellCantidad.setBorder(Rectangle.BOX); // Cambiado de Rectangle.NO_BORDER a Rectangle.BOX
+
+                    Paragraph paragraph = new Paragraph();
+                    int totalCantidad = 0;
+                    float totalPrecio = 0;
+
+                    for (Map.Entry<String, Integer> entry : tallas.entrySet()) {
+                        String talla = entry.getKey();
+                        int cantidad = entry.getValue();
+
+                        paragraph.add(new Chunk(talla + " x " + cantidad + " | "));
+                        totalCantidad += cantidad;
+                        totalPrecio += pedidoProducto.getProductoTienda().getPrecio() * cantidad;
+                    }
+
+                    paragraph.add(new Chunk("Total: " + totalCantidad));
+
+                    cellCantidad.addElement(paragraph);
+                    tablaPedidos.addCell(cellCantidad);
+
+                    PdfPCell cellSubtotal = new PdfPCell();
+                    cellSubtotal.setHorizontalAlignment(Element.ALIGN_CENTER);
+                    cellSubtotal.setVerticalAlignment(Element.ALIGN_MIDDLE);
+                    cellSubtotal.setFixedHeight(50);
+                    cellSubtotal.setBorder(Rectangle.BOX);
+
+                    DecimalFormatSymbols symbols = new DecimalFormatSymbols();
+                    symbols.setGroupingSeparator(',');
+                    DecimalFormat decimalFormat = new DecimalFormat("#,##0.00", symbols);
+                    String formattedSubtotal = "$ " + decimalFormat.format(totalPrecio);
+
+                    cellSubtotal.addElement(new Paragraph(formattedSubtotal));
+                    cellSubtotal.setHorizontalAlignment(Element.ALIGN_CENTER);
+                    cellSubtotal.setVerticalAlignment(Element.ALIGN_MIDDLE);
+                    tablaPedidos.addCell(cellSubtotal);
                 }
+
+                document.add(tablaPedidos);
+
+
+                Paragraph pago = new Paragraph("Monto total  pagado:  $" + pedido.getMontoTotal() + ".");
+                pago.setAlignment(Element.ALIGN_CENTER);
+                pago.setSpacingAfter(20f);
+                document.add(pago);
+
+
+                Paragraph espacio2 = new Paragraph(" ");
+                espacio2.setSpacingAfter(40f);
+                document.add(espacio2);
+
+                Paragraph envio = new Paragraph("Queremos informarte que estamos procesando tu pedido con entusiasmo. Estimamos que tu pedido llegará a tu domicilio en un plazo de 5 días hábiles.");
+                envio.setAlignment(Element.ALIGN_CENTER);
+                envio.setSpacingAfter(20f);
+                document.add(envio);
+
+                Paragraph agradecimiento = new Paragraph("¡Gracias por tu compra! Valoramos tu apoyo y confianza.");
+                agradecimiento.setAlignment(Element.ALIGN_CENTER);
+                agradecimiento.setSpacingAfter(20f);
+                document.add(agradecimiento);
+
+                document.close();
+
+
+                String subject = "Comprobante de compra";
+                String body = "Adjunto encontrarás el comprobante de tu compra.";
+
+                String clienteEmail = clienteDelPedido.getCorreo();
+                String adminEmail = "carlosandresgoo@gmail.com"; // Reemplaza con el correo del administrador
+
+                enviarCorreoImplementacion.enviarCorreoConPDF(clienteEmail, subject, body, outputStream.toByteArray());
+                enviarCorreoImplementacion.enviarCorreoConPDF(adminEmail, subject, body, outputStream.toByteArray());
+
+
+                return new ResponseEntity<>("Pago aceptado", HttpStatus.CREATED);
+
+
+            } else {
+                connection.getInputStream().close();
+                connection.disconnect();
+
+                return new ResponseEntity<>("Pago rechazado", HttpStatus.FORBIDDEN);
+            }
 
         } catch (Exception err) {
             err.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al realizar el pago");
         }
-
     }
-
 }
 
 

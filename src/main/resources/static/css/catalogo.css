@@ -689,5 +689,21 @@ ul {
 	.hover-a {
 		margin: auto !important;
 	}
-	/*NAV*/
+	/* FIN NAV*/
+
+	/* CARRITO */
+	#carrito {
+		min-width: 20rem !important;
+	}
+	.div-value {
+		flex-direction: column !important;
+		justify-content: start !important;
+		align-content: start !important;
+	}
+	.div-value > a {
+		margin: 0 !important;
+	}
+	.info {
+		width: auto !important;
+	}
 }

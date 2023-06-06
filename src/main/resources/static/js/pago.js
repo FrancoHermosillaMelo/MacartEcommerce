@@ -15,17 +15,16 @@ createApp({
 			emailClient: '',
 			cliente: '',
 			id: '', //id del pedido
-			pedidoPagar : '', // Pedido que se va a pagar
+			pedidoPagar: '', // Pedido que se va a pagar
 			params: '', // Parametros del URLSearchParams
 		};
 	},
 	created() {
-		this.params = new URLSearchParams(location.search)
-        this.id = this.params.get("id")
+		this.params = new URLSearchParams(location.search);
+		this.id = this.params.get('id');
 		this.cargarDatos();
 		this.cargarCliente();
 		this.cargarPedido();
-		
 	},
 	methods: {
 		createNumberCard() {
@@ -41,12 +40,10 @@ createApp({
 				})
 				.catch(error => console.log(error));
 		},
-		cargarPedido(){
-			axios
-				.get(`/api/pedidos/${this.id}`)
-				.then(respuesta =>{
-					this.pedidoPagar = respuesta.data
-				})
+		cargarPedido() {
+			axios.get(`/api/pedidos/${this.id}`).then(respuesta => {
+				this.pedidoPagar = respuesta.data;
+			});
 		},
 		cargarCliente() {
 			axios
@@ -68,6 +65,14 @@ createApp({
 				showCancelButton: true,
 				confirmButtonText: 'Confirmar',
 				preConfirm: () => {
+					Swal.fire({
+						title: 'Realizando pago, por favor espere',
+						allowEscapeKey: false,
+						allowOutsideClick: false,
+						didOpen: () => {
+							Swal.showLoading();
+						},
+					});
 					return axios
 						.post('/api/comprobantes/pdf', {
 							pedidoId: this.id,
@@ -111,7 +116,7 @@ createApp({
 					return axios
 						.post('/api/logout')
 						.then(response => {
-							this.carrito = []
+							this.carrito = [];
 							window.location.href = '/index.html';
 						})
 						.catch(error =>

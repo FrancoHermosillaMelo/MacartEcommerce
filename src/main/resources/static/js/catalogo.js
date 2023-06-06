@@ -31,7 +31,7 @@ createApp({
 			verificado: false,
 			precioDesde: 0,
 			precioHasta: 300000,
-			pedidoId: "", // ID DEL PEDIDO UNA VEZ CREADO
+			pedidoId: '', // ID DEL PEDIDO UNA VEZ CREADO
 			montoTotalPedido: 0, // MONTO TOTAL DEL PEDIDO
 		};
 	},
@@ -39,7 +39,7 @@ createApp({
 		// this.roles();
 		this.data();
 		this.totalProductos();
-		this.carrito=JSON.parse(localStorage.getItem("carrito")) || []
+		this.carrito = JSON.parse(localStorage.getItem('carrito')) || [];
 	},
 	mounted() {
 		this.roles();
@@ -95,24 +95,21 @@ createApp({
 					for (const key in this.talleSeleccionado) {
 						if (!key.includes(item.id + key.slice(1)) && item.id.toString().length === 1) {
 							delete this.talleSeleccionado[key];
-						 } else if(!key.includes(item.id + key.slice(2)) && item.id.toString().length === 2){
-						 	delete this.talleSeleccionado[key];
+						} else if (!key.includes(item.id + key.slice(2)) && item.id.toString().length === 2) {
+							delete this.talleSeleccionado[key];
 						}
 					}
 					let talles = Object.keys(this.talleSeleccionado);
 					talles.map(talle => {
-						if(item.id.toString().length === 1){
+						if (item.id.toString().length === 1) {
 							let nuevoTalle = talle.slice(1);
 							delete this.talleSeleccionado[talle];
 							this.talleSeleccionado[nuevoTalle] = 1;
-						}
-						else if(item.id.toString().length === 2){
+						} else if (item.id.toString().length === 2) {
 							let nuevoTalle = talle.slice(2);
 							delete this.talleSeleccionado[talle];
 							this.talleSeleccionado[nuevoTalle] = 1;
 						}
-
-						
 					});
 					if (!this.productosRepetidos(item.id)) {
 						if (!Object.keys(this.talleSeleccionado).length == 0) {
@@ -121,8 +118,8 @@ createApp({
 								className: 'info',
 								duration: 3000,
 								offset: {
-									x: '5em', // horizontal axis - can be a number or a string indicating unity. eg: '2em'
-									y: '42em', // vertical axis - can be a number or a string indicating unity. eg: '2em'
+									x: '0em', // horizontal axis - can be a number or a string indicating unity. eg: '2em'
+									y: '40em', // vertical axis - can be a number or a string indicating unity. eg: '2em'
 								},
 								style: {
 									background: '#212529',
@@ -142,8 +139,8 @@ createApp({
 								className: 'info',
 								duration: 3000,
 								offset: {
-									x: '5em', // horizontal axis - can be a number or a string indicating unity. eg: '2em'
-									y: '42em', // vertical axis - can be a number or a string indicating unity. eg: '2em'
+									x: '0em', // horizontal axis - can be a number or a string indicating unity. eg: '2em'
+									y: '40em', // vertical axis - can be a number or a string indicating unity. eg: '2em'
 								},
 								style: {
 									background: '#212529',
@@ -156,8 +153,8 @@ createApp({
 							className: 'info',
 							duration: 3000,
 							offset: {
-								x: '5em', // horizontal axis - can be a number or a string indicating unity. eg: '2em'
-								y: '42em', // vertical axis - can be a number or a string indicating unity. eg: '2em'
+								x: '0em', // horizontal axis - can be a number or a string indicating unity. eg: '2em'
+								y: '40em', // vertical axis - can be a number or a string indicating unity. eg: '2em'
 							},
 							style: {
 								background: '#212529',
@@ -180,8 +177,8 @@ createApp({
 					className: 'info',
 					duration: 3000,
 					offset: {
-						x: '5em', // horizontal axis - can be a number or a string indicating unity. eg: '2em'
-						y: '42em', // vertical axis - can be a number or a string indicating unity. eg: '2em'
+						x: '0em', // horizontal axis - can be a number or a string indicating unity. eg: '2em'
+						y: '40em', // vertical axis - can be a number or a string indicating unity. eg: '2em'
 					},
 					style: {
 						background: '#212529',
@@ -203,8 +200,8 @@ createApp({
 				className: 'info',
 				duration: 3000,
 				offset: {
-					x: '5em', // horizontal axis - can be a number or a string indicating unity. eg: '2em'
-					y: '42em', // vertical axis - can be a number or a string indicating unity. eg: '2em'
+					x: '0em', // horizontal axis - can be a number or a string indicating unity. eg: '2em'
+					y: '40em', // vertical axis - can be a number or a string indicating unity. eg: '2em'
 				},
 				style: {
 					background: '#212529',
@@ -232,12 +229,20 @@ createApp({
 				.catch(error =>
 					Swal.fire({
 						icon: 'error',
-						text: "El correo o la contraseña son incorrectas",
+						text: 'El correo o la contraseña son incorrectas',
 						confirmButtonColor: '#7c601893',
 					})
 				);
 		},
 		register() {
+			Swal.fire({
+				title: 'Validando datos',
+				allowEscapeKey: false,
+				allowOutsideClick: false,
+				didOpen: () => {
+					Swal.showLoading();
+				},
+			});
 			axios
 				.post(
 					'/api/clientes',
@@ -270,7 +275,7 @@ createApp({
 				);
 		},
 		confirmarPedido() {
-			if(this.carrito.length == 0){
+			if (this.carrito.length == 0) {
 				Toastify({
 					text: `El carrito está vacio`,
 					className: 'info',
@@ -283,7 +288,7 @@ createApp({
 						background: '#212529',
 					},
 				}).showToast();
-			}else{
+			} else {
 				Swal.fire({
 					icon: 'info',
 					title: '¿Deseas crear este pedido?',
@@ -295,26 +300,25 @@ createApp({
 					preConfirm: login => {
 						return axios
 							.post('/api/pedidos')
-							.then((response) => {
-								this.pedidoId = response.data
-								this.carrito.map(producto =>{
-									axios
-									.post('/api/pedidos/carrito',{
+							.then(response => {
+								this.pedidoId = response.data;
+								this.carrito.map(producto => {
+									axios.post('/api/pedidos/carrito', {
 										idPedido: this.pedidoId,
 										idProducto: producto.id,
 										tallas: producto.tallas,
-										montoTotal : this.montoTotalPedido
-									})
-								})
+										montoTotal: this.montoTotalPedido,
+									});
+								});
 								Swal.fire({
 									icon: 'success',
 									text: 'Pedido creado con exito',
 									showConfirmButton: false,
 									timer: 3000,
 								}).then(() => {
-									this.carrito = []
+									this.carrito = [];
 									window.location.href = '/html/perfilCliente.html';
-								})
+								});
 							})
 							.catch(error =>
 								Swal.fire({
@@ -352,7 +356,7 @@ createApp({
 					return axios
 						.post('/api/logout')
 						.then(response => {
-							this.carrito = []
+							this.carrito = [];
 							window.location.href = '/index.html';
 						})
 						.catch(error =>
@@ -402,9 +406,9 @@ createApp({
 
 			this.productosFiltrados = filtroPorPrecio;
 		},
-		localStorageCarrito(){
-            localStorage.setItem("carrito", JSON.stringify(this.carrito))
-        },
+		localStorageCarrito() {
+			localStorage.setItem('carrito', JSON.stringify(this.carrito));
+		},
 	},
 }).mount('#app');
 

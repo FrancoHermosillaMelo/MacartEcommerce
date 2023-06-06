@@ -391,4 +391,17 @@ ul {
 		padding-top: 20px !important;
 		padding-bottom: 0 !important;
 	}
+	/*NAV*/
+	.div-iconos {
+		flex-direction: row !important;
+		justify-content: space-evenly !important;
+	}
+
+	ul {
+		padding: 0 !important;
+	}
+	.hover-a {
+		margin: auto !important;
+	}
+	/*NAV*/
 }

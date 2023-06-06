@@ -340,9 +340,6 @@ footer .wave#wave4 {
 /*FIN FOOTER*/
 
 /*NAVBAR*/
-.swal2-confirm {
-	margin-right: 10px !important;
-}
 .activo {
 	border-bottom: 2px solid var(--color-rosado) !important;
 }
@@ -361,6 +358,9 @@ footer .wave#wave4 {
 .texto-nav {
 	font-size: 20px !important;
 	margin-left: 5px !important;
+}
+.hover-a {
+	max-width: fit-content;
 }
 .hover-a:hover {
 	border-bottom: 2px solid var(--color-rosado) !important;
@@ -385,6 +385,11 @@ footer .wave#wave4 {
 }
 .boton-nav:hover {
 	transform: scale(0.9, 0.9);
+}
+.texto-carrito {
+	background-color: var(--color-rosado) !important;
+	color: var(--color-negro) !important;
+	padding: 5px;
 }
 .cuenta-verificado {
 	margin: 0 !important;
@@ -546,19 +551,20 @@ footer .wave#wave4 {
 }
 /* Fin loader */
 
-@media (min-width: 320px) and (max-width: 900px) {
+@media (min-width: 320px) and (max-width: 1000px) {
 	/*NAV*/
-	body {
-		overflow-x: hidden !important;
-	}
 	.div-iconos {
 		flex-direction: row !important;
 		justify-content: space-evenly !important;
 	}
-	.swal2-container {
-		width: 100vw !important;
-		overflow: hidden !important;
+
+	ul {
+		padding: 0 !important;
 	}
+	.hover-a {
+		margin: auto !important;
+	}
+	/*NAV*/
 }
 /* Mapa */
 @media (max-width: 560px) {
