@@ -26,7 +26,7 @@ createApp({
 			telefono: '',
 			productoPorId: '',
 			imgProductoPorId: '',
-			checkTallas: [],
+			checkTallas: [], // CHECKS DE LOS FILTROS DE TALLAS
 			token: '',
 			verificado: false,
 			precioDesde: 0,
@@ -397,14 +397,23 @@ createApp({
 				return this.checkCategoria.includes(producto.subCategoria) || this.checkCategoria == 0;
 			});
 
-			let filtroPorPrecio = filtroProductoSubCategoriaYGenero.filter(producto => {
-				if (parseInt(this.precioDesde) > 0 && parseInt(this.precioHasta) == 300000) {
-					return true;
-				}
-				return producto.precio >= parseInt(this.precioDesde) && producto.precio <= parseInt(this.precioHasta);
-			});
+			let filtroProductoTallas = filtroProductoSubCategoriaYGenero.filter(producto =>{
+				let tallasProductos = Object.keys(producto.tallas)
 
-			this.productosFiltrados = filtroPorPrecio;
+				for(let talla of this.checkTallas){
+					return tallasProductos.includes(talla)
+				}
+				return this.checkTallas == 0
+			})
+
+			let filtroPorPrecio = filtroProductoTallas.filter(producto => {
+			 	if (parseInt(this.precioDesde) > 0 && parseInt(this.precioHasta) == 300000) {
+			 		return true;
+			 	}
+			 	return producto.precio >= parseInt(this.precioDesde) && producto.precio <= parseInt(this.precioHasta);
+			 });
+
+			 this.productosFiltrados = filtroPorPrecio;
 		},
 		localStorageCarrito() {
 			localStorage.setItem('carrito', JSON.stringify(this.carrito));
