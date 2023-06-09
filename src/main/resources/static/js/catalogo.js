@@ -406,8 +406,6 @@ createApp({
 				return this.checkTallas == 0
 			})
 
-			// this.productosFiltrados = filtroProductoTallas;
-
 			let filtroPorPrecio = filtroProductoTallas.filter(producto => {
 			 	if (parseInt(this.precioDesde) > 0 && parseInt(this.precioHasta) == 300000) {
 			 		return true;
