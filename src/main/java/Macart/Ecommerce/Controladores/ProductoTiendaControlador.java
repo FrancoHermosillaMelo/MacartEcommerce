@@ -131,8 +131,8 @@ public class ProductoTiendaControlador {
                         !entry.getKey().equalsIgnoreCase("L") && !entry.getKey().equalsIgnoreCase("XL")) {
                     return new ResponseEntity<>("Las tallas superiores disponibles son : 'XS','S','M','L','XL'", HttpStatus.FORBIDDEN);
                 }
-                if((entry.getValue() < 0)){
-                    return new ResponseEntity<>("La cantidad de stock no puede ser negativa", HttpStatus.FORBIDDEN);
+                if((entry.getValue() <= 0)){
+                    return new ResponseEntity<>("La cantidad de stock no puede ser negativa o cero", HttpStatus.FORBIDDEN);
                 }
                 if (productoTiendaExistente.getTallas().containsKey(entry.getKey())) {
                     tallas.put(entry.getKey(), entry.getValue());
