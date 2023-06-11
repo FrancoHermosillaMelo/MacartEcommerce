@@ -105,7 +105,7 @@ createApp({
 					delete this.productoCrear.tallas[key];
 				}
 			}
-			for (const key in this.productoCrear.tallas) {
+			for (const key in this.productoModificar.tallas) {
 				if (!this.checkTallaModificar.includes(key)) {
 					delete this.productoModificar.tallas[key];
 				}
