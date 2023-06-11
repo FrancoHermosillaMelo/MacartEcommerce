@@ -126,6 +126,7 @@ public class ProductoTiendaControlador {
                 return ResponseEntity.status(HttpStatus.FORBIDDEN).body("La subcategoria no puede estar en blanco");
             }
             Map<String, Integer> tallas = productoTienda.getTallas();
+            productoTiendaExistente.getTallas().clear();
             for (Map.Entry<String, Integer> entry : tallas.entrySet()) {
                 if (!entry.getKey().equalsIgnoreCase("XS") && !entry.getKey().equalsIgnoreCase("S") && !entry.getKey().equalsIgnoreCase("M") &&
                         !entry.getKey().equalsIgnoreCase("L") && !entry.getKey().equalsIgnoreCase("XL")) {
@@ -133,9 +134,6 @@ public class ProductoTiendaControlador {
                 }
                 if((entry.getValue() <= 0)){
                     return new ResponseEntity<>("La cantidad de stock no puede ser negativa o cero", HttpStatus.FORBIDDEN);
-                }
-                if (productoTiendaExistente.getTallas().containsKey(entry.getKey())) {
-                    tallas.put(entry.getKey(), entry.getValue());
                 }
                 productoTiendaExistente.agregarTalla(entry.getKey(), entry.getValue());
             }
