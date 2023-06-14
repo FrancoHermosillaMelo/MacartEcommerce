@@ -68,16 +68,21 @@ public class ProductoTiendaControlador {
 
         ProductoTienda nuevoProductoTienda = new ProductoTienda(productoTienda.getNombre());
 
-        Map<String, Integer> tallas = productoTienda.getTallas();
-        for (Map.Entry<String, Integer> entry : tallas.entrySet()) {
-            if (!entry.getKey().equalsIgnoreCase("XS") && !entry.getKey().equalsIgnoreCase("S") && !entry.getKey().equalsIgnoreCase("M") &&
-                    !entry.getKey().equalsIgnoreCase("L") && !entry.getKey().equalsIgnoreCase("XL")) {
-                return new ResponseEntity<>("Las tallas superiores disponibles son : 'XS','S','M','L','XL'", HttpStatus.FORBIDDEN);
+        if(productoTienda.isUnico()){
+            nuevoProductoTienda.setUnico(true);
+            nuevoProductoTienda.setCantidadStockUnico(productoTienda.getCantidadStockUnico());
+        }else{
+            Map<String, Integer> tallas = productoTienda.getTallas();
+            for (Map.Entry<String, Integer> entry : tallas.entrySet()) {
+                if (!entry.getKey().equalsIgnoreCase("XS") && !entry.getKey().equalsIgnoreCase("S") && !entry.getKey().equalsIgnoreCase("M") &&
+                        !entry.getKey().equalsIgnoreCase("L") && !entry.getKey().equalsIgnoreCase("XL")) {
+                    return new ResponseEntity<>("Las tallas superiores disponibles son : 'XS','S','M','L','XL'", HttpStatus.FORBIDDEN);
+                }
+                if((entry.getValue() < 0)){
+                    return new ResponseEntity<>("La cantidad de stock no puede ser negativa", HttpStatus.FORBIDDEN);
+                }
+                nuevoProductoTienda.agregarTalla(entry.getKey(), entry.getValue());
             }
-            if((entry.getValue() < 0)){
-                return new ResponseEntity<>("La cantidad de stock no puede ser negativa", HttpStatus.FORBIDDEN);
-            }
-            nuevoProductoTienda.agregarTalla(entry.getKey(), entry.getValue());
         }
 
         for(String imagen : productoTienda.getImagenesUrl()){
@@ -174,10 +179,11 @@ public class ProductoTiendaControlador {
         if (productoTiendaExistente != null) {
             if (productoTiendaExistente.isActivo()){
                 productoTiendaServicio.desactivarProducto(productoTiendaExistente);
+                return ResponseEntity.status(HttpStatus.OK).body("Se desactivo el producto "+ productoTiendaExistente.getNombre() + " correctamente");
             }else{
                 productoTiendaServicio.activarProducto(productoTiendaExistente);
+                return ResponseEntity.status(HttpStatus.OK).body("Se activo el producto "+ productoTiendaExistente.getNombre() + " correctamente");
             }
-            return ResponseEntity.status(HttpStatus.OK).body("Se eliminó el producto con el nombre de : " + productoTiendaExistente.getNombre());
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("El producto con el nombre de : " + productoTiendaExistente.getNombre() + " no fue encontrado");
         }
